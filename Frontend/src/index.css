@@ -1,0 +1,15 @@
+@import "tailwindcss";
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  #copyright-print-area, #copyright-print-area * {
+    visibility: visible;
+  }
+  #copyright-print-area {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+  }
+}
