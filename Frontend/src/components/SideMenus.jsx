@@ -1,5 +1,6 @@
 import React from 'react'
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Search, Inbox, Bell, LayoutDashboard, Wallet, HandCoins, BriefcaseBusiness, ClipboardList, Landmark, Gift, ChartNoAxesCombined, Repeat2, Flag, BarChart2, LayoutGrid, Package, FileText, Users, Truck, ChevronDown, BadgeDollarSign, Handshake, PackageOpen, ShoppingCart, PackageCheck, Blocks } from "lucide-react";
 
 const SideMenus = ({ collapsed }) => {
@@ -32,6 +33,8 @@ const SideMenus = ({ collapsed }) => {
         const rect = e.currentTarget.getBoundingClientRect();
         e.currentTarget.style.setProperty('--tooltip-y', rect.top + rect.height / 2 + 'px');
     }
+
+    const navigate=useNavigate()
 
     return (
         <div>
@@ -296,7 +299,7 @@ const SideMenus = ({ collapsed }) => {
                         }}
                         className="ml-7 border-l border-slate-200 pl-3 flex flex-col gap-0.5 overflow-hidden"
                     >
-                        <div className="text-[12px] text-slate-500 hover:text-blue-600 hover:bg-blue-50 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                        <div onClick={()=>{navigate('/newSale')}} className="text-[12px] text-slate-500 hover:text-blue-600 hover:bg-blue-50 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                             New Sale
                         </div>
                         <div className="text-[12px] text-slate-500 hover:text-blue-600 hover:bg-blue-50 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
