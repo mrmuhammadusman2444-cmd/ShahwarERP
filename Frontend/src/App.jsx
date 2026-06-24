@@ -5,6 +5,8 @@ import Sidebar from './components/Sidebar.jsx'
 import Home from './pages/Home.jsx'
 import { ToastContainer } from 'react-toastify'
 import NewSale from './pages/Sales Section/NewSale.jsx'
+import ManageSale from './pages/Sales Section/ManageSale.jsx'
+import NewProduct from './pages/Products/NewProduct.jsx'
 
 
 
@@ -18,6 +20,10 @@ const App = () => {
             <Route path='/login' element={<Login />} />
             <Route path='/home' element={<Home />} />
             <Route path='/newSale' element={<NewSale />} />
+            <Route path='/manageSale' element={<ManageSale />} />
+            <Route path='/newProduct' element={<NewProduct />} />
+
+
 
           
           </Routes>

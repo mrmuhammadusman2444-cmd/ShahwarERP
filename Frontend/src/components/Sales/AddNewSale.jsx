@@ -1,7 +1,9 @@
 import SelectCategory from '../../components/SelectCategory/SelectCategory.jsx'
+import { useNavigate } from 'react-router-dom';
 
 
 const NewSale = () => {
+  let navigate = useNavigate()
   const products = [];
 
   const selectedItems = [];
@@ -10,11 +12,11 @@ const NewSale = () => {
     <div className="min-h-screen bg-linear-to-br from-blue-50 via-white to-blue-50 p-4 md:p-5">
 
       <div className="flex gap-1 mb-5 bg-white border border-blue-100 shadow-sm p-1 rounded-xl w-fit">
-        <button className="px-6 py-2 rounded-lg bg-linear-to-r from-blue-600 to-blue-700 text-white text-sm font-semibold shadow-md shadow-blue-200 transition-all">
+        <button className="px-6 py-2 rounded-lg bg-linear-to-r from-blue-600 to-blue-700 cursor-pointer text-white text-sm font-semibold shadow-md shadow-blue-200 transition-all">
           New Sale
         </button>
-        <button className="px-6 py-2 rounded-lg text-blue-500 text-sm font-medium hover:bg-blue-50 transition-all">
-          Today's Sale
+        <button onClick={() => { navigate('/manageSale') }} className="px-6 py-2 rounded-lg cursor-pointer text-blue-500 text-sm font-medium hover:bg-blue-50 transition-all">
+          Manage Sales
         </button>
       </div>
 
@@ -28,7 +30,7 @@ const NewSale = () => {
               placeholder="Search by product name..."
               className="flex-1 bg-blue-50 border border-blue-100 rounded-full px-5 py-2.5 text-gray-700 placeholder-gray-400 text-sm focus:outline-none focus:border-blue-400 focus:bg-white transition-all"
             />
-             <SelectCategory/>
+            <SelectCategory />
             <button className="w-11 h-11 shrink-0 cursor-pointer bg-linear-to-r from-blue-600 to-blue-700 rounded-full flex items-center justify-center shadow-md shadow-blue-200 transition-all hover:from-blue-500 hover:to-blue-600">
               <svg className="w-4 h-4 text-white " fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -74,7 +76,6 @@ const NewSale = () => {
 
           <div className="bg-white border border-blue-100 rounded-2xl shadow-sm p-5">
 
-            {/* Header */}
             <div className="flex items-center gap-3 mb-5">
               <div className="w-9 h-9 rounded-xl bg-linear-to-br from-blue-600 to-blue-700 flex items-center justify-center shadow-md shadow-blue-200 shrink-0">
                 <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -86,7 +87,6 @@ const NewSale = () => {
                 <p className="text-gray-400 text-xs">Fill in the information below</p>
               </div>
             </div>
-
             <div className="grid grid-cols-3 gap-3 mb-4">
               <div>
                 <label className="text-gray-500 text-sm font-semibold uppercase tracking-wide block mb-1.5">Gate Pass No</label>
@@ -94,12 +94,12 @@ const NewSale = () => {
                   className="w-full bg-blue-50 border border-blue-100 focus:border-blue-400 focus:bg-white rounded-xl px-3 py-2.5 text-gray-700 placeholder-gray-400 text-sm focus:outline-none transition-all" />
               </div>
               <div>
-                <label className="text-gray-500 text-xs font-semibold uppercase tracking-wide block mb-1.5">Customer Name</label>
+                <label className="text-gray-500 text-sm font-semibold uppercase tracking-wide block mb-1.5">Customer Name</label>
                 <input type="text" placeholder="Ali"
                   className="w-full bg-blue-50 border border-blue-100 focus:border-blue-400 focus:bg-white rounded-xl px-3 py-2.5 text-gray-700 text-sm focus:outline-none transition-all" />
               </div>
               <div>
-                <label className="text-gray-500 text-xs font-semibold uppercase tracking-wide block mb-1.5">
+                <label className="text-gray-500 text-sm font-semibold uppercase tracking-wide block mb-1.5">
                   Date <span className="text-red-400">*</span>
                 </label>
                 <input type="date" defaultValue="2026-06-23"
@@ -107,14 +107,27 @@ const NewSale = () => {
               </div>
             </div>
 
-            <div className="w-1/3">
-              <label className="text-gray-500 text-xs font-semibold uppercase tracking-wide block mb-1.5">Show Rate</label>
-              <select className="w-full bg-blue-50 border border-blue-100 focus:border-blue-400 focus:bg-white rounded-xl px-3 py-2.5 text-gray-700 text-sm focus:outline-none transition-all appearance-none cursor-pointer">
-                <option>Distributor Rate</option>
-                <option>Retail Rate</option>
-                <option>Wholesale Rate</option>
-              </select>
+            <div className="grid grid-cols-3 gap-3">
+              <div>
+                <label className="text-gray-500 text-sm font-semibold uppercase tracking-wide block mb-1.5">Show Rate</label>
+                <select className="w-full bg-blue-50 border border-blue-100 focus:border-blue-400 focus:bg-white rounded-xl px-3 py-2.5 text-gray-700 text-sm focus:outline-none transition-all appearance-none cursor-pointer">
+                  <option>Distributor Rate</option>
+                  <option>Retail Rate</option>
+                  <option>Wholesale Rate</option>
+                </select>
+              </div>
+              <div>
+                <label className="text-gray-500 text-sm font-semibold uppercase tracking-wide block mb-1.5">Freight Charges</label>
+                <input type="number" placeholder="0.00"
+                  className="w-full bg-blue-50 border border-blue-100 focus:border-blue-400 focus:bg-white rounded-xl px-3 py-2.5 text-gray-700 placeholder-gray-400 text-sm focus:outline-none transition-all" />
+              </div>
+              <div>
+                <label className="text-gray-500 text-sm font-semibold uppercase tracking-wide block mb-1.5">Previous Amount</label>
+                <input type="number" placeholder="0.00"
+                  className="w-full bg-blue-50 border border-blue-100 focus:border-blue-400 focus:bg-white rounded-xl px-3 py-2.5 text-gray-700 placeholder-gray-400 text-sm focus:outline-none transition-all" />
+              </div>
             </div>
+
           </div>
 
           <div className="bg-white border border-blue-100 rounded-2xl shadow-sm overflow-hidden flex flex-col flex-1">

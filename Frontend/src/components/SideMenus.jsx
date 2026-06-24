@@ -38,7 +38,7 @@ const SideMenus = ({ collapsed }) => {
 
     return (
         <div>
-
+          
             {!collapsed && (
                 <div className="px-2.5 pt-2.5 pb-2">
                     <div className="flex items-center gap-2 h-8.75 rounded-lg px-2.5 border border-slate-200 bg-slate-50 cursor-text">
@@ -302,7 +302,7 @@ const SideMenus = ({ collapsed }) => {
                         <div onClick={()=>{navigate('/newSale')}} className="text-[12px] text-slate-500 hover:text-blue-600 hover:bg-blue-50 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                             New Sale
                         </div>
-                        <div className="text-[12px] text-slate-500 hover:text-blue-600 hover:bg-blue-50 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                        <div onClick={()=>{navigate('/manageSale')}} className="text-[12px] text-slate-500 hover:text-blue-600 hover:bg-blue-50 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                             Manage Sale
                         </div>
                     </div>
@@ -371,7 +371,7 @@ const SideMenus = ({ collapsed }) => {
                         }}
                         className="ml-7 border-l border-slate-200 pl-3 flex flex-col gap-0.5 overflow-hidden"
                     >
-                        <div className="text-[12px] text-slate-500 hover:text-blue-600 hover:bg-blue-50 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                        <div onClick={()=>{navigate('/newProduct')}} className="text-[12px] text-slate-500 hover:text-blue-600 hover:bg-blue-50 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                             New Product
                         </div>
                         <div className="text-[12px] text-slate-500 hover:text-blue-600 hover:bg-blue-50 px-2 py-1.5 rounded-md cursor-pointer transition-colors">

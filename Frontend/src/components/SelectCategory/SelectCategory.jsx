@@ -80,7 +80,7 @@ const CategoryDropdown = ({ value, onChange }) => {
       </button>
 
       {open && (
-        <div className="absolute top-[calc(100%+6px)] left-0 z-50  bg-white border border-blue-100 rounded-2xl shadow-lg shadow-blue-100/50 min-w-[240px]">
+        <div className="absolute top-[calc(100%+6px)] left-0 z-50  bg-white border border-blue-100 rounded-2xl shadow-lg shadow-blue-100/50 min-w-60">
 
           <div className="p-2 border-b border-blue-50">
             <div className="flex items-center gap-2 bg-blue-50 border border-blue-100 rounded-xl px-3 py-2 focus-within:border-blue-400 transition-all">
@@ -93,7 +93,7 @@ const CategoryDropdown = ({ value, onChange }) => {
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 placeholder="Category search karein..."
-                className="flex-1 bg-transparent text-xs text-gray-600 placeholder-gray-400 focus:outline-none"
+                className="flex-1 bg-transparent text-xs text-gray-600 placeholder-gray-400 border-dashed focus:outline-none"
               />
               {search && (
                 <button onClick={() => setSearch("")} className="text-gray-300 hover:text-gray-500 transition-colors">
