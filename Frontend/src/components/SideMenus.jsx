@@ -215,7 +215,7 @@ const SideMenus = ({ collapsed }) => {
                         <div onClick={()=>{navigate('/manageCustomer')}} className="text-[12px] text-slate-500 hover:text-blue-600 hover:bg-blue-50 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                             Manage Customers
                         </div>
-                        <div className="text-[12px] text-slate-500 hover:text-blue-600 hover:bg-blue-50 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                        <div onClick={()=>{navigate('/factoryCustomer')}} className="text-[12px] text-slate-500 hover:text-blue-600 hover:bg-blue-50 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                             Manage Factory Customers
                         </div>
                         <div className="text-[12px] text-slate-500 hover:text-blue-600 hover:bg-blue-50 px-2 py-1.5 rounded-md cursor-pointer transition-colors">

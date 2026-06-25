@@ -1,21 +1,20 @@
 import React from 'react'
 import Sidebar from '../../components/Sidebar.jsx'
-import ManageAllCustomer from '../../components/Customer/ManageAllCustomer.jsx'
+import FactoryCustomer from '../../components/Customer/FactoryCustomer.jsx'
 
 
 
-
-const ManageCustomer = () => {
+const FactoryCustomerPage = () => {
     return (
         <div className='flex'>
 
             <Sidebar />
             <div className='flex-1'>
-                <ManageAllCustomer />
+                <FactoryCustomer />
 
             </div>
         </div>
     )
 }
 
-export default ManageCustomer
+export default FactoryCustomerPage

@@ -10,8 +10,7 @@ import NewProduct from './pages/Products/NewProduct.jsx'
 import NewCustomerAdding from './pages/CustomerPage/NewCustomerAdding.jsx'
 import Dashboard from './pages/Dashboard/Dashboard.jsx'
 import ManageCustomer from './pages/CustomerPage/ManageCustomer.jsx'
-
-
+import FactoryCustomer from './pages/CustomerPage/FactoryCustomerPage.jsx'
 
 const App = () => {
   return (
@@ -29,6 +28,8 @@ const App = () => {
         <Route path='/newCustomer' element={<NewCustomerAdding />} />
         <Route path='/Dashboard' element={<Dashboard />} />
         <Route path='/manageCustomer' element={<ManageCustomer />} />
+        <Route path='/factoryCustomer' element={<FactoryCustomer />} />
+
       </Routes>
 
     </BrowserRouter>
