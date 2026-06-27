@@ -16,6 +16,8 @@ import CustomerAdvancePage from './pages/CustomerPage/CustomerAdvancePage.jsx'
 import NewOrdersPage from './pages/Orders/NewOrdersPage.jsx'
 import ManageOrdersPage from './pages/Orders/ManageOrdersPage.jsx'
 import OrderReportPage from './pages/Orders/OrderReportPage.jsx'
+import DispatchOrderPage from './pages/Orders/DispatchOrderPage.jsx'
+import ManageProductPage from './pages/Products/ManageProductPage.jsx'
 
 const App = () => {
   return (
@@ -39,6 +41,10 @@ const App = () => {
         <Route path='/NewOrdersPage' element={<NewOrdersPage />} />
         <Route path='/ManageOrdersPage' element={<ManageOrdersPage />} />
         <Route path='/OrderReportPage' element={<OrderReportPage />} />
+        <Route path='/DispatchOrderPage' element={<DispatchOrderPage />} />
+        <Route path='/ManageProductPage' element={<ManageProductPage />} />
+
+
 
 
 
