@@ -11,6 +11,11 @@ import NewCustomerAdding from './pages/CustomerPage/NewCustomerAdding.jsx'
 import Dashboard from './pages/Dashboard/Dashboard.jsx'
 import ManageCustomer from './pages/CustomerPage/ManageCustomer.jsx'
 import FactoryCustomer from './pages/CustomerPage/FactoryCustomerPage.jsx'
+import CustomerLedgerPage from './pages/CustomerPage/CustomerLedgerPage.jsx'
+import CustomerAdvancePage from './pages/CustomerPage/CustomerAdvancePage.jsx'
+import NewOrdersPage from './pages/Orders/NewOrdersPage.jsx'
+import ManageOrdersPage from './pages/Orders/ManageOrdersPage.jsx'
+import OrderReportPage from './pages/Orders/OrderReportPage.jsx'
 
 const App = () => {
   return (
@@ -29,6 +34,16 @@ const App = () => {
         <Route path='/Dashboard' element={<Dashboard />} />
         <Route path='/manageCustomer' element={<ManageCustomer />} />
         <Route path='/factoryCustomer' element={<FactoryCustomer />} />
+        <Route path='/CustomerLedgerPage' element={<CustomerLedgerPage />} />
+        <Route path='/CustomerAdvancePage' element={<CustomerAdvancePage />} />
+        <Route path='/NewOrdersPage' element={<NewOrdersPage />} />
+        <Route path='/ManageOrdersPage' element={<ManageOrdersPage />} />
+        <Route path='/OrderReportPage' element={<OrderReportPage />} />
+
+
+
+
+
 
       </Routes>
 
