@@ -39,7 +39,7 @@ const Login = () => {
   if (res.data.success) {
     toast.success('Login Successful!', { position: 'bottom-right', autoClose: 800 })
     setTimeout(() => {
-      navigate('/home')
+      navigate('/dashboard')
     }, 800)
   } else {
     toast.error(res.data.message, { position: 'bottom-right', autoClose: 800 })
