@@ -18,6 +18,8 @@ import ManageOrdersPage from './pages/Orders/ManageOrdersPage.jsx'
 import OrderReportPage from './pages/Orders/OrderReportPage.jsx'
 import DispatchOrderPage from './pages/Orders/DispatchOrderPage.jsx'
 import ManageProductPage from './pages/Products/ManageProductPage.jsx'
+import ProductCategoryPage from './pages/Products/ProductCategoryPage.jsx'
+import UnitPage from './pages/Products/UnitPage.jsx'
 
 const App = () => {
   return (
@@ -43,6 +45,10 @@ const App = () => {
         <Route path='/OrderReportPage' element={<OrderReportPage />} />
         <Route path='/DispatchOrderPage' element={<DispatchOrderPage />} />
         <Route path='/ManageProductPage' element={<ManageProductPage />} />
+        <Route path='/ProductCategoryPage' element={<ProductCategoryPage />} />
+        <Route path='/UnitPage' element={<UnitPage />} />
+
+
 
 
 
