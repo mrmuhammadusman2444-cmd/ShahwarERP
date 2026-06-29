@@ -146,7 +146,7 @@ const Dashboard = () => (
 
         <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-3">
-                <div className="w-9 h-9 rounded-xl bg-linear-to-br from-blue-600 to-blue-700 flex items-center justify-center shadow-md shadow-blue-200">
+                <div className="w-9 h-9 rounded-full bg-linear-to-br from-blue-600 to-blue-700 flex items-center justify-center shadow-md shadow-blue-200">
                     <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 5a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1H5a1 1 0 01-1-1V5zm10 0a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1V5zM4 15a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1H5a1 1 0 01-1-1v-4zm10 0a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1v-4z" />
                     </svg>
@@ -185,6 +185,7 @@ const Dashboard = () => (
                         </ResponsiveContainer>
                     </ChartCard>
                 </div>
+                
 
                 <div className="lg:col-span-1">
                     <ChartCard title="Revenue Split" subtitle="By category">
@@ -209,6 +210,7 @@ const Dashboard = () => (
                         </ResponsiveContainer>
                     </ChartCard>
                 </div>
+                
 
             </div>
 
