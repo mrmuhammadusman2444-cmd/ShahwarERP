@@ -1,4 +1,5 @@
 import React from 'react'
+import MainDashboard from '../../components/Dashboard/MainDashboard.jsx'
 import Sidebar from '../../components/Sidebar.jsx'
 
 const NewProduct = () => {
@@ -7,7 +8,7 @@ const NewProduct = () => {
 
             <Sidebar />
             <div className='flex-1'>
-
+                <MainDashboard />
             </div>
 
         </div>
