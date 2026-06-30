@@ -1,11 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import {
-    BarChart, Bar,
-    PieChart, Pie, Cell, Legend,
-    LineChart, Line,
-    XAxis, YAxis, CartesianGrid,
-    Tooltip, ResponsiveContainer
-} from "recharts";
+import { BarChart, Bar, PieChart, Pie, Cell, Legend, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
 
 const monthlySales = [
     { month: "Jan", sales: 125000, orders: 142500 },

@@ -19,6 +19,9 @@ import DispatchOrderPage from './pages/Orders/DispatchOrderPage.jsx'
 import ManageProductPage from './pages/Products/ManageProductPage.jsx'
 import ProductCategoryPage from './pages/Products/ProductCategoryPage.jsx'
 import UnitPage from './pages/Products/UnitPage.jsx'
+import MainCategoryPage from './pages/Products/MainCategoryPage.jsx'
+import SchemeProductsPage from './pages/Products/SchemeProductsPage.jsx'
+import InvoiceApprovalPage from './pages/Approvals/InvoiceApprovalPage.jsx'
 
 const App = () => {
   return (
@@ -45,6 +48,12 @@ const App = () => {
         <Route path='/ManageProductPage' element={<ManageProductPage />} />
         <Route path='/ProductCategoryPage' element={<ProductCategoryPage />} />
         <Route path='/UnitPage' element={<UnitPage />} />
+        <Route path='/MainCategoryPage' element={<MainCategoryPage />} />
+        <Route path='/SchemeProductsPage' element={<SchemeProductsPage />} />
+        <Route path='/InvoiceApprovalPage' element={<InvoiceApprovalPage />} />
+
+
+
 
 
 

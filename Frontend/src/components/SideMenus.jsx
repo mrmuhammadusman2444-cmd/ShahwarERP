@@ -34,11 +34,11 @@ const SideMenus = ({ collapsed }) => {
         e.currentTarget.style.setProperty('--tooltip-y', rect.top + rect.height / 2 + 'px');
     }
 
-    const navigate=useNavigate()
+    const navigate = useNavigate()
 
     return (
         <div>
-          
+
             {!collapsed && (
                 <div className="px-2.5 pt-2.5 pb-2">
                     <div className="flex items-center gap-2 h-8.75 rounded-lg px-2.5 border border-slate-200 bg-slate-50 cursor-text">
@@ -124,13 +124,13 @@ const SideMenus = ({ collapsed }) => {
 
             <div className="px-2.5">
 
-                <div onClick={()=>{navigate('/dashboard')}} onMouseEnter={setTip} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2.5 cursor-pointer bg-blue-50 border overflow-hidden border-blue-100 mb-px ${collapsed ? 'justify-start' : ''}`}>
+                <div onClick={() => { navigate('/dashboard') }} onMouseEnter={setTip} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2.5 cursor-pointer bg-blue-50 border overflow-hidden border-blue-100 mb-px ${collapsed ? 'justify-start' : ''}`}>
                     {!collapsed && <span className="absolute left-0 top-1/2 -translate-y-1/2 w-0.75 h-4.5 bg-blue-600 rounded-r-full" />}
                     <LayoutGrid className="text-slate-600 shrink-0 -ml-[6.2px] fill-slate-300 group-hover:scale-110 group-hover:rotate-6 transition-transform duration-300" size={20} />
                     {!collapsed && <span className="text-[12.5px] text-blue-700 font-medium">Dashboard</span>}
 
                     {collapsed && (
-                        <span  style={{ top: 'var(--tooltip-y, 50%)', transform: 'translateY(-50%)' }} className="fixed left-16 ml-1 bg-blue-500 text-white text-[11px] px-2.5 py-1 rounded-md whitespace-nowrap opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-200 pointer-events-none z-999">
+                        <span style={{ top: 'var(--tooltip-y, 50%)', transform: 'translateY(-50%)' }} className="fixed left-16 ml-1 bg-blue-500 text-white text-[11px] px-2.5 py-1 rounded-md whitespace-nowrap opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-200 pointer-events-none z-999">
                             Dashboard
                         </span>
                     )}
@@ -209,19 +209,19 @@ const SideMenus = ({ collapsed }) => {
                         }}
                         className="ml-7 border-l border-slate-200 pl-3 flex flex-col gap-0.5 overflow-hidden"
                     >
-                        <div onClick={()=>{navigate('/newcustomer')}} className="text-[12px] text-slate-500 hover:text-blue-600 hover:bg-blue-50 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                        <div onClick={() => { navigate('/newcustomer') }} className="text-[12px] text-slate-500 hover:text-blue-600 hover:bg-blue-50 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                             New Customer
                         </div>
-                        <div onClick={()=>{navigate('/manageCustomer')}} className="text-[12px] text-slate-500 hover:text-blue-600 hover:bg-blue-50 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                        <div onClick={() => { navigate('/manageCustomer') }} className="text-[12px] text-slate-500 hover:text-blue-600 hover:bg-blue-50 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                             Manage Customers
                         </div>
-                        <div onClick={()=>{navigate('/factoryCustomer')}} className="text-[12px] text-slate-500 hover:text-blue-600 hover:bg-blue-50 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                        <div onClick={() => { navigate('/factoryCustomer') }} className="text-[12px] text-slate-500 hover:text-blue-600 hover:bg-blue-50 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                             Manage Factory Customers
                         </div>
-                        <div onClick={()=>{navigate('/customerledgerpage')}} className="text-[12px] text-slate-500 hover:text-blue-600 hover:bg-blue-50 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                        <div onClick={() => { navigate('/customerledgerpage') }} className="text-[12px] text-slate-500 hover:text-blue-600 hover:bg-blue-50 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                             Customer Ledger
                         </div>
-                        <div onClick={()=>{navigate('/customeradvancepage')}} className="text-[12px] text-slate-500 hover:text-blue-600 hover:bg-blue-50 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                        <div onClick={() => { navigate('/customeradvancepage') }} className="text-[12px] text-slate-500 hover:text-blue-600 hover:bg-blue-50 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                             Customers Advance
                         </div>
                     </div>
@@ -248,16 +248,16 @@ const SideMenus = ({ collapsed }) => {
                         }}
                         className="ml-7 border-l border-slate-200 pl-3 flex flex-col gap-0.5 overflow-hidden"
                     >
-                        <div onClick={()=>{navigate('/neworderspage')}} className="text-[12px] text-slate-500 hover:text-blue-600 hover:bg-blue-50 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                        <div onClick={() => { navigate('/neworderspage') }} className="text-[12px] text-slate-500 hover:text-blue-600 hover:bg-blue-50 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                             New Order
                         </div>
-                        <div onClick={()=>{navigate('/ManageOrdersPage')}} className="text-[12px] text-slate-500 hover:text-blue-600 hover:bg-blue-50 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                        <div onClick={() => { navigate('/ManageOrdersPage') }} className="text-[12px] text-slate-500 hover:text-blue-600 hover:bg-blue-50 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                             Manage Order
                         </div>
-                        <div onClick={()=>{navigate('/orderreportpage')}} className="text-[12px] text-slate-500 hover:text-blue-600 hover:bg-blue-50 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                        <div onClick={() => { navigate('/orderreportpage') }} className="text-[12px] text-slate-500 hover:text-blue-600 hover:bg-blue-50 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                             Order Reports
                         </div>
-                        <div  onClick={()=>{navigate('/dispatchorderpage')}}  className="text-[12px] text-slate-500 hover:text-blue-600 hover:bg-blue-50 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                        <div onClick={() => { navigate('/dispatchorderpage') }} className="text-[12px] text-slate-500 hover:text-blue-600 hover:bg-blue-50 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                             Dispatch Order
                         </div>
                     </div>
@@ -299,10 +299,10 @@ const SideMenus = ({ collapsed }) => {
                         }}
                         className="ml-7 border-l border-slate-200 pl-3 flex flex-col gap-0.5 overflow-hidden"
                     >
-                        <div onClick={()=>{navigate('/newSale')}} className="text-[12px] text-slate-500 hover:text-blue-600 hover:bg-blue-50 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                        <div onClick={() => { navigate('/newSale') }} className="text-[12px] text-slate-500 hover:text-blue-600 hover:bg-blue-50 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                             New Sale
                         </div>
-                        <div onClick={()=>{navigate('/manageSale')}} className="text-[12px] text-slate-500 hover:text-blue-600 hover:bg-blue-50 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                        <div onClick={() => { navigate('/manageSale') }} className="text-[12px] text-slate-500 hover:text-blue-600 hover:bg-blue-50 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                             Manage Sale
                         </div>
                     </div>
@@ -331,7 +331,7 @@ const SideMenus = ({ collapsed }) => {
                         }}
                         className="ml-7 border-l border-slate-200 pl-3 flex flex-col gap-0.5 overflow-hidden"
                     >
-                        <div className="text-[12px] text-slate-500 hover:text-blue-600 hover:bg-blue-50 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                        <div onClick={()=>{navigate('/invoiceapprovalpage')}} className="text-[12px] text-slate-500 hover:text-blue-600 hover:bg-blue-50 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                             Invoice Approval
                         </div>
                         <div className="text-[12px] text-slate-500 hover:text-blue-600 hover:bg-blue-50 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
@@ -371,22 +371,22 @@ const SideMenus = ({ collapsed }) => {
                         }}
                         className="ml-7 border-l border-slate-200 pl-3 flex flex-col gap-0.5 overflow-hidden"
                     >
-                        <div onClick={()=>{navigate('/newProduct')}} className="text-[12px] text-slate-500 hover:text-blue-600 hover:bg-blue-50 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                        <div onClick={() => { navigate('/newProduct') }} className="text-[12px] text-slate-500 hover:text-blue-600 hover:bg-blue-50 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                             New Product
                         </div>
-                        <div onClick={()=>{navigate('/manageproductpage')}} className="text-[12px] text-slate-500 hover:text-blue-600 hover:bg-blue-50 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                        <div onClick={() => { navigate('/manageproductpage') }} className="text-[12px] text-slate-500 hover:text-blue-600 hover:bg-blue-50 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                             Manage Products
                         </div>
-                        <div onClick={()=>{navigate('/productcategorypage')}} className="text-[12px] text-slate-500 hover:text-blue-600 hover:bg-blue-50 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                        <div onClick={() => { navigate('/productcategorypage') }} className="text-[12px] text-slate-500 hover:text-blue-600 hover:bg-blue-50 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                             Category
                         </div>
-                        <div onClick={()=>{navigate('/unitpage')}} className="text-[12px] text-slate-500 hover:text-blue-600 hover:bg-blue-50 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                        <div onClick={() => { navigate('/unitpage') }} className="text-[12px] text-slate-500 hover:text-blue-600 hover:bg-blue-50 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                             Unit
                         </div>
-                        <div className="text-[12px] text-slate-500 hover:text-blue-600 hover:bg-blue-50 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                        <div onClick={() => { navigate('/maincategorypage') }} className="text-[12px] text-slate-500 hover:text-blue-600 hover:bg-blue-50 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                             Main Category
                         </div>
-                        <div className="text-[12px] text-slate-500 hover:text-blue-600 hover:bg-blue-50 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                        <div onClick={() => { navigate('/schemeproductspage') }} className="text-[12px] text-slate-500 hover:text-blue-600 hover:bg-blue-50 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                             Scheme Products
                         </div>
                         <div className="text-[12px] text-slate-500 hover:text-blue-600 hover:bg-blue-50 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
@@ -430,6 +430,7 @@ const SideMenus = ({ collapsed }) => {
                         <div className="text-[12px] text-slate-500 hover:text-blue-600 hover:bg-blue-50 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                             Supplier Payment
                         </div>
+                        
                     </div>
                 )}
 

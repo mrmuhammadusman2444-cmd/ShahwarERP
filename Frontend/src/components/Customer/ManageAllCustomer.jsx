@@ -1,7 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import {
-  Users, Plus, Copy, FileText, Sheet, File, Printer, Search, ArrowUpDown, ChevronLeft, ChevronRight
-} from "lucide-react";
+import {Users, Plus, Copy, FileText, Sheet, File, Printer, Search, ArrowUpDown, ChevronLeft, ChevronRight} from "lucide-react";
 
 const ManageCustomers = () => {
   const navigate = useNavigate()
