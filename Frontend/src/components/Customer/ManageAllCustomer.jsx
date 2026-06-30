@@ -18,7 +18,7 @@ const ManageCustomers = () => {
           </div>
         </div>
 
-        <button onClick={() => { navigate('/newcustomer') }} className="flex items-center gap-2 bg-linear-to-r from-blue-600 to-blue-700 hover:from-blue-500 hover:to-blue-600 text-white  shadow-blue-200 shadow-md text-sm transition-all hover:-translate-y-0.5 active:translate-y-0 font-semibold px-4 py-2.5 rounded-xl shadow-md shadow-blue-200 transition-all cursor-pointer">
+        <button onClick={() => { navigate('/newcustomer') }} className="flex items-center gap-2 bg-linear-to-r from-blue-600 to-blue-700 hover:from-blue-500 hover:to-blue-600 text-white  shadow-blue-200  text-sm transition-all hover:-translate-y-0.5 active:translate-y-0 font-semibold px-4 py-2.5 rounded-xl shadow-md stransition-all cursor-pointer">
           <Plus className="w-4 h-4" />
           New Customer
         </button>

@@ -173,8 +173,8 @@ const PayBandCard = ({ item }) => {
         >
             <canvas ref={canvasRef} className="absolute inset-0 w-full h-full pointer-events-none" />
 
-            <div className="absolute -top-4 -right-4 w-16 h-16 rounded-full bg-white/10 transition-all duration-300 group-hover:scale-125 group-hover:bg-white/[.18] pointer-events-none" />
-            <div className="absolute -bottom-5 -left-3 w-20 h-20 rounded-full bg-white/10 transition-all duration-300 group-hover:scale-125 group-hover:bg-white/[.18] pointer-events-none" />
+            <div className="absolute -top-4 -right-4 w-16 h-16 rounded-full bg-white/10 transition-all duration-300 group-hover:scale-125 group-hover:bg-white/18 pointer-events-none" />
+            <div className="absolute -bottom-5 -left-3 w-20 h-20 rounded-full bg-white/10 transition-all duration-300 group-hover:scale-125 group-hover:bg-white/18 pointer-events-none" />
 
             <div
                 className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
@@ -202,7 +202,7 @@ const PayBandCard = ({ item }) => {
 const ChartCard = ({ title, subtitle, children }) => (
     <div className="bg-white border border-blue-100 rounded-xl shadow-sm p-4">
         <div className="flex items-center gap-2 mb-3">
-            <div className="w-1 h-4 bg-gradient-to-b from-blue-500 to-blue-700 rounded-full shrink-0" />
+            <div className="w-1 h-4 bg-linear-to-b from-blue-500 to-blue-700 rounded-full shrink-0" />
             <div>
                 <h3 className="text-gray-700 text-xs font-bold">{title}</h3>
                 {subtitle && <p className="text-gray-400 text-xs">{subtitle}</p>}
@@ -229,7 +229,7 @@ const Dashboard = () => (
 
         <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-3">
-                <div className="w-9 h-9 rounded-full bg-gradient-to-br from-cyan-500 to-cyan-600 flex items-center justify-center shadow-md shadow-blue-200">
+                <div className="w-9 h-9 rounded-full bg-linear-to-br from-cyan-500 to-cyan-600 flex items-center justify-center shadow-md shadow-blue-200">
                     <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 5a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1H5a1 1 0 01-1-1V5zm10 0a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1V5zM4 15a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1H5a1 1 0 01-1-1v-4zm10 0a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1v-4z" />
                     </svg>
