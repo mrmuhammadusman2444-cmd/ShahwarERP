@@ -40,16 +40,15 @@ const SideMenus = ({ collapsed }) => {
         <div>
 
             {!collapsed && (
-                <div className="px-2.5 pt-2.5 pb-2">
-                    <div className="flex items-center gap-2 h-8.75 rounded-lg px-2.5 border border-slate-200 bg-slate-50 cursor-text">
-                        <Search className="text-slate-600 fill-slate-300" size={16} />
-                        <input type="text" placeholder="Quick search..." className="text-[12px] text-slate-900 flex-1 bg-transparent border-none focus:outline-none" />
-                        <span className="text-[10px] text-slate-600 border border-slate-200 rounded px-1.5 py-px bg-white">⌘K</span>
+                <div className="px-2 pt-2.5 pb-2">
+                    <div className="flex items-center gap-2 h-8.75 rounded-full px-1.5 border  bg-slate-800 cursor-text">
+                        <Search className="text-slate-100 ml-2" size={18} />
+                        <input type="text" placeholder="Quick search..." className="text-[12px] placeholder:text-slate-200 text-slate-100 flex-1 bg-transparent border-none focus:outline-none" />
                     </div>
                 </div>
             )}
 
-            <div className="px-2.5 pb-2.5 border-b border-slate-50">
+            <div className="px-2 pb-2.5 ">
                 <style>{`
                     .env-flap {
                       transform-origin: 7.5px 2px;
@@ -68,27 +67,27 @@ const SideMenus = ({ collapsed }) => {
                     }
                   `}</style>
 
-                <div onMouseEnter={setTip} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2.5 cursor-pointer border border-transparent hover:bg-blue-50 hover:border-blue-100 transition-all mb-px ${collapsed ? 'justify-start' : ''}`}>
+                <div onMouseEnter={setTip} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer  border-transparent hover:bg-blue-800 transition-all mb-px ${collapsed ? 'justify-start' : ''}`}>
 
-                    <svg width="20" height="20" viewBox="0 0 15 15" fill="#93c5fd" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" className="shrink-0 text-slate-600 -ml-[6.2px]">
+                    <svg width="23" height="23" viewBox="0 0 15 15" fill="#93c5fd" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" className="shrink-0 text-slate-600 -ml-0.1">
                         <g className="env-letter ">
                             <rect x="4.5" y="6" width="6" height="5" rx="0.5" fill="#E2E8F0" stroke="#475569" strokeWidth="1" />
                             <line x1="5.5" y1="8" x2="9.5" y2="8" stroke="#1e40af" strokeWidth="0.8" />
                             <line x1="5.5" y1="9.5" x2="8.5" y2="9.5" stroke="#1e40af" strokeWidth="0.8" />
                         </g>
-                        <rect x="1" y="5.5" width="13" height="8.5" rx="1" fill="#E2E8F0" stroke="#475569" strokeWidth="1" />
+                        <rect x="1" y="5.5" width="13" height="8.5" rx="1" fill="#ffffff" stroke="#475569" strokeWidth="0.5" />
                         <line x1="1" y1="14" x2="7.5" y2="9.5" stroke="#475569" strokeWidth="0.8" opacity="0.4" />
                         <line x1="14" y1="14" x2="7.5" y2="9.5" stroke="#475569" strokeWidth="0.8" opacity="0.4" />
                         <g className="env-flap">
-                            <polygon points="1,5.5 14,5.5 7.5,11" fill="#E2E8F0" stroke="#475569" strokeWidth="1" strokeLinejoin="round" />
+                            <polygon points="1,5.5 14,5.5 7.5,11" fill="#ffffff" stroke="#475569" strokeWidth="1" strokeLinejoin="round" />
                         </g>
                     </svg>
 
-                    {!collapsed && <span className="text-[12.5px] text-slate-900 flex-1">Inbox</span>}
+                    {!collapsed && <span className="text-[12.5px] text-slate-100 flex-1">Inbox</span>}
                     {!collapsed && <span className="text-[10.5px] font-semibold text-blue-700 bg-blue-100 rounded-full px-2 py-px">12</span>}
 
                     {collapsed && (
-                        <span style={{ top: 'var(--tooltip-y, 50%)', transform: 'translateY(-50%)' }} className="fixed left-16 ml-1 bg-blue-500 text-white text-[11px] px-2.5 py-1 rounded-md whitespace-nowrap opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-200 pointer-events-none z-999">
+                        <span style={{ top: 'var(--tooltip-y, 50%)', transform: 'translateY(-50%)' }} className="fixed left-16 ml-1 bg-blue-500 text-white text-[11px] px-2 py-1 rounded-md whitespace-nowrap opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-200 pointer-events-none z-999">
                             Inbox
                         </span>
                     )}
@@ -105,32 +104,32 @@ const SideMenus = ({ collapsed }) => {
                      .group:hover .bell-icon { animation: bell-ring 0.5s ease; }
                      `}</style>
 
-                <div onMouseEnter={setTip} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2.5 cursor-pointer border border-transparent hover:bg-blue-50 hover:border-blue-100 transition-all ${collapsed ? 'justify-start' : ''}`}>
-                    <Bell className="bell-icon text-slate-600 -ml-[6.2px] fill-slate-300 shrink-0" size={20} />
-                    {!collapsed && <span className="text-[12.5px] text-slate-900 flex-1">Notifications</span>}
+                <div onMouseEnter={setTip} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer  border-transparent hover:bg-blue-800 ransition-all ${collapsed ? 'justify-start' : ''}`}>
+                    <Bell className="bell-icon text-slate-100 shrink-0" size={23} />
+                    {!collapsed && <span className="text-[12.5px] text-slate-100 flex-1">Notifications</span>}
                     {!collapsed && <span className="text-[10.5px] font-semibold text-amber-700 bg-amber-100 rounded-full px-2 py-px">15+</span>}
 
                     {collapsed && (
-                        <span style={{ top: 'var(--tooltip-y, 50%)', transform: 'translateY(-50%)' }} className="fixed left-16 ml-1 bg-blue-500 text-white text-[11px] px-2.5 py-1 rounded-md whitespace-nowrap opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-200 pointer-events-none z-999">
+                        <span style={{ top: 'var(--tooltip-y, 50%)', transform: 'translateY(-50%)' }} className="fixed left-16 ml-1 bg-blue-500 text-white text-[11px] px-2 py-1 rounded-md whitespace-nowrap opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-200 pointer-events-none z-999">
                             Notifications
                         </span>
                     )}
                 </div>
             </div>
 
-            <div className="px-2.5 pt-3 pb-1">
-                <span className="text-[10px] font-semibold text-slate-600 -ml-[6.2px] uppercase tracking-widest px-1">Menu</span>
+            <div className="px-2 pt-3 pb-1">
+                <span className="text-[10px] font-semibold text-slate-200  uppercase tracking-widest px-1">Menu</span>
             </div>
 
-            <div className="px-2.5">
+            <div className="px-2">
 
-                <div onClick={() => { navigate('/dashboard') }} onMouseEnter={setTip} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2.5 cursor-pointer bg-blue-50 border overflow-hidden border-blue-100 mb-px ${collapsed ? 'justify-start' : ''}`}>
-                    {!collapsed && <span className="absolute left-0 top-1/2 -translate-y-1/2 w-0.75 h-4.5 bg-blue-600 rounded-r-full" />}
-                    <LayoutGrid className="text-slate-600 shrink-0 -ml-[6.2px] fill-slate-300 group-hover:scale-110 group-hover:rotate-6 transition-transform duration-300" size={20} />
-                    {!collapsed && <span className="text-[12.5px] text-blue-700 font-medium">Dashboard</span>}
+                <div onClick={() => { navigate('/dashboard') }} onMouseEnter={setTip} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer bg-blue-800  overflow-hidden  mb-px ${collapsed ? 'justify-start' : ''}`}>
+                    {!collapsed && <span className="absolute left-0 top-1/2 -translate-y-1/2 w-0.75 h-4.5 bg-blue-800 rounded-r-full" />}
+                    <LayoutGrid className="text-slate-100 shrink-0   group-hover:scale-110 group-hover:rotate-6 transition-transform duration-300" size={23} />
+                    {!collapsed && <span className="text-[12.5px] text-blue-100 font-medium">Dashboard</span>}
 
                     {collapsed && (
-                        <span style={{ top: 'var(--tooltip-y, 50%)', transform: 'translateY(-50%)' }} className="fixed left-16 ml-1 bg-blue-500 text-white text-[11px] px-2.5 py-1 rounded-md whitespace-nowrap opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-200 pointer-events-none z-999">
+                        <span style={{ top: 'var(--tooltip-y, 50%)', transform: 'translateY(-50%)' }} className="fixed left-16 ml-1 bg-blue-500 text-white text-[11px] px-2 py-1 rounded-md whitespace-nowrap opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-200 pointer-events-none z-999">
                             Dashboard
                         </span>
                     )}
@@ -148,52 +147,52 @@ const SideMenus = ({ collapsed }) => {
                             .group:hover .bar3 { animation: bar-wave 0.6s ease 0.3s infinite; }
                          `}</style>
 
-                <div onMouseEnter={setTip} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2.5 cursor-pointer border border-transparent hover:bg-blue-50 hover:border-blue-100 transition-all mb-px ${collapsed ? 'justify-start' : ''}`}>
-                    <svg width="20" height="20" viewBox="0 0 24 24" text="blue" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-slate-600 shrink-0  -ml-[6.2px] fill-slate-300/50">
-                        <line x1="18" y1="20" x2="18" y2="10" className="bar3 text-slate-600" style={{ transformOrigin: '18px 20px' }} />
-                        <line x1="12" y1="20" x2="12" y2="4" className="bar2  text-slate-600" style={{ transformOrigin: '12px 20px' }} />
-                        <line x1="6" y1="20" x2="6" y2="14" className="bar1 text-slate-600" style={{ transformOrigin: '6px 20px' }} />
+                <div onMouseEnter={setTip} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer  hover:bg-blue-800  transition-all mb-px ${collapsed ? 'justify-start' : ''}`}>
+                    <svg width="20" height="20" viewBox="0 0 24 24" text="#ffffff" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-slate-600 shrink-0 /50">
+                        <line x1="18" y1="20" x2="18" y2="10" className="bar3 text-slate-100" style={{ transformOrigin: '18px 20px' }} />
+                        <line x1="12" y1="20" x2="12" y2="4" className="bar2  text-slate-100" style={{ transformOrigin: '12px 20px' }} />
+                        <line x1="6" y1="20" x2="6" y2="14" className="bar1 text-slate-100" style={{ transformOrigin: '6px 20px' }} />
                     </svg>
-                    {!collapsed && <span className="text-[12.5px] text-slate-900">Analytics</span>}
+                    {!collapsed && <span className="text-[12.5px] text-slate-100">Analytics</span>}
 
                     {collapsed && (
-                        <span style={{ top: 'var(--tooltip-y, 50%)', transform: 'translateY(-50%)' }} className="fixed left-16 ml-1 bg-blue-500 text-white text-[11px] px-2.5 py-1 rounded-md whitespace-nowrap opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-200 pointer-events-none z-999">
+                        <span style={{ top: 'var(--tooltip-y, 50%)', transform: 'translateY(-50%)' }} className="fixed left-16 ml-1 bg-blue-500 text-white text-[11px] px-2 py-1 rounded-md whitespace-nowrap opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-200 pointer-events-none z-999">
                             Analytics
                         </span>
                     )}
                 </div>
 
-                <div onMouseEnter={setTip} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2.5 cursor-pointer border border-transparent hover:bg-blue-50 hover:border-blue-100 transition-all mb-px ${collapsed ? 'justify-start' : ''}`}>
-                    <Package className="text-slate-600 -ml-[6.2px] fill-slate-300 shrink-0 group-hover:-translate-y-1 transition-transform duration-300" size={20} />
-                    {!collapsed && <span className="text-[12.5px] text-slate-900">Inventory</span>}
+                <div onMouseEnter={setTip} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer  hover:bg-blue-800  transition-all mb-px ${collapsed ? 'justify-start' : ''}`}>
+                    <Package className="text-slate-100   shrink-0 group-hover:-translate-y-1 transition-transform duration-300" size={23} />
+                    {!collapsed && <span className="text-[12.5px] text-slate-100">Inventory</span>}
 
                     {collapsed && (
-                        <span style={{ top: 'var(--tooltip-y, 50%)', transform: 'translateY(-50%)' }} className="fixed left-16 ml-1 bg-blue-500 text-white text-[11px] px-2.5 py-1 rounded-md whitespace-nowrap opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-200 pointer-events-none z-999">
+                        <span style={{ top: 'var(--tooltip-y, 50%)', transform: 'translateY(-50%)' }} className="fixed left-16 ml-1 bg-blue-500 text-white text-[11px] px-2 py-1 rounded-md whitespace-nowrap opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-200 pointer-events-none z-999">
                             Inventory
                         </span>
                     )}
                 </div>
 
-                <div onMouseEnter={setTip} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2.5 cursor-pointer border border-transparent hover:bg-blue-50 hover:border-blue-100 transition-all mb-px ${collapsed ? 'justify-start' : ''}`}>
-                    <FileText className="text-slate-600 -ml-[6.2px] shrink-0 fill-slate-300 group-hover:-rotate-12 transition-transform duration-300" size={20} />
-                    {!collapsed && <span className="text-[12.5px] text-slate-900">Invoices</span>}
+                <div onMouseEnter={setTip} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer  hover:bg-blue-800  transition-all mb-px ${collapsed ? 'justify-start' : ''}`}>
+                    <FileText className="text-slate-100  shrink-0  group-hover:-rotate-12 transition-transform duration-300" size={23} />
+                    {!collapsed && <span className="text-[12.5px] text-slate-100">Invoices</span>}
 
                     {collapsed && (
-                        <span style={{ top: 'var(--tooltip-y, 50%)', transform: 'translateY(-50%)' }} className="fixed left-16 ml-1 bg-blue-500 text-white text-[11px] px-2.5 py-1 rounded-md whitespace-nowrap opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-200 pointer-events-none z-999">
+                        <span style={{ top: 'var(--tooltip-y, 50%)', transform: 'translateY(-50%)' }} className="fixed left-16 ml-1 bg-blue-500 text-white text-[11px] px-2 py-1 rounded-md whitespace-nowrap opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-200 pointer-events-none z-999">
                             Invoices
                         </span>
                     )}
                 </div>
 
-                <div onMouseEnter={setTip} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2.5 cursor-pointer border border-transparent hover:bg-blue-50 hover:border-blue-100 transition-all mb-px ${collapsed ? 'justify-start' : ''}`}
+                <div onMouseEnter={setTip} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer  hover:bg-blue-800  transition-all mb-px ${collapsed ? 'justify-start' : ''}`}
                     onClick={() => setCustomerOpen(!customerOpen)}
                 >
-                    <Users className="text-slate-600 -ml-[6.2px] fill-slate-300 shrink-0 group-hover:scale-110 transition-transform duration-300" size={20} />
-                    {!collapsed && <span className="text-[12.5px] text-slate-900 flex-1">Customers</span>}
-                    {!collapsed && <ChevronDown className={`text-slate-400 w-3.5 h-3.5 transition-transform duration-300 ${customerOpen ? 'rotate-180' : ''}`} />}
+                    <Users className="text-slate-100   shrink-0 group-hover:scale-110 transition-transform duration-300" size={23} />
+                    {!collapsed && <span className="text-[12.5px] text-slate-100 flex-1">Customers</span>}
+                    {!collapsed && <ChevronDown className={`text-slate-100  w-3.5 h-3.5 transition-transform duration-300 ${customerOpen ? 'rotate-180' : ''}`} />}
 
                     {collapsed && (
-                        <span style={{ top: 'var(--tooltip-y, 50%)', transform: 'translateY(-50%)' }} className="fixed left-16 ml-1 bg-blue-500 text-white text-[11px] px-2.5 py-1 rounded-md whitespace-nowrap opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-200 pointer-events-none z-999">
+                        <span style={{ top: 'var(--tooltip-y, 50%)', transform: 'translateY(-50%)' }} className="fixed left-16 ml-1 bg-blue-500 text-white text-[11px] px-2 py-1 rounded-md whitespace-nowrap opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-200 pointer-events-none z-999">
                             Customers
                         </span>
                     )}
@@ -207,32 +206,32 @@ const SideMenus = ({ collapsed }) => {
                             transform: customerOpen ? 'translateY(0px)' : 'translateY(-8px)',
                             transition: 'max-height 0.5s cubic-bezier(0.16,1,0.3,1), opacity 0.4s cubic-bezier(0.16,1,0.3,1), transform 0.4s cubic-bezier(0.16,1,0.3,1)'
                         }}
-                        className="ml-7 border-l border-slate-200 pl-3 flex flex-col gap-0.5 overflow-hidden"
+                        className="ml-7 border-l border-slate-700 pl-3 flex flex-col gap-0.5 overflow-hidden"
                     >
-                        <div onClick={() => { navigate('/newcustomer') }} className="text-[12px] text-slate-500 hover:text-blue-600 hover:bg-blue-50 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                        <div onClick={() => { navigate('/newcustomer') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                             New Customer
                         </div>
-                        <div onClick={() => { navigate('/manageCustomer') }} className="text-[12px] text-slate-500 hover:text-blue-600 hover:bg-blue-50 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                        <div onClick={() => { navigate('/manageCustomer') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                             Manage Customers
                         </div>
-                        <div onClick={() => { navigate('/factoryCustomer') }} className="text-[12px] text-slate-500 hover:text-blue-600 hover:bg-blue-50 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                        <div onClick={() => { navigate('/factoryCustomer') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                             Manage Factory Customers
                         </div>
-                        <div onClick={() => { navigate('/customerledgerpage') }} className="text-[12px] text-slate-500 hover:text-blue-600 hover:bg-blue-50 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                        <div onClick={() => { navigate('/customerledgerpage') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                             Customer Ledger
                         </div>
-                        <div onClick={() => { navigate('/customeradvancepage') }} className="text-[12px] text-slate-500 hover:text-blue-600 hover:bg-blue-50 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                        <div onClick={() => { navigate('/customeradvancepage') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                             Customers Advance
                         </div>
                     </div>
                 )}
 
-                <div onMouseEnter={setTip} onClick={() => setOrderOpen(!orderOpen)} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2.5 cursor-pointer border border-transparent hover:bg-blue-50 hover:border-blue-100 transition-all mb-px ${collapsed ? 'justify-start' : ''}`}>
-                    <Truck className="text-slate-600 -ml-[6.2px] fill-slate-300 shrink-0 group-hover:translate-x-1.5 transition-transform duration-300" size={20} />
-                    {!collapsed && <span className="text-[12.5px] text-slate-900 flex-1">Orders</span>}
-                    {!collapsed && <ChevronDown className={`text-slate-400 w-3.5 h-3.5 transition-transform duration-300 ${orderOpen ? 'rotate-180' : ''}`} />}
+                <div onMouseEnter={setTip} onClick={() => setOrderOpen(!orderOpen)} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer  hover:bg-blue-800  transition-all mb-px ${collapsed ? 'justify-start' : ''}`}>
+                    <Truck className="text-slate-100   shrink-0 group-hover:translate-x-1.5 transition-transform duration-300" size={23} />
+                    {!collapsed && <span className="text-[12.5px] text-slate-100 flex-1">Orders</span>}
+                    {!collapsed && <ChevronDown className={`text-slate-100  w-3.5 h-3.5 transition-transform duration-300 ${orderOpen ? 'rotate-180' : ''}`} />}
                     {collapsed && (
-                        <span style={{ top: 'var(--tooltip-y, 50%)', transform: 'translateY(-50%)' }} className="fixed left-16 ml-1 bg-blue-500 text-white text-[11px] px-2.5 py-1 rounded-md whitespace-nowrap opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-200 pointer-events-none z-999">
+                        <span style={{ top: 'var(--tooltip-y, 50%)', transform: 'translateY(-50%)' }} className="fixed left-16 ml-1 bg-blue-500 text-white text-[11px] px-2 py-1 rounded-md whitespace-nowrap opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-200 pointer-events-none z-999">
                             Orders
                         </span>
                     )}
@@ -246,18 +245,18 @@ const SideMenus = ({ collapsed }) => {
                             transform: orderOpen ? 'translateY(0px)' : 'translateY(-8px)',
                             transition: 'max-height 0.5s cubic-bezier(0.16,1,0.3,1), opacity 0.4s cubic-bezier(0.16,1,0.3,1), transform 0.4s cubic-bezier(0.16,1,0.3,1)'
                         }}
-                        className="ml-7 border-l border-slate-200 pl-3 flex flex-col gap-0.5 overflow-hidden"
+                        className="ml-7 border-l border-slate-700 pl-3 flex flex-col gap-0.5 overflow-hidden"
                     >
-                        <div onClick={() => { navigate('/neworderspage') }} className="text-[12px] text-slate-500 hover:text-blue-600 hover:bg-blue-50 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                        <div onClick={() => { navigate('/neworderspage') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                             New Order
                         </div>
-                        <div onClick={() => { navigate('/ManageOrdersPage') }} className="text-[12px] text-slate-500 hover:text-blue-600 hover:bg-blue-50 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                        <div onClick={() => { navigate('/ManageOrdersPage') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                             Manage Order
                         </div>
-                        <div onClick={() => { navigate('/orderreportpage') }} className="text-[12px] text-slate-500 hover:text-blue-600 hover:bg-blue-50 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                        <div onClick={() => { navigate('/orderreportpage') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                             Order Reports
                         </div>
-                        <div onClick={() => { navigate('/dispatchorderpage') }} className="text-[12px] text-slate-500 hover:text-blue-600 hover:bg-blue-50 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                        <div onClick={() => { navigate('/dispatchorderpage') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                             Dispatch Order
                         </div>
                     </div>
@@ -278,12 +277,12 @@ const SideMenus = ({ collapsed }) => {
                          }
                      `}</style>
 
-                <div onMouseEnter={setTip} onClick={() => setsaleOpen(!saleOpen)} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2.5 cursor-pointer border border-transparent hover:bg-blue-50 hover:border-blue-100 transition-all mb-px ${collapsed ? 'justify-start' : ''}`}>
-                    <BadgeDollarSign className="text-slate-600 -ml-[6.2px] shrink-0 fill-slate-300 sale-icon" size={20} />
-                    {!collapsed && <span className="text-[12.5px] text-slate-900 flex-1">Sale</span>}
-                    {!collapsed && <ChevronDown className={`text-slate-400 w-3.5 h-3.5 transition-transform duration-300 ${saleOpen ? 'rotate-180' : ''}`} />}
+                <div onMouseEnter={setTip} onClick={() => setsaleOpen(!saleOpen)} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer  hover:bg-blue-800  transition-all mb-px ${collapsed ? 'justify-start' : ''}`}>
+                    <BadgeDollarSign className="text-slate-100  shrink-0  sale-icon" size={23} />
+                    {!collapsed && <span className="text-[12.5px] text-slate-100 flex-1">Sale</span>}
+                    {!collapsed && <ChevronDown className={`text-slate-100  w-3.5 h-3.5 transition-transform duration-300 ${saleOpen ? 'rotate-180' : ''}`} />}
                     {collapsed && (
-                        <span style={{ top: 'var(--tooltip-y, 50%)', transform: 'translateY(-50%)' }} className="fixed left-16 ml-1 bg-blue-500 text-white text-[11px] px-2.5 py-1 rounded-md whitespace-nowrap opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-200 pointer-events-none z-999">
+                        <span style={{ top: 'var(--tooltip-y, 50%)', transform: 'translateY(-50%)' }} className="fixed left-16 ml-1 bg-blue-500 text-white text-[11px] px-2 py-1 rounded-md whitespace-nowrap opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-200 pointer-events-none z-999">
                             Sale
                         </span>
                     )}
@@ -297,23 +296,23 @@ const SideMenus = ({ collapsed }) => {
                             transform: saleOpen ? 'translateY(0px)' : 'translateY(-8px)',
                             transition: 'max-height 0.5s cubic-bezier(0.16,1,0.3,1), opacity 0.4s cubic-bezier(0.16,1,0.3,1), transform 0.4s cubic-bezier(0.16,1,0.3,1)'
                         }}
-                        className="ml-7 border-l border-slate-200 pl-3 flex flex-col gap-0.5 overflow-hidden"
+                        className="ml-7 border-l border-slate-700 pl-3 flex flex-col gap-0.5 overflow-hidden"
                     >
-                        <div onClick={() => { navigate('/newSale') }} className="text-[12px] text-slate-500 hover:text-blue-600 hover:bg-blue-50 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                        <div onClick={() => { navigate('/newSale') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                             New Sale
                         </div>
-                        <div onClick={() => { navigate('/manageSale') }} className="text-[12px] text-slate-500 hover:text-blue-600 hover:bg-blue-50 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                        <div onClick={() => { navigate('/manageSale') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                             Manage Sale
                         </div>
                     </div>
                 )}
 
-                <div onMouseEnter={setTip} onClick={() => setapprovalOpen(!approvalOpen)} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2.5 cursor-pointer border border-transparent hover:bg-blue-50 hover:border-blue-100 transition-all mb-px ${collapsed ? 'justify-start' : ''}`}>
-                    <Handshake className="text-slate-600 -ml-[6.2px] fill-slate-300 group-hover:translate-x-1.5 shrink-0 transition-transform duration-300" size={20} />
-                    {!collapsed && <span className="text-[12.5px] text-slate-900 flex-1">Approval</span>}
-                    {!collapsed && <ChevronDown className={`text-slate-400 w-3.5 h-3.5 transition-transform duration-300 ${approvalOpen ? 'rotate-180' : ''}`} />}
+                <div onMouseEnter={setTip} onClick={() => setapprovalOpen(!approvalOpen)} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer  hover:bg-blue-800 transition-all mb-px ${collapsed ? 'justify-start' : ''}`}>
+                    <Handshake className="text-slate-100   group-hover:translate-x-1.5 shrink-0 transition-transform duration-300" size={23} />
+                    {!collapsed && <span className="text-[12.5px] text-slate-100 flex-1">Approval</span>}
+                    {!collapsed && <ChevronDown className={`text-slate-100  w-3.5 h-3.5 transition-transform duration-300 ${approvalOpen ? 'rotate-180' : ''}`} />}
                     {collapsed && (
-                        <span style={{ top: 'var(--tooltip-y, 50%)', transform: 'translateY(-50%)' }} className="fixed left-16 ml-1 bg-blue-500 text-white text-[11px] px-2.5 py-1 rounded-md whitespace-nowrap opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-200 pointer-events-none z-999">
+                        <span style={{ top: 'var(--tooltip-y, 50%)', transform: 'translateY(-50%)' }} className="fixed left-16 ml-1 bg-blue-500 text-white text-[11px] px-2 py-1 rounded-md whitespace-nowrap opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-200 pointer-events-none z-999">
                             Approval
                         </span>
                     )}
@@ -329,18 +328,18 @@ const SideMenus = ({ collapsed }) => {
                             filter: approvalOpen ? 'blur(0px)' : 'blur(2px)',
                             transition: 'max-height 0.6s cubic-bezier(0.16,1,0.3,1), opacity 0.5s cubic-bezier(0.16,1,0.3,1), transform 0.5s cubic-bezier(0.16,1,0.3,1), filter 0.4s ease'
                         }}
-                        className="ml-7 border-l border-slate-200 pl-3 flex flex-col gap-0.5 overflow-hidden"
+                        className="ml-7 border-l border-slate-700 pl-3 flex flex-col gap-0.5 overflow-hidden"
                     >
-                        <div onClick={()=>{navigate('/invoiceapprovalpage')}} className="text-[12px] text-slate-500 hover:text-blue-600 hover:bg-blue-50 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                        <div onClick={() => { navigate('/invoiceapprovalpage') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                             Invoice Approval
                         </div>
-                        <div className="text-[12px] text-slate-500 hover:text-blue-600 hover:bg-blue-50 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                        <div className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                             Purchase Approval
                         </div>
-                        <div className="text-[12px] text-slate-500 hover:text-blue-600 hover:bg-blue-50 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                        <div className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                             Customer Payment
                         </div>
-                        <div className="text-[12px] text-slate-500 hover:text-blue-600 hover:bg-blue-50 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                        <div className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                             Supplier Payment
                         </div>
                     </div>
@@ -348,12 +347,12 @@ const SideMenus = ({ collapsed }) => {
 
 
 
-                <div onMouseEnter={setTip} onClick={() => setproductOpen(!productOpen)} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2.5 cursor-pointer border border-transparent hover:bg-blue-50 hover:border-blue-100 transition-all mb-px ${collapsed ? 'justify-start' : ''}`}>
-                    <PackageOpen className="text-slate-600 -ml-[6.2px] shrink-0 fill-slate-300 group-hover:translate-x-1.5 transition-transform duration-300" size={20} />
-                    {!collapsed && <span className="text-[12.5px] text-slate-900 flex-1">Products</span>}
-                    {!collapsed && <ChevronDown className={`text-slate-400 w-3.5 h-3.5 transition-transform duration-300 ${productOpen ? 'rotate-180' : ''}`} />}
+                <div onMouseEnter={setTip} onClick={() => setproductOpen(!productOpen)} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer  hover:bg-blue-800 transition-all mb-px ${collapsed ? 'justify-start' : ''}`}>
+                    <PackageOpen className="text-slate-100  shrink-0  group-hover:translate-x-1.5 transition-transform duration-300" size={23} />
+                    {!collapsed && <span className="text-[12.5px] text-slate-100 flex-1">Products</span>}
+                    {!collapsed && <ChevronDown className={`text-slate-100  w-3.5 h-3.5 transition-transform duration-300 ${productOpen ? 'rotate-180' : ''}`} />}
                     {collapsed && (
-                        <span style={{ top: 'var(--tooltip-y, 50%)', transform: 'translateY(-50%)' }} className="fixed left-16 ml-1 bg-blue-500 text-white text-[11px] px-2.5 py-1 rounded-md whitespace-nowrap opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-200 pointer-events-none z-999">
+                        <span style={{ top: 'var(--tooltip-y, 50%)', transform: 'translateY(-50%)' }} className="fixed left-16 ml-1 bg-blue-500 text-white text-[11px] px-2 py-1 rounded-md whitespace-nowrap opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-200 pointer-events-none z-999">
                             Products
                         </span>
                     )}
@@ -369,38 +368,38 @@ const SideMenus = ({ collapsed }) => {
                             filter: productOpen ? 'blur(0px)' : 'blur(2px)',
                             transition: 'max-height 0.6s cubic-bezier(0.16,1,0.3,1), opacity 0.5s cubic-bezier(0.16,1,0.3,1), transform 0.5s cubic-bezier(0.16,1,0.3,1), filter 0.4s ease'
                         }}
-                        className="ml-7 border-l border-slate-200 pl-3 flex flex-col gap-0.5 overflow-hidden"
+                        className="ml-7 border-l border-slate-700 pl-3 flex flex-col gap-0.5 overflow-hidden"
                     >
-                        <div onClick={() => { navigate('/newProduct') }} className="text-[12px] text-slate-500 hover:text-blue-600 hover:bg-blue-50 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                        <div onClick={() => { navigate('/newProduct') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                             New Product
                         </div>
-                        <div onClick={() => { navigate('/manageproductpage') }} className="text-[12px] text-slate-500 hover:text-blue-600 hover:bg-blue-50 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                        <div onClick={() => { navigate('/manageproductpage') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                             Manage Products
                         </div>
-                        <div onClick={() => { navigate('/productcategorypage') }} className="text-[12px] text-slate-500 hover:text-blue-600 hover:bg-blue-50 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                        <div onClick={() => { navigate('/productcategorypage') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                             Category
                         </div>
-                        <div onClick={() => { navigate('/unitpage') }} className="text-[12px] text-slate-500 hover:text-blue-600 hover:bg-blue-50 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                        <div onClick={() => { navigate('/unitpage') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                             Unit
                         </div>
-                        <div onClick={() => { navigate('/maincategorypage') }} className="text-[12px] text-slate-500 hover:text-blue-600 hover:bg-blue-50 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                        <div onClick={() => { navigate('/maincategorypage') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                             Main Category
                         </div>
-                        <div onClick={() => { navigate('/schemeproductspage') }} className="text-[12px] text-slate-500 hover:text-blue-600 hover:bg-blue-50 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                        <div onClick={() => { navigate('/schemeproductspage') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                             Scheme Products
                         </div>
-                        <div className="text-[12px] text-slate-500 hover:text-blue-600 hover:bg-blue-50 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                        <div className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                             Product Price List
                         </div>
                     </div>
                 )}
 
-                <div onMouseEnter={setTip} onClick={() => setsupplierOpen(!supplierOpen)} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2.5 cursor-pointer border border-transparent hover:bg-blue-50 hover:border-blue-100 transition-all mb-px ${collapsed ? 'justify-start' : ''}`}>
-                    <PackageCheck className="text-slate-600 -ml-[6.2px] fill-slate-300 shrink-0 group-hover:translate-x-1.5 transition-transform duration-300" size={20} />
-                    {!collapsed && <span className="text-[12.5px] text-slate-900 flex-1">Supplier</span>}
-                    {!collapsed && <ChevronDown className={`text-slate-400 w-3.5 h-3.5 transition-transform duration-300 ${supplierOpen ? 'rotate-180' : ''}`} />}
+                <div onMouseEnter={setTip} onClick={() => setsupplierOpen(!supplierOpen)} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer  hover:bg-blue-800 transition-all mb-px ${collapsed ? 'justify-start' : ''}`}>
+                    <PackageCheck className="text-slate-100   shrink-0 group-hover:translate-x-1.5 transition-transform duration-300" size={23} />
+                    {!collapsed && <span className="text-[12.5px] text-slate-100 flex-1">Supplier</span>}
+                    {!collapsed && <ChevronDown className={`text-slate-100  w-3.5 h-3.5 transition-transform duration-300 ${supplierOpen ? 'rotate-180' : ''}`} />}
                     {collapsed && (
-                        <span style={{ top: 'var(--tooltip-y, 50%)', transform: 'translateY(-50%)' }} className="fixed left-16 ml-1 bg-blue-500 text-white text-[11px] px-2.5 py-1 rounded-md whitespace-nowrap opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-200 pointer-events-none z-999">
+                        <span style={{ top: 'var(--tooltip-y, 50%)', transform: 'translateY(-50%)' }} className="fixed left-16 ml-1 bg-blue-500 text-white text-[11px] px-2 py-1 rounded-md whitespace-nowrap opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-200 pointer-events-none z-999">
                             Supplier
                         </span>
                     )}
@@ -416,30 +415,30 @@ const SideMenus = ({ collapsed }) => {
                             filter: supplierOpen ? 'blur(0px)' : 'blur(2px)',
                             transition: 'max-height 0.6s cubic-bezier(0.16,1,0.3,1), opacity 0.5s cubic-bezier(0.16,1,0.3,1), transform 0.5s cubic-bezier(0.16,1,0.3,1), filter 0.4s ease'
                         }}
-                        className="ml-7 border-l border-slate-200 pl-3 flex flex-col gap-0.5 overflow-hidden"
+                        className="ml-7 border-l border-slate-700 pl-3 flex flex-col gap-0.5 overflow-hidden"
                     >
-                        <div className="text-[12px] text-slate-500 hover:text-blue-600 hover:bg-blue-50 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                        <div className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                             Invoice Approval
                         </div>
-                        <div className="text-[12px] text-slate-500 hover:text-blue-600 hover:bg-blue-50 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                        <div className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                             Purchase Approval
                         </div>
-                        <div className="text-[12px] text-slate-500 hover:text-blue-600 hover:bg-blue-50 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                        <div className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                             Customer Payment
                         </div>
-                        <div className="text-[12px] text-slate-500 hover:text-blue-600 hover:bg-blue-50 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                        <div className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                             Supplier Payment
                         </div>
-                        
+
                     </div>
                 )}
 
-                <div onMouseEnter={setTip} onClick={() => setpurchaseOpen(!purchaseOpen)} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2.5 cursor-pointer border border-transparent hover:bg-blue-50 hover:border-blue-100 transition-all mb-px ${collapsed ? 'justify-start' : ''}`}>
-                    <ShoppingCart className="text-slate-600 -ml-[6.2px] fill-slate-300 shrink-0 group-hover:translate-x-1.5 transition-transform duration-300" size={20} />
-                    {!collapsed && <span className="text-[12.5px] text-slate-900 flex-1">Purchase</span>}
-                    {!collapsed && <ChevronDown className={`text-slate-400 w-3.5 h-3.5 transition-transform duration-300 ${purchaseOpen ? 'rotate-180' : ''}`} />}
+                <div onMouseEnter={setTip} onClick={() => setpurchaseOpen(!purchaseOpen)} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer  hover:bg-blue-800 transition-all mb-px ${collapsed ? 'justify-start' : ''}`}>
+                    <ShoppingCart className="text-slate-100   shrink-0 group-hover:translate-x-1.5 transition-transform duration-300" size={23} />
+                    {!collapsed && <span className="text-[12.5px] text-slate-100 flex-1">Purchase</span>}
+                    {!collapsed && <ChevronDown className={`text-slate-100  w-3.5 h-3.5 transition-transform duration-300 ${purchaseOpen ? 'rotate-180' : ''}`} />}
                     {collapsed && (
-                        <span style={{ top: 'var(--tooltip-y, 50%)', transform: 'translateY(-50%)' }} className="fixed left-16 ml-1 bg-blue-500 text-white text-[11px] px-2.5 py-1 rounded-md whitespace-nowrap opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-200 pointer-events-none z-999">
+                        <span style={{ top: 'var(--tooltip-y, 50%)', transform: 'translateY(-50%)' }} className="fixed left-16 ml-1 bg-blue-500 text-white text-[11px] px-2 py-1 rounded-md whitespace-nowrap opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-200 pointer-events-none z-999">
                             Purchase
                         </span>
                     )}
@@ -455,29 +454,29 @@ const SideMenus = ({ collapsed }) => {
                             filter: purchaseOpen ? 'blur(0px)' : 'blur(2px)',
                             transition: 'max-height 0.6s cubic-bezier(0.16,1,0.3,1), opacity 0.5s cubic-bezier(0.16,1,0.3,1), transform 0.5s cubic-bezier(0.16,1,0.3,1), filter 0.4s ease'
                         }}
-                        className="ml-7 border-l border-slate-200 pl-3 flex flex-col gap-0.5 overflow-hidden"
+                        className="ml-7 border-l border-slate-700 pl-3 flex flex-col gap-0.5 overflow-hidden"
                     >
-                        <div className="text-[12px] text-slate-500 hover:text-blue-600 hover:bg-blue-50 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                        <div className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                             Add Purchase
                         </div>
-                        <div className="text-[12px] text-slate-500 hover:text-blue-600 hover:bg-blue-50 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                        <div className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                             Manage Purchase
                         </div>
-                        <div className="text-[12px] text-slate-500 hover:text-blue-600 hover:bg-blue-50 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                        <div className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                             Add Purchase Order
                         </div>
-                        <div className="text-[12px] text-slate-500 hover:text-blue-600 hover:bg-blue-50 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                        <div className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                             Manage Purchase Order
                         </div>
                     </div>
                 )}
 
-                <div onMouseEnter={setTip} onClick={() => setwarehouseOpen(!warehouseOpen)} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2.5 cursor-pointer border border-transparent hover:bg-blue-50 hover:border-blue-100 transition-all mb-px ${collapsed ? 'justify-start' : ''}`}>
-                    <PackageCheck className="text-slate-600 -ml-[6.2px] fill-slate-300 shrink-0 group-hover:translate-x-1.5 transition-transform duration-300" size={20} />
-                    {!collapsed && <span className="text-[12.5px] text-slate-900 flex-1">Warehouse Finish Product</span>}
-                    {!collapsed && <ChevronDown className={`text-slate-400 w-3.5 h-3.5 transition-transform duration-300 ${warehouseOpen ? 'rotate-180' : ''}`} />}
+                <div onMouseEnter={setTip} onClick={() => setwarehouseOpen(!warehouseOpen)} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer  hover:bg-blue-800 transition-all mb-px ${collapsed ? 'justify-start' : ''}`}>
+                    <PackageCheck className="text-slate-100   shrink-0 group-hover:translate-x-1.5 transition-transform duration-300" size={23} />
+                    {!collapsed && <span className="text-[12.5px] text-slate-100 flex-1">Warehouse Finish Product</span>}
+                    {!collapsed && <ChevronDown className={`text-slate-100  w-3.5 h-3.5 transition-transform duration-300 ${warehouseOpen ? 'rotate-180' : ''}`} />}
                     {collapsed && (
-                        <span style={{ top: 'var(--tooltip-y, 50%)', transform: 'translateY(-50%)' }} className="fixed left-16 ml-1 bg-blue-500 text-white text-[11px] px-2.5 py-1 rounded-md whitespace-nowrap opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-200 pointer-events-none z-999">
+                        <span style={{ top: 'var(--tooltip-y, 50%)', transform: 'translateY(-50%)' }} className="fixed left-16 ml-1 bg-blue-500 text-white text-[11px] px-2 py-1 rounded-md whitespace-nowrap opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-200 pointer-events-none z-999">
                             Warehouse Finish Product
                         </span>
                     )}
@@ -491,26 +490,26 @@ const SideMenus = ({ collapsed }) => {
                             transform: warehouseOpen ? 'translateY(0px)' : 'translateY(-8px)',
                             transition: 'max-height 0.5s cubic-bezier(0.16,1,0.3,1), opacity 0.4s cubic-bezier(0.16,1,0.3,1), transform 0.4s cubic-bezier(0.16,1,0.3,1)'
                         }}
-                        className="ml-7 border-l border-slate-200 pl-3 flex flex-col gap-0.5 overflow-hidden"
+                        className="ml-7 border-l border-slate-700 pl-3 flex flex-col gap-0.5 overflow-hidden"
                     >
-                        <div className="text-[12px] text-slate-500 hover:text-blue-600 hover:bg-blue-50 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                        <div className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                             New Finish Product
                         </div>
-                        <div className="text-[12px] text-slate-500 hover:text-blue-600 hover:bg-blue-50 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                        <div className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                             Manage Finish Product
                         </div>
-                        <div className="text-[12px] text-slate-500 hover:text-blue-600 hover:bg-blue-50 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                        <div className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                             Finish Product Stock
                         </div>
                     </div>
                 )}
 
-                <div onMouseEnter={setTip} onClick={() => setstockOpen(!stockOpen)} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2.5 cursor-pointer border border-transparent hover:bg-blue-50 hover:border-blue-100 transition-all mb-px ${collapsed ? 'justify-start' : ''}`}>
-                    <Blocks className="text-slate-600 shrink-0 -ml-[6.2px] fill-slate-300 group-hover:translate-x-1.5 transition-transform duration-300" size={20} />
-                    {!collapsed && <span className="text-[12.5px] text-slate-900 flex-1">Stock</span>}
-                    {!collapsed && <ChevronDown className={`text-slate-400 w-3.5 h-3.5 transition-transform duration-300 ${stockOpen ? 'rotate-180' : ''}`} />}
+                <div onMouseEnter={setTip} onClick={() => setstockOpen(!stockOpen)} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer  hover:bg-blue-800 transition-all mb-px ${collapsed ? 'justify-start' : ''}`}>
+                    <Blocks className="text-slate-100 shrink-0   group-hover:translate-x-1.5 transition-transform duration-300" size={23} />
+                    {!collapsed && <span className="text-[12.5px] text-slate-100 flex-1">Stock</span>}
+                    {!collapsed && <ChevronDown className={`text-slate-100  w-3.5 h-3.5 transition-transform duration-300 ${stockOpen ? 'rotate-180' : ''}`} />}
                     {collapsed && (
-                        <span style={{ top: 'var(--tooltip-y, 50%)', transform: 'translateY(-50%)' }} className="fixed left-16 ml-1 bg-blue-500 text-white text-[11px] px-2.5 py-1 rounded-md whitespace-nowrap opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-200 pointer-events-none z-999">
+                        <span style={{ top: 'var(--tooltip-y, 50%)', transform: 'translateY(-50%)' }} className="fixed left-16 ml-1 bg-blue-500 text-white text-[11px] px-2 py-1 rounded-md whitespace-nowrap opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-200 pointer-events-none z-999">
                             Stock
                         </span>
                     )}
@@ -524,41 +523,41 @@ const SideMenus = ({ collapsed }) => {
                             transform: stockOpen ? 'translateY(0px)' : 'translateY(-8px)',
                             transition: 'max-height 0.5s cubic-bezier(0.16,1,0.3,1), opacity 0.4s cubic-bezier(0.16,1,0.3,1), transform 0.4s cubic-bezier(0.16,1,0.3,1)'
                         }}
-                        className="ml-7 border-l border-slate-200 pl-3 flex flex-col gap-0.5 overflow-hidden"
+                        className="ml-7 border-l border-slate-700 pl-3 flex flex-col gap-0.5 overflow-hidden"
                     >
-                        <div className="text-[12px] text-slate-500 hover:text-blue-600 hover:bg-blue-50 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                        <div className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                             Finish Stock
                         </div>
-                        <div className="text-[12px] text-slate-500 hover:text-blue-600 hover:bg-blue-50 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                        <div className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                             Raw Material Stock
                         </div>
-                        <div className="text-[12px] text-slate-500 hover:text-blue-600 hover:bg-blue-50 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                        <div className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                             Raw Packing Stock
                         </div>
-                        <div className="text-[12px] text-slate-500 hover:text-blue-600 hover:bg-blue-50 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                        <div className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                             Bacerage Stock
                         </div>
-                        <div className="text-[12px] text-slate-500 hover:text-blue-600 hover:bg-blue-50 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                        <div className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                             Tea Stock
                         </div>
-                        <div className="text-[12px] text-slate-500 hover:text-blue-600 hover:bg-blue-50 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                        <div className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                             Reel Stock
                         </div>
-                        <div className="text-[12px] text-slate-500 hover:text-blue-600 hover:bg-blue-50 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                        <div className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                             Out of Stock
                         </div>
-                        <div className="text-[12px] text-slate-500 hover:text-blue-600 hover:bg-blue-50 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                        <div className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                             Assign Users to Stock
                         </div>
                     </div>
                 )}
 
-                <div onMouseEnter={setTip} onClick={() => setwarehouseSaleOpen(!warehouseSaleOpen)} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2.5 cursor-pointer border border-transparent hover:bg-blue-50 hover:border-blue-100 transition-all mb-px ${collapsed ? 'justify-start' : ''}`}>
-                    <ChartNoAxesCombined className="text-slate-600 shrink-0 -ml-[6.2px] fill-slate-300 group-hover:translate-x-1.5 transition-transform duration-300" size={20} />
-                    {!collapsed && <span className="text-[12.5px] text-slate-900 flex-1">Warehouse Wise Sale</span>}
-                    {!collapsed && <ChevronDown className={`text-slate-400 w-3.5 h-3.5 transition-transform duration-300 ${warehouseSaleOpen ? 'rotate-180' : ''}`} />}
+                <div onMouseEnter={setTip} onClick={() => setwarehouseSaleOpen(!warehouseSaleOpen)} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer  hover:bg-blue-800 transition-all mb-px ${collapsed ? 'justify-start' : ''}`}>
+                    <ChartNoAxesCombined className="text-slate-100 shrink-0   group-hover:translate-x-1.5 transition-transform duration-300" size={23} />
+                    {!collapsed && <span className="text-[12.5px] text-slate-100 flex-1">Warehouse Wise Sale</span>}
+                    {!collapsed && <ChevronDown className={`text-slate-100  w-3.5 h-3.5 transition-transform duration-300 ${warehouseSaleOpen ? 'rotate-180' : ''}`} />}
                     {collapsed && (
-                        <span style={{ top: 'var(--tooltip-y, 50%)', transform: 'translateY(-50%)' }} className="fixed left-16 ml-1 bg-blue-500 text-white text-[11px] px-2.5 py-1 rounded-md whitespace-nowrap opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-200 pointer-events-none z-999">
+                        <span style={{ top: 'var(--tooltip-y, 50%)', transform: 'translateY(-50%)' }} className="fixed left-16 ml-1 bg-blue-500 text-white text-[11px] px-2 py-1 rounded-md whitespace-nowrap opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-200 pointer-events-none z-999">
                             Warehouse Wise Sale
                         </span>
                     )}
@@ -572,32 +571,32 @@ const SideMenus = ({ collapsed }) => {
                             transform: warehouseSaleOpen ? 'translateY(0px)' : 'translateY(-8px)',
                             transition: 'max-height 0.5s cubic-bezier(0.16,1,0.3,1), opacity 0.4s cubic-bezier(0.16,1,0.3,1), transform 0.4s cubic-bezier(0.16,1,0.3,1)'
                         }}
-                        className="ml-7 border-l border-slate-200 pl-3 flex flex-col gap-0.5 overflow-hidden"
+                        className="ml-7 border-l border-slate-700 pl-3 flex flex-col gap-0.5 overflow-hidden"
                     >
-                        <div className="text-[12px] text-slate-500 hover:text-blue-600 hover:bg-blue-50 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                        <div className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                             New Stock
                         </div>
-                        <div className="text-[12px] text-slate-500 hover:text-blue-600 hover:bg-blue-50 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                        <div className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                             Manage Stock
                         </div>
-                        <div className="text-[12px] text-slate-500 hover:text-blue-600 hover:bg-blue-50 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                        <div className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                             New Sale
                         </div>
-                        <div className="text-[12px] text-slate-500 hover:text-blue-600 hover:bg-blue-50 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                        <div className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                             Manage Warehouse Sale
                         </div>
-                        <div className="text-[12px] text-slate-500 hover:text-blue-600 hover:bg-blue-50 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                        <div className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                             Warehouse Stock
                         </div>
                     </div>
                 )}
 
-                <div onMouseEnter={setTip} onClick={() => setschemeOpen(!schemeOpen)} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2.5 cursor-pointer border border-transparent hover:bg-blue-50 hover:border-blue-100 transition-all mb-px ${collapsed ? 'justify-start' : ''}`}>
-                    <Gift className="text-slate-600  fill-slate-300 shrink-0 -ml-[6.2px] group-hover:translate-x-1.5 transition-transform duration-300" size={20} />
-                    {!collapsed && <span className="text-[12.5px] text-slate-900 flex-1">Scheme Report</span>}
-                    {!collapsed && <ChevronDown className={`text-slate-400 w-3.5 h-3.5 transition-transform duration-300 ${schemeOpen ? 'rotate-180' : ''}`} />}
+                <div onMouseEnter={setTip} onClick={() => setschemeOpen(!schemeOpen)} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer  hover:bg-blue-800 transition-all mb-px ${collapsed ? 'justify-start' : ''}`}>
+                    <Gift className="text-slate-100   shrink-0  group-hover:translate-x-1.5 transition-transform duration-300" size={23} />
+                    {!collapsed && <span className="text-[12.5px] text-slate-100 flex-1">Scheme Report</span>}
+                    {!collapsed && <ChevronDown className={`text-slate-100  w-3.5 h-3.5 transition-transform duration-300 ${schemeOpen ? 'rotate-180' : ''}`} />}
                     {collapsed && (
-                        <span style={{ top: 'var(--tooltip-y, 50%)', transform: 'translateY(-50%)' }} className="fixed left-16 ml-1 bg-blue-500 text-white text-[11px] px-2.5 py-1 rounded-md whitespace-nowrap opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-200 pointer-events-none z-999">
+                        <span style={{ top: 'var(--tooltip-y, 50%)', transform: 'translateY(-50%)' }} className="fixed left-16 ml-1 bg-blue-500 text-white text-[11px] px-2 py-1 rounded-md whitespace-nowrap opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-200 pointer-events-none z-999">
                             Scheme Report
                         </span>
                     )}
@@ -611,23 +610,23 @@ const SideMenus = ({ collapsed }) => {
                             transform: schemeOpen ? 'translateY(0px)' : 'translateY(-8px)',
                             transition: 'max-height 0.5s cubic-bezier(0.16,1,0.3,1), opacity 0.4s cubic-bezier(0.16,1,0.3,1), transform 0.4s cubic-bezier(0.16,1,0.3,1)'
                         }}
-                        className="ml-7 border-l border-slate-200 pl-3 flex flex-col gap-0.5 overflow-hidden"
+                        className="ml-7 border-l border-slate-700 pl-3 flex flex-col gap-0.5 overflow-hidden"
                     >
-                        <div className="text-[12px] text-slate-500 hover:text-blue-600 hover:bg-blue-50 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                        <div className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                             New Stock
                         </div>
-                        <div className="text-[12px] text-slate-500 hover:text-blue-600 hover:bg-blue-50 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                        <div className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                             Manage Stock
                         </div>
                     </div>
                 )}
 
-                <div onMouseEnter={setTip} onClick={() => setreturnOpen(!returnOpen)} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2.5 cursor-pointer border border-transparent hover:bg-blue-50 hover:border-blue-100 transition-all mb-px ${collapsed ? 'justify-start' : ''}`}>
-                    <Repeat2 className="text-slate-600 shrink-0 -ml-[6.2px] fill-slate-300 group-hover:translate-x-1.5 transition-transform duration-300" size={20} />
-                    {!collapsed && <span className="text-[12.5px] text-slate-900 flex-1">Return</span>}
-                    {!collapsed && <ChevronDown className={`text-slate-400 w-3.5 h-3.5 transition-transform duration-300 ${returnOpen ? 'rotate-180' : ''}`} />}
+                <div onMouseEnter={setTip} onClick={() => setreturnOpen(!returnOpen)} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer  hover:bg-blue-800 hover:border-slate-600 transition-all mb-px ${collapsed ? 'justify-start' : ''}`}>
+                    <Repeat2 className="text-slate-100 shrink-0   group-hover:translate-x-1.5 transition-transform duration-300" size={23} />
+                    {!collapsed && <span className="text-[12.5px] text-slate-100 flex-1">Return</span>}
+                    {!collapsed && <ChevronDown className={`text-slate-100  w-3.5 h-3.5 transition-transform duration-300 ${returnOpen ? 'rotate-180' : ''}`} />}
                     {collapsed && (
-                        <span style={{ top: 'var(--tooltip-y, 50%)', transform: 'translateY(-50%)' }} className="fixed left-16 ml-1 bg-blue-500 text-white text-[11px] px-2.5 py-1 rounded-md whitespace-nowrap opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-200 pointer-events-none z-999">
+                        <span style={{ top: 'var(--tooltip-y, 50%)', transform: 'translateY(-50%)' }} className="fixed left-16 ml-1 bg-blue-500 text-white text-[11px] px-2 py-1 rounded-md whitespace-nowrap opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-200 pointer-events-none z-999">
                             Return
                         </span>
                     )}
@@ -641,23 +640,23 @@ const SideMenus = ({ collapsed }) => {
                             transform: returnOpen ? 'translateY(0px)' : 'translateY(-8px)',
                             transition: 'max-height 0.5s cubic-bezier(0.16,1,0.3,1), opacity 0.4s cubic-bezier(0.16,1,0.3,1), transform 0.4s cubic-bezier(0.16,1,0.3,1)'
                         }}
-                        className="ml-7 border-l border-slate-200 pl-3 flex flex-col gap-0.5 overflow-hidden"
+                        className="ml-7 border-l border-slate-700 pl-3 flex flex-col gap-0.5 overflow-hidden"
                     >
-                        <div className="text-[12px] text-slate-500 hover:text-blue-600 hover:bg-blue-50 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                        <div className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                             New Stock
                         </div>
-                        <div className="text-[12px] text-slate-500 hover:text-blue-600 hover:bg-blue-50 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                        <div className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                             Manage Stock
                         </div>
                     </div>
                 )}
 
-                <div onMouseEnter={setTip} onClick={() => setdistributorOpen(!distributorOpen)} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2.5 cursor-pointer border border-transparent hover:bg-blue-50 hover:border-blue-100 transition-all mb-px ${collapsed ? 'justify-start' : ''}`}>
-                    <ClipboardList className="text-slate-600 shrink-0 -ml-[6.2px] fill-slate-300 group-hover:translate-x-1.5 transition-transform duration-300" size={20} />
-                    {!collapsed && <span className="text-[12.5px] text-slate-900 flex-1">Distributor Order</span>}
-                    {!collapsed && <ChevronDown className={`text-slate-400 w-3.5 h-3.5 transition-transform duration-300 ${distributorOpen ? 'rotate-180' : ''}`} />}
+                <div onMouseEnter={setTip} onClick={() => setdistributorOpen(!distributorOpen)} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer  hover:bg-blue-800 hover:border-slate-600 transition-all mb-px ${collapsed ? 'justify-start' : ''}`}>
+                    <ClipboardList className="text-slate-100 shrink-0   group-hover:translate-x-1.5 transition-transform duration-300" size={23} />
+                    {!collapsed && <span className="text-[12.5px] text-slate-100 flex-1">Distributor Order</span>}
+                    {!collapsed && <ChevronDown className={`text-slate-100  w-3.5 h-3.5 transition-transform duration-300 ${distributorOpen ? 'rotate-180' : ''}`} />}
                     {collapsed && (
-                        <span style={{ top: 'var(--tooltip-y, 50%)', transform: 'translateY(-50%)' }} className="fixed left-16 ml-1 bg-blue-500 text-white text-[11px] px-2.5 py-1 rounded-md whitespace-nowrap opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-200 pointer-events-none z-999">
+                        <span style={{ top: 'var(--tooltip-y, 50%)', transform: 'translateY(-50%)' }} className="fixed left-16 ml-1 bg-blue-500 text-white text-[11px] px-2 py-1 rounded-md whitespace-nowrap opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-200 pointer-events-none z-999">
                             Distributor Order
                         </span>
                     )}
@@ -671,23 +670,23 @@ const SideMenus = ({ collapsed }) => {
                             transform: distributorOpen ? 'translateY(0px)' : 'translateY(-8px)',
                             transition: 'max-height 0.5s cubic-bezier(0.16,1,0.3,1), opacity 0.4s cubic-bezier(0.16,1,0.3,1), transform 0.4s cubic-bezier(0.16,1,0.3,1)'
                         }}
-                        className="ml-7 border-l border-slate-200 pl-3 flex flex-col gap-0.5 overflow-hidden"
+                        className="ml-7 border-l border-slate-700 pl-3 flex flex-col gap-0.5 overflow-hidden"
                     >
-                        <div className="text-[12px] text-slate-500 hover:text-blue-600 hover:bg-blue-50 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                        <div className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                             Manage Hafiz Orders
                         </div>
-                        <div className="text-[12px] text-slate-500 hover:text-blue-600 hover:bg-blue-50 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                        <div className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                             Manage Hafiz Orders
                         </div>
                     </div>
                 )}
 
-                <div onMouseEnter={setTip} onClick={() => setreportOpen(!reportOpen)} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2.5 cursor-pointer border border-transparent hover:bg-blue-50 hover:border-blue-100 transition-all mb-px ${collapsed ? 'justify-start' : ''}`}>
-                    <Flag className="text-slate-600 shrink-0 -ml-[6.2px] fill-slate-300 group-hover:translate-x-1.5 transition-transform duration-300" size={20} />
-                    {!collapsed && <span className="text-[12.5px] text-slate-900 flex-1">Report</span>}
-                    {!collapsed && <ChevronDown className={`text-slate-400 w-3.5 h-3.5 transition-transform duration-300 ${reportOpen ? 'rotate-180' : ''}`} />}
+                <div onMouseEnter={setTip} onClick={() => setreportOpen(!reportOpen)} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer  hover:bg-blue-800 hover:border-slate-600 transition-all mb-px ${collapsed ? 'justify-start' : ''}`}>
+                    <Flag className="text-slate-100 shrink-0   group-hover:translate-x-1.5 transition-transform duration-300" size={23} />
+                    {!collapsed && <span className="text-[12.5px] text-slate-100 flex-1">Report</span>}
+                    {!collapsed && <ChevronDown className={`text-slate-100  w-3.5 h-3.5 transition-transform duration-300 ${reportOpen ? 'rotate-180' : ''}`} />}
                     {collapsed && (
-                        <span style={{ top: 'var(--tooltip-y, 50%)', transform: 'translateY(-50%)' }} className="fixed left-16 ml-1 bg-blue-500 text-white text-[11px] px-2.5 py-1 rounded-md whitespace-nowrap opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-200 pointer-events-none z-999">
+                        <span style={{ top: 'var(--tooltip-y, 50%)', transform: 'translateY(-50%)' }} className="fixed left-16 ml-1 bg-blue-500 text-white text-[11px] px-2 py-1 rounded-md whitespace-nowrap opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-200 pointer-events-none z-999">
                             Report
                         </span>
                     )}
@@ -701,31 +700,31 @@ const SideMenus = ({ collapsed }) => {
                             transform: reportOpen ? 'translateY(0px)' : 'translateY(-8px)',
                             transition: 'max-height 0.5s cubic-bezier(0.16,1,0.3,1), opacity 0.4s cubic-bezier(0.16,1,0.3,1), transform 0.4s cubic-bezier(0.16,1,0.3,1)'
                         }}
-                        className="ml-7 border-l border-slate-200 pl-3 flex flex-col gap-0.5 overflow-hidden"
+                        className="ml-7 border-l border-slate-700 pl-3 flex flex-col gap-0.5 overflow-hidden"
                     >
-                        <div className="text-[12px] text-slate-500 hover:text-blue-600 hover:bg-blue-50 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                        <div className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                             Today customer Report
                         </div>
-                        <div className="text-[12px] text-slate-500 hover:text-blue-600 hover:bg-blue-50 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                        <div className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                             User Wise Reciept Report
                         </div>
-                        <div className="text-[12px] text-slate-500 hover:text-blue-600 hover:bg-blue-50 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                        <div className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                             Supplier Reciept
                         </div>
-                        <div className="text-[12px] text-slate-500 hover:text-blue-600 hover:bg-blue-50 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                        <div className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                             Sales Report
                         </div>
-                        <div className="text-[12px] text-slate-500 hover:text-blue-600 hover:bg-blue-50 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                        <div className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                             Sale Report (Product Wise)
                         </div>
                     </div>
                 )}
-                <div onMouseEnter={setTip} onClick={() => setaccountOpen(!accountOpen)} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2.5 cursor-pointer border border-transparent hover:bg-blue-50 hover:border-blue-100 transition-all mb-px ${collapsed ? 'justify-start' : ''}`}>
-                    <Wallet className="text-slate-600 -ml-[6.2px] shrink-0 fill-slate-300 group-hover:translate-x-1.5 transition-transform duration-300" size={20} />
-                    {!collapsed && <span className="text-[12.5px] text-slate-900 flex-1">Accounts</span>}
-                    {!collapsed && <ChevronDown className={`text-slate-400 w-3.5 h-3.5 transition-transform duration-300 ${accountOpen ? 'rotate-180' : ''}`} />}
+                <div onMouseEnter={setTip} onClick={() => setaccountOpen(!accountOpen)} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer  hover:bg-blue-800 hover:border-slate-600 transition-all mb-px ${collapsed ? 'justify-start' : ''}`}>
+                    <Wallet className="text-slate-100  shrink-0  group-hover:translate-x-1.5 transition-transform duration-300" size={23} />
+                    {!collapsed && <span className="text-[12.5px] text-slate-100 flex-1">Accounts</span>}
+                    {!collapsed && <ChevronDown className={`text-slate-100  w-3.5 h-3.5 transition-transform duration-300 ${accountOpen ? 'rotate-180' : ''}`} />}
                     {collapsed && (
-                        <span style={{ top: 'var(--tooltip-y, 50%)', transform: 'translateY(-50%)' }} className="fixed left-16 ml-1 bg-blue-500 text-white text-[11px] px-2.5 py-1 rounded-md whitespace-nowrap opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-200 pointer-events-none z-999">
+                        <span style={{ top: 'var(--tooltip-y, 50%)', transform: 'translateY(-50%)' }} className="fixed left-16 ml-1 bg-blue-500 text-white text-[11px] px-2 py-1 rounded-md whitespace-nowrap opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-200 pointer-events-none z-999">
                             Accounts
                         </span>
                     )}
@@ -741,38 +740,38 @@ const SideMenus = ({ collapsed }) => {
                             filter: accountOpen ? 'blur(0px)' : 'blur(2px)',
                             transition: 'max-height 0.6s cubic-bezier(0.16,1,0.3,1), opacity 0.5s cubic-bezier(0.16,1,0.3,1), transform 0.5s cubic-bezier(0.16,1,0.3,1), filter 0.4s ease'
                         }}
-                        className="ml-7 border-l border-slate-200 pl-3 flex flex-col gap-0.5 overflow-hidden"
+                        className="ml-7 border-l border-slate-700 pl-3 flex flex-col gap-0.5 overflow-hidden"
                     >
-                        <div className="text-[12px] text-slate-500 hover:text-blue-600 hover:bg-blue-50 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                        <div className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                             Supplier Payment
                         </div>
-                        <div className="text-[12px] text-slate-500 hover:text-blue-600 hover:bg-blue-50 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                        <div className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                             Supplier Tally Ledger
                         </div>
-                        <div className="text-[12px] text-slate-500 hover:text-blue-600 hover:bg-blue-50 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                        <div className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                             Customer Tally Ledger
                         </div>
-                        <div className="text-[12px] text-slate-500 hover:text-blue-600 hover:bg-blue-50 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                        <div className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                             Customer Recieve
                         </div>
-                        <div className="text-[12px] text-slate-500 hover:text-blue-600 hover:bg-blue-50 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                        <div className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                             Assets Payment
                         </div>
-                        <div className="text-[12px] text-slate-500 hover:text-blue-600 hover:bg-blue-50 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                        <div className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                             Cash Adjustment
                         </div>
-                        <div className="text-[12px] text-slate-500 hover:text-blue-600 hover:bg-blue-50 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                        <div className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                             Reports
                         </div>
                     </div>
                 )}
 
-                <div onMouseEnter={setTip} onClick={() => setbankOpen(!bankOpen)} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2.5 cursor-pointer border border-transparent hover:bg-blue-50 hover:border-blue-100 transition-all mb-px ${collapsed ? 'justify-start' : ''}`}>
-                    <Landmark className="text-slate-600 shrink-0 -ml-[6.2px] fill-slate-300 group-hover:translate-x-1.5 transition-transform duration-300" size={20} />
-                    {!collapsed && <span className="text-[12.5px] text-slate-900 flex-1">Bank</span>}
-                    {!collapsed && <ChevronDown className={`text-slate-400 w-3.5 h-3.5 transition-transform duration-300 ${bankOpen ? 'rotate-180' : ''}`} />}
+                <div onMouseEnter={setTip} onClick={() => setbankOpen(!bankOpen)} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer  hover:bg-blue-800 transition-all mb-px ${collapsed ? 'justify-start' : ''}`}>
+                    <Landmark className="text-slate-100 shrink-0   group-hover:translate-x-1.5 transition-transform duration-300" size={23} />
+                    {!collapsed && <span className="text-[12.5px] text-slate-100 flex-1">Bank</span>}
+                    {!collapsed && <ChevronDown className={`text-slate-100  w-3.5 h-3.5 transition-transform duration-300 ${bankOpen ? 'rotate-180' : ''}`} />}
                     {collapsed && (
-                        <span style={{ top: 'var(--tooltip-y, 50%)', transform: 'translateY(-50%)' }} className="fixed left-16 ml-1 bg-blue-500 text-white text-[11px] px-2.5 py-1 rounded-md whitespace-nowrap opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-200 pointer-events-none z-999">
+                        <span style={{ top: 'var(--tooltip-y, 50%)', transform: 'translateY(-50%)' }} className="fixed left-16 ml-1 bg-blue-500 text-white text-[11px] px-2 py-1 rounded-md whitespace-nowrap opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-200 pointer-events-none z-999">
                             Bank
                         </span>
                     )}
@@ -786,29 +785,29 @@ const SideMenus = ({ collapsed }) => {
                             transform: bankOpen ? 'translateY(0px)' : 'translateY(-8px)',
                             transition: 'max-height 0.5s cubic-bezier(0.16,1,0.3,1), opacity 0.4s cubic-bezier(0.16,1,0.3,1), transform 0.4s cubic-bezier(0.16,1,0.3,1)'
                         }}
-                        className="ml-7 border-l border-slate-200 pl-3 flex flex-col gap-0.5 overflow-hidden"
+                        className="ml-7 border-l border-slate-700 pl-3 flex flex-col gap-0.5 overflow-hidden"
                     >
-                        <div className="text-[12px] text-slate-500 hover:text-blue-600 hover:bg-blue-50 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                        <div className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                             Add New
                         </div>
-                        <div className="text-[12px] text-slate-500 hover:text-blue-600 hover:bg-blue-50 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                        <div className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                             Add New Transaction
                         </div>
-                        <div className="text-[12px] text-slate-500 hover:text-blue-600 hover:bg-blue-50 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                        <div className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                             Manage Bank
                         </div>
-                        <div className="text-[12px] text-slate-500 hover:text-blue-600 hover:bg-blue-50 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                        <div className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                             Bank Ledger
                         </div>
                     </div>
                 )}
 
-                <div onMouseEnter={setTip} onClick={() => setsalaryOpen(!salaryOpen)} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2.5 cursor-pointer border border-transparent hover:bg-blue-50 hover:border-blue-100 transition-all mb-px ${collapsed ? 'justify-start' : ''}`}>
-                    <HandCoins className="text-slate-600 shrink-0 -ml-[6.2px] fill-slate-300 group-hover:translate-x-1.5 transition-transform duration-300" size={20} />
-                    {!collapsed && <span className="text-[12.5px] text-slate-900 flex-1">Salary</span>}
-                    {!collapsed && <ChevronDown className={`text-slate-400 w-3.5 h-3.5 transition-transform duration-300 ${salaryOpen ? 'rotate-180' : ''}`} />}
+                <div onMouseEnter={setTip} onClick={() => setsalaryOpen(!salaryOpen)} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer  hover:bg-blue-800 transition-all mb-px ${collapsed ? 'justify-start' : ''}`}>
+                    <HandCoins className="text-slate-100 shrink-0   group-hover:translate-x-1.5 transition-transform duration-300" size={23} />
+                    {!collapsed && <span className="text-[12.5px] text-slate-100 flex-1">Salary</span>}
+                    {!collapsed && <ChevronDown className={`text-slate-100  w-3.5 h-3.5 transition-transform duration-300 ${salaryOpen ? 'rotate-180' : ''}`} />}
                     {collapsed && (
-                        <span style={{ top: 'var(--tooltip-y, 50%)', transform: 'translateY(-50%)' }} className="fixed left-16 ml-1 bg-blue-500 text-white text-[11px] px-2.5 py-1 rounded-md whitespace-nowrap opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-200 pointer-events-none z-999">
+                        <span style={{ top: 'var(--tooltip-y, 50%)', transform: 'translateY(-50%)' }} className="fixed left-16 ml-1 bg-blue-500 text-white text-[11px] px-2 py-1 rounded-md whitespace-nowrap opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-200 pointer-events-none z-999">
                             Salary
                         </span>
                     )}
@@ -822,27 +821,27 @@ const SideMenus = ({ collapsed }) => {
                             transform: salaryOpen ? 'translateY(0px)' : 'translateY(-8px)',
                             transition: 'max-height 0.5s cubic-bezier(0.16,1,0.3,1), opacity 0.4s cubic-bezier(0.16,1,0.3,1), transform 0.4s cubic-bezier(0.16,1,0.3,1)'
                         }}
-                        className="ml-7 border-l border-slate-200 pl-3 flex flex-col gap-0.5 overflow-hidden"
+                        className="ml-7 border-l border-slate-700 pl-3 flex flex-col gap-0.5 overflow-hidden"
                     >
-                        <div className="text-[12px] text-slate-500 hover:text-blue-600 hover:bg-blue-50 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                        <div className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                             Employee
                         </div>
-                        <div className="text-[12px] text-slate-500 hover:text-blue-600 hover:bg-blue-50 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                        <div className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                             Attendence
                         </div>
-                        <div className="text-[12px] text-slate-500 hover:text-blue-600 hover:bg-blue-50 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                        <div className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                             Salary
                         </div>
 
                     </div>
                 )}
 
-                <div onMouseEnter={setTip} onClick={() => setassetsOpen(!assetsOpen)} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2.5 cursor-pointer border border-transparent hover:bg-blue-50 hover:border-blue-100 transition-all mb-px ${collapsed ? 'justify-start' : ''}`}>
-                    <BriefcaseBusiness className="text-slate-600 shrink-0 -ml-[6.2px] fill-slate-300 group-hover:translate-x-1.5 transition-transform duration-300" size={20} />
-                    {!collapsed && <span className="text-[12.5px] text-slate-900 flex-1">Assets</span>}
-                    {!collapsed && <ChevronDown className={`text-slate-400 w-3.5 h-3.5 transition-transform duration-300 ${assetsOpen ? 'rotate-180' : ''}`} />}
+                <div onMouseEnter={setTip} onClick={() => setassetsOpen(!assetsOpen)} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer  hover:bg-blue-800 transition-all mb-px ${collapsed ? 'justify-start' : ''}`}>
+                    <BriefcaseBusiness className="text-slate-100 shrink-0   group-hover:translate-x-1.5 transition-transform duration-300" size={23} />
+                    {!collapsed && <span className="text-[12.5px] text-slate-100 flex-1">Assets</span>}
+                    {!collapsed && <ChevronDown className={`text-slate-100  w-3.5 h-3.5 transition-transform duration-300 ${assetsOpen ? 'rotate-180' : ''}`} />}
                     {collapsed && (
-                        <span style={{ top: 'var(--tooltip-y, 50%)', transform: 'translateY(-50%)' }} className="fixed left-16 ml-1 bg-blue-500 text-white text-[11px] px-2.5 py-1 rounded-md whitespace-nowrap opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-200 pointer-events-none z-999">
+                        <span style={{ top: 'var(--tooltip-y, 50%)', transform: 'translateY(-50%)' }} className="fixed left-16 ml-1 bg-blue-500 text-white text-[11px] px-2 py-1 rounded-md whitespace-nowrap opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-200 pointer-events-none z-999">
                             Assets
                         </span>
                     )}
@@ -856,15 +855,15 @@ const SideMenus = ({ collapsed }) => {
                             transform: assetsOpen ? 'translateY(0px)' : 'translateY(-8px)',
                             transition: 'max-height 0.5s cubic-bezier(0.16,1,0.3,1), opacity 0.4s cubic-bezier(0.16,1,0.3,1), transform 0.4s cubic-bezier(0.16,1,0.3,1)'
                         }}
-                        className="ml-7 border-l border-slate-200 pl-3 flex flex-col gap-0.5 overflow-hidden"
+                        className="ml-7 border-l border-slate-700 pl-3 flex flex-col gap-0.5 overflow-hidden"
                     >
-                        <div className="text-[12px] text-slate-500 hover:text-blue-600 hover:bg-blue-50 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                        <div className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                             Add Assets
                         </div>
-                        <div className="text-[12px] text-slate-500 hover:text-blue-600 hover:bg-blue-50 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                        <div className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                             Manage Assets
                         </div>
-                        <div className="text-[12px] text-slate-500 hover:text-blue-600 hover:bg-blue-50 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                        <div className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                             Assets Ledger
                         </div>
 

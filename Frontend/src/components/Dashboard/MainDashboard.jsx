@@ -1,4 +1,7 @@
 import { useEffect, useRef, useState } from "react";
+import { Sun, Sunset, Moon } from "lucide-react";
+import Setting from '../Setting.jsx'
+import UserSelectMenu from "../UserAccount/UserSelectMenu.jsx";
 import { BarChart, Bar, PieChart, Pie, Cell, Legend, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
 
 const monthlySales = [
@@ -73,7 +76,14 @@ const useCountUp = (target, duration = 1200) => {
     }, [target, duration]);
     return count;
 };
+const getGreeting = () => {
+    const hour = new Date().getHours();
+    if (hour < 12) return { text: "Good Morning", Icon: Sun, color: "text-amber-500" };
+    if (hour < 17) return { text: "Good Afternoon", Icon: Sunset, color: "text-orange-500" };
+    return { text: "Good Evening", Icon: Moon, color: "text-indigo-400" };
+};
 
+const { text: greetingText, Icon: GreetingIcon, color: greetingColor } = getGreeting();
 const useParticleCanvas = (canvasRef) => {
     useEffect(() => {
         const canvas = canvasRef.current;
@@ -165,7 +175,7 @@ const PayBandCard = ({ item }) => {
 
     return (
         <div
-            className="relative rounded-[14px] px-3 py-3.5 flex flex-col gap-2.5 overflow-hidden cursor-pointer transition-all duration-300 hover:scale-[1.03] hover:shadow-2xl hover:-translate-y-1 group"
+            className="relative rounded-[10px] px-3 py-7.5 flex flex-col gap-2.5 overflow-hidden cursor-pointer transition-all duration-300 hover:scale-[1.03] hover:shadow-2xl hover:-translate-y-1 group"
             style={{
                 background: `linear-gradient(135deg, ${item.color[0]}, ${item.color[1]})`,
                 boxShadow: "0 2px 8px rgba(0,0,0,0.18)",
@@ -181,11 +191,12 @@ const PayBandCard = ({ item }) => {
                 style={{ background: "linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.15) 50%, transparent 60%)" }}
             />
 
-            <div className="relative z-10 w-8 h-8 bg-white/20 group-hover:bg-white/35 rounded-lg flex items-center justify-center shrink-0 transition-all duration-300 group-hover:scale-110">
-                <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
-                    <path d={item.icon} />
-                </svg>
-            </div>
+            <svg
+                className="absolute -right-2 -bottom-2 w-16 h-16 text-white/20 group-hover:text-white/30 transition-all duration-300 group-hover:scale-110 group-hover:-translate-y-1 group-hover:-translate-x-1 pointer-events-none"
+                fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"
+            >
+                <path d={item.icon} />
+            </svg>
 
             <div className="relative z-10 min-w-0">
                 <p className="text-white/70 group-hover:text-white/90 text-[11px] font-medium leading-none mb-1 truncate transition-all duration-300">
@@ -223,57 +234,97 @@ const renderPieLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent })
         </text>
     );
 };
+import React from 'react'
 
-const Dashboard = () => (
-    <div className="p-4 md:p-5">
+const MainDashboard = () => {
+    const [showSetting, setShowSetting] = useState(false);
+    return (
+        <div className="p-4 md:p-5">
+            {
+                showSetting == true ? <Setting setShowSetting={setShowSetting} /> : <UserSelectMenu setShowSetting={setShowSetting} />
+            }
 
-        <div className="flex items-center justify-between mb-4">
-            <div className="flex items-center gap-3">
-                <div className="w-9 h-9 rounded-full bg-linear-to-br from-cyan-500 to-cyan-600 flex items-center justify-center shadow-md shadow-blue-200">
-                    <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 5a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1H5a1 1 0 01-1-1V5zm10 0a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1V5zM4 15a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1H5a1 1 0 01-1-1v-4zm10 0a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1v-4z" />
-                    </svg>
-                </div>
-                <div>
-                    <h1 className="text-gray-800 text-base font-bold">Dashboard</h1>
-                    <p className="text-gray-400 text-xs">Sales, Orders, Customers & Revenue</p>
+            <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center gap-3">
+
+                    <div className="flex items-center gap-2.5">
+                        <div className={`p-2 rounded-full bg-amber-100 ${greetingColor}`}>
+                            <GreetingIcon size={22} className="animate-pulse" />
+                        </div>
+                        <div>
+                            <h1 className="text-xl font-semibold text-slate-800">
+                                {greetingText}, Muhammad Usman 👋
+                            </h1>
+                            <p className="text-[12.5px] text-slate-500">
+                                Real-Time Insights. Real Growth
+                            </p>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <div className="mb-4">
-            <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-2.5">
-                {payBand.map((item, i) => (
-                    <PayBandCard key={i} item={item} />
-                ))}
+            <div className="mb-4">
+                <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-2.5">
+                    {payBand.map((item, i) => (
+                        <PayBandCard key={i} item={item} />
+                    ))}
+                </div>
             </div>
-        </div>
 
-        <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-4">
 
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-                <div className="lg:col-span-2">
-                    <ChartCard title="Monthly Sales & Orders" subtitle="Jan – Dec">
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+                    <div className="lg:col-span-2">
+                        <ChartCard title="Monthly Sales & Orders" subtitle="Jan – Dec">
+                            <ResponsiveContainer width="100%" height={140}>
+                                <BarChart data={monthlySales} margin={{ top: 2, right: 8, left: -20, bottom: 0 }} barSize={10}>
+                                    <CartesianGrid strokeDasharray="3 3" stroke="#f0f4ff" />
+                                    <XAxis dataKey="month" tick={{ fontSize: 10, fill: "#94a3b8" }} axisLine={false} tickLine={false} />
+                                    <YAxis tick={{ fontSize: 10, fill: "#94a3b8" }} axisLine={false} tickLine={false} />
+                                    <Tooltip {...tt} />
+                                    <Legend iconType="circle" iconSize={7} wrapperStyle={{ fontSize: "11px", paddingTop: "4px" }} />
+                                    <Bar dataKey="sales" name="Sales" fill="#2563eb" />
+                                    <Bar dataKey="orders" name="Orders" fill="#60a5fa" />
+                                </BarChart>
+                            </ResponsiveContainer>
+                        </ChartCard>
+                    </div>
+                    <div className="lg:col-span-1">
+                        <ChartCard title="Revenue Split" subtitle="By category">
+                            <ResponsiveContainer width="100%" height={140}>
+                                <PieChart>
+                                    <Pie data={revenueSplit} cx="50%" cy="50%" innerRadius={35} outerRadius={58}
+                                        paddingAngle={3} dataKey="value" labelLine={false} label={renderPieLabel}>
+                                        {revenueSplit.map((_, i) => <Cell key={i} fill={REVENUE_COLORS[i]} />)}
+                                    </Pie>
+                                    <Tooltip {...tt} />
+                                    <Legend iconType="circle" iconSize={7} wrapperStyle={{ fontSize: "10px" }} />
+                                </PieChart>
+                            </ResponsiveContainer>
+                        </ChartCard>
+                    </div>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <ChartCard title="Weekly Revenue" subtitle="Current month">
                         <ResponsiveContainer width="100%" height={140}>
-                            <BarChart data={monthlySales} margin={{ top: 2, right: 8, left: -20, bottom: 0 }} barSize={10}>
+                            <LineChart data={weeklyRevenue} margin={{ top: 2, right: 8, left: -20, bottom: 0 }}>
                                 <CartesianGrid strokeDasharray="3 3" stroke="#f0f4ff" />
-                                <XAxis dataKey="month" tick={{ fontSize: 10, fill: "#94a3b8" }} axisLine={false} tickLine={false} />
+                                <XAxis dataKey="week" tick={{ fontSize: 10, fill: "#94a3b8" }} axisLine={false} tickLine={false} />
                                 <YAxis tick={{ fontSize: 10, fill: "#94a3b8" }} axisLine={false} tickLine={false} />
                                 <Tooltip {...tt} />
-                                <Legend iconType="circle" iconSize={7} wrapperStyle={{ fontSize: "11px", paddingTop: "4px" }} />
-                                <Bar dataKey="sales" name="Sales" fill="#2563eb" />
-                                <Bar dataKey="orders" name="Orders" fill="#60a5fa" />
-                            </BarChart>
+                                <Line type="monotone" dataKey="revenue" stroke="#2563eb" strokeWidth={2}
+                                    dot={{ fill: "#2563eb", r: 3, strokeWidth: 0 }} activeDot={{ r: 5 }} name="Revenue (Rs.)" />
+                            </LineChart>
                         </ResponsiveContainer>
                     </ChartCard>
-                </div>
-                <div className="lg:col-span-1">
-                    <ChartCard title="Revenue Split" subtitle="By category">
-                        <ResponsiveContainer width="100%" height={140}>
+
+                    <ChartCard title="Customer Distribution" subtitle="New vs Returning vs Inactive">
+                        <ResponsiveContainer width="100%" height={150}>
                             <PieChart>
-                                <Pie data={revenueSplit} cx="50%" cy="50%" innerRadius={35} outerRadius={58}
+                                <Pie data={customerPie} cx="50%" cy="50%" innerRadius={38} outerRadius={60}
                                     paddingAngle={3} dataKey="value" labelLine={false} label={renderPieLabel}>
-                                    {revenueSplit.map((_, i) => <Cell key={i} fill={REVENUE_COLORS[i]} />)}
+                                    {customerPie.map((_, i) => <Cell key={i} fill={CUSTOMER_COLORS[i]} />)}
                                 </Pie>
                                 <Tooltip {...tt} />
                                 <Legend iconType="circle" iconSize={7} wrapperStyle={{ fontSize: "10px" }} />
@@ -281,38 +332,11 @@ const Dashboard = () => (
                         </ResponsiveContainer>
                     </ChartCard>
                 </div>
+
             </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <ChartCard title="Weekly Revenue" subtitle="Current month">
-                    <ResponsiveContainer width="100%" height={140}>
-                        <LineChart data={weeklyRevenue} margin={{ top: 2, right: 8, left: -20, bottom: 0 }}>
-                            <CartesianGrid strokeDasharray="3 3" stroke="#f0f4ff" />
-                            <XAxis dataKey="week" tick={{ fontSize: 10, fill: "#94a3b8" }} axisLine={false} tickLine={false} />
-                            <YAxis tick={{ fontSize: 10, fill: "#94a3b8" }} axisLine={false} tickLine={false} />
-                            <Tooltip {...tt} />
-                            <Line type="monotone" dataKey="revenue" stroke="#2563eb" strokeWidth={2}
-                                dot={{ fill: "#2563eb", r: 3, strokeWidth: 0 }} activeDot={{ r: 5 }} name="Revenue (Rs.)" />
-                        </LineChart>
-                    </ResponsiveContainer>
-                </ChartCard>
-
-                <ChartCard title="Customer Distribution" subtitle="New vs Returning vs Inactive">
-                    <ResponsiveContainer width="100%" height={150}>
-                        <PieChart>
-                            <Pie data={customerPie} cx="50%" cy="50%" innerRadius={38} outerRadius={60}
-                                paddingAngle={3} dataKey="value" labelLine={false} label={renderPieLabel}>
-                                {customerPie.map((_, i) => <Cell key={i} fill={CUSTOMER_COLORS[i]} />)}
-                            </Pie>
-                            <Tooltip {...tt} />
-                            <Legend iconType="circle" iconSize={7} wrapperStyle={{ fontSize: "10px" }} />
-                        </PieChart>
-                    </ResponsiveContainer>
-                </ChartCard>
-            </div>
-
         </div>
-    </div>
-);
+    )
+}
 
-export default Dashboard;
+export default MainDashboard
+
