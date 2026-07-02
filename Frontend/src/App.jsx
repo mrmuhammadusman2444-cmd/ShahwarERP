@@ -22,6 +22,10 @@ import UnitPage from './pages/Products/UnitPage.jsx'
 import MainCategoryPage from './pages/Products/MainCategoryPage.jsx'
 import SchemeProductsPage from './pages/Products/SchemeProductsPage.jsx'
 import InvoiceApprovalPage from './pages/Approvals/InvoiceApprovalPage.jsx'
+import PurchaseApprovalPage from './pages/Approvals/PurchaseApprovalPage.jsx'
+import CustomerPaymentPage from './pages/Approvals/CustomerPaymentPage.jsx'
+import SupplierPaymentPage from './pages/Approvals/SupplierPaymentPage.jsx'
+import AnalyticsPage from './pages/Analytics/AnalyticsPage.jsx'
 
 const App = () => {
   return (
@@ -51,6 +55,13 @@ const App = () => {
         <Route path='/MainCategoryPage' element={<MainCategoryPage />} />
         <Route path='/SchemeProductsPage' element={<SchemeProductsPage />} />
         <Route path='/InvoiceApprovalPage' element={<InvoiceApprovalPage />} />
+        <Route path='/PurchaseApprovalPage' element={<PurchaseApprovalPage />} />
+        <Route path='/CustomerPaymentPage' element={<CustomerPaymentPage />} />
+        <Route path='/SupplierPaymentPage' element={<SupplierPaymentPage />} />
+
+
+        <Route path='/AnalyticsPage' element={<AnalyticsPage />} />
+
 
 
 

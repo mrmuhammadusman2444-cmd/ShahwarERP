@@ -1,6 +1,6 @@
 import React from 'react'
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { Search, Inbox, Bell, LayoutDashboard, Wallet, HandCoins, BriefcaseBusiness, ClipboardList, Landmark, Gift, ChartNoAxesCombined, Repeat2, Flag, BarChart2, LayoutGrid, Package, FileText, Users, Truck, ChevronDown, BadgeDollarSign, Handshake, PackageOpen, ShoppingCart, PackageCheck, Blocks } from "lucide-react";
 
 const SideMenus = ({ collapsed }) => {
@@ -35,6 +35,14 @@ const SideMenus = ({ collapsed }) => {
     }
 
     const navigate = useNavigate()
+    const location = useLocation()
+    const isAnalytics = location.pathname === '/analyticspage'
+    const isDashboard = location.pathname === '/dashboard'
+  
+
+
+
+
 
     return (
         <div>
@@ -123,8 +131,8 @@ const SideMenus = ({ collapsed }) => {
 
             <div className="px-2">
 
-                <div onClick={() => { navigate('/dashboard') }} onMouseEnter={setTip} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer bg-blue-800  overflow-hidden  mb-px ${collapsed ? 'justify-start' : ''}`}>
-                    {!collapsed && <span className="absolute left-0 top-1/2 -translate-y-1/2 w-0.75 h-4.5 bg-blue-800 rounded-r-full" />}
+                <div onClick={() => { navigate('/dashboard') }} onMouseEnter={setTip} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 hover:bg-blue-800 rounded-lg px-2 cursor-pointer   overflow-hidden  mb-px ${collapsed ? 'justify-start' : ''}${isDashboard ? 'bg-blue-800' : 'hover:bg-blue-800'}`}>
+                    {!collapsed && <span className="absolute left-0 top-1/2 -translate-y-1/2 w-0.75 h-4.5 bg-blue-800  rounded-r-full" />}
                     <LayoutGrid className="text-slate-100 shrink-0   group-hover:scale-110 group-hover:rotate-6 transition-transform duration-300" size={23} />
                     {!collapsed && <span className="text-[12.5px] text-blue-100 font-medium">Dashboard</span>}
 
@@ -147,7 +155,7 @@ const SideMenus = ({ collapsed }) => {
                             .group:hover .bar3 { animation: bar-wave 0.6s ease 0.3s infinite; }
                          `}</style>
 
-                <div onMouseEnter={setTip} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer  hover:bg-blue-800  transition-all mb-px ${collapsed ? 'justify-start' : ''}`}>
+                <div onClick={() => { navigate('/analyticspage') }} onMouseEnter={setTip} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer  hover:bg-blue-800  transition-all mb-px ${collapsed ? 'justify-start' : ''}${isAnalytics ? 'bg-blue-800' : 'hover:bg-blue-800'}`}>
                     <svg width="20" height="20" viewBox="0 0 24 24" text="#ffffff" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-slate-600 shrink-0 /50">
                         <line x1="18" y1="20" x2="18" y2="10" className="bar3 text-slate-100" style={{ transformOrigin: '18px 20px' }} />
                         <line x1="12" y1="20" x2="12" y2="4" className="bar2  text-slate-100" style={{ transformOrigin: '12px 20px' }} />
@@ -165,7 +173,6 @@ const SideMenus = ({ collapsed }) => {
                 <div onMouseEnter={setTip} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer  hover:bg-blue-800  transition-all mb-px ${collapsed ? 'justify-start' : ''}`}>
                     <Package className="text-slate-100   shrink-0 group-hover:-translate-y-1 transition-transform duration-300" size={23} />
                     {!collapsed && <span className="text-[12.5px] text-slate-100">Inventory</span>}
-
                     {collapsed && (
                         <span style={{ top: 'var(--tooltip-y, 50%)', transform: 'translateY(-50%)' }} className="fixed left-16 ml-1 bg-blue-500 text-white text-[11px] px-2 py-1 rounded-md whitespace-nowrap opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-200 pointer-events-none z-999">
                             Inventory
@@ -184,7 +191,7 @@ const SideMenus = ({ collapsed }) => {
                     )}
                 </div>
 
-                <div onMouseEnter={setTip} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer  hover:bg-blue-800  transition-all mb-px ${collapsed ? 'justify-start' : ''}`}
+                <div onMouseEnter={setTip} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 hover:bg-blue-800 rounded-lg px-2 cursor-pointer transition-all mb-px ${collapsed ? 'justify-start' : ''} `}
                     onClick={() => setCustomerOpen(!customerOpen)}
                 >
                     <Users className="text-slate-100   shrink-0 group-hover:scale-110 transition-transform duration-300" size={23} />
@@ -333,13 +340,13 @@ const SideMenus = ({ collapsed }) => {
                         <div onClick={() => { navigate('/invoiceapprovalpage') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                             Invoice Approval
                         </div>
-                        <div className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                        <div onClick={() => { navigate('/purchaseapprovalpage') }}  className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                             Purchase Approval
                         </div>
-                        <div className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                        <div onClick={()=>{navigate('/customerpaymentpage')}}  className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                             Customer Payment
                         </div>
-                        <div className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                        <div onClick={()=>{navigate('/supplierpaymentpage')}} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                             Supplier Payment
                         </div>
                     </div>

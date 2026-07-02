@@ -1,11 +1,10 @@
 import React from 'react'
 
-const InvoiceApproval = () => {
-  const invoices = [];
-
-  const totalAmount = invoices.reduce((sum, inv) => sum + (Number(inv.amount) || 0), 0); // ← yeh line check karo
+const SupplierPayment = () => {
+      const supplier = [];
+  const totalAmount = supplier.reduce((sum, inv) => sum + (Number(inv.amount) || 0), 0)
   return (
-    <div className="p-4 md:p-5">
+  <div className="p-4 md:p-5">
 
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-3">
@@ -15,8 +14,8 @@ const InvoiceApproval = () => {
             </svg>
           </div>
           <div>
-            <h1 className="text-gray-800 text-lg font-bold">Invoice Approval </h1>
-            <p className="text-gray-400 text-xs">Review and approve pending Invoice Approvals</p>
+            <h1 className="text-gray-800 text-lg font-bold">Supplier Payment Approval </h1>
+            <p className="text-gray-400 text-xs">Review and approve pending Supplier Payment Approvals</p>
           </div>
         </div>
 
@@ -32,7 +31,7 @@ const InvoiceApproval = () => {
           </div>
           <div className="min-w-0">
             <p className="text-gray-400 text-xs font-medium">Pending</p>
-            <p className="text-gray-800 text-base font-bold leading-tight">{InvoiceApproval.length}</p>
+            <p className="text-gray-800 text-base font-bold leading-tight">{SupplierPayment.length}</p>
           </div>
         </div>
 
@@ -83,7 +82,7 @@ const InvoiceApproval = () => {
               <tr className="bg-blue-600 text-white">
                 <th className="w-[11%] text-left text-xs font-semibold px-4 py-3 whitespace-nowrap">Date</th>
                 <th className="w-[12%] text-left text-xs font-semibold px-4 py-3 whitespace-nowrap">Invoice No</th>
-                <th className="w-[14%] text-left text-xs font-semibold px-4 py-3">Customer Name</th>
+                <th className="w-[14%] text-left text-xs font-semibold px-4 py-3">Supplier Name</th>
                 <th className="w-[14%] text-left text-xs font-semibold px-4 py-3">Description</th>
                 <th className="w-[13%] text-center text-xs font-semibold px-4 py-3 whitespace-nowrap">Amount</th>
                 <th className="w-[12%] text-left text-xs font-semibold px-4 py-3 whitespace-nowrap">User</th>
@@ -92,52 +91,52 @@ const InvoiceApproval = () => {
             </thead>
 
             <tbody className="divide-y divide-gray-100 h-109">
-              {InvoiceApproval.length === 0 ? (
+              {SupplierPayment.length === 0 ? (
                 <tr>
                   <td colSpan={7} className="text-center py-16">
                     <div className="flex flex-col items-center gap-2">
                       <svg className="w-10 h-10 text-blue-100" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
                       </svg>
-                      <p className="text-gray-400 text-sm">Koi InvoiceApproval approval ke liye pending nahi</p>
-                      <p className="text-gray-300 text-xs">New Sale banane par yahan automatically aayega</p>
+                      <p className="text-gray-400 text-sm">There is no Customer Payment approval Pending</p>
+                      <p className="text-gray-300 text-xs">After make new sale Customer Payment will be show here </p>
                     </div>
                   </td>
                 </tr>
               ) : (
-                InvoiceApproval.map((InvoiceApproval, idx) => (
-                  <tr key={InvoiceApproval.id}
+                SupplierPayment.map((SupplierPayment, idx) => (
+                  <tr key={SupplierPayment.id}
                     className={`hover:bg-blue-50/40 transition-colors align-top ${idx % 2 === 0 ? "bg-white" : "bg-gray-50/30"}`}>
 
-                    <td className="px-4 py-3 text-gray-600 text-xs whitespace-nowrap">{InvoiceApproval.date}</td>
+                    <td className="px-4 py-3 text-gray-600 text-xs whitespace-nowrap">{SupplierPayment.date}</td>
 
                     <td className="px-4 py-3 whitespace-nowrap">
                       <span className="bg-blue-50 text-blue-700 text-xs font-semibold px-2 py-1 rounded-md">
-                        #{InvoiceApproval.InvoiceApprovalNo}
+                        #{SupplierPayment.SupplierPaymentNo}
                       </span>
                     </td>
 
                     <td className="px-4 py-3">
                       <div className="flex items-center gap-2.5">
                         <div className="w-7 h-7 rounded-full bg-blue-100 text-blue-600 text-xs font-bold flex items-center justify-center shrink-0">
-                          {InvoiceApproval.customerName ? InvoiceApproval.customerName.charAt(0).toUpperCase() : "?"}
+                          {SupplierPayment.supplierName ? SupplierPayment.supplierName.charAt(0).toUpperCase() : "?"}
                         </div>
                         <div className="min-w-0">
-                          <p className="text-gray-700 text-xs font-medium truncate">{InvoiceApproval.customerName}</p>
-                          {InvoiceApproval.customerPhone && (
-                            <p className="text-gray-400 text-xs">{InvoiceApproval.customerPhone}</p>
+                          <p className="text-gray-700 text-xs font-medium truncate">{SupplierPayment.supplierName}</p>
+                          {SupplierPayment.supplierPhone && (
+                            <p className="text-gray-400 text-xs">{SupplierPayment.supplierPhone}</p>
                           )}
                         </div>
                       </div>
                     </td>
 
-                    <td className="px-4 py-3 text-gray-500 text-xs">{InvoiceApproval.description}</td>
+                    <td className="px-4 py-3 text-gray-500 text-xs">{SupplierPayment.description}</td>
 
                     <td className="px-4 py-3 text-right text-gray-800 text-xs font-bold whitespace-nowrap">
-                      Rs {InvoiceApproval.amount}
+                      Rs {SupplierPayment.amount}
                     </td>
 
-                    <td className="px-4 py-3 text-gray-600 text-xs whitespace-nowrap">{InvoiceApproval.user}</td>
+                    <td className="px-4 py-3 text-gray-600 text-xs whitespace-nowrap">{SupplierPayment.user}</td>
 
                     <td className="px-4 py-3">
                       <div className="flex items-center justify-center gap-1.5">
@@ -166,9 +165,9 @@ const InvoiceApproval = () => {
           </table>
         </div>
 
-        {InvoiceApproval.length > 0 && (
+        {SupplierPayment.length > 0 && (
           <div className="px-5 py-3 border-t border-blue-50 bg-blue-50/30 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
-            <p className="text-xs text-gray-400">Total InvoiceApproval: <span className="font-semibold text-gray-600">{InvoiceApproval.length}</span></p>
+            <p className="text-xs text-gray-400">Total SupplierPayment: <span className="font-semibold text-gray-600">{SupplierPayment.length}</span></p>
             <p className="text-xs text-gray-500 font-semibold">
               Total Amount: <span className="text-blue-700">Rs. {totalAmount.toLocaleString()}</span>
             </p>
@@ -177,7 +176,7 @@ const InvoiceApproval = () => {
 
       </div>
     </div>
-  );
+  )
 }
 
-export default InvoiceApproval
+export default SupplierPayment
