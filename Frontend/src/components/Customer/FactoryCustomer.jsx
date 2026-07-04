@@ -11,7 +11,7 @@ const ManageCustomers = () => {
 
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-4">
-          <div className="w-12 h-12 rounded-2xl bg-linear-to-br from-blue-600 to-blue-700 flex items-center justify-center shadow-md shadow-blue-200">
+          <div className="w-10 h-10 rounded-2xl bg-linear-to-br from-emerald-600 to-emerald-700 flex items-center justify-center shadow-md shadow-blue-200">
             <Users className="w-6 h-6 text-white" />
           </div>
           <div>
@@ -20,7 +20,7 @@ const ManageCustomers = () => {
           </div>
         </div>
 
-        <button onClick={() => { navigate('/newcustomer') }} className="flex items-center gap-2 bg-linear-to-r from-blue-600 to-blue-700 hover:from-blue-500 hover:to-blue-600 text-white  shadow-blue-200 shadow-md text-sm transition-all hover:-translate-y-0.5 active:translate-y-0 font-semibold px-4 py-2.5 rounded-xl shadow-md shadow-blue-200 transition-all cursor-pointer">
+        <button onClick={() => { navigate('/newcustomer') }} className="flex items-center gap-2 bg-linear-to-r from-emerald-600 to-emerald-700 hover:from-emerald-500 hover:to-emerald-600 text-white  shadow-blue-200 shadow-md text-sm transition-all hover:-translate-y-0.5 active:translate-y-0 font-semibold px-4 py-2.5 rounded-xl shadow-md shadow-blue-200 transition-all cursor-pointer">
           <Plus className="w-4 h-4" />
           New Customer
         </button>
@@ -80,7 +80,7 @@ const ManageCustomers = () => {
         <div className="overflow-x-auto rounded-xl border border-blue-100 h-115">
           <table className="w-full text-sm">
             <thead>
-              <tr className="bg-blue-600 text-white">
+              <tr className="bg-emerald-600 text-white">
                 <th className="text-left px-4 py-3 font-semibold text-xs uppercase tracking-wide rounded-tl-xl">SL</th>
                 <th className="text-left px-4 py-3 font-semibold text-xs uppercase tracking-wide">
                   <button className="flex items-center gap-1 hover:opacity-80 transition-opacity cursor-pointer">
@@ -115,11 +115,11 @@ const ManageCustomers = () => {
         <div className="flex flex-col sm:flex-row items-center justify-between gap-3 mt-4">
           <p className="text-gray-400 text-xs">Showing 0 to 0 of 0 entries</p>
           <div className="flex items-center gap-1.5">
-            <button className="flex items-center gap-1 text-xs text-gray-500 hover:text-blue-600 bg-blue-50 hover:bg-blue-100 px-3 py-1.5 rounded-lg transition-all cursor-pointer">
+            <button className="flex items-center gap-1 text-xs text-gray-500 hover:text-emerald-600 bg-emerald-50 hover:bg-emerald-100 px-3 py-1.5 rounded-lg transition-all cursor-pointer">
               <ChevronLeft className="w-3.5 h-3.5" /> Previous
             </button>
-            <button className="w-8 h-8 rounded-lg bg-blue-600 text-white text-xs font-bold flex items-center justify-center cursor-pointer">1</button>
-            <button className="flex items-center gap-1 text-xs text-gray-500 hover:text-blue-600 bg-blue-50 hover:bg-blue-100 px-3 py-1.5 rounded-lg transition-all cursor-pointer">
+            <button className="w-8 h-8 rounded-lg bg-emerald-600 text-white text-xs font-bold flex items-center justify-center cursor-pointer">1</button>
+            <button className="flex items-center gap-1 text-xs text-gray-500 hover:text-emerald-600 bg-emerald-50 hover:bg-emerald-100 px-3 py-1.5 rounded-lg transition-all cursor-pointer">
               Next <ChevronRight className="w-3.5 h-3.5" />
             </button>
           </div>

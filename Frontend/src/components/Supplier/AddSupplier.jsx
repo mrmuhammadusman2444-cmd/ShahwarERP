@@ -145,9 +145,9 @@ const NewCustomer = () => {
 
             <div className="w-full border-t border-blue-50 pt-3 flex flex-col gap-2">
               {[
-                { label: "Rate Type", value: "Not set" },
-                { label: "Scheme", value: "Not set" },
-                { label: "Warehouse", value: "Not set" },
+                { label: "Phone No", value: "Not set" },
+                { label: "Email", value: "Not set" },
+                { label: "Address", value: "Not set" },
               ].map((item) => (
                 <div key={item.label} className="flex items-center justify-between">
                   <span className="text-gray-400 text-xs">{item.label}</span>
