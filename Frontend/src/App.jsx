@@ -26,6 +26,9 @@ import PurchaseApprovalPage from './pages/Approvals/PurchaseApprovalPage.jsx'
 import CustomerPaymentPage from './pages/Approvals/CustomerPaymentPage.jsx'
 import SupplierPaymentPage from './pages/Approvals/SupplierPaymentPage.jsx'
 import AnalyticsPage from './pages/Analytics/AnalyticsPage.jsx'
+import AddSupplierPage from './pages/Supplier/AddSupplierPage.jsx'
+import SupplierLedgerPage from './pages/Supplier/SupplierLedgerPage.jsx'
+import ManageSupplierPage from './pages/Supplier/ManageSupplierPage.jsx'
 
 const App = () => {
   return (
@@ -58,8 +61,10 @@ const App = () => {
         <Route path='/PurchaseApprovalPage' element={<PurchaseApprovalPage />} />
         <Route path='/CustomerPaymentPage' element={<CustomerPaymentPage />} />
         <Route path='/SupplierPaymentPage' element={<SupplierPaymentPage />} />
-
-
+        <Route path='/addSupplierPage' element={<AddSupplierPage />} />
+        <Route path='/addSupplierPage' element={<AddSupplierPage />} />
+        <Route path='/SupplierLedgerPage' element={<SupplierLedgerPage />} />
+        <Route path='/ManageSupplierPage' element={<ManageSupplierPage />} />
         <Route path='/AnalyticsPage' element={<AnalyticsPage />} />
 
 

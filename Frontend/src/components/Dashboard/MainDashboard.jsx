@@ -239,7 +239,7 @@ import React from 'react'
 const MainDashboard = () => {
     const [showSetting, setShowSetting] = useState(false);
     return (
-        <div className="p-4 md:p-5">
+        <div className="p-4 md:p-5 bg-slate-50 h-screen">
             {
                 showSetting == true ? <Setting setShowSetting={setShowSetting} /> : <UserSelectMenu setShowSetting={setShowSetting} />
             }

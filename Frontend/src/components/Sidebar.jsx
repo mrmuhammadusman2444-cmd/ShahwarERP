@@ -52,6 +52,7 @@ const Sidebar = () => {
               className=" cursor-pointer text-slate-100  transition-colors"
               size={20}
             />}
+            
           </div>
           {collapsed && (
             <div className="relative group/tooltip flex justify-center w-full border-t border-slate-900">
