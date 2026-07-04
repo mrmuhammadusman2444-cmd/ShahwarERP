@@ -10,7 +10,7 @@ const ManageOrder = () => {
 
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-4">
-          <div className="w-12 h-12 rounded-2xl bg-linear-to-br from-blue-600 to-blue-700 flex items-center justify-center shadow-md shadow-blue-200">
+          <div className="w-12 h-12 rounded-2xl bg-linear-to-b from-emerald-500 to-emerald-700 flex items-center justify-center shadow-md shadow-blue-200">
             <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
             </svg>
@@ -24,7 +24,7 @@ const ManageOrder = () => {
       </div>
 
       <div className="flex gap-2 mb-5 ">
-        <button onClick={()=>{navigate('/neworderspage')}}  className="flex items-center cursor-pointer gap-2 px-4 py-2.5 bg-linear-to-r from-blue-600 to-blue-700 hover:from-blue-500 hover:to-blue-600 text-white text-sm font-semibold rounded-xl shadow-md shadow-blue-200 transition-all hover:-translate-y-0.5">
+        <button onClick={()=>{navigate('/neworderspage')}}  className="flex items-center cursor-pointer gap-2 px-4 py-2.5 bg-linear-to-r from-emerald-500 to-emerald-700 hover:from-emerald-400 hover:to-emerald-600 text-white text-sm font-semibold rounded-xl shadow-md shadow-blue-200 transition-all hover:-translate-y-0.5">
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
           </svg>
@@ -45,7 +45,7 @@ const ManageOrder = () => {
             <input type="date"
               className="bg-blue-50 border border-blue-100 focus:border-blue-400 focus:bg-white rounded-xl px-3 py-2.5 text-gray-700 text-sm focus:outline-none transition-all" />
           </div>
-          <button className="px-6 py-2.5 bg-linear-to-r cursor-pointer from-blue-600 to-blue-700 hover:from-blue-500 hover:to-blue-600 text-white text-sm font-semibold rounded-xl shadow-md shadow-blue-200 transition-all hover:-translate-y-0.5">
+          <button className="px-6 py-2.5 cursor-pointer bg-linear-to-b from-emerald-500 to-emerald-700 hover:from-emerald-400 hover:to-emerald-600 text-white text-sm font-semibold rounded-xl shadow-md shadow-blue-200 transition-all hover:-translate-y-0.5">
             Find
           </button>
         </div>
@@ -83,8 +83,8 @@ const ManageOrder = () => {
             </div>
           </div>
 
-          <div className="flex items-center gap-2 bg-blue-50 border border-blue-100 rounded-xl px-3 py-2 focus-within:border-blue-400 transition-all">
-            <svg className="w-3.5 h-3.5 text-blue-300 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div className="flex items-center gap-2 bg-emerald-50 border border-emerald-100 rounded-xl px-3 py-2 focus-within:border-emerald-400 transition-all">
+            <svg className="w-3.5 h-3.5 text-emerald-300 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
             </svg>
             <input type="text" placeholder="Search..."
@@ -95,7 +95,7 @@ const ManageOrder = () => {
         <div className="overflow-x-auto">
           <table className="w-full h-81 text-sm border-collapse">
             <thead>
-              <tr className="bg-blue-600 text-white">
+              <tr className="bg-linear-to-b from-emerald-500 to-emerald-700 text-white">
                 <th className="text-left text-xs font-semibold px-4 py-3 whitespace-nowrap">SL.</th>
                 <th className="text-left text-xs font-semibold px-4 py-3 whitespace-nowrap">
                   <div className="flex items-center gap-1">
@@ -181,7 +181,7 @@ const ManageOrder = () => {
           <p className="text-xs text-gray-400">Showing 0 to 0 of 0 entries</p>
           <div className="flex items-center gap-1">
             <button className="px-3 py-1.5 text-xs text-gray-400 bg-white border border-blue-100 rounded-lg hover:border-blue-300 hover:text-blue-600 transition-all">Previous</button>
-            <button className="px-3 py-1.5 text-xs text-white bg-blue-600 rounded-lg">1</button>
+            <button className="px-3 py-1.5 text-xs text-white bg-linear-to-b from-emerald-500 to-emerald-700 rounded-lg">1</button>
             <button className="px-3 py-1.5 text-xs text-gray-400 bg-white border border-blue-100 rounded-lg hover:border-blue-300 hover:text-blue-600 transition-all">Next</button>
           </div>
         </div>

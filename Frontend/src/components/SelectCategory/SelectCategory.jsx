@@ -68,11 +68,11 @@ const CategoryDropdown = ({ value, onChange }) => {
       <button
         type="button"
         onClick={() => setOpen((o) => !o)}
-        className="flex items-center justify-between gap-2 w-44 cursor-pointer bg-blue-50 border border-blue-100 hover:border-blue-300 rounded-full px-4 py-2.5 text-gray-600 text-sm focus:outline-none focus:border-blue-400 transition-all"
+        className="flex items-center justify-between gap-2 w-44 cursor-pointer bg-emerald-50 border border-emerald-100 hover:border-emerald-300 rounded-full px-4 py-2.5 text-gray-600 text-sm focus:outline-none focus:border-emerald-400 transition-all"
       >
         <span className="truncate">{selected.label}</span>
         <svg
-          className={`w-3.5 h-3.5 text-blue-400 shrink-0 transition-transform duration-200 ${open ? "rotate-180" : ""}`}
+          className={`w-3.5 h-3.5 text-emerald-400 shrink-0 transition-transform duration-200 ${open ? "rotate-180" : ""}`}
           fill="none" stroke="currentColor" viewBox="0 0 24 24"
         >
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
@@ -80,11 +80,11 @@ const CategoryDropdown = ({ value, onChange }) => {
       </button>
 
       {open && (
-        <div className="absolute top-[calc(100%+6px)] left-0 z-50  bg-white border border-blue-100 rounded-2xl shadow-lg shadow-blue-100/50 min-w-60">
+        <div className="absolute top-[calc(100%+6px)] left-0 z-50  bg-white border border-emerald-100 rounded-2xl shadow-lg shadow-emerald-100/50 min-w-60">
 
-          <div className="p-2 border-b border-blue-50">
-            <div className="flex items-center gap-2 bg-blue-50 border border-blue-100 rounded-xl px-3 py-2 focus-within:border-blue-400 transition-all">
-              <svg className="w-3.5 h-3.5 text-blue-300 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div className="p-2 border-b border-emerald-50">
+            <div className="flex items-center gap-2 bg-emerald-50 border border-emerald-100 rounded-xl px-3 py-2 focus-within:border-emerald-400 transition-all">
+              <svg className="w-3.5 h-3.5 text-emerald-300 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
               </svg>
               <input
@@ -120,8 +120,8 @@ const CategoryDropdown = ({ value, onChange }) => {
                   }}
                   className={`w-full text-left px-3 py-2 text-xs cursor-pointer rounded-lg mx-1 transition-colors
                     ${cat.value === value
-                      ? "bg-blue-50 text-blue-700 font-semibold"
-                      : "text-gray-600 hover:bg-blue-50 hover:text-blue-600"
+                      ? "bg-emerald-50 text-emerald-700 font-semibold"
+                      : "text-gray-600 hover:bg-emerald-50 hover:text-emerald-600"
                     }`}
                   style={{ width: "calc(100% - 8px)" }}
                 >
