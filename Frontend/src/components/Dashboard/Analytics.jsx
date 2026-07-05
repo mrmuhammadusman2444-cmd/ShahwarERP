@@ -13,16 +13,16 @@ const monthlySalesFull = [
 ];
 
 const topProducts = [
-    { name: 'Cooking Oil 5L', revenue: 890000 },
-    { name: 'Basmati Rice 40kg', revenue: 760000 },
-    { name: 'Chai Patti 1kg', revenue: 690000 },
-    { name: 'Ghee 1kg', revenue: 640000 },
-    { name: 'Sugar 50kg', revenue: 590000 },
-    { name: 'Flour (Atta) 20kg', revenue: 520000 },
-    { name: 'Pulses Mix 10kg', revenue: 470000 },
-    { name: 'Spices Pack', revenue: 410000 },
-    { name: 'Biscuits Carton', revenue: 380000 },
-    { name: 'Juice Pack (24pc)', revenue: 340000 },
+    { name: 'Kabuli Pulao Recipe', revenue: 890000 },
+    { name: 'Bannu Beef Recipe ', revenue: 760000 },
+    { name: 'Achar Gosht Recipe', revenue: 690000 },
+    { name: 'White Karahi Recipe', revenue: 640000 },
+    { name: 'Degi Pulao Recipe', revenue: 590000 },
+    { name: 'Salan Masala', revenue: 520000 },
+    { name: 'Garam Masala', revenue: 470000 },
+    { name: 'Sobat Masala', revenue: 410000 },
+    { name: 'Tarka Masala', revenue: 380000 },
+    { name: 'Jam e Maza', revenue: 340000 },
 ].sort((a, b) => b.revenue - a.revenue);
 
 const customerRevenue = [
@@ -41,12 +41,12 @@ const salesmen = [
 ];
 
 const stockTurnover = [
-    { name: 'Oil', turnover: 8.2 },
-    { name: 'Rice', turnover: 6.5 },
-    { name: 'Tea', turnover: 5.9 },
-    { name: 'Ghee', turnover: 4.1 },
-    { name: 'Sugar', turnover: 3.4 },
-    { name: 'Spices', turnover: 1.2 },
+    { name: 'Salan Masala', turnover: 8.2 },
+    { name: 'Degi Pulao', turnover: 6.5 },
+    { name: 'White Karahi', turnover: 5.9 },
+    { name: 'Bannu Beef ', turnover: 4.1 },
+    { name: 'Achar Gosht', turnover: 3.4 },
+    { name: 'Kabuli Pulao', turnover: 1.2 },
 ];
 
 const agingData = [
@@ -57,12 +57,12 @@ const agingData = [
 ];
 
 const profitMargin = [
-    { category: 'Oil', margin: 18 },
-    { category: 'Rice', margin: 22 },
-    { category: 'Tea', margin: 27 },
-    { category: 'Ghee', margin: 15 },
-    { category: 'Sugar', margin: 9 },
-    { category: 'Spices', margin: 31 },
+    { category: 'Salan Masala', margin: 18 },
+    { category: 'Degi Pulao', margin: 22 },
+    { category: 'White Karahi', margin: 27 },
+    { category: 'Bannu Beef ', margin: 15 },
+    { category: 'Achar Gosht', margin: 9 },
+    { category: 'Kabuli Pulao', margin: 31 },
 ];
 
 const PIE_COLORS = ['#2563EB', '#0EA5E9', '#8B5CF6', '#F59E0B', '#94A3B8'];
@@ -255,7 +255,7 @@ export default function AnalyticsPage() {
                                 width={95}
                             />
                             <Tooltip content={<CustomTooltip formatter={formatRs} />} />
-                            <Bar dataKey="revenue" name="Revenue" fill="#2563EB" radius={[0, 4, 4, 0]} barSize={9} />
+                            <Bar dataKey="revenue" name="Revenue" fill="#2563EB" barSize={9} />
                         </BarChart>
                     </ResponsiveContainer>
                 </ChartCard>
@@ -273,8 +273,8 @@ export default function AnalyticsPage() {
                                 width={24}
                             />
                             <Tooltip content={<CustomTooltip formatter={formatRs} />} />
-                            <Bar dataKey="target" name="Target" fill="#CBD5E1" radius={[3, 3, 0, 0]} barSize={10} />
-                            <Bar dataKey="achieved" name="Achieved" fill="#2563EB" radius={[3, 3, 0, 0]} barSize={10} />
+                            <Bar dataKey="target" name="Target" fill="#CBD5E1" barSize={10} />
+                            <Bar dataKey="achieved" name="Achieved" fill="#2563EB" barSize={10} />
                         </BarChart>
                     </ResponsiveContainer>
                 </ChartCard>
@@ -283,10 +283,10 @@ export default function AnalyticsPage() {
                     <ResponsiveContainer width="100%" height="100%" className="flex-1">
                         <BarChart data={stockTurnover} margin={{ top: 5, right: 5, left: 0, bottom: 0 }}>
                             <CartesianGrid strokeDasharray="3 3" stroke="#F1F5F9" vertical={false} />
-                            <XAxis dataKey="name" tick={{ fontSize: 9, fill: '#64748B' }} axisLine={false} tickLine={false} interval={0} />
+                            <XAxis dataKey="name" tick={{ fontSize: 7, fill: '#64748B' }} axisLine={false} tickLine={false} interval={0} />
                             <YAxis tick={{ fontSize: 9, fill: '#94A3B8' }} axisLine={false} tickLine={false} width={20} />
                             <Tooltip content={<CustomTooltip formatter={(v) => `${v}x/month`} />} />
-                            <Bar dataKey="turnover" name="Turnover" radius={[3, 3, 0, 0]} barSize={16}>
+                            <Bar dataKey="turnover" name="Turnover" barSize={16}>
                                 {stockTurnover.map((entry, i) => (
                                     <Cell key={i} fill={entry.turnover < 2 ? '#EF4444' : entry.turnover < 5 ? '#F59E0B' : '#10B981'} />
                                 ))}
@@ -308,7 +308,7 @@ export default function AnalyticsPage() {
                                 width={24}
                             />
                             <Tooltip content={<CustomTooltip formatter={formatRs} />} />
-                            <Bar dataKey="amount" name="Pending" radius={[3, 3, 0, 0]} barSize={22}>
+                            <Bar dataKey="amount" name="Pending" barSize={22}>
                                 {agingData.map((entry, i) => (
                                     <Cell key={i} fill={['#10B981', '#F59E0B', '#F97316', '#EF4444'][i]} />
                                 ))}
@@ -323,10 +323,10 @@ export default function AnalyticsPage() {
                 <ResponsiveContainer width="100%" height={90}>
                     <BarChart data={profitMargin} layout="vertical" margin={{ top: 0, right: 20, left: 0, bottom: 0 }} barCategoryGap={6}>
                         <CartesianGrid strokeDasharray="3 3" stroke="#F1F5F9" horizontal={false} />
-                        <XAxis type="number" tick={{ fontSize: 9, fill: '#94A3B8' }} axisLine={false} tickLine={false} tickFormatter={(v) => `${v}%`} />
-                        <YAxis type="category" dataKey="category" tick={{ fontSize: 9.5, fill: '#475569' }} axisLine={false} tickLine={false} width={45} />
+                        <XAxis type="number" tick={{ fontSize: 7, fill: '#94A3B8' }} axisLine={false} tickLine={false} tickFormatter={(v) => `${v}%`} />
+                        <YAxis type="category" dataKey="category" tick={{ fontSize: 7, fill: '#475569' }} axisLine={false} tickLine={false} width={45} />
                         <Tooltip content={<CustomTooltip formatter={(v) => `${v}%`} />} />
-                        <Bar dataKey="margin" name="Margin" fill="#8B5CF6" radius={[0, 3, 3, 0]} barSize={8} />
+                        <Bar dataKey="margin" name="Margin" fill="#8B5CF6" barSize={8} />
                     </BarChart>
                 </ResponsiveContainer>
             </ChartCard>
