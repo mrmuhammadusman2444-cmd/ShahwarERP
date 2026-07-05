@@ -116,7 +116,7 @@ export default function AnalyticsPage() {
             {/* Header */}
             <div className="flex items-center justify-between mb-3 shrink-0">
                 <div className="flex items-center gap-2.5">
-                    <div className="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center">
+                    <div className="w-8 h-8 rounded-lg bg-emerald-600 flex items-center justify-center">
                         <TrendingUp className="w-4 h-4 text-white" />
                     </div>
                     <div>
@@ -129,7 +129,7 @@ export default function AnalyticsPage() {
                     {['Today', 'Week', 'Month', 'Custom'].map((r) => (
                         <button
                             key={r}
-                            className="text-[11px] px-2.5 py-1 rounded-md text-slate-500 hover:bg-slate-50 transition-colors flex items-center gap-1"
+                            className="text-[11px] px-2.5 py-1 rounded-md text-slate-500 hover:bg-slate-100 cursor-pointer transition-colors flex items-center gap-1"
                         >
                             {r === 'Custom' && <Calendar className="w-3 h-3" />}
                             {r}
@@ -146,12 +146,12 @@ export default function AnalyticsPage() {
                     subtitle={`Last ${range === '3M' ? '3' : '6'} months`}
                     className="col-span-2 flex flex-col"
                     headerExtra={
-                        <div className="flex items-center gap-0.5 bg-slate-50 border border-slate-200 rounded-md p-0.5 shrink-0">
+                        <div className="flex items-center gap-0.5 bg-slate-50 border cursor-pointer border-slate-200 rounded-md p-0.5 shrink-0">
                             {['3M', '6M'].map((r) => (
                                 <button
                                     key={r}
                                     onClick={() => setRange(r)}
-                                    className={`text-[10px] px-2 py-0.5 rounded transition-colors ${range === r ? 'bg-blue-600 text-white' : 'text-slate-500 hover:bg-white'
+                                    className={`text-[10px] px-2 py-0.5 rounded cursor-pointer transition-colors ${range === r ? 'bg-emerald-600 text-white' : 'text-slate-500 hover:bg-white'
                                         }`}
                                 >
                                     {r}

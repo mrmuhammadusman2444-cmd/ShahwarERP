@@ -29,6 +29,8 @@ import AnalyticsPage from './pages/Analytics/AnalyticsPage.jsx'
 import AddSupplierPage from './pages/Supplier/AddSupplierPage.jsx'
 import SupplierLedgerPage from './pages/Supplier/SupplierLedgerPage.jsx'
 import ManageSupplierPage from './pages/Supplier/ManageSupplierPage.jsx'
+import SupplierAdvancePage from './pages/Supplier/SupplierAdvancePage.jsx'
+import AddPurchasePage from './pages/Purchase/AddPurchasePage.jsx'
 
 const App = () => {
   return (
@@ -65,7 +67,9 @@ const App = () => {
         <Route path='/addSupplierPage' element={<AddSupplierPage />} />
         <Route path='/SupplierLedgerPage' element={<SupplierLedgerPage />} />
         <Route path='/ManageSupplierPage' element={<ManageSupplierPage />} />
+        <Route path='/SupplierAdvancePage' element={<SupplierAdvancePage />} />
         <Route path='/AnalyticsPage' element={<AnalyticsPage />} />
+        <Route path='/AddPurchasePage' element={<AddPurchasePage />} />
 
 
 

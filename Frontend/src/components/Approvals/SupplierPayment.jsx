@@ -8,7 +8,7 @@ const SupplierPayment = () => {
 
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-linear-to-br from-blue-600 to-blue-700 flex items-center justify-center shadow-md shadow-blue-200">
+          <div className="w-10 h-10 rounded-xl bg-linear-to-br from-emerald-600 to-emerald-700 flex items-center justify-center shadow-md shadow-blue-200">
             <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
             </svg>
@@ -23,9 +23,9 @@ const SupplierPayment = () => {
 
       <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-4">
 
-        <div className="bg-white border border-amber-100 rounded-xl shadow-sm p-3.5 flex items-center gap-3">
-          <div className="w-9 h-9 rounded-lg bg-amber-50 flex items-center justify-center shrink-0">
-            <svg className="w-4.5 h-4.5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div className="bg-white border border-emerald-100 rounded-xl shadow-sm p-3.5 flex items-center gap-3">
+          <div className="w-9 h-9 rounded-lg bg-emerald-50 flex items-center justify-center shrink-0">
+            <svg className="w-4.5 h-4.5 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
           </div>
@@ -35,9 +35,9 @@ const SupplierPayment = () => {
           </div>
         </div>
 
-        <div className="bg-white border border-blue-100 rounded-xl shadow-sm p-3.5 flex items-center gap-3">
-          <div className="w-9 h-9 rounded-lg bg-blue-50 flex items-center justify-center shrink-0">
-            <svg className="w-4.5 h-4.5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div className="bg-white border border-emerald-100 rounded-xl shadow-sm p-3.5 flex items-center gap-3">
+          <div className="w-9 h-9 rounded-lg bg-emerald-50 flex items-center justify-center shrink-0">
+            <svg className="w-4.5 h-4.5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
           </div>
@@ -47,9 +47,9 @@ const SupplierPayment = () => {
           </div>
         </div>
 
-        <div className="hidden sm:flex bg-white border border-green-100 rounded-xl shadow-sm p-3.5 items-center gap-3">
-          <div className="w-9 h-9 rounded-lg bg-green-50 flex items-center justify-center shrink-0">
-            <svg className="w-4.5 h-4.5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div className="hidden sm:flex bg-white border border-emerald-100 rounded-xl shadow-sm p-3.5 items-center gap-3">
+          <div className="w-9 h-9 rounded-lg bg-emerald-50 flex items-center justify-center shrink-0">
+            <svg className="w-4.5 h-4.5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
             </svg>
           </div>
@@ -61,9 +61,9 @@ const SupplierPayment = () => {
 
       </div>
 
-      <div className="bg-white border border-blue-100 rounded-2xl shadow-sm overflow-hidden">
+      <div className="bg-white border border-emerald-100 rounded-2xl shadow-sm overflow-hidden">
 
-        <div className="px-5 py-4 border-b border-blue-50 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+        <div className="px-5 py-4 border-b border-emerald-50 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
           <div>
             <h2 className="text-gray-800 text-base font-bold">Shahwar Foods</h2>
             <p className="text-gray-400 text-xs">Near PSO Depot, D I KHAN Road, Bannu KPK</p>
@@ -79,7 +79,7 @@ const SupplierPayment = () => {
         <div className="overflow-x-auto">
           <table className="w-full text-sm border-collapse">
             <thead>
-              <tr className="bg-blue-600 text-white">
+              <tr className="bg-emerald-600 text-white">
                 <th className="w-[11%] text-left text-xs font-semibold px-4 py-3 whitespace-nowrap">Date</th>
                 <th className="w-[12%] text-left text-xs font-semibold px-4 py-3 whitespace-nowrap">Invoice No</th>
                 <th className="w-[14%] text-left text-xs font-semibold px-4 py-3">Supplier Name</th>
@@ -111,14 +111,14 @@ const SupplierPayment = () => {
                     <td className="px-4 py-3 text-gray-600 text-xs whitespace-nowrap">{SupplierPayment.date}</td>
 
                     <td className="px-4 py-3 whitespace-nowrap">
-                      <span className="bg-blue-50 text-blue-700 text-xs font-semibold px-2 py-1 rounded-md">
+                      <span className="bg-emerald-50 text-emerald-700 text-xs font-semibold px-2 py-1 rounded-md">
                         #{SupplierPayment.SupplierPaymentNo}
                       </span>
                     </td>
 
                     <td className="px-4 py-3">
                       <div className="flex items-center gap-2.5">
-                        <div className="w-7 h-7 rounded-full bg-blue-100 text-blue-600 text-xs font-bold flex items-center justify-center shrink-0">
+                        <div className="w-7 h-7 rounded-full bg-emerald-100 text-emerald-600 text-xs font-bold flex items-center justify-center shrink-0">
                           {SupplierPayment.supplierName ? SupplierPayment.supplierName.charAt(0).toUpperCase() : "?"}
                         </div>
                         <div className="min-w-0">
@@ -142,7 +142,7 @@ const SupplierPayment = () => {
                       <div className="flex items-center justify-center gap-1.5">
                         <button
                           title="Approve"
-                          className="flex items-center gap-1 px-2.5 py-1.5 bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors shadow-sm">
+                          className="flex items-center gap-1 px-2.5 py-1.5 bg-emerald-600 hover:bg-emerald-700 rounded-lg transition-colors shadow-sm">
                           <svg className="w-3.5 h-3.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                           </svg>
@@ -166,10 +166,10 @@ const SupplierPayment = () => {
         </div>
 
         {SupplierPayment.length > 0 && (
-          <div className="px-5 py-3 border-t border-blue-50 bg-blue-50/30 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
+          <div className="px-5 py-3 border-t border-emerald-50 bg-emerald-50/30 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
             <p className="text-xs text-gray-400">Total SupplierPayment: <span className="font-semibold text-gray-600">{SupplierPayment.length}</span></p>
             <p className="text-xs text-gray-500 font-semibold">
-              Total Amount: <span className="text-blue-700">Rs. {totalAmount.toLocaleString()}</span>
+              Total Amount: <span className="text-emerald-700">Rs. {totalAmount.toLocaleString()}</span>
             </p>
           </div>
         )}

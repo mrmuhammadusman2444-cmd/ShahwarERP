@@ -10,7 +10,7 @@ export default function ManageSupplier() {
 
       <div className="flex items-center justify-between mb-3.5 flex-wrap gap-2.5">
         <div className="flex items-center gap-2.5">
-          <div className="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center shrink-0">
+          <div className="w-8 h-8 rounded-lg bg-emerald-600 flex items-center justify-center shrink-0">
             <ClipboardList className="w-4 h-4 text-white" />
           </div>
           <div>
@@ -25,11 +25,11 @@ export default function ManageSupplier() {
       </div>
 
       <div className="flex items-center gap-2.5 flex-wrap mb-3.5">
-        <button onClick={()=>{navigate('/addsupplierpage')}} className="flex items-center gap-1.5  cursor-pointer bg-sky-500 hover:bg-sky-600 text-white text-[12.5px] font-semibold rounded-lg px-4 py-2.5 shadow-sm shadow-sky-200 transition-colors">
+        <button onClick={()=>{navigate('/addsupplierpage')}} className="flex items-center gap-1.5  cursor-pointer bg-emerald-500 hover:bg-emerald-600 text-white text-[12.5px] font-semibold rounded-lg px-4 py-2.5 shadow-sm shadow-emerald-200 transition-colors">
           <Plus className="w-4 h-4" />
           Add Supplier
         </button>
-        <button onClick={()=>{navigate('/supplierledgerpage')}} className="flex items-center gap-1.5 cursor-pointer bg-blue-600 hover:bg-blue-700 text-white text-[12.5px] font-semibold rounded-lg px-4 py-2.5 shadow-sm shadow-blue-200 transition-colors">
+        <button onClick={()=>{navigate('/supplierledgerpage')}} className="flex items-center gap-1.5 cursor-pointer bg-emerald-600 hover:bg-emerald-700 text-white text-[12.5px] font-semibold rounded-lg px-4 py-2.5 shadow-sm shadow-emerald-200 transition-colors">
           <BookOpen className="w-4 h-4" />
           Supplier Ledger
         </button>
@@ -74,7 +74,7 @@ export default function ManageSupplier() {
               <FileBarChart className="w-3 h-3" />
               PDF
             </button>
-            <button className="flex items-center gap-1 cursor-pointer bg-blue-600 hover:bg-blue-700 text-white text-[11px] font-semibold rounded-md px-2.5 py-1.5 transition-colors">
+            <button className="flex items-center gap-1 cursor-pointer bg-emerald-600 hover:bg-emerald-700 text-white text-[11px] font-semibold rounded-md px-2.5 py-1.5 transition-colors">
               <Printer className="w-3 h-3" />
               Print
             </button>
@@ -92,7 +92,7 @@ export default function ManageSupplier() {
         <div className="overflow-x-auto">
           <table className="w-full text-left h-110">
             <thead>
-              <tr className="bg-blue-500">
+              <tr className="bg-emerald-500">
                 <th className="text-[14px] font-semibold text-slate-100 uppercase tracking-wide px-4 py-2.5">SL.</th>
                 <th className="text-[14px] font-semibold text-slate-100 uppercase tracking-wide px-4 py-2.5">
                   <div className="flex items-center gap-1 cursor-pointer">
@@ -117,7 +117,7 @@ export default function ManageSupplier() {
           <span>Showing 1 to   entries</span>
           <div className="flex items-center gap-1.5">
             <button className="border border-slate-200 rounded-md px-2.5 py-1 hover:bg-slate-50 transition-colors">Previous</button>
-            <button className="bg-blue-600 text-white rounded-md px-2.5 py-1">1</button>
+            <button className="bg-emerald-600 text-white rounded-md px-2.5 py-1">1</button>
             <button className="border border-slate-200 rounded-md px-2.5 py-1 hover:bg-slate-50 transition-colors">Next</button>
           </div>
         </div>

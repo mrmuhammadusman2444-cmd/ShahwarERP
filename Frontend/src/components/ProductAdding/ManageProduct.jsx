@@ -4,7 +4,7 @@ const ManageProduct = () => {
 
             <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-linear-to-br from-blue-600 to-blue-700 flex items-center justify-center shadow-md shadow-blue-200">
+                    <div className="w-10 h-10 rounded-xl bg-linear-to-br from-emerald-600 to-emerald-700 flex items-center justify-center shadow-md shadow-emerald-200">
                         <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
                         </svg>
@@ -17,17 +17,17 @@ const ManageProduct = () => {
 
             </div>
 
-            <div className="bg-white border border-blue-100 rounded-2xl shadow-sm overflow-hidden">
+            <div className="bg-white border border-emerald-100 rounded-2xl shadow-sm overflow-hidden">
 
-                <div className="px-4 py-3 border-b border-blue-50">
+                <div className="px-4 py-3 border-b border-emerald-50">
                     <h2 className="text-gray-700 text-sm font-bold">Manage Product</h2>
                 </div>
 
-                <div className="flex flex-wrap items-center justify-between gap-3 px-4 py-3 border-b border-blue-50">
+                <div className="flex flex-wrap items-center justify-between gap-3 px-4 py-3 border-b border-emerald-50">
 
                     <div className="flex items-center gap-2">
                         <span className="text-gray-500 text-xs">Show</span>
-                        <select className="bg-blue-50 border border-blue-100 focus:border-blue-400 focus:bg-white rounded-lg px-2 py-1 text-gray-700 text-xs focus:outline-none cursor-pointer appearance-none">
+                        <select className="bg-emerald-50 border border-emerald-100 focus:border-emerald-400 focus:bg-white rounded-lg px-2 py-1 text-gray-700 text-xs focus:outline-none cursor-pointer appearance-none">
                             <option>10</option>
                             <option>25</option>
                             <option>50</option>
@@ -51,8 +51,8 @@ const ManageProduct = () => {
                         ))}
                     </div>
 
-                    <div className="flex items-center gap-2 bg-blue-50 border border-blue-100 rounded-xl px-3 py-2 focus-within:border-blue-400 transition-all">
-                        <svg className="w-3.5 h-3.5 text-blue-300 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div className="flex items-center gap-2 bg-emerald-50 border border-emerald-100 rounded-xl px-3 py-2 focus-within:border-emerald-400 transition-all">
+                        <svg className="w-3.5 h-3.5 text-emerald-300 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                         </svg>
                         <input type="text" placeholder="Search..."
@@ -64,7 +64,7 @@ const ManageProduct = () => {
                 <div className="overflow-x-auto">
                     <table className="w-full text-sm h-118">
                         <thead>
-                            <tr className="bg-blue-700 border-b border-blue-100">
+                            <tr className="bg-emerald-700 border-b border-emerald-100">
                                 <th className="text-left text-gray-100 font-bold px-4 py-2.5 whitespace-nowrap">SL.</th>
                                 <th className="text-left text-gray-100 font-bold px-4 py-2.5 whitespace-nowrap">
                                     <div className="flex items-center gap-1">
@@ -88,8 +88,8 @@ const ManageProduct = () => {
                             <tr>
                                 <td colSpan={10} className="text-center py-14">
                                     <div className="flex flex-col items-center gap-2">
-                                        <div className="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center">
-                                            <svg className="w-5 h-5 text-blue-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <div className="w-10 h-10 rounded-xl bg-emerald-50 flex items-center justify-center">
+                                            <svg className="w-5 h-5 text-emerald-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
                                             </svg>
                                         </div>
@@ -101,13 +101,13 @@ const ManageProduct = () => {
                     </table>
                 </div>
 
-                <div className="flex flex-wrap items-center justify-between gap-3 px-4 py-3 border-t border-blue-50">
+                <div className="flex flex-wrap items-center justify-between gap-3 px-4 py-3 border-t border-emerald-50">
                     <p className="text-gray-400 text-xs">Showing 0 to 0 of 0 entries</p>
                     <div className="flex items-center gap-1">
-                        <button type="button" className="px-3 py-1.5 bg-blue-50 hover:bg-blue-100 text-gray-500 text-xs font-semibold rounded-lg transition-all cursor-pointer border border-blue-100">
+                        <button type="button" className="px-3 py-1.5 bg-emerald-50 hover:bg-emerald-100 text-gray-500 text-xs font-semibold rounded-lg transition-all cursor-pointer border border-emerald-100">
                             Previous
                         </button>
-                        <button type="button" className="px-3 py-1.5 bg-blue-50 hover:bg-blue-100 text-gray-500 text-xs font-semibold rounded-lg transition-all cursor-pointer border border-blue-100">
+                        <button type="button" className="px-3 py-1.5 bg-emerald-50 hover:bg-emerald-100 text-gray-500 text-xs font-semibold rounded-lg transition-all cursor-pointer border border-emerald-100">
                             Next
                         </button>
                     </div>

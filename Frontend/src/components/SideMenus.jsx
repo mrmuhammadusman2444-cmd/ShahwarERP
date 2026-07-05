@@ -59,7 +59,15 @@ const SideMenus = ({ collapsed }) => {
 
     return (
         <div>
-
+            <style>{`
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+`}</style>
             {!collapsed && (
                 <div className="px-2 pt-2.5 pb-2">
                     <div className="flex  items-center gap-2 h-8.75 rounded-full px-1.5 border  bg-slate-800 cursor-text">
@@ -208,7 +216,7 @@ const SideMenus = ({ collapsed }) => {
                         )}
                     </div>
                 )} */}
-{/* 
+                {/* 
                 {menuMatches('Invoices', []) && (
 
                     <div onMouseEnter={setTip} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer  hover:bg-emerald-800  transition-all mb-px ${collapsed ? 'justify-start' : ''}`}>
@@ -510,22 +518,22 @@ const SideMenus = ({ collapsed }) => {
                         className="ml-7 border-l border-slate-700 pl-3 flex flex-col gap-0.5 overflow-hidden"
                     >
                         {subMatches('Invoice Approval') && (
-                            <div onClick={()=>{navigate('/addsupplierpage')}} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                            <div onClick={() => { navigate('/addsupplierpage') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                                 Add New Supplier
                             </div>
                         )}
                         {subMatches('Purchase Approval') && (
-                            <div onClick={()=>{navigate('/managesupplierpage')}} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                            <div onClick={() => { navigate('/managesupplierpage') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                                 Manage Supplier
                             </div>
                         )}
                         {subMatches('Customer Payment') && (
-                            <div onClick={()=>{navigate('/supplierledgerpage')}} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                            <div onClick={() => { navigate('/supplierledgerpage') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                                 Supplier Ledger
                             </div>
                         )}
                         {subMatches('Supplier Payment') && (
-                            <div className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                            <div onClick={() => { navigate('/supplieradvancepage') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                                 Supplier Advance
                             </div>
                         )}
@@ -558,7 +566,7 @@ const SideMenus = ({ collapsed }) => {
                         className="ml-7 border-l border-slate-700 pl-3 flex flex-col gap-0.5 overflow-hidden"
                     >
                         {subMatches('Add Purchase') && (
-                            <div className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                            <div onClick={() => { navigate('/addpurchasepage') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                                 Add Purchase
                             </div>
                         )}
@@ -622,7 +630,7 @@ const SideMenus = ({ collapsed }) => {
                     </div>
                 )}
 
-                {menuMatches('Stock', ['New Finish Product', 'Manage Finish Product', 'Finish Product Stock']) && (
+                {menuMatches('Stock', ['Finish Stock', 'Raw Material Stock', 'Reel Stock', 'Beverage Stock', 'Tea Stock', 'Out of Stock', 'Raw Packing Stock', ' Assign User to Stock']) && (
 
                     <div onMouseEnter={setTip} onClick={() => setstockOpen(!stockOpen)} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer  hover:bg-emerald-800 transition-all mb-px ${collapsed ? 'justify-start' : ''}`}>
                         <Blocks className="text-slate-100 shrink-0   group-hover:translate-x-1.5 transition-transform duration-300" size={23} />
@@ -638,26 +646,60 @@ const SideMenus = ({ collapsed }) => {
                 {!collapsed && (
                     <div
                         style={{
-                            maxHeight: (warehouseOpen || isSearching) ? '200px' : '0px',
-                            opacity: (warehouseOpen || isSearching) ? 1 : 0,
-                            transform: (warehouseOpen || isSearching) ? 'translateY(0px)' : 'translateY(-8px)',
+                            maxHeight: (stockOpen || isSearching) ? '340px' : '0px',
+                            opacity: (stockOpen || isSearching) ? 1 : 0,
+                            transform: (stockOpen || isSearching) ? 'translateY(0px)' : 'translateY(-8px)',
                             transition: 'max-height 0.5s cubic-bezier(0.16,1,0.3,1), opacity 0.4s cubic-bezier(0.16,1,0.3,1), transform 0.4s cubic-bezier(0.16,1,0.3,1)'
                         }}
-                        className="ml-7 border-l border-slate-700 pl-3 flex flex-col gap-0.5 overflow-hidden"
+
+                        className="ml-7 border-l border-slate-700 pl-3 flex flex-col gap-0.5 overflow-y-auto no-scrollbar"
+
                     >
-                        {subMatches('New Finish Product') && (
+
+                        {subMatches('Finish Stock') && (
                             <div className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
-                                New Finish Product
+                                Finish Stock
                             </div>
                         )}
-                        {subMatches('Manage Finish Product') && (
+                        {subMatches('Raw Material Stock') && (
                             <div className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
-                                Manage Finish Product
+                                Raw Material Stock
                             </div>
                         )}
-                        {subMatches('Finish Product Stock') && (
+                        {subMatches(' Reel Stock') && (
                             <div className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
-                                Finish Product Stock
+                                Reel Stock
+                            </div>
+
+                        )}
+                        {subMatches(' Beverage Stock') && (
+
+                            <div className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                                Beverage Stock
+                            </div>
+                        )}
+                        {subMatches(' Tea Stock') && (
+
+                            <div className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                                Tea Stock
+                            </div>
+                        )}
+                        {subMatches(' Raw Packing Stock') && (
+
+                            <div className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                                Raw Packing Stock
+                            </div>
+                        )}
+                        {subMatches(' Out of Stock') && (
+
+                            <div className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                                Out of Stock
+                            </div>
+                        )}
+                        {subMatches('  Assign User to Stock') && (
+
+                            <div className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                                Assign User to Stock
                             </div>
                         )}
                     </div>
