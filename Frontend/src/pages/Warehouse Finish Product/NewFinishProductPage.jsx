@@ -3,14 +3,14 @@ import Sidebar from '../../components/Sidebar.jsx'
 import NewFinishProduct from '../../components/Warehouse finish Product/NewFinishProduct.jsx'
 const NewFinishProductPage = () => {
   return (
- <div className='flex'>
+    <div className='flex'>
 
-            <Sidebar />
-            <div className='flex-1'>
-                <NewFinishProduct />
-            </div>
+      <Sidebar />
+      <div className='flex-1'>
+        <NewFinishProduct />
+      </div>
 
-        </div>
+    </div>
   )
 }
 

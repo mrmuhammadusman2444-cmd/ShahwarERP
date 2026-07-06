@@ -36,6 +36,7 @@ import AddPurchaseOrderPage from './pages/Purchase/AddPurchaseOrderPage.jsx'
 import ManagePurchaseOrderPage from './pages/Purchase/ManagePurchaseOrderPage.jsx'
 import NewFinishProductPage from './pages/Warehouse Finish Product/NewFinishProductPage.jsx'
 import ManageFinishProductPage from './pages/Warehouse Finish Product/ManageFinishProductPage.jsx'
+import FinishStockPage from './pages/Warehouse Finish Product/FinishStockPage.jsx'
 
 const App = () => {
   return (
@@ -80,6 +81,7 @@ const App = () => {
         <Route path='/ManagePurchaseOrder' element={<ManagePurchaseOrderPage />} />
         <Route path='/NewFinishProductPage' element={<NewFinishProductPage />} />
         <Route path='/ManageFinishProductPage' element={<ManageFinishProductPage />} />
+        <Route path='/FinishStock' element={<FinishStockPage />} />
 
 
 

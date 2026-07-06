@@ -623,7 +623,7 @@ const SideMenus = ({ collapsed }) => {
                             </div>
                         )}
                         {subMatches('Finish Product Stock') && (
-                            <div className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                            <div onClick={() => { navigate('/finishstock') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                                 Finish Product Stock
                             </div>
                         )}

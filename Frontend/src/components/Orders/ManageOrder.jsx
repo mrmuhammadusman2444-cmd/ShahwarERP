@@ -16,8 +16,8 @@ const ManageOrder = () => {
             </svg>
           </div>
           <div>
-            <h1 className="text-gray-800 text-xl font-bold">Manage Purchases</h1>
-            <p className="text-gray-400 text-xs">Manage your Purchase</p>
+            <h1 className="text-gray-800 text-xl font-bold">Manage Orders</h1>
+            <p className="text-gray-400 text-xs">Manage your Orders</p>
           </div>
         </div>
 
@@ -173,13 +173,12 @@ const ManageOrder = () => {
           </table>
         </div>
 
-        {/* Pagination */}
         <div className="px-5 py-3 border-t border-blue-50 flex flex-col sm:flex-row items-center justify-between gap-3 bg-blue-50/30">
           <p className="text-xs text-gray-400">Showing 0 to 0 of 0 entries</p>
           <div className="flex items-center gap-1">
-            <button className="px-3 py-1.5 text-xs text-gray-400 bg-white border border-blue-100 rounded-lg hover:border-blue-300 hover:text-blue-600 transition-all">Previous</button>
+            <button className="px-3 py-1.5 text-xs text-gray-400 bg-white border border-blue-100 rounded-lg hover:border-emerald-300 hover:text-emerald-600 transition-all">Previous</button>
             <button className="px-3 py-1.5 text-xs text-white bg-linear-to-b from-emerald-500 to-emerald-700 rounded-lg">1</button>
-            <button className="px-3 py-1.5 text-xs text-gray-400 bg-white border border-blue-100 rounded-lg hover:border-blue-300 hover:text-blue-600 transition-all">Next</button>
+            <button className="px-3 py-1.5 text-xs text-gray-400 bg-white border border-blue-100 rounded-lg hover:border-emerald-300 hover:text-emerald-600 transition-all">Next</button>
           </div>
         </div>
 

@@ -1,8 +1,10 @@
 import React from 'react'
 import SelectCategory from '../../components/SelectCategory/SelectCategory.jsx'
+import { useNavigate } from 'react-router-dom'
 
 
 const NewFinishProduct = () => {
+    const navigate = useNavigate();
     const products = [];
     const selectedItems = [];
 
@@ -14,7 +16,7 @@ const NewFinishProduct = () => {
                 <button className="px-6 py-2 rounded-lg bg-linear-to-b from-emerald-500 to-emerald-700 cursor-pointer text-white text-sm font-semibold shadow-md shadow-emerald-200 transition-all">
                     New Finish Product
                 </button>
-                <button className="px-6 py-2 rounded-lg cursor-pointer text-emerald-500 text-sm font-medium hover:bg-emerald-100 transition-all">
+                <button onClick={()=>{navigate('/managefinishproductpage')}}  className="px-6 py-2 rounded-lg cursor-pointer text-emerald-500 text-sm font-medium hover:bg-emerald-100 transition-all">
                     Manage Finish Product
                 </button>
             </div>

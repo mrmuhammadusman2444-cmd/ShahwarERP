@@ -12,7 +12,7 @@ const UserSelectMenu = ({ setShowSetting }) => {
         <div className="absolute top-4 right-4 sm:right-6 md:right-8 lg:right-10 xl:right-12 2xl:right-14 z-50        ">
             <div
                 onClick={() => setProfileOpen(!profileOpen)}
-                className="flex items-center gap-2.5 px-2 py-1.5 rounded-full cursor-pointer  bg-slate-300 hover:bg-slate-200 transition-all duration-200   "
+                className="flex items-center gap-2.5 px-2 py-1.5 rounded-full cursor-pointer  border border-emerald-800 hover:bg-slate-200 transition-all duration-200   "
             >
                 <div className="relative">
                     <div className="w-9 h-9 rounded-full bg-blue-500 flex items-center justify-center text-white text-[13px] font-semibold ring-2 ring-white shadow-sm">

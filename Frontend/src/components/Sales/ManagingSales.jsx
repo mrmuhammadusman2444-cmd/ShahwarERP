@@ -1,8 +1,8 @@
-import { useNavigate} from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 
 const ManageSale = () => {
-  let navigate=useNavigate()
+  let navigate = useNavigate()
   const sales = [];
 
   return (
@@ -23,15 +23,7 @@ const ManageSale = () => {
 
       </div>
 
-      <div className="flex gap-2 mb-5 ">
-        <button onClick={()=>{navigate('/newSale')}} className="flex items-center cursor-pointer gap-2 px-4 py-2.5 bg-linear-to-b from-emerald-500 to-emerald-700 hover:from-emerald-400 hover:to-emerald-600 text-white text-sm font-semibold rounded-xl shadow-md shadow-emerald-200 transition-all hover:-translate-y-0.5">
-          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-          </svg>
-          New Sale
-        </button>
-      
-      </div>
+
 
       <div className="bg-white border border-emerald-100 rounded-2xl shadow-sm p-4 mb-4">
         <div className="flex flex-col sm:flex-row items-start sm:items-end gap-3">
@@ -47,6 +39,12 @@ const ManageSale = () => {
           </div>
           <button className="px-6 py-2.5 cursor-pointer bg-linear-to-b from-emerald-500 to-emerald-700 hover:from-emerald-400 hover:to-emerald-600 text-white text-sm font-semibold rounded-xl shadow-md shadow-emerald-200 transition-all hover:-translate-y-0.5">
             Find
+          </button>
+          <button onClick={() => { navigate('/newSale') }} className="flex items-center cursor-pointer gap-2 px-4 py-2.5 bg-linear-to-b from-emerald-500 to-emerald-700 hover:from-emerald-400 hover:to-emerald-600 text-white text-sm font-semibold rounded-xl shadow-md shadow-emerald-200 transition-all hover:-translate-y-0.5">
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+            </svg>
+            New Sale
           </button>
         </div>
       </div>
@@ -92,11 +90,11 @@ const ManageSale = () => {
           </div>
         </div>
 
-        <div className="overflow-x-auto">
-          <table className="w-full h-81 text-sm border-collapse">
+        <div className="overflow-x-auto h-97 ">
+          <table className="w-full text-sm border-collapse">
             <thead>
               <tr className="bg-linear-to-b from-emerald-500 to-emerald-700 text-white">
-                <th className="text-left text-xs font-semibold px-4 py-3 whitespace-nowrap">SL.</th>
+                <th className="text-left text-xs font-semibold px-4 py-3 whitespace-nowrap">SL</th>
                 <th className="text-left text-xs font-semibold px-4 py-3 whitespace-nowrap">
                   <div className="flex items-center gap-1">
                     Invoice No
@@ -176,7 +174,6 @@ const ManageSale = () => {
           </table>
         </div>
 
-        {/* Pagination */}
         <div className="px-5 py-3 border-t border-blue-50 flex flex-col sm:flex-row items-center justify-between gap-3 bg-blue-50/30">
           <p className="text-xs text-gray-400">Showing 0 to 0 of 0 entries</p>
           <div className="flex items-center gap-1">
