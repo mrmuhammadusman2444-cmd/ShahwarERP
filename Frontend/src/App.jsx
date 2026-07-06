@@ -31,6 +31,11 @@ import SupplierLedgerPage from './pages/Supplier/SupplierLedgerPage.jsx'
 import ManageSupplierPage from './pages/Supplier/ManageSupplierPage.jsx'
 import SupplierAdvancePage from './pages/Supplier/SupplierAdvancePage.jsx'
 import AddPurchasePage from './pages/Purchase/AddPurchasePage.jsx'
+import ManagePurchasePage from './pages/Purchase/ManagePurchasePage.jsx'
+import AddPurchaseOrderPage from './pages/Purchase/AddPurchaseOrderPage.jsx'
+import ManagePurchaseOrderPage from './pages/Purchase/ManagePurchaseOrderPage.jsx'
+import NewFinishProductPage from './pages/Warehouse Finish Product/NewFinishProductPage.jsx'
+import ManageFinishProductPage from './pages/Warehouse Finish Product/ManageFinishProductPage.jsx'
 
 const App = () => {
   return (
@@ -70,6 +75,11 @@ const App = () => {
         <Route path='/SupplierAdvancePage' element={<SupplierAdvancePage />} />
         <Route path='/AnalyticsPage' element={<AnalyticsPage />} />
         <Route path='/AddPurchasePage' element={<AddPurchasePage />} />
+        <Route path='/ManagePurchasePage' element={<ManagePurchasePage />} />
+        <Route path='/AddPurchaseOrderPage' element={<AddPurchaseOrderPage />} />
+        <Route path='/ManagePurchaseOrder' element={<ManagePurchaseOrderPage />} />
+        <Route path='/NewFinishProductPage' element={<NewFinishProductPage />} />
+        <Route path='/ManageFinishProductPage' element={<ManageFinishProductPage />} />
 
 
 

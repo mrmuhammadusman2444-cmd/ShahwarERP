@@ -1,18 +1,19 @@
 import React from 'react'
-import AddNewSale from '../../components/Sales/AddNewSale.jsx'
 import Sidebar from '../../components/Sidebar.jsx'
+import ManagePurchase from '../../components/Purchase/ManagePurchase.jsx'
 
-const NewSale = () => {
+
+function ManagePurchasePage() {
     return (
         <div className='flex'>
 
             <Sidebar />
             <div className='flex-1'>
-                <AddNewSale/>
+                <ManagePurchase />
             </div>
 
         </div>
     )
 }
 
-export default NewSale
+export default ManagePurchasePage

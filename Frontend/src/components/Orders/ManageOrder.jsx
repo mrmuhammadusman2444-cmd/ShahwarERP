@@ -2,8 +2,8 @@ import React from 'react'
 import { useNavigate } from 'react-router-dom';
 
 const ManageOrder = () => {
-    const navigate=useNavigate()
-      const Orders = [];
+  const navigate = useNavigate()
+  const Orders = [];
 
   return (
     <div className="min-h-screen bg-linear-to-br from-blue-50 via-white to-blue-50 p-4 md:p-6">
@@ -16,22 +16,13 @@ const ManageOrder = () => {
             </svg>
           </div>
           <div>
-            <h1 className="text-gray-800 text-xl font-bold">Manage Orders</h1>
-            <p className="text-gray-400 text-xs">Manage your Order</p>
+            <h1 className="text-gray-800 text-xl font-bold">Manage Purchases</h1>
+            <p className="text-gray-400 text-xs">Manage your Purchase</p>
           </div>
         </div>
 
       </div>
 
-      <div className="flex gap-2 mb-5 ">
-        <button onClick={()=>{navigate('/neworderspage')}}  className="flex items-center cursor-pointer gap-2 px-4 py-2.5 bg-linear-to-r from-emerald-500 to-emerald-700 hover:from-emerald-400 hover:to-emerald-600 text-white text-sm font-semibold rounded-xl shadow-md shadow-blue-200 transition-all hover:-translate-y-0.5">
-          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-          </svg>
-          New Order
-        </button>
-      
-      </div>
 
       <div className="bg-white border border-blue-100 rounded-2xl shadow-sm p-4 mb-4">
         <div className="flex flex-col sm:flex-row items-start sm:items-end gap-3">
@@ -47,6 +38,12 @@ const ManageOrder = () => {
           </div>
           <button className="px-6 py-2.5 cursor-pointer bg-linear-to-b from-emerald-500 to-emerald-700 hover:from-emerald-400 hover:to-emerald-600 text-white text-sm font-semibold rounded-xl shadow-md shadow-blue-200 transition-all hover:-translate-y-0.5">
             Find
+          </button>
+          <button onClick={() => { navigate('/neworderspage') }} className="flex items-center cursor-pointer gap-2 px-4 py-2.5 bg-linear-to-r from-emerald-500 to-emerald-700 hover:from-emerald-400 hover:to-emerald-600 text-white text-sm font-semibold rounded-xl shadow-md shadow-blue-200 transition-all hover:-translate-y-0.5">
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+            </svg>
+            New Order
           </button>
         </div>
       </div>
@@ -93,7 +90,7 @@ const ManageOrder = () => {
         </div>
 
         <div className="overflow-x-auto">
-          <table className="w-full h-81 text-sm border-collapse">
+          <table className="w-full h-97 text-sm border-collapse">
             <thead>
               <tr className="bg-linear-to-b from-emerald-500 to-emerald-700 text-white">
                 <th className="text-left text-xs font-semibold px-4 py-3 whitespace-nowrap">SL.</th>
@@ -121,8 +118,8 @@ const ManageOrder = () => {
                       <svg className="w-10 h-10 text-blue-100" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
                       </svg>
-                      <p className="text-gray-400 text-sm">Koi sale record nahi mila</p>
-                      <p className="text-gray-300 text-xs">New Sale button se sale add karein</p>
+                      <p className="text-gray-400 text-sm">No Records Found</p>
+                      <p className="text-gray-300 text-xs">Add a new order to get started</p>
                     </div>
                   </td>
                 </tr>
