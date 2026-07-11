@@ -61,7 +61,7 @@ const Sidebar = () => {
                 className=" cursor-pointer -ml-2 text-slate-100  mt-3 transition-colors"
                 size={23}
               />
-              <span className="absolute ml-45 mt-2 bg-blue-500 text-white text-[11px] px-2.5 py-1 rounded-md whitespace-nowrap opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-200 pointer-events-none z-999">
+              <span className="absolute ml-45 mt-2 bg-emerald-500 text-white text-[11px] px-2.5 py-1 rounded-md whitespace-nowrap opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-200 pointer-events-none z-999">
                 Expand Sidebar
               </span>
             </div>

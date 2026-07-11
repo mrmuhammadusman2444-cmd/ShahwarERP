@@ -1,9 +1,25 @@
 import { useNavigate } from "react-router-dom";
-
-
-
+import { useState } from "react";
+import axios from 'axios'
 
 const NewCustomer = () => {
+
+let [newCustomer, setNewCustomer] = useState({
+  customerName: '',
+  email: '',
+  phoneNo: '',
+  wareHouse: '',
+  amountLimit: '',
+  CustomerProductRate: '',
+  scheme: '',                  
+  customerCredits: '',
+  PreviouseCreditsBalance: ''
+})
+async function handleAddCustomer() {
+  let res= await axios.post('http://localhost:3000/newCustomer',newCustomer)
+  console.log(res.data)
+  
+}
 
 
 
@@ -42,7 +58,9 @@ const NewCustomer = () => {
                 <label className="text-gray-500 text-xs font-semibold uppercase tracking-wide block mb-1">
                   Customer Name <span className="text-red-400">*</span>
                 </label>
-                <input type="text" placeholder="Enter customer name..."
+                <input onChange={function(e){
+                  setNewCustomer({...newCustomer, customerName:e.target.value})
+                }} type="text" placeholder="Enter customer name..."
                   className="w-full bg-emerald-50 border border-emerald-100 focus:border-emerald-400 focus:bg-white rounded-xl px-3 py-2 text-gray-700 placeholder-gray-400 text-sm focus:outline-none transition-all" />
               </div>
 
@@ -50,7 +68,9 @@ const NewCustomer = () => {
                 <label className="text-gray-500 text-xs font-semibold uppercase tracking-wide block mb-1">
                   Email <span className="text-red-400">*</span>
                 </label>
-                <input type="email" placeholder="customer@email.com"
+                <input onChange={function(e){
+                  setNewCustomer({...newCustomer, email:e.target.value})
+                }} type="email" placeholder="customer@email.com"
                   className="w-full bg-emerald-50 border border-emerald-100 focus:border-emerald-400 focus:bg-white rounded-xl px-3 py-2 text-gray-700 placeholder-gray-400 text-sm focus:outline-none transition-all" />
               </div>
 
@@ -58,13 +78,17 @@ const NewCustomer = () => {
                 <label className="text-gray-500 text-xs font-semibold uppercase tracking-wide block mb-1">
                   Phone No <span className="text-red-400">*</span>
                 </label>
-                <input type="tel" placeholder="03xx-xxxxxxx"
+                <input onChange={function(e){
+                  setNewCustomer({...newCustomer, phoneNo:e.target.value})
+                }} type="tel" placeholder="03xx-xxxxxxx"
                   className="w-full bg-emerald-50 border border-emerald-100 focus:border-emerald-400 focus:bg-white rounded-xl px-3 py-2 text-gray-700 placeholder-gray-400 text-sm focus:outline-none transition-all" />
               </div>
 
               <div>
                 <label className="text-gray-500 text-xs font-semibold uppercase tracking-wide block mb-1">Warehouse</label>
-                <select className="w-full bg-emerald-50 border border-emerald-100 focus:border-emerald-400 focus:bg-white rounded-xl px-3 py-2 text-gray-700 text-sm focus:outline-none transition-all appearance-none cursor-pointer">
+                <select  onChange={function(e){
+                  setNewCustomer({...newCustomer, wareHouse:e.target.value})
+                }} className="w-full bg-emerald-50 border border-emerald-100 focus:border-emerald-400 focus:bg-white rounded-xl px-3 py-2 text-gray-700 text-sm focus:outline-none transition-all appearance-none cursor-pointer">
                   <option value="">Select warehouse</option>
                   <option>Main Warehouse</option>
                   <option>Warehouse A</option>
@@ -77,7 +101,9 @@ const NewCustomer = () => {
                 <label className="text-gray-500 text-xs font-semibold uppercase tracking-wide block mb-1">Amount Limit</label>
                 <div className="relative">
                   <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs font-semibold">Rs.</span>
-                  <input type="number" placeholder="0.00"
+                  <input  onChange={function(e){
+                  setNewCustomer({...newCustomer, amountLimit:e.target.value})
+                }} type="number" placeholder="0.00"
                     className="w-full bg-emerald-50 border border-emerald-100 focus:border-emerald-400 focus:bg-white rounded-xl pl-9 pr-3 py-2 text-gray-700 placeholder-gray-400 text-sm focus:outline-none transition-all" />
                 </div>
               </div>
@@ -98,7 +124,9 @@ const NewCustomer = () => {
                 <label className="text-gray-500 text-xs font-semibold uppercase tracking-wide block mb-1">
                   Customer Product Rate <span className="text-red-400">*</span>
                 </label>
-                <select className="w-full bg-emerald-50 border border-emerald-100 focus:border-emerald-400 focus:bg-white rounded-xl px-3 py-2 text-gray-700 text-sm focus:outline-none transition-all appearance-none cursor-pointer">
+                <select onChange={function(e){
+                  setNewCustomer({...newCustomer, CustomerProductRate:e.target.value})
+                }} className="w-full bg-emerald-50 border border-emerald-100 focus:border-emerald-400 focus:bg-white rounded-xl px-3 py-2 text-gray-700 text-sm focus:outline-none transition-all appearance-none cursor-pointer">
                   <option value="">Select rate type</option>
                   <option value="distributor">Distributor Rate</option>
                   <option value="dealer">Dealer Rate</option>
@@ -110,12 +138,16 @@ const NewCustomer = () => {
                 <label className="text-gray-500 text-xs font-semibold uppercase tracking-wide block mb-1">Scheme</label>
                 <div className="flex gap-2">
                   <label className="flex-1 flex items-center gap-2 bg-emerald-50 border border-emerald-100 hover:border-emerald-300 rounded-xl px-3 py-2 cursor-pointer transition-all">
-                    <input type="radio" name="scheme" value="yes"
+                    <input onChange={function(e){
+                  setNewCustomer({...newCustomer, scheme:e.target.value})
+                }}  type="radio" name="scheme" value="yes"
                       className="w-3.5 h-3.5 accent-emerald-600 cursor-pointer" />
                     <span className="text-gray-700 text-sm font-medium">Yes</span>
                   </label>
                   <label className="flex-1 flex items-center gap-2 bg-emerald-50 border border-emerald-100 hover:border-emerald-300 rounded-xl px-3 py-2 cursor-pointer transition-all">
-                    <input type="radio" name="scheme" value="no"
+                    <input onChange={function(e){
+                  setNewCustomer({...newCustomer, scheme:e.target.value})
+                }} type="radio" name="scheme" value="no"
                       className="w-3.5 h-3.5 accent-emerald-600 cursor-pointer" />
                     <span className="text-gray-700 text-sm font-medium">No</span>
                   </label>
@@ -138,7 +170,9 @@ const NewCustomer = () => {
                 <label className="text-gray-500 text-xs font-semibold uppercase tracking-wide block mb-1">Customer Credits</label>
                 <div className="relative">
                   <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs font-semibold">Rs.</span>
-                  <input type="number" placeholder="0.00"
+                  <input onChange={function(e){
+                  setNewCustomer({...newCustomer, customerCredits:e.target.value})
+                }} type="number" placeholder="0.00"
                     className="w-full bg-emerald-50 border border-emerald-100 focus:border-emerald-400 focus:bg-white rounded-xl pl-9 pr-3 py-2 text-gray-700 placeholder-gray-400 text-sm focus:outline-none transition-all" />
                 </div>
               </div>
@@ -147,7 +181,9 @@ const NewCustomer = () => {
                 <label className="text-gray-500 text-xs font-semibold uppercase tracking-wide block mb-1">Previous Credits Balance</label>
                 <div className="relative">
                   <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs font-semibold">Rs.</span>
-                  <input type="number" placeholder="0.00"
+                  <input onChange={function(e){
+                  setNewCustomer({...newCustomer, PreviouseCreditsBalance:e.target.value})
+                }} type="number" placeholder="0.00"
                     className="w-full bg-emerald-50 border border-emerald-100 focus:border-emerald-400 focus:bg-white rounded-xl pl-9 pr-3 py-2 text-gray-700 placeholder-gray-400 text-sm focus:outline-none transition-all" />
                 </div>
               </div>
@@ -188,7 +224,7 @@ const NewCustomer = () => {
             <p className="text-gray-400 text-xs flex items-center gap-1">
               <span className="text-red-400 font-bold">*</span> Required fields must be filled
             </p>
-            <button type="button"
+            <button onClick={handleAddCustomer} type="button"
               className="w-full py-2.5 bg-linear-to-b from-emerald-500 to-emerald-500 hover:from-emerald-400 hover:to-emerald-600 cursor-pointer text-white text-sm font-semibold rounded-xl shadow-md shadow-emerald-200 transition-all hover:-translate-y-0.5 active:translate-y-0">
               Save Customer
             </button>

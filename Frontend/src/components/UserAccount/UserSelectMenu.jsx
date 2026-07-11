@@ -15,10 +15,10 @@ const UserSelectMenu = ({ setShowSetting }) => {
                 className="flex items-center gap-2.5 px-2 py-1.5 rounded-full cursor-pointer  border border-emerald-800 hover:bg-slate-200 transition-all duration-200   "
             >
                 <div className="relative">
-                    <div className="w-9 h-9 rounded-full bg-blue-500 flex items-center justify-center text-white text-[13px] font-semibold ring-2 ring-white shadow-sm">
+                    <div className="w-9 h-9 rounded-full bg-emerald-500 flex items-center justify-center text-white text-[13px] font-semibold ring-2 ring-white shadow-sm">
                         MU
                     </div>
-                    <span className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-emerald-500 animate-pulse rounded-full ring-2 ring-white"></span>
+                    <span className="absolute bottom-0 right-0 w-2 h-2 bg-emerald-500 animate-pulse rounded-full ring-2 ring-white"></span>
                 </div>
 
                 <div className="hidden sm:flex flex-col leading-tight">
@@ -43,7 +43,7 @@ const UserSelectMenu = ({ setShowSetting }) => {
                 className="absolute right-0 mt-2 w-56 bg-white rounded-2xl shadow-xl border border-slate-100 overflow-hidden z-50"
             >
                 <div className="flex items-center gap-3 px-4 py-3 border-b border-slate-100 bg-slate-50">
-                    <div className="w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center text-white text-[14px] font-semibold ring-2 ring-white shadow-sm">
+                    <div className="w-10 h-10 rounded-full bg-emerald-500 flex items-center justify-center text-white text-[14px] font-semibold ring-2 ring-white shadow-sm">
                         MU
                     </div>
                     <div className="flex flex-col leading-tight">
@@ -54,13 +54,13 @@ const UserSelectMenu = ({ setShowSetting }) => {
 
                 <div className="p-1.5">
                     <div className="flex items-center gap-2.5 px-3 py-2 rounded-xl cursor-pointer hover:bg-blue-50 transition-colors duration-200 group">
-                        <User size={16} className="text-slate-500 group-hover:text-blue-600" />
-                        <span className="text-[12.5px] text-slate-600 group-hover:text-blue-700 font-medium">My Profile</span>
+                        <User size={16} className="text-slate-500 group-hover:text-emerald-600" />
+                        <span className="text-[12.5px] text-slate-600 group-hover:text-emerald-700 font-medium">My Profile</span>
                     </div>
 
                     <div onClick={() => { setShowSetting(true) }} className="flex items-center gap-2.5 px-3 py-2 rounded-xl cursor-pointer hover:bg-blue-50 transition-colors duration-200 group">
-                        <Settings size={16} className="text-slate-500 group-hover:text-blue-600" />
-                        <span className="text-[12.5px] text-slate-600 group-hover:text-blue-700 font-medium">Settings</span>
+                        <Settings size={16} className="text-slate-500 group-hover:text-emerald-600" />
+                        <span className="text-[12.5px] text-slate-600 group-hover:text-emerald-700 font-medium">Settings</span>
                     </div>
                 </div>
 

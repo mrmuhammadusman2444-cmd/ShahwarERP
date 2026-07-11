@@ -1,12 +1,9 @@
-import { useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
-import axios from 'axios'
+import React from 'react'
+import { useNavigate } from 'react-router-dom';
 import { Users, Plus, Copy, FileText, Sheet, File, Printer, Search, ArrowUpDown, ChevronLeft, ChevronRight } from "lucide-react";
 
-const ManageCustomers = () => {
-
-
-  const navigate = useNavigate()
+const ManageAssets = () => {
+    const navigate=useNavigate()
   return (
     <div className="min-h-screen bg-linear-to-br from-blue-50 via-white to-blue-50 p-4 md:p-6">
 
@@ -17,14 +14,14 @@ const ManageCustomers = () => {
             <Users className="w-6 h-6 text-white" />
           </div>
           <div>
-            <h1 className="text-gray-800 text-xl font-bold">Manage Customers</h1>
-            <p className="text-gray-400 text-xs">Manage your Customers</p>
+            <h1 className="text-gray-800 text-xl font-bold">Manage Assets</h1>
+            <p className="text-gray-400 text-xs">Manage your Assets</p>
           </div>
         </div>
 
-        <button onClick={() => { navigate('/newcustomer') }} className="flex items-center gap-2 bg-linear-to-b from-emerald-500 to-emerald-700 hover:from-emerald-400 hover:to-emerald-600 text-white  shadow-blue-200  text-sm transition-all hover:-translate-y-0.5 active:translate-y-0 font-semibold px-4 py-2.5 rounded-xl shadow-md stransition-all cursor-pointer">
+        <button onClick={()=>{navigate('/assets')}} className="flex items-center gap-2 bg-linear-to-b from-emerald-500 to-emerald-700 hover:from-emerald-400 hover:to-emerald-600 text-white  shadow-blue-200  text-sm transition-all hover:-translate-y-0.5 active:translate-y-0 font-semibold px-4 py-2.5 rounded-xl shadow-md stransition-all cursor-pointer">
           <Plus className="w-4 h-4" />
-          New Customer
+          Add Assets
         </button>
 
       </div>
@@ -73,7 +70,7 @@ const ManageCustomers = () => {
             <input
               type="text"
               placeholder="Search..."
-              className="bg-blue-50 border border-blue-100 focus:border-blue-400 focus:bg-white rounded-xl pl-9 pr-4 py-2 text-sm text-gray-700 placeholder-gray-400 focus:outline-none transition-all w-52 cursor-text"
+              className="bg-emerald-50 border border-emerald-100 focus:border-emerald-400 focus:bg-white rounded-xl pl-9 pr-4 py-2 text-sm text-gray-700 placeholder-gray-400 focus:outline-none transition-all w-52 cursor-text"
             />
           </div>
         </div>
@@ -83,19 +80,17 @@ const ManageCustomers = () => {
           <table className="w-full text-sm">
             <thead>
               <tr className="bg-linear-to-b from-emerald-500 to-emerald-700 text-white">
-                <th className="text-left px-4 py-3 font-semibold text-xs uppercase tracking-wide rounded-tl-xl">SL</th>
-                <th className="text-left px-4 py-3 font-semibold text-xs uppercase tracking-wide">
+                <th className="text-left px-4 py-3 font-semibold text-md uppercase tracking-wide rounded-tl-xl">SL</th>
+                <th className="text-left px-4 py-3 font-semibold text-md uppercase tracking-wide">
                   <button className="flex items-center gap-1 hover:opacity-80 transition-opacity cursor-pointer">
-                    Customer Name <ArrowUpDown className="w-3.5 h-3.5" />
+                    Assets Name <ArrowUpDown className="w-3.5 h-3.5" />
                   </button>
                 </th>
-                <th className="text-left px-4 py-3 font-semibold text-xs  tracking-wide">Distributor Name</th>
-                <th className="text-left px-4 py-3 font-semibold text-xs  tracking-wide">Route Name</th>
-                <th className="text-left px-4 py-3 font-semibold text-xs  tracking-wide">Address</th>
-                <th className="text-left px-4 py-3 font-semibold text-xs  tracking-wide">Mobile No</th>
-                <th className="text-left px-4 py-3 font-semibold text-xs  tracking-wide">Balance</th>
-
-                <th className="text-left px-4 py-3 font-semibold text-xs  tracking-wide rounded-tr-xl">Action</th>
+                <th className="text-left px-4 py-3 font-semibold text-md  tracking-wide">Assets Type</th>
+                <th className="text-left px-4 py-3 font-semibold text-md  tracking-wide">Assets Cost</th>
+                <th className="text-left px-4 py-3 font-semibold text-md  tracking-wide">Assets Location</th>
+                <th className="text-left px-4 py-3 font-semibold text-md  tracking-wide">Description</th>
+                <th className="text-left px-4 py-3 font-semibold text-md  tracking-wide rounded-tr-xl">Action</th>
               </tr>
             </thead>
             <tbody>
@@ -105,8 +100,8 @@ const ManageCustomers = () => {
                     <div className="w-14 h-14 rounded-2xl bg-blue-50 flex items-center justify-center">
                       <Users className="w-7 h-7 text-blue-200" />
                     </div>
-                    <p className="text-gray-500 text-sm font-medium">No customer recode found</p>
-                    <p className="text-gray-400 text-xs">Click new customer</p>
+                    <p className="text-gray-500 text-sm font-medium">No Assets recode found</p>
+                    <p className="text-gray-400 text-xs">Click Add Assets</p>
                   </div>
                 </td>
               </tr>
@@ -130,7 +125,7 @@ const ManageCustomers = () => {
 
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default ManageCustomers;
+export default ManageAssets

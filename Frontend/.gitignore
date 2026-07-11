@@ -25,7 +25,3 @@ dist-ssr
 
 node_modules
 package-lock.json
-dist/
-.env
-.env.local
-build/

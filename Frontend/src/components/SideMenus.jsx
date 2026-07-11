@@ -23,6 +23,9 @@ const SideMenus = ({ collapsed }) => {
     const [bankOpen, setbankOpen] = useState(false)
     const [salaryOpen, setsalaryOpen] = useState(false)
     const [assetsOpen, setassetsOpen] = useState(false)
+    const [employeeOpen, setemployeeOpen] = useState(false)
+    const [attendanceOpen, setattendanceOpen] = useState(false)
+    const [salaryDetailOpen, setsalaryDetailOpen] = useState(false)
     const [searchQuery, setSearchQuery] = useState('')
 
     const isSearching = searchQuery.trim().length > 0
@@ -123,7 +126,7 @@ const SideMenus = ({ collapsed }) => {
                         {!collapsed && <span className="text-[10.5px] font-semibold text-blue-700 bg-blue-100 rounded-full px-2 py-px">12</span>}
 
                         {collapsed && (
-                            <span style={{ top: 'var(--tooltip-y, 50%)', transform: 'translateY(-50%)' }} className="fixed left-16 ml-1 bg-blue-500 text-white text-[11px] px-2 py-1 rounded-md whitespace-nowrap opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-200 pointer-events-none z-999">
+                            <span style={{ top: 'var(--tooltip-y, 50%)', transform: 'translateY(-50%)' }} className="fixed left-16 ml-1 bg-emerald-500 text-white text-[11px] px-2 py-1 rounded-md whitespace-nowrap opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-200 pointer-events-none z-999">
                                 Inbox
                             </span>
                         )}
@@ -148,7 +151,7 @@ const SideMenus = ({ collapsed }) => {
                         {!collapsed && <span className="text-[10.5px] font-semibold text-amber-700 bg-amber-100 rounded-full px-2 py-px">15+</span>}
 
                         {collapsed && (
-                            <span style={{ top: 'var(--tooltip-y, 50%)', transform: 'translateY(-50%)' }} className="fixed left-16 ml-1 bg-blue-500 text-white text-[11px] px-2 py-1 rounded-md whitespace-nowrap opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-200 pointer-events-none z-999">
+                            <span style={{ top: 'var(--tooltip-y, 50%)', transform: 'translateY(-50%)' }} className="fixed left-16 ml-1 bg-emerald-500 text-white text-[11px] px-2 py-1 rounded-md whitespace-nowrap opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-200 pointer-events-none z-999">
                                 Notifications
                             </span>
                         )}
@@ -169,7 +172,7 @@ const SideMenus = ({ collapsed }) => {
                         {!collapsed && <span className="text-[12.5px] text-blue-100 font-medium">Dashboard</span>}
 
                         {collapsed && (
-                            <span style={{ top: 'var(--tooltip-y, 50%)', transform: 'translateY(-50%)' }} className="fixed left-16 ml-1 bg-blue-500 text-white text-[11px] px-2 py-1 rounded-md whitespace-nowrap opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-200 pointer-events-none z-999">
+                            <span style={{ top: 'var(--tooltip-y, 50%)', transform: 'translateY(-50%)' }} className="fixed left-16 ml-1 bg-emerald-500 text-white text-[11px] px-2 py-1 rounded-md whitespace-nowrap opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-200 pointer-events-none z-999">
                                 Dashboard
                             </span>
                         )}
@@ -189,7 +192,7 @@ const SideMenus = ({ collapsed }) => {
                          `}</style>
                 {menuMatches('Analytics', []) && (
 
-                    <div onClick={() => { navigate('/analyticspage') }} onMouseEnter={setTip} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer  hover:bg-emerald-800  transition-all mb-px ${collapsed ? 'justify-start' : ''}${isAnalytics ? 'bg-emerald-800' : 'hover:bg-emerald-800'}`}>
+                    <div onClick={() => { navigate('/analytics') }} onMouseEnter={setTip} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer  hover:bg-emerald-800  transition-all mb-px ${collapsed ? 'justify-start' : ''}${isAnalytics ? 'bg-emerald-800' : 'hover:bg-emerald-800'}`}>
                         <svg width="20" height="20" viewBox="0 0 24 24" text="#ffffff" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-slate-600 shrink-0 /50">
                             <line x1="18" y1="20" x2="18" y2="10" className="bar3 text-slate-100" style={{ transformOrigin: '18px 20px' }} />
                             <line x1="12" y1="20" x2="12" y2="4" className="bar2  text-slate-100" style={{ transformOrigin: '12px 20px' }} />
@@ -198,7 +201,7 @@ const SideMenus = ({ collapsed }) => {
                         {!collapsed && <span className="text-[12.5px] text-slate-100">Analytics</span>}
 
                         {collapsed && (
-                            <span style={{ top: 'var(--tooltip-y, 50%)', transform: 'translateY(-50%)' }} className="fixed left-16 ml-1 bg-blue-500 text-white text-[11px] px-2 py-1 rounded-md whitespace-nowrap opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-200 pointer-events-none z-999">
+                            <span style={{ top: 'var(--tooltip-y, 50%)', transform: 'translateY(-50%)' }} className="fixed left-16 ml-1 bg-emerald-500 text-white text-[11px] px-2 py-1 rounded-md whitespace-nowrap opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-200 pointer-events-none z-999">
                                 Analytics
                             </span>
                         )}
@@ -231,7 +234,7 @@ const SideMenus = ({ collapsed }) => {
                     </div>
                 )} */}
 
-                {menuMatches('Customers', ['New Customer', 'Manage Customers', 'Manage Factory Customers', 'Customer Ledger', 'Customers Advance']) && (
+                {menuMatches('Customers', ['New Customers', 'Manage Customers', 'Manage Factory Customers', 'Customers Ledger', 'Customers Advance']) && (
                     <div onMouseEnter={setTip} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 hover:bg-emerald-800 rounded-lg px-2 cursor-pointer transition-all mb-px ${collapsed ? 'justify-start' : ''}`}
                         onClick={() => setCustomerOpen(!customerOpen)}
                     >
@@ -239,7 +242,7 @@ const SideMenus = ({ collapsed }) => {
                         {!collapsed && <span className="text-[12.5px] text-slate-100 flex-1">Customers</span>}
                         {!collapsed && <ChevronDown className={`text-slate-100 w-3.5 h-3.5 transition-transform duration-300 ${customerOpen ? 'rotate-180' : ''}`} />}
                         {collapsed && (
-                            <span style={{ top: 'var(--tooltip-y, 50%)', transform: 'translateY(-50%)' }} className="fixed left-16 ml-1 bg-blue-500 text-white text-[11px] px-2 py-1 rounded-md whitespace-nowrap opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-200 pointer-events-none z-999">
+                            <span style={{ top: 'var(--tooltip-y, 50%)', transform: 'translateY(-50%)' }} className="fixed left-16 ml-1 bg-emerald-500 text-white text-[11px] px-2 py-1 rounded-md whitespace-nowrap opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-200 pointer-events-none z-999">
                                 Customers
                             </span>
                         )}
@@ -255,9 +258,9 @@ const SideMenus = ({ collapsed }) => {
                     }}
                         className="ml-7 border-l border-slate-700 pl-3 flex flex-col gap-0.5 overflow-hidden"
                     >
-                        {subMatches('New Customer') && (
+                        {subMatches('New Customers') && (
                             <div onClick={() => navigate('/newcustomer')} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
-                                New Customer
+                                New Customers
                             </div>
                         )}
                         {subMatches('Manage Customers') && (
@@ -270,9 +273,9 @@ const SideMenus = ({ collapsed }) => {
                                 Manage Factory Customers
                             </div>
                         )}
-                        {subMatches('Customer Ledger') && (
+                        {subMatches('Customers Ledger') && (
                             <div onClick={() => navigate('/customerledgerpage')} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
-                                Customer Ledger
+                                Customers Ledger
                             </div>
                         )}
                         {subMatches('Customers Advance') && (
@@ -283,13 +286,13 @@ const SideMenus = ({ collapsed }) => {
                     </div>
                 )}
 
-                {menuMatches('Orders', ['New Order', 'Manage Order', 'Order Reports', 'Dispatch Order']) && (
+                {menuMatches('Orders', ['New Orders', 'Manage Orders', 'Orders Reports', 'Dispatch Orders']) && (
                     <div onMouseEnter={setTip} onClick={() => setOrderOpen(!orderOpen)} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer  hover:bg-emerald-800  transition-all mb-px ${collapsed ? 'justify-start' : ''}`}>
                         <Truck className="text-slate-100   shrink-0 group-hover:translate-x-1.5 transition-transform duration-300" size={23} />
                         {!collapsed && <span className="text-[12.5px] text-slate-100 flex-1">Orders</span>}
                         {!collapsed && <ChevronDown className={`text-slate-100  w-3.5 h-3.5 transition-transform duration-300 ${orderOpen ? 'rotate-180' : ''}`} />}
                         {collapsed && (
-                            <span style={{ top: 'var(--tooltip-y, 50%)', transform: 'translateY(-50%)' }} className="fixed left-16 ml-1 bg-blue-500 text-white text-[11px] px-2 py-1 rounded-md whitespace-nowrap opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-200 pointer-events-none z-999">
+                            <span style={{ top: 'var(--tooltip-y, 50%)', transform: 'translateY(-50%)' }} className="fixed left-16 ml-1 bg-emerald-500 text-white text-[11px] px-2 py-1 rounded-md whitespace-nowrap opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-200 pointer-events-none z-999">
                                 Orders
                             </span>
                         )}
@@ -306,24 +309,24 @@ const SideMenus = ({ collapsed }) => {
                         }}
                         className="ml-7 border-l border-slate-700 pl-3 flex flex-col gap-0.5 overflow-hidden"
                     >
-                        {subMatches('New Order') && (
+                        {subMatches('New Orders') && (
                             <div onClick={() => { navigate('/neworderspage') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
-                                New Order
+                                New Orders
                             </div>
                         )}
-                        {subMatches('Manage Order') && (
+                        {subMatches('Manage Orders') && (
                             <div onClick={() => { navigate('/ManageOrdersPage') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
-                                Manage Order
+                                Manage Orders
                             </div>
                         )}
-                        {subMatches('Order Reports') && (
+                        {subMatches('Orders Reports') && (
                             <div onClick={() => { navigate('/orderreportpage') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
-                                Order Reports
+                                Orders Reports
                             </div>
                         )}
-                        {subMatches('Dispatch Order') && (
+                        {subMatches('Dispatch Orders') && (
                             <div onClick={() => { navigate('/dispatchorderpage') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
-                                Dispatch Order
+                                Dispatch Orders
                             </div>
                         )}
                     </div>
@@ -344,14 +347,14 @@ const SideMenus = ({ collapsed }) => {
                          }
                      `}</style>
 
-                {menuMatches('Sale', ['New Sale', 'Manage Sale']) && (
+                {menuMatches('Sales', ['New Sales', 'Manage Sales']) && (
                     <div onMouseEnter={setTip} onClick={() => setsaleOpen(!saleOpen)} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer  hover:bg-emerald-800  transition-all mb-px ${collapsed ? 'justify-start' : ''}`}>
                         <BadgeDollarSign className="text-slate-100  shrink-0  sale-icon" size={23} />
-                        {!collapsed && <span className="text-[12.5px] text-slate-100 flex-1">Sale</span>}
+                        {!collapsed && <span className="text-[12.5px] text-slate-100 flex-1">Sales</span>}
                         {!collapsed && <ChevronDown className={`text-slate-100  w-3.5 h-3.5 transition-transform duration-300 ${saleOpen ? 'rotate-180' : ''}`} />}
                         {collapsed && (
-                            <span style={{ top: 'var(--tooltip-y, 50%)', transform: 'translateY(-50%)' }} className="fixed left-16 ml-1 bg-blue-500 text-white text-[11px] px-2 py-1 rounded-md whitespace-nowrap opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-200 pointer-events-none z-999">
-                                Sale
+                            <span style={{ top: 'var(--tooltip-y, 50%)', transform: 'translateY(-50%)' }} className="fixed left-16 ml-1 bg-emerald-500 text-white text-[11px] px-2 py-1 rounded-md whitespace-nowrap opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-200 pointer-events-none z-999">
+                                Sales
                             </span>
                         )}
                     </div>
@@ -367,27 +370,27 @@ const SideMenus = ({ collapsed }) => {
                         }}
                         className="ml-7 border-l border-slate-700 pl-3 flex flex-col gap-0.5 overflow-hidden"
                     >
-                        {subMatches('New Sale') && (
+                        {subMatches('New Sales') && (
                             <div onClick={() => { navigate('/newSale') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
-                                New Sale
+                                New Sales
                             </div>
                         )}
-                        {subMatches('Manage Sale') && (
+                        {subMatches('Manage Sales') && (
                             <div onClick={() => { navigate('/manageSale') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
-                                Manage Sale
+                                Manage Sales
                             </div>
                         )}
                     </div>
                 )}
 
-                {menuMatches('Approval', ['Invoice Approval', 'Purchase Approval', 'Customer Payment', 'Supplier Payment']) && (
+                {menuMatches('Approval', ['Invoice Approval', 'Purchase Approval', 'Customer Payment Approval', 'Supplier Payment Approval']) && (
 
                     <div onMouseEnter={setTip} onClick={() => setapprovalOpen(!approvalOpen)} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer  hover:bg-emerald-800 transition-all mb-px ${collapsed ? 'justify-start' : ''}`}>
                         <Handshake className="text-slate-100   group-hover:translate-x-1.5 shrink-0 transition-transform duration-300" size={23} />
                         {!collapsed && <span className="text-[12.5px] text-slate-100 flex-1">Approval</span>}
                         {!collapsed && <ChevronDown className={`text-slate-100  w-3.5 h-3.5 transition-transform duration-300 ${approvalOpen ? 'rotate-180' : ''}`} />}
                         {collapsed && (
-                            <span style={{ top: 'var(--tooltip-y, 50%)', transform: 'translateY(-50%)' }} className="fixed left-16 ml-1 bg-blue-500 text-white text-[11px] px-2 py-1 rounded-md whitespace-nowrap opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-200 pointer-events-none z-999">
+                            <span style={{ top: 'var(--tooltip-y, 50%)', transform: 'translateY(-50%)' }} className="fixed left-16 ml-1 bg-emerald-500 text-white text-[11px] px-2 py-1 rounded-md whitespace-nowrap opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-200 pointer-events-none z-999">
                                 Approval
                             </span>
                         )}
@@ -415,28 +418,28 @@ const SideMenus = ({ collapsed }) => {
                                 Purchase Approval
                             </div>
                         )}
-                        {subMatches('Customer Payment') && (
+                        {subMatches('Customer Payment Approval') && (
                             <div onClick={() => { navigate('/customerpaymentpage') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
-                                Customer Payment
+                                Customer Payment Approval
                             </div>
                         )}
-                        {subMatches('Supplier Payment') && (
+                        {subMatches('Supplier Payment Approval') && (
                             <div onClick={() => { navigate('/supplierpaymentpage') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
-                                Supplier Payment
+                                Supplier Payment Approval
                             </div>
                         )}
                     </div>
                 )}
 
 
-                {menuMatches('Products', ['New Product', 'Manage Products', 'Category', 'Unit', 'Main Category', 'Scheme Products', 'Product Price List']) && (
+                {menuMatches('Products', ['New Products', 'Manage Products', 'Category', 'Unit', 'Main Category', 'Scheme Products', 'Products Price List']) && (
 
                     <div onMouseEnter={setTip} onClick={() => setproductOpen(!productOpen)} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer  hover:bg-emerald-800 transition-all mb-px ${collapsed ? 'justify-start' : ''}`}>
                         <PackageOpen className="text-slate-100  shrink-0  group-hover:translate-x-1.5 transition-transform duration-300" size={23} />
                         {!collapsed && <span className="text-[12.5px] text-slate-100 flex-1">Products</span>}
                         {!collapsed && <ChevronDown className={`text-slate-100  w-3.5 h-3.5 transition-transform duration-300 ${productOpen ? 'rotate-180' : ''}`} />}
                         {collapsed && (
-                            <span style={{ top: 'var(--tooltip-y, 50%)', transform: 'translateY(-50%)' }} className="fixed left-16 ml-1 bg-blue-500 text-white text-[11px] px-2 py-1 rounded-md whitespace-nowrap opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-200 pointer-events-none z-999">
+                            <span style={{ top: 'var(--tooltip-y, 50%)', transform: 'translateY(-50%)' }} className="fixed left-16 ml-1 bg-emerald-500 text-white text-[11px] px-2 py-1 rounded-md whitespace-nowrap opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-200 pointer-events-none z-999">
                                 Products
                             </span>
                         )}
@@ -454,7 +457,7 @@ const SideMenus = ({ collapsed }) => {
                         }}
                         className="ml-7 border-l border-slate-700 pl-3 flex flex-col gap-0.5 overflow-hidden"
                     >
-                        {subMatches('New Product') && (
+                        {subMatches('New Products') && (
                             <div onClick={() => { navigate('/newProduct') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                                 New Product
                             </div>
@@ -484,23 +487,23 @@ const SideMenus = ({ collapsed }) => {
                                 Scheme Products
                             </div>
                         )}
-                        {subMatches('Product Price List') && (
+                        {subMatches('Products Price List') && (
                             <div className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
-                                Product Price List
+                                Products Price List
                             </div>
                         )}
                     </div>
                 )}
 
-                {menuMatches('Supplier', ['Invoice Approval', 'Purchase Approval', 'Customer Payment', 'Supplier Payment']) && (
+                {menuMatches('Suppliers', ['Add New Suppliers', 'Manage Suppliers', 'Suppliers Ledger', 'Suppliers Advance']) && (
 
                     <div onMouseEnter={setTip} onClick={() => setsupplierOpen(!supplierOpen)} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer  hover:bg-emerald-800 transition-all mb-px ${collapsed ? 'justify-start' : ''}`}>
                         <PackageCheck className="text-slate-100   shrink-0 group-hover:translate-x-1.5 transition-transform duration-300" size={23} />
-                        {!collapsed && <span className="text-[12.5px] text-slate-100 flex-1">Supplier</span>}
+                        {!collapsed && <span className="text-[12.5px] text-slate-100 flex-1">Suppliers</span>}
                         {!collapsed && <ChevronDown className={`text-slate-100  w-3.5 h-3.5 transition-transform duration-300 ${supplierOpen ? 'rotate-180' : ''}`} />}
                         {collapsed && (
-                            <span style={{ top: 'var(--tooltip-y, 50%)', transform: 'translateY(-50%)' }} className="fixed left-16 ml-1 bg-blue-500 text-white text-[11px] px-2 py-1 rounded-md whitespace-nowrap opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-200 pointer-events-none z-999">
-                                Supplier
+                            <span style={{ top: 'var(--tooltip-y, 50%)', transform: 'translateY(-50%)' }} className="fixed left-16 ml-1 bg-emerald-500 text-white text-[11px] px-2 py-1 rounded-md whitespace-nowrap opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-200 pointer-events-none z-999">
+                                Suppliers
                             </span>
                         )}
                     </div>
@@ -517,24 +520,24 @@ const SideMenus = ({ collapsed }) => {
                         }}
                         className="ml-7 border-l border-slate-700 pl-3 flex flex-col gap-0.5 overflow-hidden"
                     >
-                        {subMatches('Invoice Approval') && (
+                        {subMatches('Add New Suppliers') && (
                             <div onClick={() => { navigate('/addsupplierpage') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
-                                Add New Supplier
+                                Add New Suppliers
                             </div>
                         )}
-                        {subMatches('Purchase Approval') && (
+                        {subMatches('Manage Suppliers') && (
                             <div onClick={() => { navigate('/managesupplierpage') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
-                                Manage Supplier
+                                Manage Suppliers
                             </div>
                         )}
-                        {subMatches('Customer Payment') && (
+                        {subMatches('Suppliers Ledger') && (
                             <div onClick={() => { navigate('/supplierledgerpage') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
-                                Supplier Ledger
+                                Suppliers Ledger
                             </div>
                         )}
-                        {subMatches('Supplier Payment') && (
+                        {subMatches('Suppliers Advance') && (
                             <div onClick={() => { navigate('/supplieradvancepage') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
-                                Supplier Advance
+                                Suppliers Advance
                             </div>
                         )}
                     </div>
@@ -547,7 +550,7 @@ const SideMenus = ({ collapsed }) => {
                         {!collapsed && <span className="text-[12.5px] text-slate-100 flex-1">Purchase</span>}
                         {!collapsed && <ChevronDown className={`text-slate-100  w-3.5 h-3.5 transition-transform duration-300 ${purchaseOpen ? 'rotate-180' : ''}`} />}
                         {collapsed && (
-                            <span style={{ top: 'var(--tooltip-y, 50%)', transform: 'translateY(-50%)' }} className="fixed left-16 ml-1 bg-blue-500 text-white text-[11px] px-2 py-1 rounded-md whitespace-nowrap opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-200 pointer-events-none z-999">
+                            <span style={{ top: 'var(--tooltip-y, 50%)', transform: 'translateY(-50%)' }} className="fixed left-16 ml-1 bg-emerald-500 text-white text-[11px] px-2 py-1 rounded-md whitespace-nowrap opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-200 pointer-events-none z-999">
                                 Purchase
                             </span>
                         )}
@@ -595,7 +598,7 @@ const SideMenus = ({ collapsed }) => {
                         {!collapsed && <span className="text-[12.5px] text-slate-100 flex-1">Warehouse Finish Product</span>}
                         {!collapsed && <ChevronDown className={`text-slate-100  w-3.5 h-3.5 transition-transform duration-300 ${warehouseOpen ? 'rotate-180' : ''}`} />}
                         {collapsed && (
-                            <span style={{ top: 'var(--tooltip-y, 50%)', transform: 'translateY(-50%)' }} className="fixed left-16 ml-1 bg-blue-500 text-white text-[11px] px-2 py-1 rounded-md whitespace-nowrap opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-200 pointer-events-none z-999">
+                            <span style={{ top: 'var(--tooltip-y, 50%)', transform: 'translateY(-50%)' }} className="fixed left-16 ml-1 bg-emerald-500 text-white text-[11px] px-2 py-1 rounded-md whitespace-nowrap opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-200 pointer-events-none z-999">
                                 Warehouse Finish Product
                             </span>
                         )}
@@ -637,7 +640,7 @@ const SideMenus = ({ collapsed }) => {
                         {!collapsed && <span className="text-[12.5px] text-slate-100 flex-1">Stock</span>}
                         {!collapsed && <ChevronDown className={`text-slate-100  w-3.5 h-3.5 transition-transform duration-300 ${stockOpen ? 'rotate-180' : ''}`} />}
                         {collapsed && (
-                            <span style={{ top: 'var(--tooltip-y, 50%)', transform: 'translateY(-50%)' }} className="fixed left-16 ml-1 bg-blue-500 text-white text-[11px] px-2 py-1 rounded-md whitespace-nowrap opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-200 pointer-events-none z-999">
+                            <span style={{ top: 'var(--tooltip-y, 50%)', transform: 'translateY(-50%)' }} className="fixed left-16 ml-1 bg-emerald-500 text-white text-[11px] px-2 py-1 rounded-md whitespace-nowrap opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-200 pointer-events-none z-999">
                                 Stock
                             </span>
                         )}
@@ -657,48 +660,48 @@ const SideMenus = ({ collapsed }) => {
                     >
 
                         {subMatches('Finish Stock') && (
-                            <div className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                            <div onClick={() => { navigate('/finish/stock') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                                 Finish Stock
                             </div>
                         )}
                         {subMatches('Raw Material Stock') && (
-                            <div className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                            <div onClick={() => { navigate('/raw/material/stock') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                                 Raw Material Stock
                             </div>
                         )}
                         {subMatches(' Reel Stock') && (
-                            <div className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                            <div onClick={() => { navigate('/reel/stock') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                                 Reel Stock
                             </div>
 
                         )}
                         {subMatches(' Beverage Stock') && (
 
-                            <div className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                            <div onClick={() => { navigate('/beverage/stock') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                                 Beverage Stock
                             </div>
                         )}
                         {subMatches(' Tea Stock') && (
 
-                            <div className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                            <div onClick={() => { navigate('/tea/stock') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                                 Tea Stock
                             </div>
                         )}
                         {subMatches(' Raw Packing Stock') && (
 
-                            <div className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                            <div onClick={() => { navigate('/raw/packing/stock') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                                 Raw Packing Stock
                             </div>
                         )}
                         {subMatches(' Out of Stock') && (
 
-                            <div className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                            <div onClick={() => { navigate('/out/of/stock') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                                 Out of Stock
                             </div>
                         )}
                         {subMatches('  Assign User to Stock') && (
 
-                            <div className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                            <div onClick={() => { navigate('/assign/user/stock') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                                 Assign User to Stock
                             </div>
                         )}
@@ -711,7 +714,7 @@ const SideMenus = ({ collapsed }) => {
                         {!collapsed && <span className="text-[12.5px] text-slate-100 flex-1">Warehouse Wise Sale</span>}
                         {!collapsed && <ChevronDown className={`text-slate-100  w-3.5 h-3.5 transition-transform duration-300 ${warehouseSaleOpen ? 'rotate-180' : ''}`} />}
                         {collapsed && (
-                            <span style={{ top: 'var(--tooltip-y, 50%)', transform: 'translateY(-50%)' }} className="fixed left-16 ml-1 bg-blue-500 text-white text-[11px] px-2 py-1 rounded-md whitespace-nowrap opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-200 pointer-events-none z-999">
+                            <span style={{ top: 'var(--tooltip-y, 50%)', transform: 'translateY(-50%)' }} className="fixed left-16 ml-1 bg-emerald-500 text-white text-[11px] px-2 py-1 rounded-md whitespace-nowrap opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-200 pointer-events-none z-999">
                                 Warehouse Wise Sale
                             </span>
                         )}
@@ -756,14 +759,14 @@ const SideMenus = ({ collapsed }) => {
                     </div>
                 )}
 
-                {menuMatches('Scheme Report', ['New Stock', 'Manage Stock', 'Warehouse Stock']) && (
+                {menuMatches('Scheme Report', ['Scheme Report', 'Warehouse Report']) && (
 
                     <div onMouseEnter={setTip} onClick={() => setschemeOpen(!schemeOpen)} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer  hover:bg-emerald-800 transition-all mb-px ${collapsed ? 'justify-start' : ''}`}>
                         <Gift className="text-slate-100   shrink-0  group-hover:translate-x-1.5 transition-transform duration-300" size={23} />
                         {!collapsed && <span className="text-[12.5px] text-slate-100 flex-1">Scheme Report</span>}
                         {!collapsed && <ChevronDown className={`text-slate-100  w-3.5 h-3.5 transition-transform duration-300 ${schemeOpen ? 'rotate-180' : ''}`} />}
                         {collapsed && (
-                            <span style={{ top: 'var(--tooltip-y, 50%)', transform: 'translateY(-50%)' }} className="fixed left-16 ml-1 bg-blue-500 text-white text-[11px] px-2 py-1 rounded-md whitespace-nowrap opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-200 pointer-events-none z-999">
+                            <span style={{ top: 'var(--tooltip-y, 50%)', transform: 'translateY(-50%)' }} className="fixed left-16 ml-1 bg-emerald-500 text-white text-[11px] px-2 py-1 rounded-md whitespace-nowrap opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-200 pointer-events-none z-999">
                                 Scheme Report
                             </span>
                         )}
@@ -779,32 +782,28 @@ const SideMenus = ({ collapsed }) => {
                         }}
                         className="ml-7 border-l border-slate-700 pl-3 flex flex-col gap-0.5 overflow-hidden"
                     >
-                        {subMatches('New Stock') && (
-                            <div className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
-                                New Stock
+                        {subMatches('Scheme Report') && (
+                            <div onClick={() => { navigate('/scheme/report') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                                Scheme Report
                             </div>
                         )}
-                        {subMatches('Manage Stock') && (
-                            <div className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
-                                Manage Stock
+                        {subMatches('Warehouse Report') && (
+                            <div onClick={() => { navigate('/warehouse/scheme/report') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                                Warehouse Report
                             </div>
                         )}
-                        {subMatches('Warehouse Stock') && (
-                            <div className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
-                                Warehouse Stock
-                            </div>
-                        )}
+
                     </div>
                 )}
 
-                {menuMatches('Return', ['New Stock', 'Manage Stock', 'Warehouse Stock']) && (
+                {menuMatches('Return', ['Return', 'Manage Return']) && (
 
                     <div onMouseEnter={setTip} onClick={() => setreturnOpen(!returnOpen)} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer  hover:bg-emerald-800 hover:border-slate-600 transition-all mb-px ${collapsed ? 'justify-start' : ''}`}>
                         <Repeat2 className="text-slate-100 shrink-0   group-hover:translate-x-1.5 transition-transform duration-300" size={23} />
                         {!collapsed && <span className="text-[12.5px] text-slate-100 flex-1">Return</span>}
                         {!collapsed && <ChevronDown className={`text-slate-100  w-3.5 h-3.5 transition-transform duration-300 ${returnOpen ? 'rotate-180' : ''}`} />}
                         {collapsed && (
-                            <span style={{ top: 'var(--tooltip-y, 50%)', transform: 'translateY(-50%)' }} className="fixed left-16 ml-1 bg-blue-500 text-white text-[11px] px-2 py-1 rounded-md whitespace-nowrap opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-200 pointer-events-none z-999">
+                            <span style={{ top: 'var(--tooltip-y, 50%)', transform: 'translateY(-50%)' }} className="fixed left-16 ml-1 bg-emerald-500 text-white text-[11px] px-2 py-1 rounded-md whitespace-nowrap opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-200 pointer-events-none z-999">
                                 Return
                             </span>
                         )}
@@ -821,33 +820,29 @@ const SideMenus = ({ collapsed }) => {
                         }}
                         className="ml-7 border-l border-slate-700 pl-3 flex flex-col gap-0.5 overflow-hidden"
                     >
-                        {subMatches('New Stock') && (
-                            <div className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
-                                New Stock
+                        {subMatches('Return') && (
+                            <div onClick={() => { navigate('/return') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                                Return
                             </div>
                         )}
-                        {subMatches('Manage Stock') && (
-                            <div className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
-                                Manage Stock
+                        {subMatches('Manage Return') && (
+                            <div onClick={() => { navigate('/manage/return') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                                Manage Return
                             </div>
                         )}
-                        {subMatches('Warehouse Stock') && (
-                            <div className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
-                                Warehouse Stock
-                            </div>
-                        )}
+
                     </div>
                 )}
 
 
-                {menuMatches('Distributor Order', ['Manage Hafiz Orders']) && (
+                {menuMatches('Distributor Order', ['Manage Hafiz Order']) && (
 
                     <div onMouseEnter={setTip} onClick={() => setdistributorOpen(!distributorOpen)} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer  hover:bg-emerald-800 hover:border-slate-600 transition-all mb-px ${collapsed ? 'justify-start' : ''}`}>
                         <ClipboardList className="text-slate-100 shrink-0   group-hover:translate-x-1.5 transition-transform duration-300" size={23} />
                         {!collapsed && <span className="text-[12.5px] text-slate-100 flex-1">Distributor Order</span>}
                         {!collapsed && <ChevronDown className={`text-slate-100  w-3.5 h-3.5 transition-transform duration-300 ${distributorOpen ? 'rotate-180' : ''}`} />}
                         {collapsed && (
-                            <span style={{ top: 'var(--tooltip-y, 50%)', transform: 'translateY(-50%)' }} className="fixed left-16 ml-1 bg-blue-500 text-white text-[11px] px-2 py-1 rounded-md whitespace-nowrap opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-200 pointer-events-none z-999">
+                            <span style={{ top: 'var(--tooltip-y, 50%)', transform: 'translateY(-50%)' }} className="fixed left-16 ml-1 bg-emerald-500 text-white text-[11px] px-2 py-1 rounded-md whitespace-nowrap opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-200 pointer-events-none z-999">
                                 Distributor Order
                             </span>
                         )}
@@ -864,20 +859,20 @@ const SideMenus = ({ collapsed }) => {
                         className="ml-7 border-l border-slate-700 pl-3 flex flex-col gap-0.5 overflow-hidden"
                     >
                         {subMatches('Manage Hafiz Orders') && (
-                            <div className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
-                                Manage Hafiz Orders
+                            <div onClick={() => { navigate('/manage/distributor/order') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                                Manage Hafiz Order
                             </div>
                         )}
                     </div>
                 )}
-                {menuMatches('Report', ['Today customer Report', 'User Wise Reciept Report', 'Supplier Reciept', 'Sales Report', 'Sale Report (Product Wise)']) && (
+                {menuMatches('Report', ['Today customer Report', 'User Wise Reciept Report', 'Supplier Reciept', 'Sale Report', 'Sale Report (Product Wise)']) && (
 
                     <div onMouseEnter={setTip} onClick={() => setreportOpen(!reportOpen)} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer  hover:bg-emerald-800 hover:border-slate-600 transition-all mb-px ${collapsed ? 'justify-start' : ''}`}>
                         <Flag className="text-slate-100 shrink-0   group-hover:translate-x-1.5 transition-transform duration-300" size={23} />
                         {!collapsed && <span className="text-[12.5px] text-slate-100 flex-1">Report</span>}
                         {!collapsed && <ChevronDown className={`text-slate-100  w-3.5 h-3.5 transition-transform duration-300 ${reportOpen ? 'rotate-180' : ''}`} />}
                         {collapsed && (
-                            <span style={{ top: 'var(--tooltip-y, 50%)', transform: 'translateY(-50%)' }} className="fixed left-16 ml-1 bg-blue-500 text-white text-[11px] px-2 py-1 rounded-md whitespace-nowrap opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-200 pointer-events-none z-999">
+                            <span style={{ top: 'var(--tooltip-y, 50%)', transform: 'translateY(-50%)' }} className="fixed left-16 ml-1 bg-emerald-500 text-white text-[11px] px-2 py-1 rounded-md whitespace-nowrap opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-200 pointer-events-none z-999">
                                 Report
                             </span>
                         )}
@@ -908,9 +903,9 @@ const SideMenus = ({ collapsed }) => {
                                 Supplier Reciept
                             </div>
                         )}
-                        {subMatches('Sales Report') && (
+                        {subMatches('Sale Report') && (
                             <div className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
-                                Sales Report
+                                Sale Report
                             </div>
                         )}
                         {subMatches('Sale Report (Product Wise)') && (
@@ -928,7 +923,7 @@ const SideMenus = ({ collapsed }) => {
                         {!collapsed && <span className="text-[12.5px] text-slate-100 flex-1">Accounts</span>}
                         {!collapsed && <ChevronDown className={`text-slate-100  w-3.5 h-3.5 transition-transform duration-300 ${accountOpen ? 'rotate-180' : ''}`} />}
                         {collapsed && (
-                            <span style={{ top: 'var(--tooltip-y, 50%)', transform: 'translateY(-50%)' }} className="fixed left-16 ml-1 bg-blue-500 text-white text-[11px] px-2 py-1 rounded-md whitespace-nowrap opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-200 pointer-events-none z-999">
+                            <span style={{ top: 'var(--tooltip-y, 50%)', transform: 'translateY(-50%)' }} className="fixed left-16 ml-1 bg-emerald-500 text-white text-[11px] px-2 py-1 rounded-md whitespace-nowrap opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-200 pointer-events-none z-999">
                                 Accounts
                             </span>
                         )}
@@ -991,7 +986,7 @@ const SideMenus = ({ collapsed }) => {
                         {!collapsed && <span className="text-[12.5px] text-slate-100 flex-1">Bank</span>}
                         {!collapsed && <ChevronDown className={`text-slate-100  w-3.5 h-3.5 transition-transform duration-300 ${bankOpen ? 'rotate-180' : ''}`} />}
                         {collapsed && (
-                            <span style={{ top: 'var(--tooltip-y, 50%)', transform: 'translateY(-50%)' }} className="fixed left-16 ml-1 bg-blue-500 text-white text-[11px] px-2 py-1 rounded-md whitespace-nowrap opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-200 pointer-events-none z-999">
+                            <span style={{ top: 'var(--tooltip-y, 50%)', transform: 'translateY(-50%)' }} className="fixed left-16 ml-1 bg-emerald-500 text-white text-[11px] px-2 py-1 rounded-md whitespace-nowrap opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-200 pointer-events-none z-999">
                                 Bank
                             </span>
                         )}
@@ -1008,36 +1003,36 @@ const SideMenus = ({ collapsed }) => {
                         className="ml-7 border-l border-slate-700 pl-3 flex flex-col gap-0.5 overflow-hidden"
                     >
                         {subMatches('Add New') && (
-                            <div className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                            <div onClick={() => { navigate('/new/bank') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                                 Add New
                             </div>
                         )}
                         {subMatches('Add New Transaction') && (
-                            <div className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                            <div onClick={() => { navigate('/add/new/transaction') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                                 Add New Transaction
                             </div>
                         )}
                         {subMatches('Manage Bank') && (
-                            <div className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                            <div onClick={() => { navigate('/manage/bank') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                                 Manage Bank
                             </div>
                         )}
                         {subMatches('Bank Ledger') && (
-                            <div className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                            <div onClick={() => { navigate('/bank/ledger') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                                 Bank Ledger
                             </div>
                         )}
                     </div>
                 )}
 
-                {menuMatches('Salary', ['Employee', 'Attendence', 'Salary']) && (
+                {menuMatches('Salary', ['Employee', 'Add Employee', 'Manage Employee', 'Manage Employee Salary', 'Attendence', 'Attendance', 'Attendance Report', 'Salary', 'Employee Salary', 'Ledger']) && (
 
                     <div onMouseEnter={setTip} onClick={() => setsalaryOpen(!salaryOpen)} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer  hover:bg-emerald-800 transition-all mb-px ${collapsed ? 'justify-start' : ''}`}>
                         <HandCoins className="text-slate-100 shrink-0   group-hover:translate-x-1.5 transition-transform duration-300" size={23} />
                         {!collapsed && <span className="text-[12.5px] text-slate-100 flex-1">Salary</span>}
                         {!collapsed && <ChevronDown className={`text-slate-100  w-3.5 h-3.5 transition-transform duration-300 ${salaryOpen ? 'rotate-180' : ''}`} />}
                         {collapsed && (
-                            <span style={{ top: 'var(--tooltip-y, 50%)', transform: 'translateY(-50%)' }} className="fixed left-16 ml-1 bg-blue-500 text-white text-[11px] px-2 py-1 rounded-md whitespace-nowrap opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-200 pointer-events-none z-999">
+                            <span style={{ top: 'var(--tooltip-y, 50%)', transform: 'translateY(-50%)' }} className="fixed left-16 ml-1 bg-emerald-500 text-white text-[11px] px-2 py-1 rounded-md whitespace-nowrap opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-200 pointer-events-none z-999">
                                 Salary
                             </span>
                         )}
@@ -1046,7 +1041,7 @@ const SideMenus = ({ collapsed }) => {
                 {!collapsed && (
                     <div
                         style={{
-                            maxHeight: (salaryOpen || isSearching) ? '200px' : '0px',
+                            maxHeight: (salaryOpen || isSearching) ? '480px' : '0px',
                             opacity: (salaryOpen || isSearching) ? 1 : 0,
                             transform: (salaryOpen || isSearching) ? 'translateY(0px)' : 'translateY(-8px)',
                             transition: 'max-height 0.5s cubic-bezier(0.16,1,0.3,1), opacity 0.4s cubic-bezier(0.16,1,0.3,1), transform 0.4s cubic-bezier(0.16,1,0.3,1)'
@@ -1054,18 +1049,90 @@ const SideMenus = ({ collapsed }) => {
                         className="ml-7 border-l border-slate-700 pl-3 flex flex-col gap-0.5 overflow-hidden"
                     >
                         {subMatches('Employee') && (
-                            <div className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
-                                Employee
+                            <div onClick={() => setemployeeOpen(!employeeOpen)} className="flex items-center justify-between text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                                <span>Employee</span>
+                                <ChevronDown className={`w-3 h-3 transition-transform duration-300 ${employeeOpen ? 'rotate-180' : ''}`} />
                             </div>
                         )}
+                        {(employeeOpen || isSearching) && (
+                            <div
+                                style={{
+                                    maxHeight: (employeeOpen || isSearching) ? '150px' : '0px',
+                                    opacity: (employeeOpen || isSearching) ? 1 : 0,
+                                    transform: (employeeOpen || isSearching) ? 'translateY(0px)' : 'translateY(-8px)',
+                                    transition: 'max-height 0.5s cubic-bezier(0.16,1,0.3,1), opacity 0.4s cubic-bezier(0.16,1,0.3,1), transform 0.4s cubic-bezier(0.16,1,0.3,1)'
+                                }}
+                                className="ml-4 border-l border-slate-700 pl-3 flex flex-col gap-0.5 overflow-hidden"
+                            >
+                                {subMatches('Add Employee') && (
+                                    <div onClick={() => navigate('/add/employee')} className="text-[11.5px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                                        Add Employee
+                                    </div>
+                                )}
+                                {subMatches('Manage Employee') && (
+                                    <div onClick={() => navigate('/manage/employee')} className="text-[11.5px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                                        Manage Employee
+                                    </div>
+                                )}
+                                {subMatches('Manage Employee Salary') && (
+                                    <div onClick={() => navigate('/manage/employee/salary')} className="text-[11.5px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                                        Manage Employee Salary
+                                    </div>
+                                )}
+                            </div>
+                        )}
+
                         {subMatches('Attendence') && (
-                            <div className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
-                                Attendence
+                            <div onClick={() => setattendanceOpen(!attendanceOpen)} className="flex items-center justify-between text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                                <span>Attendence</span>
+                                <ChevronDown className={`w-3 h-3 transition-transform duration-300 ${attendanceOpen ? 'rotate-180' : ''}`} />
                             </div>
                         )}
+                        {(attendanceOpen || isSearching) && (
+                            <div
+                                style={{
+                                    maxHeight: (attendanceOpen || isSearching) ? '110px' : '0px',
+                                    opacity: (attendanceOpen || isSearching) ? 1 : 0,
+                                    transform: (attendanceOpen || isSearching) ? 'translateY(0px)' : 'translateY(-8px)',
+                                    transition: 'max-height 0.5s cubic-bezier(0.16,1,0.3,1), opacity 0.4s cubic-bezier(0.16,1,0.3,1), transform 0.4s cubic-bezier(0.16,1,0.3,1)'
+                                }}
+                                className="ml-4 border-l border-slate-700 pl-3 flex flex-col gap-0.5 overflow-hidden"
+                            >
+                                {subMatches('Attendance') && (
+                                    <div onClick={() => { navigate('/attendence') }} className="text-[11.5px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                                        Attendance
+                                    </div>
+                                )}
+                                {subMatches('Attendance Report') && (
+                                    <div onClick={() => { navigate('/attendence/report') }} className="text-[11.5px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                                        Attendance Report
+                                    </div>
+                                )}
+                            </div>
+                        )}
+
                         {subMatches('Salary') && (
-                            <div className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
-                                Salary
+                            <div onClick={() => setsalaryDetailOpen(!salaryDetailOpen)} className="flex items-center justify-between text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                                <span>Salary</span>
+                                <ChevronDown className={`w-3 h-3 transition-transform duration-300 ${salaryDetailOpen ? 'rotate-180' : ''}`} />
+                            </div>
+                        )}
+                        {(salaryDetailOpen || isSearching) && (
+                            <div
+                                style={{
+                                    maxHeight: (salaryDetailOpen || isSearching) ? '110px' : '0px',
+                                    opacity: (salaryDetailOpen || isSearching) ? 1 : 0,
+                                    transform: (salaryDetailOpen || isSearching) ? 'translateY(0px)' : 'translateY(-8px)',
+                                    transition: 'max-height 0.5s cubic-bezier(0.16,1,0.3,1), opacity 0.4s cubic-bezier(0.16,1,0.3,1), transform 0.4s cubic-bezier(0.16,1,0.3,1)'
+                                }}
+                                className="ml-4 border-l border-slate-700 pl-3 flex flex-col gap-0.5 overflow-hidden"
+                            >
+                                {subMatches('Employee Salary') && (
+                                    <div onClick={() => { navigate('/salary') }} className="text-[11.5px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                                        Employee Salary Ledger
+                                    </div>
+                                )}
+
                             </div>
                         )}
                     </div>
@@ -1077,7 +1144,7 @@ const SideMenus = ({ collapsed }) => {
                         {!collapsed && <span className="text-[12.5px] text-slate-100 flex-1">Assets</span>}
                         {!collapsed && <ChevronDown className={`text-slate-100  w-3.5 h-3.5 transition-transform duration-300 ${assetsOpen ? 'rotate-180' : ''}`} />}
                         {collapsed && (
-                            <span style={{ top: 'var(--tooltip-y, 50%)', transform: 'translateY(-50%)' }} className="fixed left-16 ml-1 bg-blue-500 text-white text-[11px] px-2 py-1 rounded-md whitespace-nowrap opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-200 pointer-events-none z-999">
+                            <span style={{ top: 'var(--tooltip-y, 50%)', transform: 'translateY(-50%)' }} className="fixed left-16 ml-1 bg-emerald-500 text-white text-[11px] px-2 py-1 rounded-md whitespace-nowrap opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-200 pointer-events-none z-999">
                                 Assets
                             </span>
                         )}
@@ -1095,17 +1162,17 @@ const SideMenus = ({ collapsed }) => {
                         className="ml-7 border-l border-slate-700 pl-3 flex flex-col gap-0.5 overflow-hidden"
                     >
                         {subMatches('Add Assets') && (
-                            <div className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                            <div onClick={() => { navigate('/assets') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                                 Add Assets
                             </div>
                         )}
                         {subMatches('Manage Assets') && (
-                            <div className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                            <div onClick={() => { navigate('/manage/assets') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                                 Manage Assets
                             </div>
                         )}
                         {subMatches('Assets Ledger') && (
-                            <div className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                            <div onClick={() => { navigate('/assets/ledger') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                                 Assets Ledger
                             </div>
                         )}
