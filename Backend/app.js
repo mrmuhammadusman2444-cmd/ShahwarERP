@@ -43,6 +43,15 @@ app.post('/delete/customer', async (req, res) => {
     res.json({ message: 'Customer deleted', data: deleteCustomer })
 })
 
+app.post('/update/customer/:id', async function (req, res) {
+    let updateCustomer = await CustomerModel.findByIdAndUpdate(
+        req.params.id,
+        req.body,
+        { new: true }
+    )
+
+    res.json(updateCustomer)
+})
 
 
 app.listen(3000, () => {

@@ -1,23 +1,33 @@
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from 'axios'
+import DeleteAlertPopup from "./DeleteAlertPopup";
 import EditCustomerPopup from "./EditCustomerPopup";
 import { Users, Plus, Copy, FileText, Sheet, File, Printer, Search, ArrowUpDown, Pencil, Eye, Trash2, ChevronLeft, ChevronRight } from "lucide-react";
 import { toast } from 'react-toastify'
 
 const ManageCustomers = () => {
   const [manageCustomer, setManageCustomer] = useState([])
+  const [editData, setEditData] = useState(null)
   let [showEditPopup, setShowEditPopup] = useState(false)
+  const [showDeleteAlert, setShowDeleteAlert] = useState(false)
+  const [deleteData, setDeleteData] = useState(null)
 
+
+  async function handleManageCustomer() {
+    let res = await axios.get('http://localhost:3000/find')
+    setManageCustomer(res.data)
+  }
   useEffect(() => {
-    async function handleManageCustomer() {
-      let res = await axios.get('http://localhost:3000/find')
-      setManageCustomer(res.data)
-    }
     handleManageCustomer()
 
   }, [])
-
+  async function handleUpdate() {
+    await axios.post(`http://localhost:3000/update/customer/${editData._id}`, editData)
+    setShowEditPopup(false)
+    handleManageCustomer()      // aapke function ka naam yahi hai
+    toast.success('Customer Updated Successfully', { position: 'bottom-right', autoClose: 800 })
+  }
   async function handleDelete(id) {
     await axios.post('http://localhost:3000/delete/customer', { _id: id })
     setManageCustomer(manageCustomer.filter(function (p) {
@@ -35,9 +45,23 @@ const ManageCustomers = () => {
   return (
     <div className="min-h-screen bg-linear-to-br from-blue-50 via-white to-blue-50 p-4 md:p-6">
 
-      {
-        showEditPopup == true ? <EditCustomerPopup showEditPopup={showEditPopup} setShowEditPopup={setShowEditPopup} /> : null
-      }
+      {showEditPopup == true ? (
+        <EditCustomerPopup
+          showEditPopup={showEditPopup}
+          setShowEditPopup={setShowEditPopup}
+          editData={editData}
+          setEditData={setEditData}
+          handleUpdate={handleUpdate}
+        />
+      ) : null}
+
+      {showDeleteAlert && (
+        <DeleteAlertPopup
+          setShowDeleteAlert={setShowDeleteAlert}
+          deleteData={deleteData}
+          handleDelete={handleDelete}
+        />
+      )}
 
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-4">
@@ -89,7 +113,7 @@ const ManageCustomers = () => {
               <button className="flex items-center gap-1.5 bg-red-600 hover:bg-red-700 text-white text-xs font-semibold px-3 py-1.5 rounded-lg transition-all cursor-pointer">
                 <File className="w-3.5 h-3.5" /> PDF
               </button>
-              <button className="flex items-center gap-1.5 bg-cyan-600 hover:bg-cyan-700 text-white text-xs font-semibold px-3 py-1.5 rounded-lg transition-all cursor-pointer">
+              <button onClick={() => window.print()} className="flex items-center gap-1.5 bg-cyan-600 hover:bg-cyan-700 text-white text-xs font-semibold px-3 py-1.5 rounded-lg transition-all cursor-pointer">
                 <Printer className="w-3.5 h-3.5" /> Print
               </button>
             </div>
@@ -199,7 +223,7 @@ const ManageCustomers = () => {
 
                     <td className="px-4 py-3">
                       {customer.wareHouse ? (
-                        <span className="text-gray-600 text-xs bg-gray-100 px-2 py-1 rounded-md">{customer.wareHouse}</span>
+                        <span className="text-emerald-900 text-xs bg-emerald-100 px-2 py-1 rounded-md">{customer.wareHouse}</span>
                       ) : (
                         <span className="text-gray-300 text-xs">—</span>
                       )}
@@ -240,14 +264,14 @@ const ManageCustomers = () => {
 
                     <td className="px-4 py-3">
                       <div className="flex items-center justify-end gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                        <button title="View" className="p-1.5 rounded-lg text-gray-400 hover:text-emerald-600 hover:bg-emerald-100 cursor-pointer transition-all">
+                        <button className="p-1.5 rounded-lg text-gray-400 hover:text-emerald-600 hover:bg-emerald-100 cursor-pointer transition-all">
                           <Eye size={16} />
                         </button>
-                        <button onClick={()=>setShowEditPopup(true)} title="Edit" className="p-1.5 rounded-lg text-gray-400 hover:text-blue-600 hover:bg-blue-100 cursor-pointer transition-all">
+                        <button onClick={() => { setEditData(customer), setShowEditPopup(true) }} className="p-1.5 rounded-lg text-gray-400 hover:text-blue-600 hover:bg-blue-100 cursor-pointer transition-all">
                           <Pencil size={16} />
                         </button>
                         <button
-                          onClick={() => handleDelete(customer._id)}
+                          onClick={() => { setDeleteData(customer); setShowDeleteAlert(true) }}
                           className="p-1.5 rounded-lg text-gray-400 hover:text-red-600 hover:bg-red-100 cursor-pointer transition-all">
                           <Trash2 size={16} />
                         </button>

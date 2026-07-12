@@ -22,7 +22,10 @@ const field = {
     show: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 300, damping: 26 } },
 };
 
-const EditCustomerPopup = ({ setShowEditPopup }) => {
+const EditCustomerPopup = ({ setShowEditPopup, editData, setEditData, handleUpdate }) => {
+    const limit = Number(editData.amountLimit) || 0
+    const used = Number(editData.customerCredits) || 0
+    const percent = limit > 0 ? Math.min((used / limit) * 100, 100) : 0
     return (
         <motion.div
             variants={backdrop}
@@ -51,7 +54,7 @@ const EditCustomerPopup = ({ setShowEditPopup }) => {
                         <div>
                             <h2 className="text-lg font-bold tracking-tight text-gray-800">Edit customer</h2>
                             <p className="mt-0.5 text-xs text-gray-400">
-                                Ali Khan · <span className="text-emerald-600">Distributor</span>
+                                <span className="text-emerald-600">Update customer (Distributor) data</span>
                             </p>
                         </div>
                     </div>
@@ -84,6 +87,8 @@ const EditCustomerPopup = ({ setShowEditPopup }) => {
                                     <div className="relative">
                                         <User size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-emerald-400 transition-colors group-focus-within:text-emerald-600" />
                                         <input
+                                            value={editData.customerName}
+                                            onChange={(e) => setEditData({ ...editData, customerName: e.target.value })}
                                             placeholder="Enter customer name"
                                             className="w-full cursor-text rounded-xl border border-emerald-100 bg-emerald-50/70 py-2.5 pl-10 pr-3 text-sm text-gray-800 placeholder-gray-400 transition-all duration-200 focus:border-emerald-400 focus:bg-white focus:shadow-lg focus:shadow-emerald-100/70 focus:outline-none"
                                         />
@@ -96,7 +101,8 @@ const EditCustomerPopup = ({ setShowEditPopup }) => {
                                     </label>
                                     <div className="relative">
                                         <Mail size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-emerald-400 transition-colors group-focus-within:text-emerald-600" />
-                                        <input
+                                        <input value={editData.email}
+                                            onChange={(e) => setEditData({ ...editData, email: e.target.value })}
                                             placeholder="customer@email.com"
                                             className="w-full cursor-text rounded-xl border border-emerald-100 bg-emerald-50/70 py-2.5 pl-10 pr-3 text-sm text-gray-800 placeholder-gray-400 transition-all duration-200 focus:border-emerald-400 focus:bg-white focus:shadow-lg focus:shadow-emerald-100/70 focus:outline-none"
                                         />
@@ -110,6 +116,8 @@ const EditCustomerPopup = ({ setShowEditPopup }) => {
                                     <div className="relative">
                                         <Phone size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-emerald-400 transition-colors group-focus-within:text-emerald-600" />
                                         <input
+                                            value={editData.phoneNo}
+                                            onChange={(e) => setEditData({ ...editData, phoneNo: e.target.value })}
                                             placeholder="03xx-xxxxxxx"
                                             className="w-full cursor-text rounded-xl border border-emerald-100 bg-emerald-50/70 py-2.5 pl-10 pr-3 text-sm text-gray-800 placeholder-gray-400 transition-all duration-200 focus:border-emerald-400 focus:bg-white focus:shadow-lg focus:shadow-emerald-100/70 focus:outline-none"
                                         />
@@ -121,7 +129,8 @@ const EditCustomerPopup = ({ setShowEditPopup }) => {
                                     <div className="relative">
                                         <Warehouse size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-emerald-400 transition-colors group-focus-within:text-emerald-600" />
                                         <select
-                                            defaultValue=""
+                                            value={editData.wareHouse}
+                                            onChange={(e) => setEditData({ ...editData, wareHouse: e.target.value })}
                                             className="w-full cursor-pointer appearance-none rounded-xl border border-emerald-100 bg-emerald-50/70 py-2.5 pl-10 pr-3 text-sm text-gray-800 transition-all duration-200 focus:border-emerald-400 focus:bg-white focus:shadow-lg focus:shadow-emerald-100/70 focus:outline-none"
                                         >
                                             <option value="">Select warehouse</option>
@@ -137,6 +146,8 @@ const EditCustomerPopup = ({ setShowEditPopup }) => {
                                     <div className="relative">
                                         <Wallet size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-emerald-400 transition-colors group-focus-within:text-emerald-600" />
                                         <input
+                                            value={editData.amountLimit}
+                                            onChange={(e) => setEditData({ ...editData, amountLimit: e.target.value })}
                                             placeholder="0.00"
                                             className="w-full cursor-text rounded-xl border border-emerald-100 bg-emerald-50/70 py-2.5 pl-10 pr-3 text-sm text-gray-800 placeholder-gray-400 transition-all duration-200 focus:border-emerald-400 focus:bg-white focus:shadow-lg focus:shadow-emerald-100/70 focus:outline-none"
                                         />
@@ -150,6 +161,8 @@ const EditCustomerPopup = ({ setShowEditPopup }) => {
                                     <div className="relative">
                                         <Tag size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-emerald-400 transition-colors group-focus-within:text-emerald-600" />
                                         <select
+                                            value={editData.CustomerProductRate}
+                                            onChange={(e) => setEditData({ ...editData, CustomerProductRate: e.target.value })}
                                             defaultValue=""
                                             className="w-full cursor-pointer appearance-none rounded-xl border border-emerald-100 bg-emerald-50/70 py-2.5 pl-10 pr-3 text-sm text-gray-800 transition-all duration-200 focus:border-emerald-400 focus:bg-white focus:shadow-lg focus:shadow-emerald-100/70 focus:outline-none"
                                         >
@@ -176,6 +189,8 @@ const EditCustomerPopup = ({ setShowEditPopup }) => {
                                     <div className="relative">
                                         <Coins size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-emerald-400 transition-colors group-focus-within:text-emerald-600" />
                                         <input
+                                            value={editData.customerCredits}
+                                            onChange={(e) => setEditData({ ...editData, customerCredits: e.target.value })}
                                             placeholder="0.00"
                                             className="w-full cursor-text rounded-xl border border-emerald-100 bg-emerald-50/70 py-2.5 pl-10 pr-3 text-sm text-gray-800 placeholder-gray-400 transition-all duration-200 focus:border-emerald-400 focus:bg-white focus:shadow-lg focus:shadow-emerald-100/70 focus:outline-none"
                                         />
@@ -187,6 +202,8 @@ const EditCustomerPopup = ({ setShowEditPopup }) => {
                                     <div className="relative">
                                         <History size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-emerald-400 transition-colors group-focus-within:text-emerald-600" />
                                         <input
+                                            value={editData.PreviouseCreditsBalance}
+                                            onChange={(e) => setEditData({ ...editData, PreviouseCreditsBalance: e.target.value })}
                                             placeholder="0.00"
                                             className="w-full cursor-text rounded-xl border border-emerald-100 bg-emerald-50/70 py-2.5 pl-10 pr-3 text-sm text-gray-800 placeholder-gray-400 transition-all duration-200 focus:border-emerald-400 focus:bg-white focus:shadow-lg focus:shadow-emerald-100/70 focus:outline-none"
                                         />
@@ -196,25 +213,59 @@ const EditCustomerPopup = ({ setShowEditPopup }) => {
                                 <motion.div variants={field}>
                                     <label className="mb-1.5 block text-[11px] font-semibold uppercase tracking-wide text-gray-500">Scheme</label>
                                     <div className="grid grid-cols-2 gap-2">
+
                                         <motion.label
                                             whileHover={{ y: -2 }}
                                             whileTap={{ scale: 0.97 }}
-                                            className="flex cursor-pointer items-center gap-2.5 rounded-xl border-2 border-emerald-500 bg-emerald-50 px-3 py-2.5 shadow-sm shadow-emerald-100"
+                                            className={`flex cursor-pointer items-center gap-2.5 rounded-xl border-2 px-3 py-2.5 transition-colors ${editData.scheme === "yes"
+                                                ? "border-emerald-500 bg-emerald-50 shadow-sm shadow-emerald-100"
+                                                : "border-emerald-100 bg-emerald-50/50 hover:border-emerald-300"
+                                                }`}
                                         >
-                                            <span className="flex h-4 w-4 items-center justify-center rounded-full bg-emerald-600">
-                                                <Check size={11} strokeWidth={3.5} className="text-white" />
-                                            </span>
-                                            <span className="text-sm font-semibold text-emerald-800">Yes</span>
+                                            <input
+                                                type="radio"
+                                                name="scheme"
+                                                value="yes"
+                                                checked={editData.scheme === "yes"}
+                                                onChange={(e) => setEditData({ ...editData, scheme: e.target.value })}
+                                                className="hidden"
+                                            />
+                                            {editData.scheme === "yes" ? (
+                                                <span className="flex h-4 w-4 items-center justify-center rounded-full bg-emerald-600">
+                                                    <Check size={11} strokeWidth={3.5} className="text-white" />
+                                                </span>
+                                            ) : (
+                                                <span className="h-4 w-4 rounded-full border-2 border-emerald-200 bg-white" />
+                                            )}
+                                            <span className={`text-sm ${editData.scheme === "yes" ? "font-semibold text-emerald-800" : "font-medium text-gray-500"}`}>Yes</span>
                                         </motion.label>
 
                                         <motion.label
                                             whileHover={{ y: -2 }}
                                             whileTap={{ scale: 0.97 }}
-                                            className="flex cursor-pointer items-center gap-2.5 rounded-xl border-2 border-emerald-100 bg-emerald-50/50 px-3 py-2.5 transition-colors hover:border-emerald-300"
+                                            className={`flex cursor-pointer items-center gap-2.5 rounded-xl border-2 px-3 py-2.5 transition-colors ${editData.scheme === "no"
+                                                ? "border-emerald-500 bg-emerald-50 shadow-sm shadow-emerald-100"
+                                                : "border-emerald-100 bg-emerald-50/50 hover:border-emerald-300"
+                                                }`}
                                         >
-                                            <span className="h-4 w-4 rounded-full border-2 border-emerald-200 bg-white" />
-                                            <span className="text-sm font-medium text-gray-500">No</span>
+                                            <input
+                                                type="radio"
+                                                name="scheme"
+                                                value="no"
+                                                checked={editData.scheme === "no"}
+                                                onChange={(e) => setEditData({ ...editData, scheme: e.target.value })}
+                                                className="hidden"
+                                            />
+                                            {editData.scheme === "no" ? (
+                                                <span className="flex h-4 w-4 items-center justify-center rounded-full bg-emerald-600">
+                                                    <Check size={11} strokeWidth={3.5} className="text-white" />
+                                                </span>
+                                            ) : (
+                                                <span className="h-4 w-4 rounded-full border-2 border-emerald-200 bg-white" />
+                                            )}
+                                            <span className={`text-sm ${editData.scheme === "no" ? "font-semibold text-emerald-800" : "font-medium text-gray-500"}`}>No</span>
                                         </motion.label>
+
                                     </div>
                                 </motion.div>
                             </div>
@@ -222,12 +273,16 @@ const EditCustomerPopup = ({ setShowEditPopup }) => {
                             <motion.div variants={field} className="mt-4 rounded-xl border border-emerald-100 bg-emerald-50/60 p-3.5">
                                 <div className="mb-2 flex items-center justify-between text-[11px]">
                                     <span className="font-semibold text-emerald-800">Credit used</span>
-                                    <span className="text-gray-400">Rs. 45,000 of 100,000</span>
+                                    <span className="text-gray-400">
+                                        {limit > 0
+                                            ? `Rs. ${used.toLocaleString()} of ${limit.toLocaleString()}`
+                                            : "No limit set"}
+                                    </span>
                                 </div>
                                 <div className="h-1.5 w-full overflow-hidden rounded-full bg-emerald-100">
                                     <motion.div
                                         initial={{ width: 0 }}
-                                        animate={{ width: "45%" }}
+                                        animate={{ width: `${percent}%` }}
                                         transition={{ duration: 0.9, delay: 0.45, ease: [0.22, 1, 0.36, 1] }}
                                         className="h-full rounded-full bg-linear-to-r from-emerald-400 to-emerald-600"
                                     />
@@ -247,7 +302,7 @@ const EditCustomerPopup = ({ setShowEditPopup }) => {
                     >
                         Cancel
                     </motion.button>
-                    <motion.button
+                    <motion.button onClick={handleUpdate}
                         whileHover={{ y: -2 }}
                         whileTap={{ scale: 0.98, y: 0 }}
                         transition={{ type: "spring", stiffness: 400, damping: 20 }}
