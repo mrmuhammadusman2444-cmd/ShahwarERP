@@ -21,6 +21,7 @@ app.post('/newCustomer', async function (req, res) {
         customerName: data.customerName,
         email: data.email,
         phoneNo: data.phoneNo,
+        wareHouse: data.wareHouse,
         amountLimit: data.amountLimit,
         CustomerProductRate: data.CustomerProductRate,
         scheme: data.scheme,
@@ -28,16 +29,19 @@ app.post('/newCustomer', async function (req, res) {
         PreviouseCreditsBalance: data.PreviouseCreditsBalance
     }
 
-    let CreationCustomer= await CustomerModel.create(AddCustomerObject)
+    let CreationCustomer = await CustomerModel.create(AddCustomerObject)
     res.json(CreationCustomer)
 })
 
-app.post('/newCustomer',async function (req,res) {
-   let findCustomer = await CustomerModel.find() 
+app.get('/find', async function (req, res) {
+    let findCustomer = await CustomerModel.find()
+    res.json(findCustomer)
 })
 
-
-
+app.post('/delete/customer', async (req, res) => {
+    let deleteCustomer = await CustomerModel.findByIdAndDelete(req.body._id)
+    res.json({ message: 'Customer deleted', data: deleteCustomer })
+})
 
 
 

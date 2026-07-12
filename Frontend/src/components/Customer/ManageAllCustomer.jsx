@@ -1,15 +1,43 @@
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from 'axios'
-import { Users, Plus, Copy, FileText, Sheet, File, Printer, Search, ArrowUpDown, ChevronLeft, ChevronRight } from "lucide-react";
+import EditCustomerPopup from "./EditCustomerPopup";
+import { Users, Plus, Copy, FileText, Sheet, File, Printer, Search, ArrowUpDown, Pencil, Eye, Trash2, ChevronLeft, ChevronRight } from "lucide-react";
+import { toast } from 'react-toastify'
 
 const ManageCustomers = () => {
+  const [manageCustomer, setManageCustomer] = useState([])
+  let [showEditPopup, setShowEditPopup] = useState(false)
 
+  useEffect(() => {
+    async function handleManageCustomer() {
+      let res = await axios.get('http://localhost:3000/find')
+      setManageCustomer(res.data)
+    }
+    handleManageCustomer()
+
+  }, [])
+
+  async function handleDelete(id) {
+    await axios.post('http://localhost:3000/delete/customer', { _id: id })
+    setManageCustomer(manageCustomer.filter(function (p) {
+      return p._id !== id
+    }))
+    toast.success('Customer Deleted Successfully', { position: 'bottom-right', autoClose: 800 })
+  }
+
+
+
+
+  console.log(manageCustomer)
 
   const navigate = useNavigate()
   return (
     <div className="min-h-screen bg-linear-to-br from-blue-50 via-white to-blue-50 p-4 md:p-6">
 
+      {
+        showEditPopup == true ? <EditCustomerPopup showEditPopup={showEditPopup} setShowEditPopup={setShowEditPopup} /> : null
+      }
 
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-4">
@@ -81,42 +109,164 @@ const ManageCustomers = () => {
 
         <div className="overflow-x-auto rounded-xl border border-blue-100 h-115">
           <table className="w-full text-sm">
-            <thead>
+            <thead className="sticky top-0 z-10">
               <tr className="bg-linear-to-b from-emerald-500 to-emerald-700 text-white">
-                <th className="text-left px-4 py-3 font-semibold text-xs uppercase tracking-wide rounded-tl-xl">SL</th>
+                <th className="text-left px-4 py-3 font-semibold text-xs uppercase tracking-wide rounded-tl-xl w-12">SL</th>
                 <th className="text-left px-4 py-3 font-semibold text-xs uppercase tracking-wide">
                   <button className="flex items-center gap-1 hover:opacity-80 transition-opacity cursor-pointer">
-                    Customer Name <ArrowUpDown className="w-3.5 h-3.5" />
+                    Customer <ArrowUpDown className="w-3.5 h-3.5" />
                   </button>
                 </th>
-                <th className="text-left px-4 py-3 font-semibold text-xs  tracking-wide">Distributor Name</th>
-                <th className="text-left px-4 py-3 font-semibold text-xs  tracking-wide">Route Name</th>
-                <th className="text-left px-4 py-3 font-semibold text-xs  tracking-wide">Address</th>
-                <th className="text-left px-4 py-3 font-semibold text-xs  tracking-wide">Mobile No</th>
-                <th className="text-left px-4 py-3 font-semibold text-xs  tracking-wide">Balance</th>
-
-                <th className="text-left px-4 py-3 font-semibold text-xs  tracking-wide rounded-tr-xl">Action</th>
+                <th className="text-left px-4 py-3 font-semibold text-xs uppercase tracking-wide">Mobile No</th>
+                <th className="text-left px-4 py-3 font-semibold text-xs uppercase tracking-wide">Warehouse</th>
+                <th className="text-left px-4 py-3 font-semibold text-xs uppercase tracking-wide">Rate</th>
+                <th className="text-left px-4 py-3 font-semibold text-xs uppercase tracking-wide w-48">Credit Used</th>
+                <th className="text-right px-4 py-3 font-semibold text-xs uppercase tracking-wide">Balance</th>
+                <th className="text-right px-4 py-3 font-semibold text-xs uppercase tracking-wide rounded-tr-xl">Action</th>
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td colSpan={7} className="py-20 text-center">
-                  <div className="flex flex-col items-center gap-3 ml-15 mt-6">
-                    <div className="w-14 h-14 rounded-2xl bg-blue-50 flex items-center justify-center">
-                      <Users className="w-7 h-7 text-blue-200" />
+
+              {manageCustomer.length === 0 && (
+                <tr>
+                  <td colSpan={8} className="py-20 text-center">
+                    <div className="flex flex-col items-center gap-3">
+                      <div className="w-14 h-14 rounded-2xl bg-emerald-50 flex items-center justify-center">
+                        <Users className="w-7 h-7 text-emerald-300" />
+                      </div>
+                      <p className="text-gray-600 text-sm font-medium">No customers yet</p>
+                      <p className="text-gray-400 text-xs">Add your first customer to see them here</p>
                     </div>
-                    <p className="text-gray-500 text-sm font-medium">No customer recode found</p>
-                    <p className="text-gray-400 text-xs">Click new customer</p>
-                  </div>
-                </td>
-              </tr>
+                  </td>
+                </tr>
+              )}
+
+              {manageCustomer.map((customer, index) => {
+
+                const limit = Number(customer.amountLimit) || 0
+                const used = Number(customer.customerCredits) || 0
+                const percent = limit > 0 ? Math.min((used / limit) * 100, 100) : 0
+
+                const barTone =
+                  percent >= 90 ? "bg-red-500"
+                    : percent >= 70 ? "bg-amber-500"
+                      : "bg-emerald-500"
+                const initials = (name = "") =>
+                  name.trim().split(" ").slice(0, 2).map(w => w[0]).join("").toUpperCase()
+
+                const avatarTone = (name = "") => {
+                  const tones = [
+                    "bg-emerald-100 text-emerald-700",
+                    "bg-amber-100 text-amber-700",
+                    "bg-sky-100 text-sky-700",
+                    "bg-rose-100 text-rose-700",
+                    "bg-violet-100 text-violet-700",
+                  ]
+                  return tones[name.length % tones.length]
+                }
+
+                const rateTone = {
+                  distributor: "bg-emerald-50 text-emerald-700 ring-emerald-200",
+                  dealer: "bg-amber-50 text-amber-700 ring-amber-200",
+                  retail: "bg-sky-50 text-sky-700 ring-sky-200",
+                }
+
+                return (
+                  <tr key={customer._id} className="group border-t border-emerald-50 hover:bg-emerald-50/60 transition-colors">
+
+                    <td className="px-4 py-3 text-gray-400 text-xs font-mono tabular-nums">
+                      {String(index + 1).padStart(2, "0")}
+                    </td>
+
+                    <td className="px-4 py-3">
+                      <div className="flex items-center gap-3">
+                        <div className={`w-9 h-9 shrink-0 rounded-xl flex items-center justify-center text-xs font-bold ${avatarTone(customer.customerName)}`}>
+                          {initials(customer.customerName) || "?"}
+                        </div>
+                        <div className="min-w-0">
+                          <p className="text-gray-800 text-sm font-semibold truncate flex items-center gap-1.5">
+                            {customer.customerName}
+                            {customer.scheme === "yes" && (
+                              <span title="Scheme active" className="w-1.5 h-1.5 rounded-full bg-emerald-500 shrink-0" />
+                            )}
+                          </p>
+                          <p className="text-gray-400 text-xs truncate">{customer.email}</p>
+                        </div>
+                      </div>
+                    </td>
+
+                    <td className="px-4 py-3 text-gray-600 text-sm tabular-nums">{customer.phoneNo || "—"}</td>
+
+                    <td className="px-4 py-3">
+                      {customer.wareHouse ? (
+                        <span className="text-gray-600 text-xs bg-gray-100 px-2 py-1 rounded-md">{customer.wareHouse}</span>
+                      ) : (
+                        <span className="text-gray-300 text-xs">—</span>
+                      )}
+                    </td>
+
+                    <td className="px-4 py-3">
+                      {customer.CustomerProductRate ? (
+                        <span className={`text-xs font-semibold px-2 py-1 rounded-md ring-1 capitalize ${rateTone[customer.CustomerProductRate] || "bg-gray-50 text-gray-600 ring-gray-200"}`}>
+                          {customer.CustomerProductRate}
+                        </span>
+                      ) : (
+                        <span className="text-gray-300 text-xs">—</span>
+                      )}
+                    </td>
+
+                    <td className="px-4 py-3">
+                      {limit > 0 ? (
+                        <div className="flex flex-col gap-1.5">
+                          <div className="flex items-center justify-between text-xs">
+                            <span className="text-gray-600 font-medium tabular-nums">Rs. {used.toLocaleString()}</span>
+                            <span className="text-gray-400 tabular-nums">/ {limit.toLocaleString()}</span>
+                          </div>
+                          <div className="h-1.5 w-full bg-gray-100 rounded-full overflow-hidden">
+                            <div className={`h-full rounded-full transition-all ${barTone}`} style={{ width: `${percent}%` }} />
+                          </div>
+                        </div>
+                      ) : (
+                        <span className="text-gray-300 text-xs">No limit set</span>
+                      )}
+                    </td>
+
+                    <td className="px-4 py-3 text-right">
+                      <span className={`text-sm font-bold tabular-nums ${Number(customer.PreviouseCreditsBalance) > 0 ? "text-red-600" : "text-gray-700"
+                        }`}>
+                        Rs. {Number(customer.PreviouseCreditsBalance || 0).toLocaleString()}
+                      </span>
+                    </td>
+
+                    <td className="px-4 py-3">
+                      <div className="flex items-center justify-end gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <button title="View" className="p-1.5 rounded-lg text-gray-400 hover:text-emerald-600 hover:bg-emerald-100 cursor-pointer transition-all">
+                          <Eye size={16} />
+                        </button>
+                        <button onClick={()=>setShowEditPopup(true)} title="Edit" className="p-1.5 rounded-lg text-gray-400 hover:text-blue-600 hover:bg-blue-100 cursor-pointer transition-all">
+                          <Pencil size={16} />
+                        </button>
+                        <button
+                          onClick={() => handleDelete(customer._id)}
+                          className="p-1.5 rounded-lg text-gray-400 hover:text-red-600 hover:bg-red-100 cursor-pointer transition-all">
+                          <Trash2 size={16} />
+                        </button>
+                      </div>
+                    </td>
+
+                  </tr>
+                )
+              })}
+
             </tbody>
           </table>
         </div>
 
 
         <div className="flex flex-col sm:flex-row items-center justify-between gap-3 mt-4">
-          <p className="text-gray-400 text-xs">Showing 0 to 0 of 0 entries</p>
+          <p className="text-gray-400 text-xs">
+            Showing {manageCustomer.length === 0 ? 0 : 1} to {manageCustomer.length} of {manageCustomer.length} entries
+          </p>
           <div className="flex items-center gap-1.5">
             <button className="flex items-center gap-1 text-xs text-gray-500 hover:text-blue-600 bg-blue-50 hover:bg-emerald-100 px-3 py-1.5 rounded-lg transition-all cursor-pointer">
               <ChevronLeft className="w-3.5 h-3.5" /> Previous

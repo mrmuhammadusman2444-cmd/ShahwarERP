@@ -71,6 +71,7 @@ import AssignUserToStockPage from './pages/Stock/AssignUserToStockPage.jsx'
 
 
 
+
 const App = () => {
   return (
     <BrowserRouter>
@@ -161,7 +162,7 @@ const App = () => {
 
 
 
-        
+
 
 
 
