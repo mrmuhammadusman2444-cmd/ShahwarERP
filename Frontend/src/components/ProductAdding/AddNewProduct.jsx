@@ -1,7 +1,10 @@
 import React, { useState } from 'react'
 import axios from 'axios'
+import { motion, AnimatePresence } from "framer-motion";
+import { Loader2, Check, Save } from "lucide-react";
 
 const AddNewProduct = () => {
+  const [status, setStatus] = useState("idle")
 
   const [newProduct, setNewProduct] = useState({
     productName: '',
@@ -22,10 +25,21 @@ const AddNewProduct = () => {
   })
 
   async function handleNewProduct() {
+    setStatus("saving")
 
-    let res = await axios.post('http://localhost:3000/add/new/product', newProduct)
-    console.log(res.data)
+    const minDelay = new Promise(r => setTimeout(r, 700))
 
+    try {
+      await axios.post('http://localhost:3000/add/new/product', newProduct)
+      await minDelay
+      setStatus("saved")
+      setTimeout(() => setStatus("idle"), 2000)
+    } catch (err) {
+      console.log("SAVE FAILED:", err.response?.data || err.message)
+      await minDelay
+      setStatus("error")
+      setTimeout(() => setStatus("idle"), 2500)
+    }
   }
 
   return (
@@ -233,10 +247,74 @@ const AddNewProduct = () => {
           <div className="w-full xl:w-48 shrink-0 flex flex-col gap-3">
 
 
-            <button onClick={handleNewProduct} className="flex items-center cursor-pointer gap-2 justify-center h-12 w-40 ml-175  px-4 py-2.5 bg-linear-to-r from-emerald-600 to-emerald-700 hover:from-emerald-500 hover:to-emerald-600 text-white text-sm font-semibold rounded-xl shadow-md shadow-emerald-200 transition-all hover:-translate-y-0.5">
+            <motion.button
+              onClick={handleNewProduct}
+              disabled={status !== "idle"}
+              whileTap={status === "idle" ? { scale: 0.97 } : {}}
+              transition={{ type: "spring", stiffness: 400, damping: 25 }}
+              className={`relative flex w-44 items-center cursor-pointer gap-2 justify-center h-12 ml-165 px-4 py-2.5 text-white text-sm font-semibold rounded-xl shadow-md transition-all hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:hover:translate-y-0 overflow-hidden ${status === "error"
+                ? "bg-rose-600 shadow-rose-200"
+                : "bg-linear-to-r from-emerald-600 to-emerald-700 hover:from-emerald-500 hover:to-emerald-600 shadow-emerald-200"
+                }`}
+            >
+              <AnimatePresence mode="wait">
 
-              Save Sale
-            </button>
+                {status === "idle" && (
+                  <motion.span key="idle"
+                    initial={{ opacity: 0, y: 8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -8 }}
+                    transition={{ duration: 0.15 }}
+                    className="flex items-center gap-2 whitespace-nowrap">
+                    <Save size={15} />
+                    Save Sale
+                  </motion.span>
+                )}
+
+                {status === "saving" && (
+                  <motion.span key="saving"
+                    initial={{ opacity: 0, y: 8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -8 }}
+                    transition={{ duration: 0.15 }}
+                    className="flex items-center gap-2 whitespace-nowrap">
+                    <Loader2 size={15} className="animate-spin" />
+                    Saving...
+                  </motion.span>
+                )}
+
+                {status === "saved" && (
+                  <motion.span key="saved"
+                    initial={{ opacity: 0, y: 8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -8 }}
+                    transition={{ duration: 0.15 }}
+                    className="flex items-center gap-2 whitespace-nowrap">
+                    <motion.span
+                      initial={{ scale: 0, rotate: -90 }}
+                      animate={{ scale: 1, rotate: 0 }}
+                      transition={{ type: "spring", stiffness: 500, damping: 15, delay: 0.05 }}
+                      className="flex h-4 w-4 items-center justify-center rounded-full bg-white">
+                      <Check size={11} strokeWidth={4} className="text-emerald-600" />
+                    </motion.span>
+                    Product Saved
+                  </motion.span>
+                )}
+
+                {status === "error" && (
+                  <motion.span key="error"
+                    initial={{ opacity: 0, y: 8 }}
+                    animate={{ opacity: 1, y: 0, x: [0, -4, 4, -3, 3, 0] }}
+                    exit={{ opacity: 0, y: -8 }}
+                    transition={{ duration: 0.35 }}
+                    className="flex items-center gap-2 whitespace-nowrap">
+                    <AlertCircle size={15} />
+                    Save Failed
+                  </motion.span>
+                )}
+
+              </AnimatePresence>
+            </motion.button>
           </div>
         </div>
 
