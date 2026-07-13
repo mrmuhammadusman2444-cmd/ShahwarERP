@@ -1,4 +1,33 @@
-const AddProduct = () => {
+import React, { useState } from 'react'
+import axios from 'axios'
+
+const AddNewProduct = () => {
+
+  const [newProduct, setNewProduct] = useState({
+    productName: '',
+    cartonSize: '',
+    weight: '',
+    weightUnit: 'g',
+    model: '',
+    mainCategory: '',
+    saleRawCategory: '',
+    productCategory: '',
+    costPrice: '',
+    distributorPrice: '',
+    retailPrice: '',
+    wholesaleRate: '',
+    codOnlinePrice: '',
+    unitSchemePoint: '',
+    storeLimit: ''
+  })
+
+  async function handleNewProduct() {
+
+    let res = await axios.post('http://localhost:3000/add/new/product', newProduct)
+    console.log(res.data)
+
+  }
+
   return (
     <div className="min-h-screen bg-linear-to-br from-blue-50 via-white to-blue-50 p-4 md:p-6">
 
@@ -35,22 +64,30 @@ const AddProduct = () => {
                 <label className="text-gray-500 text-xs font-semibold uppercase tracking-wide block mb-1.5">
                   Product Name <span className="text-red-400">*</span>
                 </label>
-                <input type="text" placeholder="Enter product name..."
+                <input onChange={(e) => {
+                  setNewProduct({ ...newProduct, productName: e.target.value })
+                }} type="text" placeholder="Enter product name..."
                   className="w-full bg-emerald-50 border border-emerald-100 focus:border-emerald-400 focus:bg-white rounded-xl px-3 py-2.5 text-gray-700 placeholder-gray-400 text-sm focus:outline-none transition-all" />
               </div>
 
               <div>
                 <label className="text-gray-500 text-xs font-semibold uppercase tracking-wide block mb-1.5">Carton Size</label>
-                <input type="number" placeholder="e.g. 12"
+                <input onChange={(e) => {
+                  setNewProduct({ ...newProduct, cartonSize: e.target.value })
+                }} type="number" placeholder="e.g. 12"
                   className="w-full bg-emerald-50 border border-emerald-100 focus:border-emerald-400 focus:bg-white rounded-xl px-3 py-2.5 text-gray-700 placeholder-gray-400 text-sm focus:outline-none transition-all" />
               </div>
 
               <div>
                 <label className="text-gray-500 text-xs font-semibold uppercase tracking-wide block mb-1.5">Weight</label>
                 <div className="flex gap-2">
-                  <input type="number" placeholder="500"
+                  <input onChange={(e) => {
+                    setNewProduct({ ...newProduct, weight: e.target.value })
+                  }} type="number" placeholder="500"
                     className="flex-1 min-w-0 bg-emerald-50 border border-emerald-100 focus:border-emerald-400 focus:bg-white rounded-xl px-3 py-2.5 text-gray-700 placeholder-gray-400 text-sm focus:outline-none transition-all" />
-                  <select className="w-16 bg-emerald-50 border border-emerald-100 focus:border-emerald-400 rounded-xl px-2 py-2.5 text-gray-600 text-sm focus:outline-none appearance-none cursor-pointer">
+                  <select onChange={(e) => {
+                    setNewProduct({ ...newProduct, weightUnit: e.target.value })
+                  }} className="w-16 bg-emerald-50 border border-emerald-100 focus:border-emerald-400 rounded-xl px-2 py-2.5 text-gray-600 text-sm focus:outline-none appearance-none cursor-pointer">
                     <option>g</option><option>kg</option><option>ml</option><option>L</option>
                   </select>
                 </div>
@@ -58,13 +95,17 @@ const AddProduct = () => {
 
               <div>
                 <label className="text-gray-500 text-xs font-semibold uppercase tracking-wide block mb-1.5">Model</label>
-                <input type="text" placeholder="Enter model..."
+                <input onChange={(e) => {
+                  setNewProduct({ ...newProduct, model: e.target.value })
+                }} type="text" placeholder="Enter model..."
                   className="w-full bg-emerald-50 border border-emerald-100 focus:border-emerald-400 focus:bg-white rounded-xl px-3 py-2.5 text-gray-700 placeholder-gray-400 text-sm focus:outline-none transition-all" />
               </div>
 
               <div>
                 <label className="text-gray-500 text-xs font-semibold uppercase tracking-wide block mb-1.5">Main Category</label>
-                <select className="w-full bg-emerald-50 border border-emerald-100 focus:border-emerald-400 focus:bg-white rounded-xl px-3 py-2.5 text-gray-700 text-sm focus:outline-none transition-all appearance-none cursor-pointer">
+                <select onChange={(e) => {
+                  setNewProduct({ ...newProduct, mainCategory: e.target.value })
+                }} className="w-full bg-emerald-50 border border-emerald-100 focus:border-emerald-400 focus:bg-white rounded-xl px-3 py-2.5 text-gray-700 text-sm focus:outline-none transition-all appearance-none cursor-pointer">
                   <option value="">Select category</option>
                   <option>Zaiqa Recipe Bucket's 5kg/10kg</option>
                   <option>Tea Pouch and Bag's</option>
@@ -84,7 +125,9 @@ const AddProduct = () => {
 
               <div>
                 <label className="text-gray-500 text-xs font-semibold uppercase tracking-wide block mb-1.5">Sale / Raw Category</label>
-                <select className="w-full bg-emerald-50 border border-emerald-100 focus:border-emerald-400 focus:bg-white rounded-xl px-3 py-2.5 text-gray-700 text-sm focus:outline-none transition-all appearance-none cursor-pointer">
+                <select onChange={(e) => {
+                  setNewProduct({ ...newProduct, saleRawCategory: e.target.value })
+                }} className="w-full bg-emerald-50 border border-emerald-100 focus:border-emerald-400 focus:bg-white rounded-xl px-3 py-2.5 text-gray-700 text-sm focus:outline-none transition-all appearance-none cursor-pointer">
                   <option value="">Select category</option>
                   <option>Sale</option>
                   <option>Raw</option>
@@ -102,25 +145,36 @@ const AddProduct = () => {
             <div className="grid grid-cols-2 gap-3">
 
               {[
-                { label: "Cost Price", required: true },
-                { label: "Distributor Price", required: true },
-                { label: "Retail Price", required: true },
-                { label: "Wholesale Rate", required: false },
-                { label: "COD / Online Price", required: false },
-                { label: "Unit Scheme Point", required: false, plain: true },
+                { name: "costPrice", label: "Cost Price", required: true },
+                { name: "distributorPrice", label: "Distributor Price", required: true },
+                { name: "retailPrice", label: "Retail Price", required: true },
+                { name: "wholesaleRate", label: "Wholesale Rate", required: false },
+                { name: "codOnlinePrice", label: "COD / Online Price", required: false },
+                { name: "unitSchemePoint", label: "Unit Scheme Point", required: false, plain: true },
               ].map((field) => (
-                <div key={field.label}>
+                <div key={field.name}>
                   <label className="text-gray-500 text-xs font-semibold uppercase tracking-wide block mb-1.5">
                     {field.label} {field.required && <span className="text-red-400">*</span>}
                   </label>
+
                   {field.plain ? (
-                    <input type="number" placeholder="0"
-                      className="w-full bg-emerald-50 border border-emerald-100 focus:border-emerald-400 focus:bg-white rounded-xl px-3 py-2.5 text-gray-700 placeholder-gray-400 text-sm focus:outline-none transition-all" />
+                    <input
+                      type="number"
+                      placeholder="0"
+                      value={newProduct[field.name]}
+                      onChange={(e) => setNewProduct({ ...newProduct, [field.name]: e.target.value })}
+                      className="w-full bg-emerald-50 border border-emerald-100 focus:border-emerald-400 focus:bg-white rounded-xl px-3 py-2.5 text-gray-700 placeholder-gray-400 text-sm focus:outline-none transition-all"
+                    />
                   ) : (
                     <div className="relative">
                       <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs font-semibold">Rs.</span>
-                      <input type="number" placeholder="0.00"
-                        className="w-full bg-emerald-50 border border-emerald-100 focus:border-emerald-400 focus:bg-white rounded-xl pl-9 pr-3 py-2.5 text-gray-700 placeholder-gray-400 text-sm focus:outline-none transition-all" />
+                      <input
+                        type="number"
+                        placeholder="0.00"
+                        value={newProduct[field.name]}
+                        onChange={(e) => setNewProduct({ ...newProduct, [field.name]: e.target.value })}
+                        className="w-full bg-emerald-50 border border-emerald-100 focus:border-emerald-400 focus:bg-white rounded-xl pl-9 pr-3 py-2.5 text-gray-700 placeholder-gray-400 text-sm focus:outline-none transition-all"
+                      />
                     </div>
                   )}
                 </div>
@@ -128,7 +182,9 @@ const AddProduct = () => {
 
               <div className="col-span-2">
                 <label className="text-gray-500 text-xs font-semibold uppercase tracking-wide block mb-1.5">Store Limit</label>
-                <input type="number" placeholder="0"
+                <input onChange={(e) => {
+                  setNewProduct({ ...newProduct, storeLimit: e.target.value })
+                }} type="number" placeholder="0"
                   className="w-full bg-emerald-50 border border-emerald-100 focus:border-emerald-400 focus:bg-white rounded-xl px-3 py-2.5 text-gray-700 placeholder-gray-400 text-sm focus:outline-none transition-all" />
               </div>
 
@@ -140,7 +196,9 @@ const AddProduct = () => {
               <div className="w-1 h-5 bg-linear-to-b from-emerald-500 to-emerald-700 rounded-full" />
               <h2 className="text-gray-700 text-sm font-bold uppercase tracking-wide whitespace-nowrap">Product Category</h2>
             </div>
-            <select className="w-82 bg-emerald-50 border border-emerald-100 focus:border-emerald-400 focus:bg-white rounded-xl px-3 py-2.5 text-gray-700 text-sm focus:outline-none transition-all appearance-none cursor-pointer">
+            <select onChange={(e) => {
+              setNewProduct({ ...newProduct, productCategory: e.target.value })
+            }} className="w-82 bg-emerald-50 border border-emerald-100 focus:border-emerald-400 focus:bg-white rounded-xl px-3 py-2.5 text-gray-700 text-sm focus:outline-none transition-all appearance-none cursor-pointer">
               <option value="">Select category</option>
               <option>Recipe</option>
               <option>Juices</option>
@@ -175,8 +233,8 @@ const AddProduct = () => {
           <div className="w-full xl:w-48 shrink-0 flex flex-col gap-3">
 
 
-            <button className="flex items-center cursor-pointer gap-2 justify-center h-12 w-40 ml-175  px-4 py-2.5 bg-linear-to-r from-emerald-600 to-emerald-700 hover:from-emerald-500 hover:to-emerald-600 text-white text-sm font-semibold rounded-xl shadow-md shadow-emerald-200 transition-all hover:-translate-y-0.5">
-             
+            <button onClick={handleNewProduct} className="flex items-center cursor-pointer gap-2 justify-center h-12 w-40 ml-175  px-4 py-2.5 bg-linear-to-r from-emerald-600 to-emerald-700 hover:from-emerald-500 hover:to-emerald-600 text-white text-sm font-semibold rounded-xl shadow-md shadow-emerald-200 transition-all hover:-translate-y-0.5">
+
               Save Sale
             </button>
           </div>
@@ -186,6 +244,6 @@ const AddProduct = () => {
 
     </div>
   );
-};
+}
 
-export default AddProduct;
+export default AddNewProduct

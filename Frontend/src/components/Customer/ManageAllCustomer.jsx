@@ -25,7 +25,7 @@ const ManageCustomers = () => {
   async function handleUpdate() {
     await axios.post(`http://localhost:3000/update/customer/${editData._id}`, editData)
     setShowEditPopup(false)
-    handleManageCustomer()      // aapke function ka naam yahi hai
+    handleManageCustomer()      
     toast.success('Customer Updated Successfully', { position: 'bottom-right', autoClose: 800 })
   }
   async function handleDelete(id) {

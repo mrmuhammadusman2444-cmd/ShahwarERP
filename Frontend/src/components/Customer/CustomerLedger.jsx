@@ -19,17 +19,12 @@ const CustomerLedger = () => {
             <p className="text-gray-400 text-xs">View customer transaction history</p>
           </div>
         </div>
-        <div className="hidden sm:flex items-center gap-1 text-xs text-gray-400">
-          <span>Home</span><span>/</span><span>Customers</span><span>/</span>
-          <span className="text-emerald-600 font-medium">Customer Ledger</span>
-        </div>
+        
       </div>
 
-      {/* ── Filter Bar ── */}
       <div className="bg-white border border-emerald-100 rounded-2xl shadow-sm p-4 mb-4">
         <div className="flex flex-col sm:flex-row items-start sm:items-end gap-3 flex-wrap">
 
-          {/* Customer Name */}
           <div className="flex-1 min-w-50">
             <label className="text-gray-500 text-xs font-semibold uppercase tracking-wide block mb-1.5">
               Customer Name <span className="text-red-400">*</span>
@@ -39,21 +34,18 @@ const CustomerLedger = () => {
             </select>
           </div>
 
-          {/* From */}
           <div>
             <label className="text-gray-500 text-xs font-semibold uppercase tracking-wide block mb-1.5">From</label>
             <input type="date"
               className="bg-emerald-50 border border-emerald-100 focus:border-emerald-400 focus:bg-white rounded-xl px-3 py-2.5 text-gray-700 text-sm focus:outline-none transition-all" />
           </div>
 
-          {/* To */}
           <div>
             <label className="text-gray-500 text-xs font-semibold uppercase tracking-wide block mb-1.5">To</label>
             <input type="date"
               className="bg-emerald-50 border border-emerald-100 focus:border-emerald-400 focus:bg-white rounded-xl px-3 py-2.5 text-gray-700 text-sm focus:outline-none transition-all" />
           </div>
 
-          {/* Buttons */}
           <div className="flex gap-2 pb-0.5">
             <button className="flex items-center cursor-pointer gap-2 px-5 py-2.5 bg-linear-to-r from-emerald-600 to-emerald-700 hover:from-emerald-500 hover:to-emerald-600 text-white text-sm font-semibold rounded-xl shadow-md shadow-emerald-200 transition-all hover:-translate-y-0.5">
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -72,10 +64,8 @@ const CustomerLedger = () => {
         </div>
       </div>
 
-      {/* ── Ledger Table Card ── */}
       <div className="bg-white border border-emerald-100 rounded-2xl shadow-sm overflow-hidden">
 
-        {/* Customer Info Header — single row, justified center */}
         <div className="py-3 px-5 border-b border-emerald-50 flex flex-wrap items-center justify-center gap-x-6 gap-y-1 ">
           <h2 className="text-gray-800 text-sm font-bold">
             {customer?.name || "—"}
@@ -90,7 +80,6 @@ const CustomerLedger = () => {
           </p>
         </div>
 
-        {/* Table */}
         <div className="overflow-x-auto">
           <table className="w-full text-sm border-collapse">
             <thead>
@@ -107,7 +96,6 @@ const CustomerLedger = () => {
 
             <tbody className="divide-y divide-gray-100">
 
-              {/* Opening Balance Row */}
               <tr className="bg-emerald-50/40">
                 <td className="px-4 py-2.5" />
                 <td className="px-4 py-2.5" />
@@ -124,7 +112,6 @@ const CustomerLedger = () => {
                 </td>
               </tr>
 
-              {/* Data Rows */}
               {entries.length === 0 ? (
                 <tr className="h-84">
                   <td colSpan={7} className="text-center py-14">
@@ -132,8 +119,8 @@ const CustomerLedger = () => {
                       <svg className="w-10 h-10 text-emerald-100" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
                       </svg>
-                      <p className="text-gray-400 text-sm">Koi record nahi mila</p>
-                      <p className="text-gray-300 text-xs">Customer select karke search karein</p>
+                      <p className="text-gray-400 text-sm">No recorde found</p>
+                      <p className="text-gray-300 text-xs">Select customer from the above</p>
                     </div>
                   </td>
                 </tr>
@@ -173,7 +160,6 @@ const CustomerLedger = () => {
           </table>
         </div>
 
-        {/* Footer */}
         <div className="px-5 py-3 border-t border-emerald-50 bg-emerald-50/30 flex items-center justify-between">
           <p className="text-xs text-gray-400">
             Total Entries: {entries.length}
