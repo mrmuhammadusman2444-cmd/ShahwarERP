@@ -5,6 +5,7 @@ import { Pencil, Trash2, ChevronDown, TrendingUp, TrendingDown, Package } from '
 import { toast } from 'react-toastify'
 import { motion } from "framer-motion";
 import DeleteAlertPopup from './DeleteAlertPopup.jsx'
+import ProdcutUpdatePopup from './ProdcutUpdatePopup.jsx';
 
 
 const ManageProduct = () => {
@@ -13,14 +14,17 @@ const ManageProduct = () => {
     const [entries, setEntries] = useState(10)
     const [showDeletePopup, setShowDeletePopup] = useState(false)
     const [DeleteProduct, setDeleteProduct] = useState(null)
+    const [search, setSearch] = useState("")
+    const [showProductPopup, setShowProductPopup] = useState(false)
+    const [updateProduct, setUpdateProduct] = useState(null)
+
+
+    async function handleManageProdcut() {
+        let res = await axios.get('http://localhost:3000/find/product')
+        setManageProduct(res.data)
+    }
 
     useEffect(() => {
-
-        async function handleManageProdcut() {
-            let res = await axios.get('http://localhost:3000/find/product')
-            setManageProduct(res.data)
-        }
-
         handleManageProdcut()
 
     }, [])
@@ -34,14 +38,28 @@ const ManageProduct = () => {
 
     }
 
+    const filtered = manageProduct.filter((p) =>
+        `${p.productName} ${p.model} ${p.mainCategory} ${p.saleRawCategory}`
+            .toLowerCase()
+            .includes(search.toLowerCase())
+    )
+
+
+
+
 
     return (
         <div className="p-4 md:p-5">
 
             {showDeletePopup == true ? <DeleteAlertPopup showDeletePopup={showDeletePopup} setShowDeletePopup={setShowDeletePopup} DeleteProduct={DeleteProduct} handleDeleteProduct={handleDeleteProduct} /> : null}
 
-
-
+            {showProductPopup && updateProduct && (
+                <ProdcutUpdatePopup
+                    setShowProductPopup={setShowProductPopup}
+                    updateData={updateProduct}
+                    handleManageProdcut={handleManageProdcut}
+                />
+            )}
             <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-3">
                     <div className="w-10 h-10 rounded-xl bg-linear-to-br from-emerald-600 to-emerald-700 flex items-center justify-center shadow-md shadow-emerald-200">
@@ -91,10 +109,10 @@ const ManageProduct = () => {
 
                         <div className="flex flex-col leading-tight">
                             <span className="text-gray-600 text-xs font-semibold">
-                                {Math.min(entries, manageProduct.length)} <span className="text-gray-400 font-normal">shown</span>
+                                {Math.min(entries, filtered.length)} <span className="text-gray-400 font-normal">shown</span>
                             </span>
                             <span className="text-gray-400 text-[10px]">
-                                of {manageProduct.length} product{manageProduct.length !== 1 ? "s" : ""}
+                                of {filtered.length} product{filtered.length !== 1 ? "s" : ""}
                             </span>
                         </div>
 
@@ -119,15 +137,19 @@ const ManageProduct = () => {
                         <svg className="w-3.5 h-3.5 text-emerald-300 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                         </svg>
-                        <input type="text" placeholder="Search..."
+                        <input
+                            type="text"
+                            value={search}
+                            onChange={(e) => setSearch(e.target.value)}
+                            placeholder="Search products..."
                             className="bg-transparent text-xs text-gray-600 placeholder-gray-400 focus:outline-none w-36" />
                     </div>
 
                 </div>
 
-                <div className="overflow-x-auto min-h-117.5">
-                    <table className="w-full text-sm align-top">
-                        <thead className="sticky top-0 z-10">
+                <div className="max-h-117.5 overflow-y-auto overflow-x-auto">
+                    <table className="w-full text-sm align-top  ">
+                        <thead className="sticky top-0 z-10 ">
                             <tr className="bg-emerald-700">
                                 <th className="text-left text-gray-100 font-bold px-4 py-3 whitespace-nowrap text-xs uppercase tracking-wider">SL.</th>
                                 <th className="text-left text-gray-100 font-bold px-4 py-3 text-xs uppercase tracking-wider">Product</th>
@@ -142,11 +164,11 @@ const ManageProduct = () => {
                         </thead>
                         <tbody>
 
-                            {manageProduct.length === 0 && (
+                            {filtered.length === 0 && (
                                 <tr>
-                                    <td colSpan={9} className="text-center py-24">
-                                        <div className="flex flex-col items-center gap-3">
-                                            <div className="w-14 h-14 rounded-2xl bg-emerald-50 flex items-center justify-center">
+                                    <td colSpan={9} className="text-center py-24  ">
+                                        <div className="flex flex-col items-center gap-3 ">
+                                            <div className="w-14 h-14 rounded-2xl bg-emerald-50 flex items-center justify-center ">
                                                 <Package className="w-7 h-7 text-emerald-300" strokeWidth={1.5} />
                                             </div>
                                             <p className="text-gray-600 text-sm font-semibold">No products yet</p>
@@ -156,7 +178,7 @@ const ManageProduct = () => {
                                 </tr>
                             )}
 
-                            {manageProduct.map((product, index) => {
+                            {filtered.map((product, index) => {
 
                                 const cost = Number(product.costPrice) || 0
                                 const distributor = Number(product.distributorPrice) || 0
@@ -194,10 +216,10 @@ const ManageProduct = () => {
                                 return (
                                     <React.Fragment key={product._id}>
 
-                                        <tr className={`group border-b border-emerald-50 transition-colors ${isOpen ? "bg-emerald-50/70" : "hover:bg-emerald-50/50"
+                                        <tr className={`group border-b  border-emerald-50 transition-colors ${isOpen ? "bg-emerald-50/70" : "hover:bg-emerald-50/50"
                                             }`}>
 
-                                            <td className="px-4 py-3 text-gray-400 text-xs font-mono tabular-nums whitespace-nowrap relative">
+                                            <td className="px-4 py-3  text-gray-400 text-xs font-mono tabular-nums whitespace-nowrap relative">
                                                 <span className={`absolute left-0 top-0 bottom-0 w-0.5 bg-emerald-600 transition-opacity ${isOpen ? "opacity-100" : "opacity-0 group-hover:opacity-40"
                                                     }`} />
                                                 {String(index + 1).padStart(2, "0")}
@@ -310,7 +332,9 @@ const ManageProduct = () => {
                                                             }`}>
                                                         <ChevronDown size={15} className={`transition-transform ${isOpen ? "rotate-180" : ""}`} />
                                                     </button>
-                                                    <button className="p-1.5 rounded-lg text-gray-400 hover:text-blue-600 hover:bg-blue-100 cursor-pointer transition-all">
+                                                    <button
+                                                        onClick={() => { setUpdateProduct(product); setShowProductPopup(true) }}
+                                                        className="p-1.5 rounded-lg text-gray-400 hover:text-blue-600 hover:bg-blue-100 cursor-pointer transition-all">
                                                         <Pencil size={15} />
                                                     </button>
                                                     <button onClick={() => { setDeleteProduct(product); setShowDeletePopup(true) }}
@@ -373,7 +397,7 @@ const ManageProduct = () => {
 
                 <div className="flex flex-wrap items-center justify-between gap-3 px-4 py-3 border-t border-emerald-50">
                     <p className="text-gray-400 text-xs">
-                        Showing {manageProduct.length === 0 ? 0 : 1} to {manageProduct.length} of {manageProduct.length} entries
+                        Showing {filtered.length === 0 ? 0 : 1} to {filtered.length} of {filtered.length} entries
                     </p>
                     <div className="flex items-center gap-1">
                         <button type="button" className="px-3 py-1.5 bg-emerald-50 hover:bg-emerald-100 text-gray-500 text-xs font-semibold rounded-lg transition-all cursor-pointer border border-emerald-100">

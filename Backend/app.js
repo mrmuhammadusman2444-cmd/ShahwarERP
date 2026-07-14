@@ -93,6 +93,57 @@ app.post('/delete/product', async (req, res) => {
 
 })
 
+
+app.post('/update/product/:id',async function (req,res) {
+    let updateProduct=await AddProductModel.findByIdAndUpdate(
+        req.params.id,
+        req.body,
+        {new:true}
+    )
+    res.json(updateProduct)
+
+    
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 app.listen(3000, () => {
     console.log('Server is running on port 3000');
 });
