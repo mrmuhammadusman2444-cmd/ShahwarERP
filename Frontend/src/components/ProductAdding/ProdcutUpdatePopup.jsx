@@ -5,9 +5,26 @@ import { motion, AnimatePresence } from "framer-motion";
 import { X, Package, Loader2, Check, AlertCircle, Boxes, Weight, Hash, LayoutGrid, Tags, Split, Wallet, Truck, Store, Building2, Smartphone, Sparkles, Warehouse, Save, TrendingUp } from "lucide-react";
 
 
+const CATEGORIES = [
+    "Zaiqa Recipe Bucket's 5kg/10kg",
+    "Tea Pouch and Bag's",
+    "Shahwar Syrup",
+    "Spices Box (Shahwar)",
+    "Shahwar Sachet Mix Rs.50",
+    "Shahwar Pouch Mix",
+    "Shahwar Mix",
+    "Custard Boxes",
+    "Shahwar Juices",
+    "Salan Masala Bucket's 5kg/10kg",
+    "General Spices",
+    "Garam Masala Bucket's 5kg/10kg",
+    "Dessert & Beverage",
+]
+
 const ProdcutUpdatePopup = ({ setShowProductPopup, updateData, handleManageProdcut }) => {
 
     const [status, setStatus] = useState("idle")
+    const [categoryOpen, setCategoryOpen] = useState(false)
 
     const [product, setProduct] = useState({
         productName: '',

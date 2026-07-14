@@ -68,11 +68,14 @@ import TeaStockPage from './pages/Stock/TeaStockPage.jsx'
 import RawPackingStockPage from './pages/Stock/RawPackingStockPage.jsx'
 import OutOfStockPage from './pages/Stock/OutOfStockPage.jsx'
 import AssignUserToStockPage from './pages/Stock/AssignUserToStockPage.jsx'
+import Preloader from './components/Preloader.jsx'
+
 
 
 
 
 const App = () => {
+
   return (
     <BrowserRouter>
 

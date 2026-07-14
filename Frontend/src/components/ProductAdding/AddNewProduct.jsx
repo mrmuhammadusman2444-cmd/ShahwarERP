@@ -1,9 +1,12 @@
 import React, { useState } from 'react'
 import axios from 'axios'
 import { motion, AnimatePresence } from "framer-motion";
-import { Loader2, Check, Save } from "lucide-react";
+import { Loader2, LayoutList, Check, Save } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+
 
 const AddNewProduct = () => {
+  const navigate = useNavigate()
   const [status, setStatus] = useState("idle")
 
   const [newProduct, setNewProduct] = useState({
@@ -59,7 +62,25 @@ const AddNewProduct = () => {
         </div>
         <div className="hidden sm:flex items-center gap-1.5 text-xs text-gray-400">
 
+          <motion.button
+            onClick={() => navigate('/manageproductpage')}
+            whileHover={{ y: -2 }}
+            whileTap={{ scale: 0.97, y: 0 }}
+            transition={{ type: "spring", stiffness: 400, damping: 20 }}
+            className="group relative flex cursor-pointer items-center gap-2 overflow-hidden rounded-xl bg-linear-to-b from-emerald-500 to-emerald-700 px-4 py-2.5 text-sm font-semibold text-white shadow-md shadow-emerald-200"
+          >
+            <span className="absolute inset-0 -translate-x-full bg-linear-to-r from-transparent via-white/25 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
 
+            <motion.span
+              whileHover={{ scale: 1.15 }}
+              transition={{ type: "spring", stiffness: 400, damping: 15 }}
+              className="relative flex h-5 w-5 items-center justify-center rounded-md bg-white/20"
+            >
+              <LayoutList size={13} strokeWidth={2.8} />
+            </motion.span>
+
+            <span className="relative whitespace-nowrap">Manage Product</span>
+          </motion.button>
         </div>
       </div>
 

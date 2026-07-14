@@ -12,7 +12,7 @@ const UserSelectMenu = ({ setShowSetting }) => {
         <div className="absolute top-4 right-4 sm:right-6 md:right-8 lg:right-10 xl:right-12 2xl:right-14 z-50        ">
             <div
                 onClick={() => setProfileOpen(!profileOpen)}
-                className="flex items-center gap-2.5 px-2 py-1.5 rounded-full cursor-pointer  border border-emerald-800 hover:bg-slate-200 transition-all duration-200   "
+                className="flex items-center gap-2.5 px-2 py-1.5 rounded-lg cursor-pointer  bg-slate-200 hover:bg-slate-300 transition-all duration-200   "
             >
                 <div className="relative">
                     <div className="w-9 h-9 rounded-full bg-emerald-500 flex items-center justify-center text-white text-[13px] font-semibold ring-2 ring-white shadow-sm">
@@ -53,12 +53,12 @@ const UserSelectMenu = ({ setShowSetting }) => {
                 </div>
 
                 <div className="p-1.5">
-                    <div className="flex items-center gap-2.5 px-3 py-2 rounded-xl cursor-pointer hover:bg-blue-50 transition-colors duration-200 group">
+                    <div className="flex items-center gap-2.5 px-3 py-2 rounded-xl cursor-pointer hover:bg-emerald-50 transition-colors duration-200 group">
                         <User size={16} className="text-slate-500 group-hover:text-emerald-600" />
                         <span className="text-[12.5px] text-slate-600 group-hover:text-emerald-700 font-medium">My Profile</span>
                     </div>
 
-                    <div onClick={() => { setShowSetting(true) }} className="flex items-center gap-2.5 px-3 py-2 rounded-xl cursor-pointer hover:bg-blue-50 transition-colors duration-200 group">
+                    <div onClick={() => { setShowSetting(true) }} className="flex items-center gap-2.5 px-3 py-2 rounded-xl cursor-pointer hover:bg-emerald-50 transition-colors duration-200 group">
                         <Settings size={16} className="text-slate-500 group-hover:text-emerald-600" />
                         <span className="text-[12.5px] text-slate-600 group-hover:text-emerald-700 font-medium">Settings</span>
                     </div>

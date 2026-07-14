@@ -1,7 +1,8 @@
 import React from 'react'
 import { useState, useEffect } from 'react';
+import { useNavigate } from "react-router-dom";
 import axios from 'axios';
-import { Pencil, Trash2, ChevronDown, TrendingUp, TrendingDown, Package } from 'lucide-react';
+import { Pencil, Trash2, ChevronDown, Plus, TrendingUp, TrendingDown, Package } from 'lucide-react';
 import { toast } from 'react-toastify'
 import { motion } from "framer-motion";
 import DeleteAlertPopup from './DeleteAlertPopup.jsx'
@@ -18,7 +19,7 @@ const ManageProduct = () => {
     const [showProductPopup, setShowProductPopup] = useState(false)
     const [updateProduct, setUpdateProduct] = useState(null)
 
-
+    const navigate = useNavigate()
     async function handleManageProdcut() {
         let res = await axios.get('http://localhost:3000/find/product')
         setManageProduct(res.data)
@@ -72,7 +73,25 @@ const ManageProduct = () => {
                         <p className="text-gray-400 text-xs">Manage your product</p>
                     </div>
                 </div>
+                <motion.button
+                    onClick={() => { navigate('/newProduct') }}
+                    whileHover={{ y: -2 }}
+                    whileTap={{ scale: 0.97, y: 0 }}
+                    transition={{ type: "spring", stiffness: 400, damping: 20 }}
+                    className="group relative flex cursor-pointer items-center gap-2 overflow-hidden rounded-xl bg-linear-to-b from-emerald-500 to-emerald-700 px-4 py-2.5 text-sm font-semibold text-white shadow-md shadow-emerald-200"
+                >
+                    <span className="absolute inset-0 -translate-x-full bg-linear-to-r from-transparent via-white/25 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
 
+                    <motion.span
+                        whileHover={{ rotate: 90 }}
+                        transition={{ type: "spring", stiffness: 400, damping: 15 }}
+                        className="relative flex h-5 w-5 items-center justify-center rounded-md bg-white/20"
+                    >
+                        <Plus size={13} strokeWidth={3} />
+                    </motion.span>
+
+                    <span className="relative whitespace-nowrap">Add New Product</span>
+                </motion.button>
             </div>
 
             <div className="bg-white border border-emerald-100 rounded-2xl shadow-sm overflow-hidden">
