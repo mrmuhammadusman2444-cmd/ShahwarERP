@@ -2,8 +2,8 @@ import SelectCategory from '../../components/SelectCategory/SelectCategory.jsx'
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import axios from 'axios'
-import { motion } from "framer-motion";
-import { ShoppingBag, Trash2, Eye } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { ShoppingBag, ShoppingCart, ArrowRight, Loader2, Check, Trash2, Eye } from "lucide-react";
 
 
 const NewSale = () => {
@@ -11,6 +11,7 @@ const NewSale = () => {
 
   const [fetchProducts, setFetchProducts] = useState([])
   const [selectedItems, setSelectedItems] = useState([])
+  const [saleStatus, setSaleStatus] = useState("idle")
   const [search, setSearch] = useState("")
 
   useEffect(() => {
@@ -24,7 +25,16 @@ const NewSale = () => {
   const visibleProducts = fetchProducts.filter((p) =>
     (p.productName || "").toLowerCase().includes(search.toLowerCase())
   )
+  async function handleProceed() {
+    if (selectedItems.length === 0) return
 
+    setSaleStatus("processing")
+
+    await new Promise(r => setTimeout(r, 1400))
+
+    setSaleStatus("done")
+    setTimeout(() => setSaleStatus("idle"), 2000)
+  }
   function handleAddItem(product) {
     const exists = selectedItems.find((item) => item._id === product._id)
 
@@ -217,13 +227,50 @@ const NewSale = () => {
                       </p>
                     </div>
 
-                    <div className="absolute inset-x-0 bottom-0 flex translate-y-full items-center justify-center gap-1 bg-emerald-600 py-1.5 text-white transition-transform duration-200 group-hover:translate-y-0">
-                      <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M12 4v16m8-8H4" />
-                      </svg>
-                      <span className="text-[10px] font-bold uppercase tracking-wide">
-                        {inCart ? "Add more" : "Add to sale"}
-                      </span>
+                    <div className={`absolute inset-0 flex flex-col items-center justify-center gap-2 overflow-hidden text-white opacity-0 transition-opacity duration-300 group-hover:opacity-100 ${inCart
+                      ? "bg-linear-to-br from-emerald-600 via-teal-600 to-emerald-700"
+                      : "bg-linear-to-br from-emerald-500 via-emerald-600 to-emerald-700"
+                      }`}>
+                      <span className="absolute -inset-8 opacity-30 group-hover:animate-[spinSlow_4s_linear_infinite]"
+                        style={{ background: "conic-gradient(from 0deg, transparent, rgba(255,255,255,0.4), transparent 40%)" }} />
+
+                      <span className="absolute inset-0 -translate-x-full -translate-y-full bg-linear-to-br from-white/50 via-transparent to-transparent transition-transform duration-500 group-hover:translate-x-0 group-hover:translate-y-0" />
+
+                      <span className="absolute left-3 top-4 h-1 w-1 rounded-full bg-white/70 opacity-0 group-hover:opacity-100 group-hover:animate-[floatUp_1.6s_ease-in_infinite]" />
+                      <span className="absolute right-4 top-6 h-1.5 w-1.5 rounded-full bg-white/50 opacity-0 group-hover:opacity-100 group-hover:animate-[floatUp_1.8s_ease-in_infinite_0.3s]" />
+                      <span className="absolute left-1/2 bottom-3 h-1 w-1 rounded-full bg-white/60 opacity-0 group-hover:opacity-100 group-hover:animate-[floatUp_1.4s_ease-in_infinite_0.6s]" />
+
+                      <span className="absolute -top-4 -right-4 h-16 w-16 rounded-full bg-white/10 blur-xl" />
+                      <span className="absolute -bottom-6 -left-4 h-16 w-16 rounded-full bg-white/10 blur-xl" />
+
+                      {inCart ? (
+                        <>
+                          <div className="relative flex h-12 w-12 scale-0 items-center justify-center transition-transform delay-100 duration-300 group-hover:scale-100">
+                            <span className="absolute inset-0 rounded-full bg-white/20 group-hover:animate-[pingRing_1.5s_ease-out_infinite]" />
+                            <span className="relative flex h-9 w-9 items-center justify-center rounded-full bg-white shadow-lg">
+                              <svg className="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={4} d="M5 13l4 4L19 7" />
+                              </svg>
+                            </span>
+                          </div>
+                          <div className="relative text-center">
+                            <p className="text-[11px] font-extrabold  tracking-[0.15em] drop-shadow">Added</p>
+                            <p className="text-[9px] text-white/70">In your sale</p>
+                          </div>
+                        </>
+                      ) : (
+                        <>
+                          <div className="relative flex h-12 w-12 scale-0 rotate-45 items-center justify-center rounded-2xl bg-white/15 ring-4 ring-white/10 backdrop-blur-sm transition-all delay-100 duration-300 group-hover:scale-100 group-hover:rotate-0">
+                            <svg className="w-6 h-6 drop-shadow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M12 4v16m8-8H4" />
+                            </svg>
+                          </div>
+                          <div className="relative text-center">
+                            <p className="text-[11px] font-extrabold uppercase tracking-[0.15em] drop-shadow">Add to Sale</p>
+                            <p className="text-[9px] text-white/70">Click to add</p>
+                          </div>
+                        </>
+                      )}
                     </div>
                   </div>
                 )
@@ -257,7 +304,7 @@ const NewSale = () => {
               </span>
             </div>
 
-            <div className="overflow-y-auto custom-scroll flex-1" style={{ maxHeight: "62vh" }}>
+            <div className="overflow-y-auto custom-scroll flex-1" style={{ maxHeight: "45vh" }}>
               <table className="w-full text-sm border-collapse">
                 <thead className="sticky top-0 z-10">
                   <tr className="bg-emerald-600 text-white">
@@ -367,9 +414,79 @@ const NewSale = () => {
                   </span>
                 </p>
               </div>
-              <button className="w-full sm:w-auto px-8 py-2.5 cursor-pointer bg-linear-to-b from-emerald-500 to-emerald-700 hover:from-emerald-400 hover:to-emerald-600 text-white text-sm font-semibold rounded-xl shadow-md shadow-emerald-200 transition-all hover:-translate-y-0.5 active:translate-y-0 whitespace-nowrap">
-                Proceed to Sale →
-              </button>
+              <motion.button
+                onClick={handleProceed}
+                disabled={saleStatus !== "idle"}
+                whileHover={saleStatus === "idle" ? { y: -3, scale: 1.02 } : {}}
+                whileTap={saleStatus === "idle" ? { scale: 0.97 } : {}}
+                transition={{ type: "spring", stiffness: 400, damping: 18 }}
+                className={`group relative w-full sm:w-auto min-w-47.5 overflow-hidden px-8 py-3 cursor-pointer text-white text-sm font-bold rounded-2xl shadow-lg transition-colors duration-500 disabled:cursor-default ${saleStatus === "done"
+                  ? "bg-emerald-500 shadow-emerald-300/60"
+                  : "bg-linear-to-r from-emerald-500 via-emerald-600 to-emerald-700 shadow-emerald-300/60"
+                  }`}
+              >
+                {saleStatus === "idle" && (
+                  <span className="absolute inset-0 -translate-x-full bg-linear-to-r from-transparent via-white/35 to-transparent skew-x-12 transition-transform duration-900 group-hover:translate-x-full" />
+                )}
+
+                {saleStatus === "done" && (
+                  <motion.span
+                    initial={{ scale: 0, opacity: 0.6 }}
+                    animate={{ scale: 2.5, opacity: 0 }}
+                    transition={{ duration: 0.7, ease: "easeOut" }}
+                    className="absolute inset-0 rounded-2xl bg-white"
+                  />
+                )}
+
+                <AnimatePresence mode="wait">
+
+                  {saleStatus === "idle" && (
+                    <motion.span key="idle"
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -10 }}
+                      transition={{ duration: 0.2 }}
+                      className="relative flex items-center justify-center gap-2">
+                      <ShoppingCart size={16} className="transition-transform duration-300 group-hover:-rotate-12" />
+                      Proceed to Sale
+                      <span className="transition-transform duration-300 group-hover:translate-x-1.5">
+                        <ArrowRight size={16} strokeWidth={2.5} />
+                      </span>
+                    </motion.span>
+                  )}
+
+                  {saleStatus === "processing" && (
+                    <motion.span key="processing"
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -10 }}
+                      transition={{ duration: 0.2 }}
+                      className="relative flex items-center justify-center gap-2">
+                      <Loader2 size={16} className="animate-spin" />
+                      Processing...
+                    </motion.span>
+                  )}
+
+                  {saleStatus === "done" && (
+                    <motion.span key="done"
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -10 }}
+                      transition={{ duration: 0.2 }}
+                      className="relative flex items-center justify-center gap-2">
+                      <motion.span
+                        initial={{ scale: 0, rotate: -120 }}
+                        animate={{ scale: 1, rotate: 0 }}
+                        transition={{ type: "spring", stiffness: 500, damping: 12, delay: 0.1 }}
+                        className="flex h-5 w-5 items-center justify-center rounded-full bg-white">
+                        <Check size={13} strokeWidth={4} className="text-emerald-600" />
+                      </motion.span>
+                      Sale Ready!
+                    </motion.span>
+                  )}
+
+                </AnimatePresence>
+              </motion.button>
             </div>
 
           </div>
@@ -383,6 +500,26 @@ const NewSale = () => {
         .custom-scroll::-webkit-scrollbar-track { background: transparent; }
         .custom-scroll::-webkit-scrollbar-thumb { background: #bfdbfe; border-radius: 99px; }
         .custom-scroll::-webkit-scrollbar-thumb:hover { background: #93c5fd; }
+
+        @keyframes saleGlow {
+          0%, 100% { opacity: 0.4; }
+          50%      { opacity: 0.85; }
+        }
+        @keyframes riseDot {
+          0%   { transform: translateY(0);    opacity: 0.6; }
+          100% { transform: translateY(-14px); opacity: 0;   }
+        }
+        @keyframes spinSlow {
+          to { transform: rotate(360deg); }
+        }
+        @keyframes floatUp {
+          0%   { transform: translateY(0);    opacity: 0.7; }
+          100% { transform: translateY(-20px); opacity: 0;   }
+        }
+        @keyframes pingRing {
+          0%   { transform: scale(1);   opacity: 0.5; }
+          100% { transform: scale(1.8); opacity: 0;   }
+        }
       `}</style>
     </div>
   );
