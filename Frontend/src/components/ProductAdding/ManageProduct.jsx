@@ -305,9 +305,9 @@ const ManageProduct = () => {
                                             <td className="px-4 py-3 text-right whitespace-nowrap">
                                                 <div className="flex flex-col items-end gap-1">
                                                     <span className="text-gray-800 text-base font-bold tabular-nums">
-                                                        Rs. {retail.toLocaleString()}
+                                                        Rs. {distributor.toLocaleString()}
                                                     </span>
-                                                    {cost > 0 && retail > 0 && (
+                                                    {cost > 0 && distributor > 0 && (
                                                         <span className={`inline-flex items-center gap-0.5 text-[10px] font-bold px-1.5 py-0.5 rounded ring-1 tabular-nums ${marginTone}`}>
                                                             {margin >= 0 ? <TrendingUp size={10} /> : <TrendingDown size={10} />}
                                                             {margin.toFixed(0)}%
@@ -386,8 +386,8 @@ const ManageProduct = () => {
 
                                                         <div className="bg-white rounded-xl border border-emerald-100 px-3.5 py-2.5">
                                                             <p className="text-gray-400 text-[10px] font-semibold uppercase tracking-wide">Profit per unit</p>
-                                                            <p className={`mt-0.5 text-sm font-bold tabular-nums ${retail - cost > 0 ? "text-emerald-700" : "text-rose-600"}`}>
-                                                                Rs. {(retail - cost).toLocaleString()}
+                                                            <p className={`mt-0.5 text-sm font-bold tabular-nums ${distributor - cost > 0 ? "text-emerald-700" : "text-rose-600"}`}>
+                                                                Rs. {(distributor - cost).toLocaleString()}
                                                             </p>
                                                         </div>
 

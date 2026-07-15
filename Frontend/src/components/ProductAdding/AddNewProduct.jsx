@@ -237,7 +237,7 @@ const AddNewProduct = () => {
               <option value="">Select category</option>
               <option>Recipe</option>
               <option>Juices</option>
-              <option>Beverages</option>
+              <option>Dessert & Beverages</option>
             </select>
           </div>
 
