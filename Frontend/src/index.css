@@ -16,3 +16,24 @@
 * {
   font-family: 'Poppins', sans-serif !important;
 }
+
+.custom-scrollbar::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+    background: #ecfdf5;
+    border-radius: 10px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #34d399, #059669);
+    border-radius: 10px;
+    border: 2px solid #ecfdf5;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, #10b981, #047857);
+}
+.custom-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: #10b981 #ecfdf5;
+}

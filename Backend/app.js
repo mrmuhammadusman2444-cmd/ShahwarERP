@@ -5,6 +5,8 @@ import LoginModel from './Models/LoginModel.js'
 import authRoute from './Routes/Auth.route.js'
 import CustomerModel from './Models/CustomerModels/CustomerModel.js'
 import AddProductModel from './Models/Products/AddProductModel.js'
+import ProductCategoryModel from './Models/Products/ProductCategoryModel.js'
+import SaleModel from './Models/Sale Models/SalesModel.js'
 DbConnection()
 
 let app = express();
@@ -94,27 +96,67 @@ app.post('/delete/product', async (req, res) => {
 })
 
 
-app.post('/update/product/:id',async function (req,res) {
-    let updateProduct=await AddProductModel.findByIdAndUpdate(
+app.post('/update/product/:id', async function (req, res) {
+    let updateProduct = await AddProductModel.findByIdAndUpdate(
         req.params.id,
         req.body,
-        {new:true}
+        { new: true }
     )
     res.json(updateProduct)
 
-    
+
 })
 
 
+app.post('/product/category', async function (req, res) {
+    let data = req.body
+    console.log(data)
+    let Category = {
+        CategoryName: data.CategoryName,
+        Description: data.Description,
+        Status: data.Status,
+    }
+    let CreateCategory = await ProductCategoryModel.create(Category)
+    res.json(CreateCategory)
+
+})
+app.get('/find/category', async function (req, res) {
+    const findCategory = await ProductCategoryModel.find()
+    res.json(findCategory)
+
+})
+
+app.post('/delete/category', async function (req, res) {
+    let deleteCategory = await ProductCategoryModel.findByIdAndDelete(req.body._id)
+    if (!deleteCategory) {
+        return res.json({ success: false, message: "Category not found" })
+    }
+    res.json({ success: true, data: deleteCategory })
+})
 
 
+app.post('/new/sale', async function (req,res) {
+    let data =req.body
+    console.log(data)
+     
+    const object={
+        customerName:data.customerName,
+        Date:data.Date,
+        showRate:data.showRate,
+        freightCharges:data.freightCharges,
+        previouseAmount:data.previouseAmount
+    }
 
-
-
-
-
-
-
+    let createNewSale=await SaleModel.create(object)
+    res.json()
+    
+})
+ 
+app.get('/find/new/sale',async function (req,res) {
+    let findNewSale=await SaleModel.find()
+    res.json(findNewSale)
+    
+})
 
 
 

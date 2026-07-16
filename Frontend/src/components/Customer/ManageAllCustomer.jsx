@@ -141,12 +141,12 @@ const ManageCustomers = () => {
                     Customer <ArrowUpDown className="w-3.5 h-3.5" />
                   </button>
                 </th>
-                <th className="text-left px-4 py-3 font-semibold text-xs uppercase tracking-wide">Mobile No</th>
-                <th className="text-left px-4 py-3 font-semibold text-xs uppercase tracking-wide">Warehouse</th>
-                <th className="text-left px-4 py-3 font-semibold text-xs uppercase tracking-wide">Rate</th>
-                <th className="text-left px-4 py-3 font-semibold text-xs uppercase tracking-wide w-48">Credit Used</th>
-                <th className="text-right px-4 py-3 font-semibold text-xs uppercase tracking-wide">Balance</th>
-                <th className="text-right px-4 py-3 font-semibold text-xs uppercase tracking-wide rounded-tr-xl">Action</th>
+                <th className="text-left px-4 py-3 font-semibold text-xs tracking-wide">Mobile No</th>
+                <th className="text-left px-4 py-3 font-semibold text-xs tracking-wide">Warehouse</th>
+                <th className="text-left px-4 py-3 font-semibold text-xs tracking-wide">Rate</th>
+                <th className="text-left px-4 py-3 font-semibold text-xs tracking-wide w-48">Credit Used</th>
+                <th className="text-right px-4 py-3 font-semibold text-xs tracking-wide">Balance</th>
+                <th className="text-right px-4 py-3 font-semibold text-xs tracking-wide rounded-tr-xl">Action</th>
               </tr>
             </thead>
             <tbody>

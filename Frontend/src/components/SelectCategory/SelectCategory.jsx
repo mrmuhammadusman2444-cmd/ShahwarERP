@@ -1,48 +1,31 @@
-import { useState, useRef, useEffect } from "react";
-
-const categories = [
-  { value: "", label: "All Categories" },
-  { value: "zaiqa-recipe-bucket", label: "Zaiqa Recipe Bucket's 5kg/10kg" },
-  { value: "tea-pouch-bag", label: "Tea Pouch and Bag's" },
-  { value: "shahwar-syrup", label: "Shahwar Syrup" },
-  { value: "spices-box-shahwar", label: "Spices Box (Shahwar)" },
-  { value: "shahwar-sachet-mix", label: "Shahwar Sachet Mix Rs.50" },
-  { value: "shahwar-pouch-mix", label: "Shahwar Pouch Mix" },
-  { value: "shahwar-mix", label: "Shahwar Mix" },
-  { value: "custard-boxes", label: "Custard Boxes" },
-  { value: "shahwar-juices", label: "Shahwar Juices" },
-  { value: "salan-masala-bucket", label: "Salan Masala Bucket's 5kg/10kg" },
-  { value: "sachet-40", label: "Sachet Rs.40 (Shahwar)" },
-  { value: "sachet-30", label: "Sachet Rs.30 (Shahwar)" },
-  { value: "sachet-20", label: "Sachet Rs.20 (Shahwar)" },
-  { value: "sachet-10", label: "Sachet Rs.10 (Shahwar)" },
-  { value: "recipe-bucket", label: "Recipe Bucket's 5kg/10kg" },
-  { value: "plain-spices-sachet", label: "Plain Spices Sachet Rs.20" },
-  { value: "plain-spices-box", label: "Plain Spices Box (Shahwar)" },
-  { value: "plain-recipe-bucket", label: "Plain Recipe Shahwar Buckets 5kg/10kg" },
-  { value: "plain-recipe-bags", label: "Plain Recipe Shahwar Bags 5kg/10kg" },
-  { value: "jars-shahwar", label: "Jars (Shahwar)" },
-  { value: "general-spices", label: "General Spices" },
-  { value: "garam-masala-bucket", label: "Garam Masala Bucket's 5kg/10kg" },
-  { value: "dessert-beverage", label: "Dessert & Beverage" },
-  { value: "custard-sachet", label: "Custard Sachet Rs.20" },
-  { value: "custard-box-bucket", label: "Custard Box Shahwar Buckets 10kg/5kg" },
-  { value: "custard-box-bags", label: "Custard Box Shahwar Bags 10kg/5kg" },
-];
+import { useState, useEffect, useRef } from "react";
+import axios from "axios";
 
 const CategoryDropdown = ({ value, onChange }) => {
+  const [categories, setCategories] = useState([]);
   const [open, setOpen] = useState(false);
   const [search, setSearch] = useState("");
   const ref = useRef(null);
   const searchRef = useRef(null);
 
-  const selected = categories.find((c) => c.value === value) || categories[0];
+  useEffect(() => {
+    async function loadCategories() {
+      try {
+        let res = await axios.get('http://localhost:3000/find/category')
+        setCategories(res.data)
+      } catch (err) {
+        console.log("CATEGORY LOAD FAILED:", err.response?.data || err.message)
+      }
+    }
+    loadCategories()
+  }, [])
+
+  const selected = categories.find((c) => c.CategoryName === value);
 
   const filtered = categories.filter((c) =>
-    c.label.toLowerCase().includes(search.toLowerCase())
+    (c.CategoryName || "").toLowerCase().includes(search.toLowerCase())
   );
 
-  // Close on outside click
   useEffect(() => {
     const handler = (e) => {
       if (ref.current && !ref.current.contains(e.target)) {
@@ -54,7 +37,6 @@ const CategoryDropdown = ({ value, onChange }) => {
     return () => document.removeEventListener("mousedown", handler);
   }, []);
 
-  // Auto focus search when opens
   useEffect(() => {
     if (open && searchRef.current) {
       setTimeout(() => searchRef.current?.focus(), 50);
@@ -70,7 +52,7 @@ const CategoryDropdown = ({ value, onChange }) => {
         onClick={() => setOpen((o) => !o)}
         className="flex items-center justify-between gap-2 w-44 cursor-pointer bg-emerald-50 border border-emerald-100 hover:border-emerald-300 rounded-full px-4 py-2.5 text-gray-600 text-sm focus:outline-none focus:border-emerald-400 transition-all"
       >
-        <span className="truncate">{selected.label}</span>
+        <span className="truncate">{selected ? selected.CategoryName : "All Categories"}</span>
         <svg
           className={`w-3.5 h-3.5 text-emerald-400 shrink-0 transition-transform duration-200 ${open ? "rotate-180" : ""}`}
           fill="none" stroke="currentColor" viewBox="0 0 24 24"
@@ -111,21 +93,21 @@ const CategoryDropdown = ({ value, onChange }) => {
             ) : (
               filtered.map((cat) => (
                 <button
-                  key={cat.value}
+                  key={cat._id}
                   type="button"
                   onClick={() => {
-                    onChange?.(cat.value);
+                    onChange?.(cat.CategoryName);
                     setOpen(false);
                     setSearch("");
                   }}
                   className={`w-full text-left px-3 py-2 text-xs cursor-pointer rounded-lg mx-1 transition-colors
-                    ${cat.value === value
+                    ${cat.CategoryName === value
                       ? "bg-emerald-50 text-emerald-700 font-semibold"
                       : "text-gray-600 hover:bg-emerald-50 hover:text-emerald-600"
                     }`}
                   style={{ width: "calc(100% - 8px)" }}
                 >
-                  {cat.label}
+                  {cat.CategoryName}
                 </button>
               ))
             )}

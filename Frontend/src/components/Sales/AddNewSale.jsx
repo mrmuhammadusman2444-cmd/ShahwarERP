@@ -13,6 +13,17 @@ const NewSale = () => {
   const [selectedItems, setSelectedItems] = useState([])
   const [saleStatus, setSaleStatus] = useState("idle")
   const [search, setSearch] = useState("")
+  const [selectedCategory, setSelectedCategory] = useState("")
+  const [saleProducts, setSaleProducts] = useState({
+    gatePass: '',
+    customerName: '',
+    Date: '',
+    showRate: '',
+    freightCharges: '',
+    previousAmount: '',
+
+
+  })
 
   useEffect(() => {
     async function loadProducts() {
@@ -87,6 +98,25 @@ const NewSale = () => {
     setSelectedItems(selectedItems.filter((item) => item._id !== id))
   }
 
+  async function handleNewSale() {
+    try {
+      let payload = {
+        ...saleProducts,
+        items: selectedItems,
+        grandTotal: grandTotal,
+        totalCartons: totalCartons,
+      }
+      let response = await axios.post('http://localhost:3000/new/sale', payload)
+      console.log(response.data)
+    } catch (err) {
+      console.log("SALE FAILED:", err.response?.data || err.message)
+    }
+  }
+
+  
+
+
+
   const grandTotal = selectedItems.reduce((s, i) => s + (i.total ?? 0), 0)
   const totalCartons = selectedItems.reduce((s, i) => s + (Number(i.carton) || 0), 0)
 
@@ -120,24 +150,24 @@ const NewSale = () => {
         <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-3">
           <div>
             <label className="text-slate-800 text-sm  tracking-wide block mb-1.5">Gate Pass No</label>
-            <input type="text" placeholder="Manual gate pass no..."
+            <input onChange={(e) => { setSaleProducts({ ...saleProducts, gatePass: e.target.value }) }} type="text" placeholder="Manual gate pass no..."
               className="w-full bg-emerald-50 border border-emerald-100 focus:border-emerald-400 focus:bg-white rounded-xl px-3 py-2.5 text-gray-700 placeholder-gray-400 text-sm focus:outline-none transition-all" />
           </div>
           <div>
             <label className="text-slate-800 text-sm  tracking-wide block mb-1.5">Customer Name</label>
-            <input type="text" placeholder="Ali"
+            <input onChange={(e) => { setSaleProducts({ ...saleProducts, customerName: e.target.value }) }} type="text" placeholder="Ali"
               className="w-full bg-emerald-50 border border-emerald-100 focus:border-emerald-400 focus:bg-white rounded-xl px-3 py-2.5 text-gray-700 text-sm focus:outline-none transition-all" />
           </div>
           <div>
             <label className="text-slate-800 text-sm  tracking-wide block mb-1.5">
               Date <span className="text-red-400">*</span>
             </label>
-            <input type="date" defaultValue="2026-06-23"
+            <input onChange={(e) => { setSaleProducts({ ...saleProducts, Date: e.target.value }) }} type="date" defaultValue="2026-06-23"
               className="w-full bg-emerald-50 border border-emerald-100 focus:border-emerald-400 focus:bg-white rounded-xl px-3 py-2.5 text-gray-700 text-sm focus:outline-none transition-all" />
           </div>
           <div>
             <label className="text-slate-800 text-sm  tracking-wide block mb-1.5">Show Rate</label>
-            <select className="w-full bg-emerald-50 border border-emerald-100 focus:border-emerald-400 focus:bg-white rounded-xl px-3 py-2.5 text-gray-700 text-sm focus:outline-none transition-all appearance-none cursor-pointer">
+            <select onChange={(e) => { setSaleProducts({ ...saleProducts, showRate: e.target.value }) }} className="w-full bg-emerald-50 border border-emerald-100 focus:border-emerald-400 focus:bg-white rounded-xl px-3 py-2.5 text-gray-700 text-sm focus:outline-none transition-all appearance-none cursor-pointer">
               <option>Distributor Rate</option>
               <option>Retail Rate</option>
               <option>Wholesale Rate</option>
@@ -145,12 +175,12 @@ const NewSale = () => {
           </div>
           <div>
             <label className="text-slate-800 text-sm  tracking-wide block mb-1.5">Freight Charges</label>
-            <input type="number" placeholder="0.00"
+            <input onChange={(e) => { setSaleProducts({ ...saleProducts, freightCharges: e.target.value }) }} type="number" placeholder="0.00"
               className="w-full bg-emerald-50 border border-emerald-100 focus:border-emerald-400 focus:bg-white rounded-xl px-3 py-2.5 text-gray-700 placeholder-gray-400 text-sm focus:outline-none transition-all" />
           </div>
           <div>
             <label className="text-slate-800 text-sm  tracking-wide block mb-1.5">Previous Amount</label>
-            <input type="number" placeholder="0.00"
+            <input onChange={(e) => { setSaleProducts({ ...saleProducts, previousAmount: e.target.value }) }} type="number" placeholder="0.00"
               className="w-full bg-emerald-50 border border-emerald-100 focus:border-emerald-400 focus:bg-white rounded-xl px-3 py-2.5 text-gray-700 placeholder-gray-400 text-sm focus:outline-none transition-all" />
           </div>
         </div>
@@ -169,7 +199,10 @@ const NewSale = () => {
               placeholder="Search by product name..."
               className="flex-1 bg-emerald-50 border border-emerald-100 rounded-full px-5 py-2.5 text-gray-700 placeholder-gray-400 text-sm focus:outline-none focus:border-emerald-400 focus:bg-white transition-all"
             />
-            <SelectCategory />
+            <SelectCategory
+              value={selectedCategory}
+              onChange={(val) => setSelectedCategory(val)}
+            />
             <button className="w-11 h-11 shrink-0 cursor-pointer bg-linear-to-r from-emerald-600 to-emerald-700 rounded-full flex items-center justify-center shadow-md shadow-emerald-200 transition-all hover:from-emerald-500 hover:to-emerald-600">
               <svg className="w-4 h-4 text-white " fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -290,22 +323,42 @@ const NewSale = () => {
 
           <div className="bg-white border border-emerald-100 rounded-2xl shadow-sm overflow-hidden flex flex-col flex-1">
 
-            <div className="px-5 py-3 border-b border-emerald-100 flex items-center gap-2 bg-emerald-50/50 shrink-0">
-              <svg className="w-4 h-4 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-              </svg>
-              <span className="text-gray-700 text-sm font-semibold">Sale Items</span>
-              <span className="bg-emerald-100 text-emerald-600 text-xs font-bold px-2 py-0.5 rounded-full">
-                {selectedItems.length}
-              </span>
-              <span className="text-gray-700 text-sm font-semibold">Total Items</span>
-              <span className="bg-emerald-100 text-emerald-600 text-xs font-bold px-2 py-0.5 rounded-full">
-                {totalCartons}
-              </span>
+            <div className="px-5 py-3 border-b border-emerald-100 flex items-center gap-2.5 bg-linear-to-r from-emerald-50 to-white shrink-0">
+
+              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-linear-to-br from-emerald-500 to-emerald-700 shadow-sm shadow-emerald-200">
+                <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                </svg>
+              </div>
+
+              <div className="flex items-center gap-2 rounded-lg bg-white border border-emerald-100 px-2.5 py-1 shadow-sm">
+                <span className="text-gray-700 text-sm font-semibold">Sale Items</span>
+                <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-emerald-600 px-1.5 text-xs font-bold text-white tabular-nums">
+                  {selectedItems.length}
+                </span>
+              </div>
+
+              <div className="flex items-center gap-2 rounded-lg bg-white border border-emerald-100 px-2.5 py-1 shadow-sm">
+                <span className="text-gray-700 text-sm font-semibold">Total Cartons</span>
+                <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-linear-to-br from-emerald-500 to-emerald-700 px-1.5 text-xs font-bold text-white tabular-nums">
+                  {totalCartons}
+                </span>
+              </div>
+
             </div>
 
             <div className="overflow-y-auto custom-scroll flex-1" style={{ maxHeight: "45vh" }}>
-              <table className="w-full text-sm border-collapse">
+              <table className="w-full text-sm border-collapse" style={{ tableLayout: "fixed" }}>
+                <colgroup>
+                  <col style={{ width: "26%" }} />
+                  <col style={{ width: "16%" }} />
+                  <col style={{ width: "9%" }} />
+                  <col style={{ width: "8%" }} />
+                  <col style={{ width: "9%" }} />
+                  <col style={{ width: "11%" }} />
+                  <col style={{ width: "12%" }} />
+                  <col style={{ width: "9%" }} />
+                </colgroup>
                 <thead className="sticky top-0 z-10">
                   <tr className="bg-emerald-600 text-white">
                     <th className="text-left text-xs font-semibold px-3 py-2.5 whitespace-nowrap">Item Information <span className="text-red-300">*</span></th>
@@ -415,7 +468,7 @@ const NewSale = () => {
                 </p>
               </div>
               <motion.button
-                onClick={handleProceed}
+                onClick={() => { handleProceed(); handleNewSale(); }}
                 disabled={saleStatus !== "idle"}
                 whileHover={saleStatus === "idle" ? { y: -3, scale: 1.02 } : {}}
                 whileTap={saleStatus === "idle" ? { scale: 0.97 } : {}}
