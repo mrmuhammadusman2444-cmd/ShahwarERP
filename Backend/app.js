@@ -135,30 +135,59 @@ app.post('/delete/category', async function (req, res) {
 })
 
 
-app.post('/new/sale', async function (req,res) {
-    let data =req.body
-    console.log(data)
-     
-    const object={
-        customerName:data.customerName,
-        Date:data.Date,
-        showRate:data.showRate,
-        freightCharges:data.freightCharges,
-        previouseAmount:data.previouseAmount
+app.post('/new/sale', async function (req, res) {
+    try {
+        let data = req.body
+        console.log(data)
+
+        let count = await SaleModel.countDocuments()
+        let invoiceNo = "INV-" + String(count + 1).padStart(4, "0")
+
+        const object = {
+            invoiceNo: invoiceNo,
+            customerName: data.customerName,
+            Date: data.Date,
+            showRate: data.showRate,
+            freightCharges: data.freightCharges,
+            previouseAmount: data.previouseAmount,
+            items: data.items,
+            grandTotal: data.grandTotal,
+            totalCartons: data.totalCartons,
+        }
+
+        let createNewSale = await SaleModel.create(object)
+        res.json(createNewSale)
+
+    } catch (err) {
+        console.log("SALE ERROR:", err.message)
+        res.status(500).json({ message: err.message })
     }
-
-    let createNewSale=await SaleModel.create(object)
-    res.json()
-    
-})
- 
-app.get('/find/new/sale',async function (req,res) {
-    let findNewSale=await SaleModel.find()
-    res.json(findNewSale)
-    
 })
 
+app.get('/find/new/sale', async function (req, res) {
+    try {
+        let sales = await SaleModel.find()
+        res.json(sales)
+    } catch (err) {
+        console.log("FIND ERROR:", err.message)
+        res.status(500).json({ message: err.message })
+    }
+})
 
+app.post('/delete/sale', async function (req, res) {
+    try {
+        let deleteSale = await SaleModel.findByIdAndDelete(req.body._id)
+
+        if (!deleteSale) {
+            return res.json({ success: false, msg: 'Sale not found' })
+        }
+
+        res.json({ success: true, data: deleteSale })
+    } catch (error) {
+        console.error(error)
+        res.status(500).json({ success: false, msg: 'Server error while deleting sale' })
+    }
+})
 
 
 

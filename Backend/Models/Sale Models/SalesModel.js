@@ -9,8 +9,12 @@ const NewSaleSchema = new mongoose.Schema({
         enum: ["Distributor Rate", "Retail Rate", "Wholesale Rate"],
         default: "Distributor Rate"
     },
+    invoiceNo: { type: String },
     freightCharges: { type: String },
     previousAmount: { type: String },
+    items: { type: Array },
+    grandTotal: { type: Number },
+    totalCartons: { type: Number },
 })
 
 const SaleModel = mongoose.model('sale', NewSaleSchema)

@@ -17,12 +17,10 @@ const NewSale = () => {
   const [saleProducts, setSaleProducts] = useState({
     gatePass: '',
     customerName: '',
-    Date: '',
-    showRate: '',
+    Date: new Date().toISOString().split('T')[0],
+    showRate: 'Distributor Rate',
     freightCharges: '',
     previousAmount: '',
-
-
   })
 
   useEffect(() => {
@@ -113,7 +111,7 @@ const NewSale = () => {
     }
   }
 
-  
+
 
 
 
@@ -167,7 +165,8 @@ const NewSale = () => {
           </div>
           <div>
             <label className="text-slate-800 text-sm  tracking-wide block mb-1.5">Show Rate</label>
-            <select onChange={(e) => { setSaleProducts({ ...saleProducts, showRate: e.target.value }) }} className="w-full bg-emerald-50 border border-emerald-100 focus:border-emerald-400 focus:bg-white rounded-xl px-3 py-2.5 text-gray-700 text-sm focus:outline-none transition-all appearance-none cursor-pointer">
+            <select value={saleProducts.Date}
+              onChange={(e) => setSaleProducts({ ...saleProducts, Date: e.target.value })} className="w-full bg-emerald-50 border border-emerald-100 focus:border-emerald-400 focus:bg-white rounded-xl px-3 py-2.5 text-gray-700 text-sm focus:outline-none transition-all appearance-none cursor-pointer">
               <option>Distributor Rate</option>
               <option>Retail Rate</option>
               <option>Wholesale Rate</option>
@@ -175,12 +174,12 @@ const NewSale = () => {
           </div>
           <div>
             <label className="text-slate-800 text-sm  tracking-wide block mb-1.5">Freight Charges</label>
-            <input onChange={(e) => { setSaleProducts({ ...saleProducts, freightCharges: e.target.value }) }} type="number" placeholder="0.00"
+            <input onChange={(e) => { setSaleProducts({ ...saleProducts, freightCharges: e.target.value }) }}  placeholder="0.00"
               className="w-full bg-emerald-50 border border-emerald-100 focus:border-emerald-400 focus:bg-white rounded-xl px-3 py-2.5 text-gray-700 placeholder-gray-400 text-sm focus:outline-none transition-all" />
           </div>
           <div>
             <label className="text-slate-800 text-sm  tracking-wide block mb-1.5">Previous Amount</label>
-            <input onChange={(e) => { setSaleProducts({ ...saleProducts, previousAmount: e.target.value }) }} type="number" placeholder="0.00"
+            <input onChange={(e) => { setSaleProducts({ ...saleProducts, previousAmount: e.target.value }) }}  placeholder="0.00"
               className="w-full bg-emerald-50 border border-emerald-100 focus:border-emerald-400 focus:bg-white rounded-xl px-3 py-2.5 text-gray-700 placeholder-gray-400 text-sm focus:outline-none transition-all" />
           </div>
         </div>
@@ -347,7 +346,7 @@ const NewSale = () => {
 
             </div>
 
-            <div className="overflow-y-auto custom-scroll flex-1" style={{ maxHeight: "45vh" }}>
+            <div className="overflow-y-auto custom-scroll flex-1" style={{ maxHeight: "44vh" }}>
               <table className="w-full text-sm border-collapse" style={{ tableLayout: "fixed" }}>
                 <colgroup>
                   <col style={{ width: "26%" }} />
