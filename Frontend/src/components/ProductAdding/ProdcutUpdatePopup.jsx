@@ -96,8 +96,6 @@ const ProdcutUpdatePopup = ({ setShowProductPopup, updateData, handleManageProdc
                         <div>
                             <h2 className="text-lg font-bold tracking-tight text-gray-800">Update product</h2>
                             <p className="mt-0.5 flex items-center gap-2 text-xs text-gray-400">
-                                <span className="font-mono">#DFBA8D</span>
-                                <span className="h-1 w-1 rounded-full bg-gray-300" />
                                 <span>Changes apply to future orders only</span>
                             </p>
                         </div>
