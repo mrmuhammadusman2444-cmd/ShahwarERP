@@ -437,8 +437,9 @@ const SideMenus = ({ collapsed }) => {
                             <div onClick={() => { navigate('/invoiceapprovalpage') }} className="flex items-center justify-between text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                                 <span>Invoice Approval</span>
                                 {pendingInvoiceCount > 0 && (
-                                    <span className="flex h-4.5 min-w-4.5 items-center justify-center rounded-full bg-red-500 px-1 text-[10px] font-bold text-white">
-                                        {pendingInvoiceCount}
+                                    <span className="relative flex h-4.5 min-w-4.5 items-center justify-center rounded-full bg-gradient-to-br from-emerald-400 to-emerald-600 px-1 text-[10px] font-bold text-white shadow-sm shadow-emerald-500/50 ring-2 ring-emerald-900/40">
+                                        <span className="absolute inset-0 rounded-full bg-emerald-400 animate-ping opacity-40" />
+                                        <span className="relative">{pendingInvoiceCount}</span>
                                     </span>
                                 )}
                             </div>

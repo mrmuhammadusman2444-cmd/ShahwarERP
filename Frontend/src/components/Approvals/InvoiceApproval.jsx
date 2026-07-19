@@ -24,6 +24,8 @@ const InvoiceApproval = () => {
       await axios.put(`http://localhost:3000/approve/sale/${id}`)
       setPendingSales(pendingSales.filter((sale) => sale._id !== id))
       setSelectedSale(null)
+      window.dispatchEvent(new Event('saleCreated'))
+
     } catch (err) {
       console.log("APPROVE FAILED:", err.response?.data || err.message)
     }
@@ -34,6 +36,7 @@ const InvoiceApproval = () => {
       await axios.put(`http://localhost:3000/reject/sale/${id}`)
       setPendingSales(pendingSales.filter((sale) => sale._id !== id))
       setSelectedSale(null)
+      window.dispatchEvent(new Event('saleCreated'))
     } catch (err) {
       console.log("REJECT FAILED:", err.response?.data || err.message)
     }
@@ -115,13 +118,13 @@ const InvoiceApproval = () => {
           <table className="w-full text-sm border-collapse">
             <thead>
               <tr className="bg-emerald-600 text-white">
-                <th className="w-[11%] text-left text-xs font-semibold px-4 py-3 whitespace-nowrap">Date</th>
-                <th className="w-[12%] text-left text-xs font-semibold px-4 py-3 whitespace-nowrap">Invoice No</th>
-                <th className="w-[16%] text-left text-xs font-semibold px-4 py-3">Customer Name</th>
-                <th className="w-[16%] text-left text-xs font-semibold px-4 py-3">Description</th>
-                <th className="w-[13%] text-center text-xs font-semibold px-4 py-3 whitespace-nowrap">Amount</th>
-                <th className="w-[12%] text-left text-xs font-semibold px-4 py-3 whitespace-nowrap">User</th>
-                <th className="w-[10%] text-center text-xs font-semibold px-4 py-3 whitespace-nowrap">Action</th>
+                <th className="w-[12%] text-left text-xs font-semibold px-4 py-3 whitespace-nowrap">Date</th>
+                <th className="w-[13%] text-left text-xs font-semibold px-4 py-3 whitespace-nowrap">Invoice No</th>
+                <th className="w-[20%] text-left text-xs font-semibold px-4 py-3">Customer Name</th>
+                <th className="w-[15%] text-left text-xs font-semibold px-4 py-3">Description</th>
+                <th className="w-[15%] text-right text-xs font-semibold px-4 py-3 whitespace-nowrap">Amount</th>
+                <th className="w-[13%] text-left text-xs font-semibold px-4 py-3 whitespace-nowrap">User</th>
+                <th className="w-[12%] text-center text-xs font-semibold px-4 py-3 whitespace-nowrap">Action</th>
               </tr>
             </thead>
 
@@ -143,9 +146,8 @@ const InvoiceApproval = () => {
                 pendingSales.map((sale, idx) => (
                   <tr
                     key={sale._id}
-                    className={`group cursor-pointer transition-all duration-200 hover:bg-emerald-50/60 hover:shadow-sm align-top ${
-                      idx % 2 === 0 ? "bg-white" : "bg-gray-50/40"
-                    }`}
+                    className={`group cursor-pointer transition-all duration-200 hover:bg-emerald-50/60 hover:shadow-sm ${idx % 2 === 0 ? "bg-white" : "bg-gray-50/40"
+                      }`}
                   >
                     <td className="px-4 py-3.5 text-gray-500 text-xs font-medium whitespace-nowrap">
                       {sale.Date ? new Date(sale.Date).toLocaleDateString() : "-"}
@@ -168,7 +170,7 @@ const InvoiceApproval = () => {
                       </div>
                     </td>
 
-                    <td className="px-4 py-3.5 text-slate-500 text-xs">{sale.totalCartons} Cartons</td>
+                    <td className="px-4 py-3.5 text-slate-500 text-xs whitespace-nowrap">{sale.totalCartons} Cartons</td>
 
                     <td className="px-4 py-3.5 text-right text-gray-800 text-xs font-bold whitespace-nowrap">
                       Rs {Number(sale.grandTotal).toLocaleString()}

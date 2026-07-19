@@ -36,7 +36,6 @@ const ManageSale = () => {
         return
       }
 
-      // UI se turant remove karo
       setSales((prev) => prev.filter((sale) => sale._id !== id))
 
       toast.success('Sale Deleted Successfully', { position: 'bottom-right', autoClose: 800 })
@@ -161,10 +160,12 @@ const ManageSale = () => {
     doc.setFontSize(8)
     doc.setFont("helvetica", "normal")
     doc.setTextColor(150, 150, 150)
-    doc.text("www.shahwarfood.com.pk", 105, 280, { align: "center" })
+    doc.text("www.shahwarfoods.com.pk", 105, 280, { align: "center" })
 
     // ===== SAVE =====
-    doc.save(`${sale.invoiceNo || "invoice"}.pdf`)
+    const pdfBlob = doc.output('blob')
+    const pdfUrl = URL.createObjectURL(pdfBlob)
+    window.open(pdfUrl, '_blank')
   }
 
   function handlePOSPrint(sale) {
@@ -676,82 +677,91 @@ const ManageSale = () => {
                       </td>
 
                       <td className="px-4 py-3">
-                        <div className="flex items-center justify-center gap-1.5 opacity-0 group-hover:opacity-100 bg-slate-100 p-1.5 rounded-lg w-fit mx-auto transition-opacity">
-                          <div className="relative group/tooltip">
-                            <button className="flex h-7 w-7 items-center justify-center rounded-lg bg-teal-50 text-teal-600 hover:bg-teal-600 hover:text-white hover:scale-110 active:scale-95 transition-all cursor-pointer" >
-                              <BadgeDollarSign className="w-3.5 h-3.5" strokeWidth={2} />
-                            </button>
-                            <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 flex flex-col items-center opacity-0 translate-y-1 group-hover/tooltip:opacity-100 group-hover/tooltip:translate-y-0 transition-all duration-200 ease-out pointer-events-none z-20">
-                              <span className="whitespace-nowrap rounded-md bg-emerald-900 px-2 py-1 text-[11px] font-medium text-white shadow-lg shadow-emerald-900/30">
-                                Sale
-                              </span>
-                              <span className="-mt-1 h-2 w-2 rotate-45 bg-emerald-900"></span>
+                        {sale.status === "approved" ? (
+                          <div className="flex items-center justify-center gap-1.5 opacity-0 group-hover:opacity-100 bg-slate-100 p-1.5 rounded-lg w-fit mx-auto transition-opacity">
+                            <div className="relative group/tooltip">
+                              <button className="flex h-7 w-7 items-center justify-center rounded-lg bg-teal-50 text-teal-600 hover:bg-teal-600 hover:text-white hover:scale-110 active:scale-95 transition-all cursor-pointer" >
+                                <BadgeDollarSign className="w-3.5 h-3.5" strokeWidth={2} />
+                              </button>
+                              <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 flex flex-col items-center opacity-0 translate-y-1 group-hover/tooltip:opacity-100 group-hover/tooltip:translate-y-0 transition-all duration-200 ease-out pointer-events-none z-20">
+                                <span className="whitespace-nowrap rounded-md bg-emerald-900 px-2 py-1 text-[11px] font-medium text-white shadow-lg shadow-emerald-900/30">
+                                  Sale
+                                </span>
+                                <span className="-mt-1 h-2 w-2 rotate-45 bg-emerald-900"></span>
+                              </div>
                             </div>
-                          </div>
 
-                          <div className="relative group/tooltip">
-                            <button onClick={() => handleGatePassPrint(sale)} className="flex h-7 w-7 items-center justify-center rounded-lg bg-blue-50 text-blue-600 hover:bg-blue-600 hover:text-white hover:scale-110 active:scale-95 transition-all cursor-pointer" >
-                              <IdCardLanyard className="w-3.5 h-3.5" strokeWidth={2} />
-                            </button>
-                            <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 flex flex-col items-center opacity-0 translate-y-1 group-hover/tooltip:opacity-100 group-hover/tooltip:translate-y-0 transition-all duration-200 ease-out pointer-events-none z-20">
-                              <span className="whitespace-nowrap rounded-md bg-emerald-900 px-2 py-1 text-[11px] font-medium text-white shadow-lg shadow-emerald-900/30">
-                                Gate Pass
-                              </span>
-                              <span className="-mt-1 h-2 w-2 rotate-45 bg-emerald-900"></span>
+                            <div className="relative group/tooltip">
+                              <button onClick={() => handleGatePassPrint(sale)} className="flex h-7 w-7 items-center justify-center rounded-lg bg-blue-50 text-blue-600 hover:bg-blue-600 hover:text-white hover:scale-110 active:scale-95 transition-all cursor-pointer" >
+                                <IdCardLanyard className="w-3.5 h-3.5" strokeWidth={2} />
+                              </button>
+                              <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 flex flex-col items-center opacity-0 translate-y-1 group-hover/tooltip:opacity-100 group-hover/tooltip:translate-y-0 transition-all duration-200 ease-out pointer-events-none z-20">
+                                <span className="whitespace-nowrap rounded-md bg-emerald-900 px-2 py-1 text-[11px] font-medium text-white shadow-lg shadow-emerald-900/30">
+                                  Gate Pass
+                                </span>
+                                <span className="-mt-1 h-2 w-2 rotate-45 bg-emerald-900"></span>
+                              </div>
                             </div>
-                          </div>
 
-                          <div className="relative group/tooltip">
-                            <button onClick={() => handlePOSPrint(sale)} className="flex h-7 w-7 items-center justify-center rounded-lg bg-amber-50 text-amber-600 hover:bg-amber-500 hover:text-white hover:scale-110 active:scale-95 transition-all cursor-pointer" >
-                              <CreditCard className="w-3.5 h-3.5" strokeWidth={2} />
-                            </button>
-                            <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 flex flex-col items-center opacity-0 translate-y-1 group-hover/tooltip:opacity-100 group-hover/tooltip:translate-y-0 transition-all duration-200 ease-out pointer-events-none z-20">
-                              <span className="whitespace-nowrap rounded-md bg-emerald-900 px-2 py-1 text-[11px] font-medium text-white shadow-lg shadow-emerald-900/30">
-                                POS Sale
-                              </span>
-                              <span className="-mt-1 h-2 w-2 rotate-45 bg-emerald-900"></span>
+                            <div className="relative group/tooltip">
+                              <button onClick={() => handlePOSPrint(sale)} className="flex h-7 w-7 items-center justify-center rounded-lg bg-amber-50 text-amber-600 hover:bg-amber-500 hover:text-white hover:scale-110 active:scale-95 transition-all cursor-pointer" >
+                                <CreditCard className="w-3.5 h-3.5" strokeWidth={2} />
+                              </button>
+                              <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 flex flex-col items-center opacity-0 translate-y-1 group-hover/tooltip:opacity-100 group-hover/tooltip:translate-y-0 transition-all duration-200 ease-out pointer-events-none z-20">
+                                <span className="whitespace-nowrap rounded-md bg-emerald-900 px-2 py-1 text-[11px] font-medium text-white shadow-lg shadow-emerald-900/30">
+                                  POS Sale
+                                </span>
+                                <span className="-mt-1 h-2 w-2 rotate-45 bg-emerald-900"></span>
+                              </div>
                             </div>
-                          </div>
 
-                          <div className="relative group/tooltip">
-                            <button
-                              onClick={() => handleDownloadInvoice(sale)}
-                              className="flex h-7 w-7 items-center justify-center rounded-lg bg-gray-100 text-gray-500 hover:bg-gray-600 hover:text-white hover:scale-110 active:scale-95 transition-all cursor-pointer"
-                            >
-                              <Download className="w-3.5 h-3.5" strokeWidth={2} />
-                            </button>
-                            <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 flex flex-col items-center opacity-0 translate-y-1 group-hover/tooltip:opacity-100 group-hover/tooltip:translate-y-0 transition-all duration-200 ease-out pointer-events-none z-20">
-                              <span className="whitespace-nowrap rounded-md bg-emerald-900 px-2 py-1 text-[11px] font-medium text-white shadow-lg shadow-emerald-900/30">
-                                Download
-                              </span>
-                              <span className="-mt-1 h-2 w-2 rotate-45 bg-emerald-900"></span>
+                            <div className="relative group/tooltip">
+                              <button
+                                onClick={() => handleDownloadInvoice(sale)}
+                                className="flex h-7 w-7 items-center justify-center rounded-lg bg-gray-100 text-gray-500 hover:bg-gray-600 hover:text-white hover:scale-110 active:scale-95 transition-all cursor-pointer"
+                              >
+                                <Download className="w-3.5 h-3.5" strokeWidth={2} />
+                              </button>
+                              <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 flex flex-col items-center opacity-0 translate-y-1 group-hover/tooltip:opacity-100 group-hover/tooltip:translate-y-0 transition-all duration-200 ease-out pointer-events-none z-20">
+                                <span className="whitespace-nowrap rounded-md bg-emerald-900 px-2 py-1 text-[11px] font-medium text-white shadow-lg shadow-emerald-900/30">
+                                  Download
+                                </span>
+                                <span className="-mt-1 h-2 w-2 rotate-45 bg-emerald-900"></span>
+                              </div>
                             </div>
-                          </div>
 
-                          <div className="relative group/tooltip">
-                            <button className="flex h-7 w-7 items-center justify-center rounded-lg bg-sky-50 text-sky-600 hover:bg-sky-500 hover:text-white hover:scale-110 active:scale-95 transition-all cursor-pointer" >
-                              <SquarePen className="w-3.5 h-3.5" strokeWidth={2} />
-                            </button>
-                            <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 flex flex-col items-center opacity-0 translate-y-1 group-hover/tooltip:opacity-100 group-hover/tooltip:translate-y-0 transition-all duration-200 ease-out pointer-events-none z-20">
-                              <span className="whitespace-nowrap rounded-md bg-emerald-900 px-2 py-1 text-[11px] font-medium text-white shadow-lg shadow-emerald-900/30">
-                                Edit
-                              </span>
-                              <span className="-mt-1 h-2 w-2 rotate-45 bg-emerald-900"></span>
+                            <div className="relative group/tooltip">
+                              <button className="flex h-7 w-7 items-center justify-center rounded-lg bg-sky-50 text-sky-600 hover:bg-sky-500 hover:text-white hover:scale-110 active:scale-95 transition-all cursor-pointer" >
+                                <SquarePen className="w-3.5 h-3.5" strokeWidth={2} />
+                              </button>
+                              <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 flex flex-col items-center opacity-0 translate-y-1 group-hover/tooltip:opacity-100 group-hover/tooltip:translate-y-0 transition-all duration-200 ease-out pointer-events-none z-20">
+                                <span className="whitespace-nowrap rounded-md bg-emerald-900 px-2 py-1 text-[11px] font-medium text-white shadow-lg shadow-emerald-900/30">
+                                  Edit
+                                </span>
+                                <span className="-mt-1 h-2 w-2 rotate-45 bg-emerald-900"></span>
+                              </div>
                             </div>
-                          </div>
 
-                          <div className="relative group/tooltip">
-                            <button onClick={() => handleDeleteSale(sale._id)} className="flex h-7 w-7 items-center justify-center rounded-lg bg-red-50 text-red-500 hover:bg-red-500 hover:text-white hover:scale-110 active:scale-95 transition-all cursor-pointer">
-                              <Trash2 className="w-3.5 h-3.5" strokeWidth={2} />
-                            </button>
-                            <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 flex flex-col items-center opacity-0 translate-y-1 group-hover/tooltip:opacity-100 group-hover/tooltip:translate-y-0 transition-all duration-200 ease-out pointer-events-none z-20">
-                              <span className="whitespace-nowrap rounded-md bg-emerald-900 px-2 py-1 text-[11px] font-medium text-white shadow-lg shadow-emerald-900/30">
-                                Delete
-                              </span>
-                              <span className="-mt-1 h-2 w-2 rotate-45 bg-emerald-900"></span>
+                            <div className="relative group/tooltip">
+                              <button onClick={() => handleDeleteSale(sale._id)} className="flex h-7 w-7 items-center justify-center rounded-lg bg-red-50 text-red-500 hover:bg-red-500 hover:text-white hover:scale-110 active:scale-95 transition-all cursor-pointer">
+                                <Trash2 className="w-3.5 h-3.5" strokeWidth={2} />
+                              </button>
+                              <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 flex flex-col items-center opacity-0 translate-y-1 group-hover/tooltip:opacity-100 group-hover/tooltip:translate-y-0 transition-all duration-200 ease-out pointer-events-none z-20">
+                                <span className="whitespace-nowrap rounded-md bg-emerald-900 px-2 py-1 text-[11px] font-medium text-white shadow-lg shadow-emerald-900/30">
+                                  Delete
+                                </span>
+                                <span className="-mt-1 h-2 w-2 rotate-45 bg-emerald-900"></span>
+                              </div>
                             </div>
                           </div>
-                        </div>
+                        ) : (
+                          <div className="flex items-center justify-center">
+                            <span className="flex items-center gap-1.5 bg-amber-50 text-amber-600 text-[11px] font-semibold px-3 py-1.5 rounded-full ring-1 ring-amber-200">
+                              <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse" />
+                              {sale.status === "rejected" ? "Rejected" : "Pending Approval"}
+                            </span>
+                          </div>
+                        )}
                       </td>
                     </tr>
                   )
