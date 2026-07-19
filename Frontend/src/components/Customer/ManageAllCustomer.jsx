@@ -36,7 +36,7 @@ const ManageCustomers = () => {
     toast.success('Customer Deleted Successfully', { position: 'bottom-right', autoClose: 800 })
   }
 
-
+  
 
 
   console.log(manageCustomer)

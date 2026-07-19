@@ -1,5 +1,6 @@
 import React from 'react'
 import { useState, useEffect } from 'react';
+import MianCategoryUpdateProdcut from './MainCategoryUpdateProduct.jsx'
 import axios from 'axios';
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Package, Loader2, Check, AlertCircle, Boxes, Weight, Hash, LayoutGrid, Tags, Split, Wallet, Truck, Store, Building2, Smartphone, Sparkles, Warehouse, Save, TrendingUp } from "lucide-react";
@@ -209,26 +210,11 @@ const ProdcutUpdatePopup = ({ setShowProductPopup, updateData, handleManageProdc
                                     <label className="mb-1.5 block text-[11px] font-semibold uppercase tracking-wide text-gray-500">Main category</label>
                                     <div className="relative">
                                         <LayoutGrid size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-emerald-400 transition-colors group-focus-within:text-emerald-600" />
-                                        <select
+                                        <MianCategoryUpdateProdcut
                                             value={product.mainCategory}
-                                            onChange={(e) => setProduct({ ...product, mainCategory: e.target.value })}
+                                            onChange={(cat) => setProduct({ ...product, mainCategory: cat })}
                                             className="w-full cursor-pointer appearance-none rounded-xl border border-emerald-100 bg-emerald-50/70 py-2.5 pl-10 pr-3 text-sm text-gray-700 transition-all duration-200 focus:border-emerald-400 focus:bg-white focus:shadow-lg focus:shadow-emerald-100/70 focus:outline-none"
-                                        >
-                                            <option value="">Select category</option>
-                                            <option>Zaiqa Recipe Bucket's 5kg/10kg</option>
-                                            <option>Tea Pouch and Bag's</option>
-                                            <option>Shahwar Syrup</option>
-                                            <option>Spices Box (Shahwar)</option>
-                                            <option>Shahwar Sachet Mix Rs.50</option>
-                                            <option>Shahwar Pouch Mix</option>
-                                            <option>Shahwar Mix</option>
-                                            <option>Custard Boxes</option>
-                                            <option>Shahwar Juices</option>
-                                            <option>Salan Masala Bucket's 5kg/10kg</option>
-                                            <option>General Spices</option>
-                                            <option>Garam Masala Bucket's 5kg/10kg</option>
-                                            <option>Dessert &amp; Beverage</option>
-                                        </select>
+                                        />
                                     </div>
                                 </div>
 

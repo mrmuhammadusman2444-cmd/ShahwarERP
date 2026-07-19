@@ -15,6 +15,11 @@ const NewSaleSchema = new mongoose.Schema({
     items: { type: Array },
     grandTotal: { type: Number },
     totalCartons: { type: Number },
+    status: {
+        type: String,
+        enum: ["pending", "approved", "rejected"],
+        default: "pending"
+    },
 })
 
 const SaleModel = mongoose.model('sale', NewSaleSchema)

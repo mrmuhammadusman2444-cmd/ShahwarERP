@@ -1,5 +1,6 @@
 import React from 'react'
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import axios from 'axios'
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Search, Inbox, Bell, LayoutDashboard, Wallet, HandCoins, BriefcaseBusiness, ClipboardList, Landmark, Gift, ChartNoAxesCombined, Repeat2, Flag, BarChart2, LayoutGrid, Package, FileText, Users, Truck, ChevronDown, BadgeDollarSign, Handshake, PackageOpen, ShoppingCart, PackageCheck, Blocks } from "lucide-react";
 
@@ -27,6 +28,30 @@ const SideMenus = ({ collapsed }) => {
     const [attendanceOpen, setattendanceOpen] = useState(false)
     const [salaryDetailOpen, setsalaryDetailOpen] = useState(false)
     const [searchQuery, setSearchQuery] = useState('')
+
+    const [pendingInvoiceCount, setPendingInvoiceCount] = useState(0)
+
+    useEffect(() => {
+        async function loadPendingCount() {
+            try {
+                let res = await axios.get('http://localhost:3000/find/pending/sale')
+                setPendingInvoiceCount(res.data.length)
+            } catch (err) {
+                console.log("PENDING COUNT LOAD FAILED:", err.response?.data || err.message)
+            }
+        }
+
+        loadPendingCount()
+
+        const interval = setInterval(loadPendingCount, 30000)
+
+        window.addEventListener('saleCreated', loadPendingCount)
+
+        return () => {
+            clearInterval(interval)
+            window.removeEventListener('saleCreated', loadPendingCount)
+        }
+    }, [])
 
     const isSearching = searchQuery.trim().length > 0
 
@@ -409,8 +434,13 @@ const SideMenus = ({ collapsed }) => {
                         className="ml-7 border-l border-slate-700 pl-3 flex flex-col gap-0.5 overflow-hidden"
                     >
                         {subMatches('Invoice Approval') && (
-                            <div onClick={() => { navigate('/invoiceapprovalpage') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
-                                Invoice Approval
+                            <div onClick={() => { navigate('/invoiceapprovalpage') }} className="flex items-center justify-between text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                                <span>Invoice Approval</span>
+                                {pendingInvoiceCount > 0 && (
+                                    <span className="flex h-4.5 min-w-4.5 items-center justify-center rounded-full bg-red-500 px-1 text-[10px] font-bold text-white">
+                                        {pendingInvoiceCount}
+                                    </span>
+                                )}
                             </div>
                         )}
                         {subMatches('Purchase Approval') && (

@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import axios from 'axios'
 import { motion, AnimatePresence } from "framer-motion";
+import SequenceCategory from './SequenceCategory.jsx'
 import { Loader2, LayoutList, Check, Save } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
@@ -138,24 +139,12 @@ const AddNewProduct = () => {
 
               <div>
                 <label className="text-gray-500 text-xs font-semibold uppercase tracking-wide block mb-1.5">Main Category</label>
-                <select onChange={(e) => {
-                  setNewProduct({ ...newProduct, mainCategory: e.target.value })
-                }} className="w-full bg-emerald-50 border border-emerald-100 focus:border-emerald-400 focus:bg-white rounded-xl px-3 py-2.5 text-gray-700 text-sm focus:outline-none transition-all appearance-none cursor-pointer">
-                  <option value="">Select category</option>
-                  <option>Zaiqa Recipe Bucket's 5kg/10kg</option>
-                  <option>Tea Pouch and Bag's</option>
-                  <option>Shahwar Syrup</option>
-                  <option>Spices Box (Shahwar)</option>
-                  <option>Shahwar Sachet Mix Rs.50</option>
-                  <option>Shahwar Pouch Mix</option>
-                  <option>Shahwar Mix</option>
-                  <option>Custard Boxes</option>
-                  <option>Shahwar Juices</option>
-                  <option>Salan Masala Bucket's 5kg/10kg</option>
-                  <option>General Spices</option>
-                  <option>Garam Masala Bucket's 5kg/10kg</option>
-                  <option>Dessert & Beverage</option>
-                </select>
+                <SequenceCategory
+                  value={newProduct.mainCategory}
+                  onChange={(cat) => {
+                    setNewProduct({ ...newProduct, mainCategory: cat })
+                  }}
+                />
               </div>
 
               <div>

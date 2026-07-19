@@ -164,6 +164,31 @@ app.post('/new/sale', async function (req, res) {
     }
 })
 
+// Pending sales fetch karne ke liye
+app.get('/find/pending/sale', async function (req, res) {
+    let pendingSales = await SaleModel.find({ status: "pending" })
+    res.json(pendingSales)
+})
+
+// Sale approve karne ke liye
+app.put('/approve/sale/:id', async function (req, res) {
+    let approvedSale = await SaleModel.findByIdAndUpdate(
+        req.params.id,
+        { status: "approved" },
+        { new: true }
+    )
+    res.json(approvedSale)
+})
+app.put('/reject/sale/:id', async function (req, res) {
+    let rejectedSale = await SaleModel.findByIdAndUpdate(
+        req.params.id,
+        { status: "rejected" },
+        { new: true }
+    )
+    res.json(rejectedSale)
+})
+
+
 app.get('/find/new/sale', async function (req, res) {
     try {
         let sales = await SaleModel.find()

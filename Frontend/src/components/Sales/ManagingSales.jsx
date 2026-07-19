@@ -285,12 +285,12 @@ const ManageSale = () => {
     }
   }
 
-function handleGatePassPrint(sale) {
-  const printWindow = window.open('', '_blank', 'width=600,height=700')
+  function handleGatePassPrint(sale) {
+    const printWindow = window.open('', '_blank', 'width=600,height=700')
 
-  const itemsHTML = (sale.items || [])
-    .map(
-      (item, i) => `
+    const itemsHTML = (sale.items || [])
+      .map(
+        (item, i) => `
         <tr>
           <td style="text-align:center">${i + 1}</td>
           <td>${item.name}</td>
@@ -298,15 +298,15 @@ function handleGatePassPrint(sale) {
           <td style="text-align:center">${item.qty || 0}</td>
         </tr>
       `
+      )
+      .join('')
+
+    const totalCartons = (sale.items || []).reduce(
+      (sum, item) => sum + Number(item.carton || 0),
+      0
     )
-    .join('')
 
-  const totalCartons = (sale.items || []).reduce(
-    (sum, item) => sum + Number(item.carton || 0),
-    0
-  )
-
-  const gatePassHTML = `
+    const gatePassHTML = `
     <html>
       <head>
         <title>Gate Pass - ${sale.invoiceNo || ''}</title>
@@ -471,14 +471,14 @@ function handleGatePassPrint(sale) {
     </html>
   `
 
-  printWindow.document.write(gatePassHTML)
-  printWindow.document.close()
+    printWindow.document.write(gatePassHTML)
+    printWindow.document.close()
 
-  printWindow.onload = function () {
-    printWindow.focus()
-    printWindow.print()
+    printWindow.onload = function () {
+      printWindow.focus()
+      printWindow.print()
+    }
   }
-}
 
 
 
@@ -676,7 +676,7 @@ function handleGatePassPrint(sale) {
                       </td>
 
                       <td className="px-4 py-3">
-                        <div className="flex items-center justify-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <div className="flex items-center justify-center gap-1.5 opacity-0 group-hover:opacity-100 bg-slate-100 p-1.5 rounded-lg w-fit mx-auto transition-opacity">
                           <div className="relative group/tooltip">
                             <button className="flex h-7 w-7 items-center justify-center rounded-lg bg-teal-50 text-teal-600 hover:bg-teal-600 hover:text-white hover:scale-110 active:scale-95 transition-all cursor-pointer" >
                               <BadgeDollarSign className="w-3.5 h-3.5" strokeWidth={2} />
@@ -690,7 +690,7 @@ function handleGatePassPrint(sale) {
                           </div>
 
                           <div className="relative group/tooltip">
-                            <button onClick={()=>handleGatePassPrint(sale)} className="flex h-7 w-7 items-center justify-center rounded-lg bg-blue-50 text-blue-600 hover:bg-blue-600 hover:text-white hover:scale-110 active:scale-95 transition-all cursor-pointer" >
+                            <button onClick={() => handleGatePassPrint(sale)} className="flex h-7 w-7 items-center justify-center rounded-lg bg-blue-50 text-blue-600 hover:bg-blue-600 hover:text-white hover:scale-110 active:scale-95 transition-all cursor-pointer" >
                               <IdCardLanyard className="w-3.5 h-3.5" strokeWidth={2} />
                             </button>
                             <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 flex flex-col items-center opacity-0 translate-y-1 group-hover/tooltip:opacity-100 group-hover/tooltip:translate-y-0 transition-all duration-200 ease-out pointer-events-none z-20">
@@ -762,7 +762,9 @@ function handleGatePassPrint(sale) {
         </div>
 
         <div className="px-5 py-3 border-t border-blue-50 flex flex-col sm:flex-row items-center justify-between gap-3 bg--50/30">
-          <p className="text-xs text-gray-400">Showing 0 to 0 of 0 entries</p>
+          <p className="text-gray-400 text-xs">
+            Showing {sales.length === 0 ? 0 : 1} to {sales.length} of {sales.length} entries
+          </p>
           <div className="flex items-center gap-1">
             <button className="px-3 py-1.5 text-xs text-gray-400 bg-white border border-emerald-100 rounded-lg hover:border-emerald-300 hover:text-emerald-600 transition-all">Previous</button>
             <button className="px-3 py-1.5 text-xs text-white bg-linear-to-b from-emerald-500 to-emerald-700 rounded-lg">1</button>

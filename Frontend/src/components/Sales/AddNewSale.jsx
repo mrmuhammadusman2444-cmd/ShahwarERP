@@ -1,4 +1,5 @@
 import SelectCategory from '../../components/SelectCategory/SelectCategory.jsx'
+import SelectCustomer from './SelectCustomers.jsx'
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import axios from 'axios'
@@ -6,7 +7,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ShoppingBag, ShoppingCart, ArrowRight, Loader2, Check, Trash2, Eye } from "lucide-react";
 
 
-const NewSale = () => {
+const NewSale = ({ setManageCustomer }) => {
   let navigate = useNavigate()
 
   const [fetchProducts, setFetchProducts] = useState([])
@@ -27,13 +28,25 @@ const NewSale = () => {
     async function loadProducts() {
       let res = await axios.get('http://localhost:3000/find/product')
       setFetchProducts(res.data)
+
+
     }
+
     loadProducts()
   }, [])
 
-  const visibleProducts = fetchProducts.filter((p) =>
-    (p.productName || "").toLowerCase().includes(search.toLowerCase())
-  )
+  console.log("Selected Category:", selectedCategory)
+  console.log("Sample product:", fetchProducts[0])
+  console.log("Category field value:", fetchProducts[0]?.mainCategory)
+  console.log("Sachet 40 products:", fetchProducts.filter(p => p.mainCategory?.includes("Sachet 40")))
+  const visibleProducts = fetchProducts.filter((p) => {
+    const matchesSearch = (p.productName || "").toLowerCase().includes(search.toLowerCase())
+    const matchesCategory =
+      !selectedCategory || selectedCategory === "All Categories"
+        ? true
+        : (p.mainCategory || "").trim().toLowerCase() === selectedCategory.trim().toLowerCase()
+    return matchesSearch && matchesCategory
+  })
   async function handleProceed() {
     if (selectedItems.length === 0) return
 
@@ -106,6 +119,7 @@ const NewSale = () => {
       }
       let response = await axios.post('http://localhost:3000/new/sale', payload)
       console.log(response.data)
+      window.dispatchEvent(new Event('saleCreated')) 
     } catch (err) {
       console.log("SALE FAILED:", err.response?.data || err.message)
     }
@@ -117,7 +131,6 @@ const NewSale = () => {
 
   const grandTotal = selectedItems.reduce((s, i) => s + (i.total ?? 0), 0)
   const totalCartons = selectedItems.reduce((s, i) => s + (Number(i.carton) || 0), 0)
-
 
   return (
     <div className="min-h-screen bg-linear-to-br from-emerald-50 via-white to-emerald-50 p-4 md:p-5">
@@ -147,24 +160,29 @@ const NewSale = () => {
 
         <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-3">
           <div>
-            <label className="text-slate-800 text-sm  tracking-wide block mb-1.5">Gate Pass No</label>
+            <label className="text-slate-800 text-sm tracking-wide block mb-1.5">Gate Pass No</label>
             <input onChange={(e) => { setSaleProducts({ ...saleProducts, gatePass: e.target.value }) }} type="text" placeholder="Manual gate pass no..."
               className="w-full bg-emerald-50 border border-emerald-100 focus:border-emerald-400 focus:bg-white rounded-xl px-3 py-2.5 text-gray-700 placeholder-gray-400 text-sm focus:outline-none transition-all" />
           </div>
+
           <div>
-            <label className="text-slate-800 text-sm  tracking-wide block mb-1.5">Customer Name</label>
-            <input onChange={(e) => { setSaleProducts({ ...saleProducts, customerName: e.target.value }) }} type="text" placeholder="Ali"
-              className="w-full bg-emerald-50 border border-emerald-100 focus:border-emerald-400 focus:bg-white rounded-xl px-3 py-2.5 text-gray-700 text-sm focus:outline-none transition-all" />
+            <label className="text-slate-800 text-sm tracking-wide block mb-1.5">Customer Name</label>
+            <SelectCustomer
+              value={saleProducts.customerName}
+              onChange={(name) => setSaleProducts({ ...saleProducts, customerName: name })}
+            />
           </div>
+
           <div>
-            <label className="text-slate-800 text-sm  tracking-wide block mb-1.5">
+            <label className="text-slate-800 text-sm tracking-wide block mb-1.5">
               Date <span className="text-red-400">*</span>
             </label>
             <input onChange={(e) => { setSaleProducts({ ...saleProducts, Date: e.target.value }) }} type="date" defaultValue="2026-06-23"
               className="w-full bg-emerald-50 border border-emerald-100 focus:border-emerald-400 focus:bg-white rounded-xl px-3 py-2.5 text-gray-700 text-sm focus:outline-none transition-all" />
           </div>
+
           <div>
-            <label className="text-slate-800 text-sm  tracking-wide block mb-1.5">Show Rate</label>
+            <label className="text-slate-800 text-sm tracking-wide block mb-1.5">Show Rate</label>
             <select value={saleProducts.Date}
               onChange={(e) => setSaleProducts({ ...saleProducts, Date: e.target.value })} className="w-full bg-emerald-50 border border-emerald-100 focus:border-emerald-400 focus:bg-white rounded-xl px-3 py-2.5 text-gray-700 text-sm focus:outline-none transition-all appearance-none cursor-pointer">
               <option>Distributor Rate</option>
@@ -172,14 +190,16 @@ const NewSale = () => {
               <option>Wholesale Rate</option>
             </select>
           </div>
+
           <div>
-            <label className="text-slate-800 text-sm  tracking-wide block mb-1.5">Freight Charges</label>
-            <input onChange={(e) => { setSaleProducts({ ...saleProducts, freightCharges: e.target.value }) }}  placeholder="0.00"
+            <label className="text-slate-800 text-sm tracking-wide block mb-1.5">Freight Charges</label>
+            <input onChange={(e) => { setSaleProducts({ ...saleProducts, freightCharges: e.target.value }) }} placeholder="0.00"
               className="w-full bg-emerald-50 border border-emerald-100 focus:border-emerald-400 focus:bg-white rounded-xl px-3 py-2.5 text-gray-700 placeholder-gray-400 text-sm focus:outline-none transition-all" />
           </div>
+
           <div>
-            <label className="text-slate-800 text-sm  tracking-wide block mb-1.5">Previous Amount</label>
-            <input onChange={(e) => { setSaleProducts({ ...saleProducts, previousAmount: e.target.value }) }}  placeholder="0.00"
+            <label className="text-slate-800 text-sm tracking-wide block mb-1.5">Previous Amount</label>
+            <input onChange={(e) => { setSaleProducts({ ...saleProducts, previousAmount: e.target.value }) }} placeholder="0.00"
               className="w-full bg-emerald-50 border border-emerald-100 focus:border-emerald-400 focus:bg-white rounded-xl px-3 py-2.5 text-gray-700 placeholder-gray-400 text-sm focus:outline-none transition-all" />
           </div>
         </div>
