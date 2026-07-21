@@ -1,12 +1,24 @@
 import { useEffect, useState } from 'react';
 import ProductCategoyPopup from './ProductCategoyPopup.jsx'
 import axios from 'axios'
+import UpdateCategory from './UpdateCategory.jsx'
 import { toast } from 'react-toastify'
+import { DndContext, closestCenter, PointerSensor, useSensor, useSensors } from '@dnd-kit/core'
+import { SortableContext, verticalListSortingStrategy, useSortable, arrayMove } from '@dnd-kit/sortable'
+import { CSS } from '@dnd-kit/utilities'
+import { GripVertical } from 'lucide-react'
 
 
 const ProductCategory = () => {
     const [categories, setCategories] = useState([])
     const [categoryPopup, setCategoryPopup] = useState(false)
+    const [editCategoryData, setEditCategoryData] = useState(null)
+    const [categoryUpdatePopup, setCategoryUpdatePopup] = useState(false)
+    const sensors = useSensors(
+        useSensor(PointerSensor, {
+            activationConstraint: { distance: 5 }
+        })
+    )
 
     async function handleFindCategory() {
         try {
@@ -14,6 +26,24 @@ const ProductCategory = () => {
             setCategories(res.data)
         } catch (err) {
             console.log("LOAD FAILED:", err.response?.data || err.message)
+        }
+    }
+
+    async function handleDragEnd(event) {
+        const { active, over } = event
+        if (!over || active.id === over.id) return
+
+        const oldIndex = categories.findIndex((c) => c._id === active.id)
+        const newIndex = categories.findIndex((c) => c._id === over.id)
+
+        const reordered = arrayMove(categories, oldIndex, newIndex)
+        setCategories(reordered)
+
+        try {
+            const payload = reordered.map((cat, idx) => ({ _id: cat._id, order: idx }))
+            await axios.put('http://localhost:3000/reorder/category', { categories: payload })
+        } catch (err) {
+            console.log("REORDER FAILED:", err.response?.data || err.message)
         }
     }
 
@@ -30,6 +60,7 @@ const ProductCategory = () => {
     return (
         <div className="p-4 md:p-5">
             {categoryPopup == true ? <ProductCategoyPopup setCategoryPopup={setCategoryPopup} handleFindCategory={handleFindCategory} /> : null}
+            {categoryUpdatePopup == true ? <UpdateCategory setCategoryUpdatePopup={setCategoryUpdatePopup} editCategoryData={editCategoryData} handleFindCategory={handleFindCategory} /> : null}
             <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-3">
                     <div className="w-10 h-10 rounded-xl bg-linear-to-br from-emerald-600 to-emerald-700 flex items-center justify-center shadow-md shadow-emerald-200">
@@ -129,85 +160,58 @@ const ProductCategory = () => {
                             </tr>
                         </thead>
 
-                        <tbody>
-                            {categories.length === 0 ? (
-                                <tr>
-                                    <td colSpan={2} className="text-center py-16">
-                                        <div className="flex flex-col items-center gap-3">
-                                            <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-linear-to-br from-emerald-50 to-emerald-100">
-                                                <svg className="w-8 h-8 text-emerald-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 6h16M4 10h16M4 14h16M4 18h16" />
-                                                </svg>
-                                            </div>
-                                            <div className="text-center">
-                                                <p className="text-gray-600 text-sm font-bold">No Category Found</p>
-                                                <p className="text-gray-300 text-xs mt-0.5">Add your first category to get started</p>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                            ) : (
-                                categories.map((cat, idx) => {
-
-                                    const tone = [
-                                        "from-emerald-400 to-emerald-600",
-                                        "from-sky-400 to-sky-600",
-                                        "from-amber-400 to-amber-600",
-                                        "from-violet-400 to-violet-600",
-                                        "from-rose-400 to-rose-600",
-                                    ][idx % 5]
-
-                                    const initial = (cat.CategoryName || "?").trim().charAt(0).toUpperCase()
-
-                                    return (
-                                        <tr key={cat._id} className="group border-b border-emerald-50 last:border-0 hover:bg-emerald-50/50 transition-colors">
-                                            <td className="px-6 py-2.5">
-                                                <div className="flex items-center gap-3">
-                                                    <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-md bg-gray-100 text-gray-400 text-[10px] font-bold group-hover:bg-emerald-100 group-hover:text-emerald-600 transition-colors">
-                                                        {idx + 1}
-                                                    </span>
-                                                    <div className={`relative flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-linear-to-br ${tone} text-white text-sm font-bold shadow-sm ring-2 ring-white group-hover:scale-105 transition-transform`}>
-                                                        {initial}
-                                                    </div>
-                                                    <div className="flex items-center gap-2">
-                                                        <span className="text-gray-700 text-sm font-semibold group-hover:text-emerald-700 transition-colors">
-                                                            {cat.CategoryName}
-                                                        </span>
-                                                        {cat.Status && (
-                                                            <span className={`inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full ${cat.Status === "Active"
-                                                                ? "bg-emerald-100 text-emerald-700"
-                                                                : "bg-gray-100 text-gray-400"
-                                                                }`}>
-                                                                <span className={`h-1.5 w-1.5 rounded-full ${cat.Status === "Active" ? "bg-emerald-500 animate-pulse" : "bg-gray-300"}`} />
-                                                                {cat.Status}
-                                                            </span>
-                                                        )}
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td className="px-6 py-2.5">
-                                                <div className="flex items-center justify-center gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity">
-                                                    <button className="flex h-7 w-7 items-center justify-center rounded-lg bg-emerald-50 text-emerald-600 hover:bg-emerald-500 hover:text-white cursor-pointer transition-all hover:scale-110 active:scale-95" title="Edit">
-                                                        <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                        <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+                            <SortableContext items={categories.map((c) => c._id)} strategy={verticalListSortingStrategy}>
+                                <tbody>
+                                    {categories.length === 0 ? (
+                                        <tr>
+                                            <td colSpan={2} className="text-center py-16">
+                                                <div className="flex flex-col items-center gap-3">
+                                                    <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-linear-to-br from-emerald-50 to-emerald-100">
+                                                        <svg className="w-8 h-8 text-emerald-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 6h16M4 10h16M4 14h16M4 18h16" />
                                                         </svg>
-                                                    </button>
-                                                    <button onClick={() => handleDeleteCategory(cat._id)} className="flex h-7 w-7 items-center justify-center rounded-lg bg-red-50 text-red-500 hover:bg-red-500 hover:text-white cursor-pointer transition-all hover:scale-110 active:scale-95" title="Delete">
-                                                        <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                                        </svg>
-                                                    </button>
+                                                    </div>
+                                                    <div className="text-center">
+                                                        <p className="text-gray-600 text-sm font-bold">No Category Found</p>
+                                                        <p className="text-gray-300 text-xs mt-0.5">Add your first category to get started</p>
+                                                    </div>
                                                 </div>
                                             </td>
                                         </tr>
-                                    )
-                                })
-                            )}
-                        </tbody>
+                                    ) : (
+                                        categories.map((cat, idx) => {
+                                            const tone = [
+                                                "from-emerald-400 to-emerald-600",
+                                                "from-sky-400 to-sky-600",
+                                                "from-amber-400 to-amber-600",
+                                                "from-violet-400 to-violet-600",
+                                                "from-rose-400 to-rose-600",
+                                            ][idx % 5]
+
+                                            const initial = (cat.CategoryName || "?").trim().charAt(0).toUpperCase()
+
+                                            return (
+                                                <SortableRow
+                                                    key={cat._id}
+                                                    cat={cat}
+                                                    idx={idx}
+                                                    tone={tone}
+                                                    initial={initial}
+                                                    handleDeleteCategory={handleDeleteCategory}
+                                                    setCategoryUpdatePopup={setCategoryUpdatePopup}
+                                                    setEditCategoryData={setEditCategoryData}
+                                                />
+                                            )
+                                        })
+                                    )}
+                                </tbody>
+                            </SortableContext>
+                        </DndContext>
                     </table>
                 </div>
                 <div className="px-5 py-3 border-t border-emerald-50 flex flex-col sm:flex-row items-center justify-between gap-3 bg-emerald-50/30">
-                    <p className="text-xs text-gray-400">Showing 0 to 0 of 0 entries</p>
+                    <p className="text-gray-400 text-xs">Showing {categories.length === 0 ? 0 : 1} to {categories.length} of {categories.length} entries </p>
                     <div className="flex items-center gap-1">
                         <button className="px-3 py-1.5 text-xs text-gray-400 bg-white border border-emerald-100 rounded-lg hover:border-emerald-300 hover:text-emerald-600 transition-all">
                             Previous
@@ -223,5 +227,59 @@ const ProductCategory = () => {
         </div>
     );
 };
+function SortableRow({ cat, idx, tone, initial, handleDeleteCategory, setCategoryUpdatePopup, setEditCategoryData }) {
+    const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id: cat._id })
 
+    const style = {
+        transform: CSS.Transform.toString(transform),
+        transition,
+        opacity: isDragging ? 0.5 : 1,
+    }
+
+    return (
+        <tr ref={setNodeRef} style={style} className="group border-b border-emerald-50 last:border-0 hover:bg-emerald-50/50 transition-colors">
+            <td className="px-6 py-2.5">
+                <div className="flex items-center gap-3">
+                    <button {...attributes} {...listeners} className="cursor-grab active:cursor-grabbing text-gray-300 hover:text-emerald-500 transition-colors touch-none">
+                        <GripVertical className="w-4 h-4" />
+                    </button>
+                    <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-md bg-gray-100 text-gray-400 text-[10px] font-bold group-hover:bg-emerald-100 group-hover:text-emerald-600 transition-colors">
+                        {idx + 1}
+                    </span>
+                    <div className={`relative flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-linear-to-br ${tone} text-white text-sm font-bold shadow-sm ring-2 ring-white group-hover:scale-105 transition-transform`}>
+                        {initial}
+                    </div>
+                    <div className="flex items-center gap-2">
+                        <span className="text-gray-700 text-sm font-semibold group-hover:text-emerald-700 transition-colors">
+                            {cat.CategoryName}
+                        </span>
+                        {cat.Status && (
+                            <span className={`inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full ${cat.Status === "Active"
+                                ? "bg-emerald-100 text-emerald-700"
+                                : "bg-gray-100 text-gray-400"
+                                }`}>
+                                <span className={`h-1.5 w-1.5 rounded-full ${cat.Status === "Active" ? "bg-emerald-500 animate-pulse" : "bg-gray-300"}`} />
+                                {cat.Status}
+                            </span>
+                        )}
+                    </div>
+                </div>
+            </td>
+            <td className="px-6 py-2.5">
+                <div className="flex items-center justify-center gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <button onClick={() => { setEditCategoryData(cat); setCategoryUpdatePopup(true) }} className="flex h-7 w-7 items-center justify-center rounded-lg bg-emerald-50 text-emerald-600 hover:bg-emerald-500 hover:text-white cursor-pointer transition-all hover:scale-110 active:scale-95" title="Edit">
+                        <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                        </svg>
+                    </button>
+                    <button onClick={() => handleDeleteCategory(cat._id)} className="flex h-7 w-7 items-center justify-center rounded-lg bg-red-50 text-red-500 hover:bg-red-500 hover:text-white cursor-pointer transition-all hover:scale-110 active:scale-95" title="Delete">
+                        <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                        </svg>
+                    </button>
+                </div>
+            </td>
+        </tr>
+    )
+}
 export default ProductCategory;

@@ -88,6 +88,8 @@ const App = () => {
         //Sales
         <Route path='/newSale' element={<NewSale />} />
         <Route path='/manageSale' element={<ManageSale />} />
+        <Route path="/editSale/:id" element={<NewSale />} />
+
         //Products
         <Route path='/newProduct' element={<NewProduct />} />
         <Route path='/newCustomer' element={<NewCustomerAdding />} />

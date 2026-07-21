@@ -13,6 +13,8 @@ const ManageSale = () => {
   let navigate = useNavigate()
   const [sales, setSales] = useState([]);
   const [search, setSearch] = useState('')
+  const [viewSale, setViewSale] = useState(null);
+
 
 
   useEffect(() => {
@@ -102,18 +104,21 @@ const ManageSale = () => {
     )
 
     // ===== ITEMS TABLE =====
-    const rows = (sale.items || []).map((item, i) => [
-      i + 1,
-      item.name,
-      item.carton || 0,
-      item.qty || 0,
-      `Rs. ${Number(item.rate || 0).toLocaleString()}`,
-      `Rs. ${Number(item.total || 0).toLocaleString()}`,
-    ])
+    const rows = (sale.items || []).map((item, i) => {
+      const cartonRate = (Number(item.rate) || 0) * (Number(item.cartonSize) || 0)
+      return [
+        i + 1,
+        item.name,
+        item.carton || 0,
+        item.qty || 0,
+        `Rs. ${cartonRate.toLocaleString()}`,
+        `Rs. ${Number(item.total || 0).toLocaleString()}`,
+      ]
+    })
 
     autoTable(doc, {
       startY: 62,
-      head: [["#", "Product", "Carton", "Qty", "Rate", "Total"]],
+      head: [["S.No", "Product", "Carton", "Pcs", "Rate (Per Carton)", "Total"]],
       body: rows,
       theme: "grid",
       headStyles: {
@@ -142,8 +147,8 @@ const ManageSale = () => {
     doc.text(`Rs. ${Number(sale.freightCharges || 0).toLocaleString()}`, 196, y, { align: "right" })
 
     y += 6
-    doc.text("Previous Amount:", 140, y)
-    doc.text(`Rs. ${Number(sale.previousAmount || 0).toLocaleString()}`, 196, y, { align: "right" })
+    doc.text("Total Cartons:", 140, y)
+    doc.text(`${sale.totalCartons || 0}`, 196, y, { align: "right" })
 
     y += 4
     doc.setDrawColor(200, 200, 200)
@@ -680,7 +685,7 @@ const ManageSale = () => {
                         {sale.status === "approved" ? (
                           <div className="flex items-center justify-center gap-1.5 opacity-0 group-hover:opacity-100 bg-slate-100 p-1.5 rounded-lg w-fit mx-auto transition-opacity">
                             <div className="relative group/tooltip">
-                              <button className="flex h-7 w-7 items-center justify-center rounded-lg bg-teal-50 text-teal-600 hover:bg-teal-600 hover:text-white hover:scale-110 active:scale-95 transition-all cursor-pointer" >
+                              <button onClick={() => setViewSale(sale)} className="flex h-7 w-7 items-center justify-center rounded-lg bg-teal-50 text-teal-600 hover:bg-teal-600 hover:text-white hover:scale-110 active:scale-95 transition-all cursor-pointer" >
                                 <BadgeDollarSign className="w-3.5 h-3.5" strokeWidth={2} />
                               </button>
                               <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 flex flex-col items-center opacity-0 translate-y-1 group-hover/tooltip:opacity-100 group-hover/tooltip:translate-y-0 transition-all duration-200 ease-out pointer-events-none z-20">
@@ -731,7 +736,7 @@ const ManageSale = () => {
                             </div>
 
                             <div className="relative group/tooltip">
-                              <button className="flex h-7 w-7 items-center justify-center rounded-lg bg-sky-50 text-sky-600 hover:bg-sky-500 hover:text-white hover:scale-110 active:scale-95 transition-all cursor-pointer" >
+                              <button onClick={() => navigate(`/editSale/${sale._id}`)} className="flex h-7 w-7 items-center justify-center rounded-lg bg-sky-50 text-sky-600 hover:bg-sky-500 hover:text-white hover:scale-110 active:scale-95 transition-all cursor-pointer" >
                                 <SquarePen className="w-3.5 h-3.5" strokeWidth={2} />
                               </button>
                               <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 flex flex-col items-center opacity-0 translate-y-1 group-hover/tooltip:opacity-100 group-hover/tooltip:translate-y-0 transition-all duration-200 ease-out pointer-events-none z-20">
@@ -783,6 +788,75 @@ const ManageSale = () => {
         </div>
 
       </div>
+      {viewSale && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4">
+          <div className="bg-white rounded-2xl shadow-xl w-full max-w-3xl max-h-[85vh] flex flex-col overflow-hidden">
+
+            <div className="flex items-center justify-between px-5 py-4 border-b border-gray-100 bg-emerald-50/60 shrink-0">
+              <div>
+                <h3 className="text-gray-800 text-base font-bold">
+                  Invoice {viewSale.invoiceNo || viewSale.gatePass}
+                </h3>
+                <p className="text-gray-400 text-xs">
+                  {viewSale.customerName} • {viewSale.Date ? new Date(viewSale.Date).toLocaleDateString() : "-"}
+                </p>
+              </div>
+              <button
+                onClick={() => setViewSale(null)}
+                className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-gray-100 transition-colors cursor-pointer"
+              >
+                <svg className="w-4.5 h-4.5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+
+            <div className="overflow-y-auto flex-1 px-5 py-4">
+
+              <div className="grid grid-cols-2 gap-3 mb-4 text-xs">
+                <p className="text-gray-500">Gate Pass No: <span className="text-gray-800 font-semibold">{viewSale.gatePass || "-"}</span></p>
+                <p className="text-gray-500">Show Rate: <span className="text-gray-800 font-semibold">{viewSale.showRate || "-"}</span></p>
+                <p className="text-gray-500">Freight Charges: <span className="text-gray-800 font-semibold">Rs. {Number(viewSale.freightCharges || 0).toLocaleString()}</span></p>
+                <p className="text-gray-500">Previous Amount: <span className="text-gray-800 font-semibold">Rs. {Number(viewSale.previousAmount || 0).toLocaleString()}</span></p>
+              </div>
+
+              <table className="w-full text-sm border-collapse">
+                <thead>
+                  <tr className="bg-gray-50 text-gray-500 text-xs">
+                    <th className="text-left font-semibold px-3 py-2">Item Name</th>
+                    <th className="text-center font-semibold px-3 py-2">Carton</th>
+                    <th className="text-center font-semibold px-3 py-2">Qty</th>
+                    <th className="text-center font-semibold px-3 py-2">Rate</th>
+                    <th className="text-right font-semibold px-3 py-2">Total</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-gray-100">
+                  {(viewSale.items || []).map((item, i) => (
+                    <tr key={i}>
+                      <td className="px-3 py-2.5 text-gray-700 font-medium">{item.name}</td>
+                      <td className="px-3 py-2.5 text-center text-gray-600">{item.carton || 0}</td>
+                      <td className="px-3 py-2.5 text-center text-gray-600">{item.qty}</td>
+                      <td className="px-3 py-2.5 text-center text-gray-600">Rs {item.rate}</td>
+                      <td className="px-3 py-2.5 text-right text-gray-800 font-semibold">
+                        Rs {Number(item.total).toLocaleString()}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+
+              <div className="mt-4 flex flex-col gap-1.5 items-end border-t border-gray-100 pt-4">
+                <p className="text-gray-500 text-xs">Total Cartons: <span className="font-semibold text-gray-700">{viewSale.totalCartons}</span></p>
+                <p className="text-gray-800 text-base font-bold">
+                  Grand Total: <span className="text-emerald-700">Rs. {Number(viewSale.grandTotal).toLocaleString()}</span>
+                </p>
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+      )}
     </div>
   );
 };

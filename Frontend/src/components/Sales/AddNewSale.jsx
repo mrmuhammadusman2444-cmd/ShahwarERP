@@ -1,14 +1,17 @@
 import SelectCategory from '../../components/SelectCategory/SelectCategory.jsx'
 import SelectCustomer from './SelectCustomers.jsx'
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import axios from 'axios'
+import { toast } from 'react-toastify'
 import { motion, AnimatePresence } from "framer-motion";
 import { ShoppingBag, ShoppingCart, ArrowRight, Loader2, Check, Trash2, Eye } from "lucide-react";
 
 
 const NewSale = ({ setManageCustomer }) => {
   let navigate = useNavigate()
+  let { id } = useParams()
+  const isEditMode = Boolean(id)
 
   const [fetchProducts, setFetchProducts] = useState([])
   const [selectedItems, setSelectedItems] = useState([])
@@ -35,6 +38,29 @@ const NewSale = ({ setManageCustomer }) => {
     loadProducts()
   }, [])
 
+  useEffect(() => {
+    async function loadSaleForEdit() {
+      if (!id) return
+      try {
+        let res = await axios.get(`http://localhost:3000/find/sale/${id}`)
+        let sale = res.data
+
+        setSaleProducts({
+          gatePass: sale.gatePass || '',
+          customerName: sale.customerName || '',
+          Date: sale.Date ? sale.Date.split('T')[0] : new Date().toISOString().split('T')[0],
+          showRate: sale.showRate || 'Distributor Rate',
+          freightCharges: sale.freightCharges || '',
+          previousAmount: sale.previousAmount || '',
+        })
+
+        setSelectedItems(sale.items || [])
+      } catch (err) {
+        console.log("LOAD SALE FOR EDIT FAILED:", err.response?.data || err.message)
+      }
+    }
+    loadSaleForEdit()
+  }, [id])
   console.log("Selected Category:", selectedCategory)
   console.log("Sample product:", fetchProducts[0])
   console.log("Category field value:", fetchProducts[0]?.mainCategory)
@@ -73,8 +99,8 @@ const NewSale = ({ setManageCustomer }) => {
         rate: rate,
         cartonSize: Number(product.cartonSize) || 0,   // ← ye
         carton: 0,
-        qty: 1,
-        total: rate,
+        qty: 0,
+        total: 0,
       }
     ])
   }
@@ -117,9 +143,23 @@ const NewSale = ({ setManageCustomer }) => {
         grandTotal: grandTotal,
         totalCartons: totalCartons,
       }
-      let response = await axios.post('http://localhost:3000/new/sale', payload)
-      console.log(response.data)
-      window.dispatchEvent(new Event('saleCreated')) 
+
+      if (isEditMode) {
+        let response = await axios.put(`http://localhost:3000/update/sale/${id}`, payload)
+        console.log(response.data)
+        window.dispatchEvent(new Event('saleCreated'))
+
+        toast.success('Sale Updated Successfully', { position: 'bottom-left', autoClose: 1200 })
+
+        setTimeout(() => {
+          navigate('/manageSale')
+        }, 2000)
+      } else {
+        let response = await axios.post('http://localhost:3000/new/sale', payload)
+        console.log(response.data)
+        window.dispatchEvent(new Event('saleCreated'))
+      }
+
     } catch (err) {
       console.log("SALE FAILED:", err.response?.data || err.message)
     }
@@ -129,7 +169,8 @@ const NewSale = ({ setManageCustomer }) => {
 
 
 
-  const grandTotal = selectedItems.reduce((s, i) => s + (i.total ?? 0), 0)
+  const itemsTotal = selectedItems.reduce((s, i) => s + (i.total ?? 0), 0)
+  const grandTotal = itemsTotal - (Number(saleProducts.freightCharges) || 0)
   const totalCartons = selectedItems.reduce((s, i) => s + (Number(i.carton) || 0), 0)
 
   return (
@@ -161,7 +202,7 @@ const NewSale = ({ setManageCustomer }) => {
         <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-3">
           <div>
             <label className="text-slate-800 text-sm tracking-wide block mb-1.5">Gate Pass No</label>
-            <input onChange={(e) => { setSaleProducts({ ...saleProducts, gatePass: e.target.value }) }} type="text" placeholder="Manual gate pass no..."
+            <input value={saleProducts.gatePass} onChange={(e) => { setSaleProducts({ ...saleProducts, gatePass: e.target.value }) }} type="text" placeholder="Manual gate pass no..."
               className="w-full bg-emerald-50 border border-emerald-100 focus:border-emerald-400 focus:bg-white rounded-xl px-3 py-2.5 text-gray-700 placeholder-gray-400 text-sm focus:outline-none transition-all" />
           </div>
 
@@ -193,7 +234,7 @@ const NewSale = ({ setManageCustomer }) => {
 
           <div>
             <label className="text-slate-800 text-sm tracking-wide block mb-1.5">Freight Charges</label>
-            <input onChange={(e) => { setSaleProducts({ ...saleProducts, freightCharges: e.target.value }) }} placeholder="0.00"
+            <input value={saleProducts.freightCharges} onChange={(e) => { setSaleProducts({ ...saleProducts, freightCharges: e.target.value }) }} placeholder="0.00"
               className="w-full bg-emerald-50 border border-emerald-100 focus:border-emerald-400 focus:bg-white rounded-xl px-3 py-2.5 text-gray-700 placeholder-gray-400 text-sm focus:outline-none transition-all" />
           </div>
 
@@ -261,7 +302,7 @@ const NewSale = ({ setManageCustomer }) => {
 
                     {inCart && (
                       <div className="absolute right-2 top-3 z-20 flex h-5 min-w-5 items-center justify-center rounded-full bg-emerald-600 px-1 text-[10px] font-bold text-white shadow-sm ring-2 ring-white">
-                        {inCart.qty}
+                        {inCart.carton}
                       </div>
                     )}
 
@@ -384,8 +425,8 @@ const NewSale = ({ setManageCustomer }) => {
                     <th className="text-center text-xs font-semibold px-3 py-2.5">Desc</th>
                     <th className="text-center text-xs font-semibold px-3 py-2.5">Carton</th>
                     <th className="text-center text-xs font-semibold px-3 py-2.5">Dozen</th>
-                    <th className="text-center text-xs font-semibold px-3 py-2.5">Qnty <span className="text-red-300">*</span></th>
-                    <th className="text-center text-xs font-semibold px-3 py-2.5">Rate <span className="text-red-300">*</span></th>
+                    <th className="text-center text-xs font-semibold px-3 py-2.5">Qnty </th>
+                    <th className="text-center text-xs font-semibold px-3 py-2.5">Rate </th>
                     <th className="text-center text-xs font-semibold px-3 py-2.5">Total</th>
                     <th className="text-center text-xs font-semibold px-3 py-2.5">Action</th>
                   </tr>
@@ -520,7 +561,7 @@ const NewSale = ({ setManageCustomer }) => {
                       transition={{ duration: 0.2 }}
                       className="relative flex items-center justify-center gap-2">
                       <ShoppingCart size={16} className="transition-transform duration-300 group-hover:-rotate-12" />
-                      Proceed to Sale
+                      {isEditMode ? "Update Sale" : "Proceed to Sale"}
                       <span className="transition-transform duration-300 group-hover:translate-x-1.5">
                         <ArrowRight size={16} strokeWidth={2.5} />
                       </span>

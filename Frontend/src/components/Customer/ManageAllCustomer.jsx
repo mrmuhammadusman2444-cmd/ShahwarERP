@@ -9,6 +9,7 @@ import { toast } from 'react-toastify'
 const ManageCustomers = () => {
   const [manageCustomer, setManageCustomer] = useState([])
   const [editData, setEditData] = useState(null)
+  const [search, setSearch] = useState("")
   const [showEditPopup, setShowEditPopup] = useState(false)
   const [showDeleteAlert, setShowDeleteAlert] = useState(false)
   const [deleteData, setDeleteData] = useState(null)
@@ -22,6 +23,10 @@ const ManageCustomers = () => {
     handleManageCustomer()
 
   }, [])
+  const filteredCustomers = manageCustomer.filter((customer) =>
+    (customer.customerName || "").toLowerCase().includes(search.toLowerCase()) ||
+    (customer.phoneNo || "").toString().toLowerCase().includes(search.toLowerCase())
+  )
   async function handleUpdate() {
     await axios.post(`http://localhost:3000/update/customer/${editData._id}`, editData)
     setShowEditPopup(false)
@@ -36,14 +41,14 @@ const ManageCustomers = () => {
     toast.success('Customer Deleted Successfully', { position: 'bottom-right', autoClose: 800 })
   }
 
-  
+
 
 
   console.log(manageCustomer)
 
   const navigate = useNavigate()
   return (
-    <div className="min-h-screen bg-linear-to-br from-blue-50 via-white to-blue-50 p-4 md:p-6">
+    <div className="min-h-screen bg-linear-to-br from-emerald-50 via-white to-emerald-50 p-4 md:p-6">
 
       {showEditPopup == true ? (
         <EditCustomerPopup
@@ -65,7 +70,7 @@ const ManageCustomers = () => {
 
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-4">
-          <div className="w-10 h-10 rounded-2xl bg-linear-to-br from-emerald-600 to-emerald-700 flex items-center justify-center shadow-md shadow-blue-200">
+          <div className="w-10 h-10 rounded-2xl bg-linear-to-br from-emerald-600 to-emerald-700 flex items-center justify-center shadow-md shadow-emerald-200">
             <Users className="w-6 h-6 text-white" />
           </div>
           <div>
@@ -74,7 +79,7 @@ const ManageCustomers = () => {
           </div>
         </div>
 
-        <button onClick={() => { navigate('/newcustomer') }} className="flex items-center gap-2 bg-linear-to-b from-emerald-500 to-emerald-700 hover:from-emerald-400 hover:to-emerald-600 text-white  shadow-blue-200  text-sm transition-all hover:-translate-y-0.5 active:translate-y-0 font-semibold px-4 py-2.5 rounded-xl shadow-md stransition-all cursor-pointer">
+        <button onClick={() => { navigate('/newcustomer') }} className="flex items-center gap-2 bg-linear-to-b from-emerald-500 to-emerald-700 hover:from-emerald-400 hover:to-emerald-600 text-white  shadow-emerald-200  text-sm transition-all hover:-translate-y-0.5 active:translate-y-0 font-semibold px-4 py-2.5 rounded-xl shadow-md stransition-all cursor-pointer">
           <Plus className="w-4 h-4" />
           New Customer
         </button>
@@ -82,7 +87,7 @@ const ManageCustomers = () => {
       </div>
 
 
-      <div className="bg-white border border-blue-100 rounded-2xl shadow-sm p-5">
+      <div className="bg-white border border-emerald-100 rounded-2xl shadow-sm p-5">
 
 
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
@@ -91,7 +96,7 @@ const ManageCustomers = () => {
           <div className="flex items-center gap-2 flex-wrap">
             <div className="flex items-center gap-2">
               <span className="text-gray-500 text-sm">Show</span>
-              <select className="bg-blue-50 border border-blue-100 rounded-lg px-2 py-1.5 text-gray-700 text-sm focus:outline-none focus:border-blue-400 cursor-pointer">
+              <select className="bg-emerald-50 border border-emerald-100 rounded-lg px-2 py-1.5 text-gray-700 text-sm focus:outline-none focus:border-emerald-400 cursor-pointer">
                 <option>10</option>
                 <option>25</option>
                 <option>50</option>
@@ -123,15 +128,17 @@ const ManageCustomers = () => {
           <div className="relative">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
             <input
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
               type="text"
               placeholder="Search..."
-              className="bg-blue-50 border border-blue-100 focus:border-blue-400 focus:bg-white rounded-xl pl-9 pr-4 py-2 text-sm text-gray-700 placeholder-gray-400 focus:outline-none transition-all w-52 cursor-text"
+              className="bg-emerald-50 border border-emerald-100 focus:border-emerald-400 focus:bg-white rounded-xl pl-9 pr-4 py-2 text-sm text-gray-700 placeholder-gray-400 focus:outline-none transition-all w-52 cursor-text"
             />
           </div>
         </div>
 
 
-        <div className="overflow-x-auto rounded-xl border border-blue-100 h-115">
+        <div className="overflow-x-auto rounded-xl border border-emerald-100 h-115">
           <table className="w-full text-sm">
             <thead className="sticky top-0 z-10">
               <tr className="bg-linear-to-b from-emerald-500 to-emerald-700 text-white">
@@ -151,7 +158,7 @@ const ManageCustomers = () => {
             </thead>
             <tbody>
 
-              {manageCustomer.length === 0 && (
+              {filteredCustomers.length === 0 && (
                 <tr>
                   <td colSpan={8} className="py-20 text-center">
                     <div className="flex flex-col items-center gap-3">
@@ -165,7 +172,7 @@ const ManageCustomers = () => {
                 </tr>
               )}
 
-              {manageCustomer.map((customer, index) => {
+              {filteredCustomers.map((customer, index) => {
 
                 const limit = Number(customer.amountLimit) || 0
                 const used = Number(customer.customerCredits) || 0
@@ -267,7 +274,7 @@ const ManageCustomers = () => {
                         <button className="p-1.5 rounded-lg text-gray-400 hover:text-emerald-600 hover:bg-emerald-100 cursor-pointer transition-all">
                           <Eye size={16} />
                         </button>
-                        <button onClick={() => { setEditData(customer), setShowEditPopup(true) }} className="p-1.5 rounded-lg text-gray-400 hover:text-blue-600 hover:bg-blue-100 cursor-pointer transition-all">
+                        <button onClick={() => { setEditData(customer), setShowEditPopup(true) }} className="p-1.5 rounded-lg text-gray-400 hover:text-emerald-600 hover:bg-emerald-100 cursor-pointer transition-all">
                           <Pencil size={16} />
                         </button>
                         <button
@@ -292,11 +299,11 @@ const ManageCustomers = () => {
             Showing {manageCustomer.length === 0 ? 0 : 1} to {manageCustomer.length} of {manageCustomer.length} entries
           </p>
           <div className="flex items-center gap-1.5">
-            <button className="flex items-center gap-1 text-xs text-gray-500 hover:text-blue-600 bg-blue-50 hover:bg-emerald-100 px-3 py-1.5 rounded-lg transition-all cursor-pointer">
+            <button className="flex items-center gap-1 text-xs text-gray-500 hover:text-emerald-600 bg-emerald-50 hover:bg-emerald-100 px-3 py-1.5 rounded-lg transition-all cursor-pointer">
               <ChevronLeft className="w-3.5 h-3.5" /> Previous
             </button>
             <button className="w-8 h-8 rounded-lg bg-emerald-600 text-white text-xs font-bold flex items-center justify-center cursor-pointer">1</button>
-            <button className="flex items-center gap-1 text-xs text-gray-500 hover:text-me-600 bg-blue-50 hover:bg-emerald-100 px-3 py-1.5 rounded-lg transition-all cursor-pointer">
+            <button className="flex items-center gap-1 text-xs text-gray-500 hover:text-me-600 bg-emerald-50 hover:bg-emerald-100 px-3 py-1.5 rounded-lg transition-all cursor-pointer">
               Next <ChevronRight className="w-3.5 h-3.5" />
             </button>
           </div>

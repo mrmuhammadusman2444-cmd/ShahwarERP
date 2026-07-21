@@ -411,8 +411,24 @@ const SideMenus = ({ collapsed }) => {
                 {menuMatches('Approval', ['Invoice Approval', 'Purchase Approval', 'Customer Payment Approval', 'Supplier Payment Approval']) && (
 
                     <div onMouseEnter={setTip} onClick={() => setapprovalOpen(!approvalOpen)} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer  hover:bg-emerald-800 transition-all mb-px ${collapsed ? 'justify-start' : ''}`}>
-                        <Handshake className="text-slate-100   group-hover:translate-x-1.5 shrink-0 transition-transform duration-300" size={23} />
+                        <div className="relative shrink-0">
+                            <Handshake className="text-slate-100 group-hover:translate-x-1.5 transition-transform duration-300" size={23} />
+                            {collapsed && pendingInvoiceCount > 0 && (
+                                <span className="absolute -top-1 -right-1.5 flex h-3.5 min-w-3.5 items-center justify-center rounded-full bg-emerald-500 px-0.5 text-[9px] font-bold text-white animate-pulse ring-2 ring-emerald-900">
+                                    {pendingInvoiceCount > 9 ? "9+" : pendingInvoiceCount}
+                                </span>
+                            )}
+                        </div>
+
                         {!collapsed && <span className="text-[12.5px] text-slate-100 flex-1">Approval</span>}
+
+                        {!collapsed && pendingInvoiceCount > 0 && (
+                            <span className="relative flex h-4.5 min-w-4.5 items-center justify-center rounded-full bg-linear-to-br from-emerald-400 to-emerald-600 px-1 text-[10px] font-bold text-white shadow-sm shadow-emerald-500/50 ring-2 ring-emerald-900/40">
+                                <span className="absolute inset-0 rounded-full bg-emerald-400 animate-ping opacity-40" />
+                                <span className="relative">{pendingInvoiceCount}</span>
+                            </span>
+                        )}
+
                         {!collapsed && <ChevronDown className={`text-slate-100  w-3.5 h-3.5 transition-transform duration-300 ${approvalOpen ? 'rotate-180' : ''}`} />}
                         {collapsed && (
                             <span style={{ top: 'var(--tooltip-y, 50%)', transform: 'translateY(-50%)' }} className="fixed left-16 ml-1 bg-emerald-500 text-white text-[11px] px-2 py-1 rounded-md whitespace-nowrap opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-200 pointer-events-none z-999">
@@ -437,7 +453,7 @@ const SideMenus = ({ collapsed }) => {
                             <div onClick={() => { navigate('/invoiceapprovalpage') }} className="flex items-center justify-between text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                                 <span>Invoice Approval</span>
                                 {pendingInvoiceCount > 0 && (
-                                    <span className="relative flex h-4.5 min-w-4.5 items-center justify-center rounded-full bg-gradient-to-br from-emerald-400 to-emerald-600 px-1 text-[10px] font-bold text-white shadow-sm shadow-emerald-500/50 ring-2 ring-emerald-900/40">
+                                    <span className="relative flex h-4.5 min-w-4.5 items-center animate-pulse justify-center rounded-full bg-linear-to-br from-emerald-400 to-emerald-600 px-1 text-[10px] font-bold text-white shadow-sm shadow-emerald-500/50 ring-2 ring-emerald-900/40">
                                         <span className="absolute inset-0 rounded-full bg-emerald-400 animate-ping opacity-40" />
                                         <span className="relative">{pendingInvoiceCount}</span>
                                     </span>

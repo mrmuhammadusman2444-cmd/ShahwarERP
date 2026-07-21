@@ -2,7 +2,7 @@ import React from 'react'
 import { useState } from 'react';
 import axios from 'axios';
 
-const ProductCategoyPopup = ({ setCategoryPopup, handleFindCategory }) => {
+const ProductCategoyPopup = () => {
 
   let [Category, setCategory] = useState({
     CategoryName: '',
@@ -11,13 +11,11 @@ const ProductCategoyPopup = ({ setCategoryPopup, handleFindCategory }) => {
   })
 
   async function handleCategory() {
-    try {
-      await axios.post('http://localhost:3000/product/category', Category)
-      handleFindCategory()
-      setCategoryPopup(false)      // ← popup band bhi karo
-    } catch (err) {
-      console.log("FAILED:", err.response?.data || err.message)
-    }
+
+    await axios.post('http://localhost:3000/product/category', Category)
+    handleFindCategory()
+    setCategoryPopup(false)
+
   }
 
 

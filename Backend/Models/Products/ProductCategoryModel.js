@@ -8,6 +8,7 @@ const ProductCategorySchema = new mongoose.Schema({
         enum: ["Active", "Inactive"],
         default: "Active",
     },
+    order: { type: Number, default: 0 },
 })
 
 const ProductCategoryModel = mongoose.model('Category', ProductCategorySchema)

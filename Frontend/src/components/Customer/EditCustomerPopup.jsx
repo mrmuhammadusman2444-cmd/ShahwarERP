@@ -49,12 +49,20 @@ const EditCustomerPopup = ({ setShowEditPopup, editData, setEditData, handleUpda
                             transition={{ type: "spring", stiffness: 300, damping: 18, delay: 0.1 }}
                             className="flex h-12 w-12 items-center justify-center rounded-2xl bg-linear-to-br from-emerald-500 to-emerald-700 text-sm font-bold text-white shadow-lg shadow-emerald-200"
                         >
-                            AK
+                            {(() => {
+                                const parts = (editData.customerName || "").trim().split(/\s+/)
+                                if (parts.length === 0 || parts[0] === "") return "?"
+                                const first = parts[0].charAt(0).toUpperCase()
+                                const last = parts.length > 1 ? parts[parts.length - 1].charAt(0).toUpperCase() : ""
+                                return first + last
+                            })()}
                         </motion.div>
                         <div>
-                            <h2 className="text-lg font-bold tracking-tight text-gray-800">Edit customer</h2>
+                            <h2 className="text-lg font-bold tracking-tight text-gray-800">
+                                {editData.customerName || "Edit customer"}
+                            </h2>
                             <p className="mt-0.5 text-xs text-gray-400">
-                                <span className="text-emerald-600">Update customer (Distributor) data</span>
+                                <span className="text-emerald-600">Edit {editData.customerName || "customer"} Information</span>
                             </p>
                         </div>
                     </div>
