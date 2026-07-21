@@ -38,7 +38,8 @@ const Login = () => {
       await minDelay
 
       if (res.data.success) {
-        setLoading(true)                    
+        localStorage.setItem('user', JSON.stringify(res.data.user))
+        setLoading(true)
         setTimeout(() => navigate('/Dashboard'), 2800)
       } else {
         setStatus("error")

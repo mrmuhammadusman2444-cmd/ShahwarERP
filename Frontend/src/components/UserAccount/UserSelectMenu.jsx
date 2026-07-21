@@ -8,6 +8,17 @@ import { ChevronDown, Settings, LogOut, User } from "lucide-react";
 const UserSelectMenu = ({ setShowSetting }) => {
     const [profileOpen, setProfileOpen] = useState(false);
     const navigate = useNavigate();
+    const user = JSON.parse(localStorage.getItem('user')) || {}
+
+    const initials = ((user.firstName || "") + " " + (user.lastName || ""))
+        .trim()
+        .split(/\s+/)
+        .filter(Boolean)
+        .map((w) => w.charAt(0).toUpperCase())
+        .slice(0, 2)
+        .join("") || "?"
+
+    const fullName = `${user.firstName || ""} ${user.lastName || ""}`.trim() || "Guest"
     return (
         <div className="absolute top-4 right-4 sm:right-6 md:right-8 lg:right-10 xl:right-12 2xl:right-14 z-50        ">
             <div
@@ -16,14 +27,14 @@ const UserSelectMenu = ({ setShowSetting }) => {
             >
                 <div className="relative">
                     <div className="w-9 h-9 rounded-full bg-emerald-500 flex items-center justify-center text-white text-[13px] font-semibold ring-2 ring-white shadow-sm">
-                        MU
+                        {initials}
                     </div>
                     <span className="absolute bottom-0 right-0 w-2 h-2 bg-emerald-500 animate-pulse rounded-full ring-2 ring-white"></span>
                 </div>
 
                 <div className="hidden sm:flex flex-col leading-tight">
-                    <span className="text-[13px] font-semibold text-slate-800">Muhammad Usman</span>
-                    <span className="text-[11px] text-slate-500">info@shahwarfoods.com</span>
+                    <span className="text-[13px] font-semibold text-slate-800">{fullName}</span>
+                    <span className="text-[11px] text-slate-500">{user.email || "-"}</span>
                 </div>
 
                 <ChevronDown
@@ -66,6 +77,7 @@ const UserSelectMenu = ({ setShowSetting }) => {
 
                 <div className="p-1.5 border-t border-slate-100">
                     <div onClick={() => {
+                        localStorage.removeItem('user')
                         toast.success('You have Logged Out', { position: 'bottom-right', autoClose: 800 })
                         setTimeout(() => (navigate('/login')), 800)
                     }} className="flex items-center gap-2.5 px-3 py-2 rounded-xl cursor-pointer hover:bg-red-50 transition-colors duration-200 group">

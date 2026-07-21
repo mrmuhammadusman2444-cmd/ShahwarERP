@@ -238,6 +238,8 @@ import React from 'react'
 
 const MainDashboard = () => {
     const [showSetting, setShowSetting] = useState(false);
+    const user = JSON.parse(localStorage.getItem('user')) || {}   // 👈 yeh line honi chahiye
+
     return (
         <div className="p-4 md:p-5 bg-slate-50 h-screen">
             {
@@ -253,7 +255,7 @@ const MainDashboard = () => {
                         </div>
                         <div>
                             <h1 className="text-xl font-semibold text-slate-800">
-                                {greetingText}, Muhammad Usman 👋
+                                {greetingText}, {user.firstName || "there"} 👋
                             </h1>
                             <p className="text-[12.5px] text-slate-500">
                                 Real-Time Insights. Real Growth

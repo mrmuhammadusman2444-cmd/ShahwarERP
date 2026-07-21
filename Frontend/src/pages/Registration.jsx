@@ -56,6 +56,7 @@ const Registration = () => {
       console.log("SIGNUP FAILED:", error.response?.data || error.message)
       await minDelay
       setStatus("error")
+      toast.error(error.response?.data?.message || 'Something went wrong', { position: 'bottom-right', autoClose: 2000 })
       setTimeout(() => setStatus("idle"), 2500)
     }
   }
