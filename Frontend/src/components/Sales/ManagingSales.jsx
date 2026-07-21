@@ -104,21 +104,36 @@ const ManageSale = () => {
     )
 
     // ===== ITEMS TABLE =====
-    const rows = (sale.items || []).map((item, i) => {
-      const cartonRate = (Number(item.rate) || 0) * (Number(item.cartonSize) || 0)
-      return [
-        i + 1,
-        item.name,
-        item.carton || 0,
-        item.qty || 0,
-        `Rs. ${cartonRate.toLocaleString()}`,
-        `Rs. ${Number(item.total || 0).toLocaleString()}`,
-      ]
+    // Group items by category
+    const grouped = {}
+      ; (sale.items || []).forEach((item) => {
+        const cat = item.mainCategory || "Uncategorized"
+        if (!grouped[cat]) grouped[cat] = []
+        grouped[cat].push(item)
+      })
+
+    // Build rows with category headers
+    const rows = []
+    let counter = 1
+    Object.keys(grouped).forEach((category) => {
+      rows.push([{ content: category, colSpan: 6, styles: { fontStyle: "bold", fillColor: [220, 252, 231], textColor: [5, 150, 105] } }])
+
+      grouped[category].forEach((item) => {
+        const cartonRate = (Number(item.rate) || 0) * (Number(item.cartonSize) || 0)
+        rows.push([
+          counter++,
+          item.name,
+          item.carton || 0,
+          item.qty || 0,
+          `Rs. ${cartonRate.toLocaleString()}`,
+          `Rs. ${Number(item.total || 0).toLocaleString()}`,
+        ])
+      })
     })
 
     autoTable(doc, {
       startY: 62,
-      head: [["S.No", "Product", "Carton", "Pcs", "Rate (Per Carton)", "Total"]],
+      head: [["S.No", "Product", "Carton", "Qty", "Rate (Carton Wise)", "Total"]],
       body: rows,
       theme: "grid",
       headStyles: {
@@ -130,11 +145,12 @@ const ManageSale = () => {
       bodyStyles: { fontSize: 9, textColor: [60, 60, 60] },
       alternateRowStyles: { fillColor: [240, 253, 244] },
       columnStyles: {
-        0: { cellWidth: 12, halign: "center" },
+        0: { cellWidth: 12, halign: "left" },
+        1: { halign: "left" },
         2: { halign: "center" },
         3: { halign: "center" },
-        4: { halign: "right" },
-        5: { halign: "right" },
+        4: { halign: "center" },
+        5: { halign: "center" },
       },
     })
 
@@ -655,7 +671,18 @@ const ManageSale = () => {
                         </span>
                       </td>
 
-                      <td className="px-4 py-3 text-slate-300 text-xs">—</td>
+                      <td className="px-4 py-3">
+                        {sale.saleBy ? (
+                          <span className="inline-flex items-center gap-1.5 text-emerald-600 text-xs font-medium">
+                            <span className="flex h-5 w-5 items-center justify-center rounded-full bg-emerald-900 text-slate-50 text-[9px] font-bold">
+                              {sale.saleBy.trim().charAt(0).toUpperCase()}
+                            </span>
+                            {sale.saleBy}
+                          </span>
+                        ) : (
+                          <span className="text-slate-300 text-xs">—</span>
+                        )}
+                      </td>
 
                       <td className="px-4 py-3">
                         <div className="flex items-center gap-2.5">

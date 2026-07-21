@@ -19,6 +19,8 @@ router.post('/new/sale', async function (req, res) {
             items: data.items,
             grandTotal: data.grandTotal,
             totalCartons: data.totalCartons,
+            saleBy: data.saleBy,
+
         }
 
         let createNewSale = await SaleModel.create(object)

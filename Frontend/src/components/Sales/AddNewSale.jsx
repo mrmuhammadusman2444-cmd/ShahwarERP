@@ -97,7 +97,8 @@ const NewSale = ({ setManageCustomer }) => {
         _id: product._id,
         name: product.productName,
         rate: rate,
-        cartonSize: Number(product.cartonSize) || 0,   // ← ye
+        cartonSize: Number(product.cartonSize) || 0,
+        mainCategory: product.mainCategory || "Uncategorized",
         carton: 0,
         qty: 0,
         total: 0,
@@ -155,6 +156,9 @@ const NewSale = ({ setManageCustomer }) => {
           navigate('/manageSale')
         }, 2000)
       } else {
+        const user = JSON.parse(localStorage.getItem('user'))
+        payload.saleBy = user ? `${user.firstName} ${user.lastName || ''}`.trim() : ''
+
         let response = await axios.post('http://localhost:3000/new/sale', payload)
         console.log(response.data)
         window.dispatchEvent(new Event('saleCreated'))

@@ -93,7 +93,9 @@ const InvoiceApproval = () => {
           </div>
           <div className="min-w-0">
             <p className="text-gray-400 text-xs font-medium">Submitted By</p>
-            <p className="text-gray-800 text-base font-bold leading-tight">—</p>
+            <p className="text-gray-800 text-base font-bold leading-tight truncate">
+              {pendingSales.length > 0 && pendingSales[0].saleBy ? pendingSales[0].saleBy : "—"}
+            </p>
           </div>
         </div>
 
@@ -176,7 +178,18 @@ const InvoiceApproval = () => {
                       Rs {Number(sale.grandTotal).toLocaleString()}
                     </td>
 
-                    <td className="px-4 py-3.5 text-gray-500 text-xs whitespace-nowrap">—</td>
+                   <td className="px-4 py-3.5 whitespace-nowrap">
+    {sale.saleBy ? (
+        <span className="inline-flex items-center gap-1.5 text-gray-600 text-xs font-medium">
+            <span className="flex h-5 w-5 items-center justify-center rounded-full bg-gray-100 text-gray-500 text-[9px] font-bold">
+                {sale.saleBy.trim().charAt(0).toUpperCase()}
+            </span>
+            {sale.saleBy}
+        </span>
+    ) : (
+        <span className="text-gray-300 text-xs">—</span>
+    )}
+</td>
 
                     <td className="px-4 py-3.5">
                       <div className="flex items-center justify-center">
