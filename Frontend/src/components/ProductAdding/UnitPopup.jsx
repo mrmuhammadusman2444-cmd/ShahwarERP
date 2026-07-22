@@ -1,6 +1,29 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
+import axios from 'axios'
 
-const UnitPopup = ({ setUnitPopup }) => {
+const UnitPopup = ({ setUnitPopup, handleFind }) => {
+
+    let [Unit, setUnit] = useState({
+        unitName: '',
+        shortCode: '',
+        Description: ''
+    })
+
+    async function handleUnit() {
+        try {
+            let res = await axios.post('http://localhost:3000/unit', Unit)
+            console.log(res.data)
+            handleFind()
+            setUnitPopup(false)
+        } catch (err) {
+            console.log("ADD UNIT FAILED:", err.response?.data || err.message)
+        }
+    }
+
+
+
+
+
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 backdrop-blur-sm px-4">
 
@@ -35,7 +58,7 @@ const UnitPopup = ({ setUnitPopup }) => {
                         <label className="text-gray-700 text-sm font-semibold">
                             Unit Name <span className="text-red-400">*</span>
                         </label>
-                        <input
+                        <input onChange={(e) => { setUnit({ ...Unit, unitName: e.target.value }) }}
                             type="text"
                             placeholder="Enter unit name..."
                             className="w-full bg-emerald-50 border border-emerald-100 focus:border-emerald-400 focus:bg-white rounded-xl px-3 py-2.5 text-gray-700 placeholder-gray-400 text-sm focus:outline-none transition-all"
@@ -44,7 +67,7 @@ const UnitPopup = ({ setUnitPopup }) => {
 
                     <div className="flex flex-col gap-1.5">
                         <label className="text-gray-700 text-sm font-semibold">Short Code</label>
-                        <input
+                        <input onChange={(e) => { setUnit({ ...Unit, shortCode: e.target.value }) }}
                             type="text"
                             placeholder="e.g. PCS, KG, CTN..."
                             className="w-full bg-emerald-50 border border-emerald-100 focus:border-emerald-400 focus:bg-white rounded-xl px-3 py-2.5 text-gray-700 placeholder-gray-400 text-sm focus:outline-none transition-all"
@@ -53,7 +76,7 @@ const UnitPopup = ({ setUnitPopup }) => {
 
                     <div className="flex flex-col gap-1.5">
                         <label className="text-gray-700 text-sm font-semibold">Description</label>
-                        <textarea
+                        <textarea onChange={(e) => { setUnit({ ...Unit, Description: e.target.value }) }}
                             rows={3}
                             placeholder="Enter description..."
                             className="w-full bg-emerald-50 border border-emerald-100 focus:border-emerald-400 focus:bg-white rounded-xl px-3 py-2.5 text-gray-700 placeholder-gray-400 text-sm focus:outline-none transition-all resize-none"
@@ -69,7 +92,7 @@ const UnitPopup = ({ setUnitPopup }) => {
                     >
                         Cancel
                     </button>
-                    <button
+                    <button onClick={handleUnit}
                         type="button"
                         className="px-6 py-2.5 bg-linear-to-r from-emerald-600 to-emerald-700 hover:from-emerald-500 hover:to-emerald-600 text-white text-sm font-semibold rounded-xl shadow-md shadow-emerald-200 transition-all hover:-translate-y-0.5 active:translate-y-0 cursor-pointer"
                     >

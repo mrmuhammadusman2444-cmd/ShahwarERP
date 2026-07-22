@@ -103,8 +103,7 @@ const ManageSale = () => {
       196, 52, { align: "right" }
     )
 
-    // ===== ITEMS TABLE =====
-    // Group items by category
+
     const grouped = {}
       ; (sale.items || []).forEach((item) => {
         const cat = item.mainCategory || "Uncategorized"
@@ -112,11 +111,10 @@ const ManageSale = () => {
         grouped[cat].push(item)
       })
 
-    // Build rows with category headers
     const rows = []
     let counter = 1
     Object.keys(grouped).forEach((category) => {
-      rows.push([{ content: category, colSpan: 6, styles: { fontStyle: "bold", fillColor: [220, 252, 231], textColor: [5, 150, 105] } }])
+      rows.push([{ content: category, colSpan: 6, styles: { fontStyle: "bold", fillColor: [255, 255, 255], textColor: [0, 0, 0] } }])
 
       grouped[category].forEach((item) => {
         const cartonRate = (Number(item.rate) || 0) * (Number(item.cartonSize) || 0)
@@ -124,7 +122,7 @@ const ManageSale = () => {
           counter++,
           item.name,
           item.carton || 0,
-          item.qty || 0,
+          item.cartonSize || 0,
           `Rs. ${cartonRate.toLocaleString()}`,
           `Rs. ${Number(item.total || 0).toLocaleString()}`,
         ])
@@ -174,7 +172,7 @@ const ManageSale = () => {
     doc.setFontSize(12)
     doc.setFont("helvetica", "bold")
     doc.setTextColor(5, 150, 105)
-    doc.text("GRAND TOTAL", 140, y)
+    doc.text("GRAND TOTAL", 135, y)
     doc.text(`Rs. ${Number(sale.grandTotal || 0).toLocaleString()}`, 196, y, { align: "right" })
 
     // ===== FOOTER =====
