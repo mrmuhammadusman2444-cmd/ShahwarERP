@@ -98,6 +98,7 @@ const NewSale = ({ setManageCustomer }) => {
         name: product.productName,
         rate: rate,
         cartonSize: Number(product.cartonSize) || 0,
+        storeLimit: product.storeLimit || "",
         mainCategory: product.mainCategory || "Uncategorized",
         carton: 0,
         qty: 0,

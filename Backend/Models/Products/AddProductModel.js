@@ -15,7 +15,7 @@ const AddProductSchema = new mongoose.Schema({
     wholesaleRate: { type: Number,  },
     codOnlinePrice: { type: Number,  },
     unitSchemePoint: { type: Number,  },
-    storeLimit: { type: Number,  },
+    storeLimit: { type: String,  },
 },)
 
 const AddProductModel = mongoose.model('Products', AddProductSchema)

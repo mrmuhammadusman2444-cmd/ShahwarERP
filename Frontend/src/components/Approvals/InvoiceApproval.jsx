@@ -5,6 +5,8 @@ import { X, Eye, CheckCircle2, XCircle } from 'lucide-react'
 const InvoiceApproval = () => {
   const [pendingSales, setPendingSales] = useState([]);
   const [selectedSale, setSelectedSale] = useState(null);
+  const [rejectReason, setRejectReason] = useState("")    
+  const [showRejectBox, setShowRejectBox] = useState(false)
   const totalAmount = pendingSales.reduce((sum, inv) => sum + (Number(inv.grandTotal) || 0), 0);
 
   useEffect(() => {
@@ -33,9 +35,11 @@ const InvoiceApproval = () => {
 
   async function handleReject(id) {
     try {
-      await axios.put(`http://localhost:3000/reject/sale/${id}`)
+      await axios.put(`http://localhost:3000/reject/sale/${id}`, { rejectReason })
       setPendingSales(pendingSales.filter((sale) => sale._id !== id))
       setSelectedSale(null)
+      setShowRejectBox(false)
+      setRejectReason("")
       window.dispatchEvent(new Event('saleCreated'))
     } catch (err) {
       console.log("REJECT FAILED:", err.response?.data || err.message)
@@ -163,33 +167,33 @@ const InvoiceApproval = () => {
 
                     <td className="px-4 py-3.5">
                       <div className="flex items-center gap-2.5">
-                        <div className="w-8 h-8 rounded-full bg-linear-to-br from-emerald-400 to-emerald-600 text-white text-xs font-bold flex items-center justify-center shrink-0 shadow-sm">
+                        <div className="w-8 h-8 shrink-0 rounded-full bg-linear-to-br from-emerald-400 to-emerald-600 text-white text-xs font-bold flex items-center justify-center shadow-sm">
                           {sale.customerName ? sale.customerName.charAt(0).toUpperCase() : "?"}
                         </div>
-                        <div className="min-w-0">
-                          <p className="text-gray-700 text-xs font-semibold truncate">{sale.customerName}</p>
-                        </div>
+                        <p className="text-gray-700 text-xs font-semibold truncate">{sale.customerName}</p>
                       </div>
                     </td>
 
-                    <td className="px-4 py-3.5 text-slate-500 text-xs whitespace-nowrap">{sale.totalCartons} Cartons</td>
+                    <td className="px-4 py-3.5 text-slate-500 text-xs whitespace-nowrap">
+                      {sale.totalCartons} units
+                    </td>
 
                     <td className="px-4 py-3.5 text-right text-gray-800 text-xs font-bold whitespace-nowrap">
                       Rs {Number(sale.grandTotal).toLocaleString()}
                     </td>
 
-                   <td className="px-4 py-3.5 whitespace-nowrap">
-    {sale.saleBy ? (
-        <span className="inline-flex items-center gap-1.5 text-gray-600 text-xs font-medium">
-            <span className="flex h-5 w-5 items-center justify-center rounded-full bg-gray-100 text-gray-500 text-[9px] font-bold">
-                {sale.saleBy.trim().charAt(0).toUpperCase()}
-            </span>
-            {sale.saleBy}
-        </span>
-    ) : (
-        <span className="text-gray-300 text-xs">—</span>
-    )}
-</td>
+                    <td className="px-4 py-3.5 whitespace-nowrap">
+                      {sale.saleBy ? (
+                        <div className="flex items-center gap-2">
+                          <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-gray-100 text-gray-500 text-[9px] font-bold">
+                            {sale.saleBy.trim().charAt(0).toUpperCase()}
+                          </span>
+                          <span className="text-gray-600 text-xs font-medium">{sale.saleBy}</span>
+                        </div>
+                      ) : (
+                        <span className="text-gray-300 text-xs">—</span>
+                      )}
+                    </td>
 
                     <td className="px-4 py-3.5">
                       <div className="flex items-center justify-center">
@@ -235,7 +239,7 @@ const InvoiceApproval = () => {
                 </p>
               </div>
               <button
-                onClick={() => setSelectedSale(null)}
+                onClick={() => { setSelectedSale(null); setShowRejectBox(false); setRejectReason("") }}
                 className="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-gray-100 transition-colors cursor-pointer"
               >
                 <X size={18} className="text-gray-500" />
@@ -276,21 +280,55 @@ const InvoiceApproval = () => {
               </div>
             </div>
 
+            {showRejectBox && (
+              <div className="px-5 py-4 border-t border-gray-100 bg-red-50/40 shrink-0">
+                <label className="text-gray-600 text-xs font-semibold block mb-1.5">Reason for rejection</label>
+                <textarea
+                  value={rejectReason}
+                  onChange={(e) => setRejectReason(e.target.value)}
+                  rows={2}
+                  placeholder="e.g. Prices are incorrect, wrong customer details..."
+                  className="w-full bg-white border border-red-200 focus:border-red-400 rounded-xl px-3 py-2 text-sm text-gray-700 placeholder-gray-400 focus:outline-none transition-all resize-none"
+                />
+              </div>
+            )}
+
             <div className="flex items-center justify-end gap-2 px-5 py-4 border-t border-gray-100 bg-gray-50/50 shrink-0">
-              <button
-                onClick={() => handleReject(selectedSale._id)}
-                className="flex items-center gap-1.5 px-4 py-2.5 bg-white border border-red-200 hover:bg-red-50 hover:border-red-300 rounded-xl transition-all cursor-pointer"
-              >
-                <XCircle size={16} className="text-red-500" />
-                <span className="text-red-500 text-sm font-semibold">Reject</span>
-              </button>
-              <button
-                onClick={() => handleApprove(selectedSale._id)}
-                className="flex items-center gap-1.5 px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 rounded-xl transition-all shadow-sm cursor-pointer"
-              >
-                <CheckCircle2 size={16} className="text-white" />
-                <span className="text-white text-sm font-semibold">Approve</span>
-              </button>
+              {showRejectBox ? (
+                <>
+                  <button
+                    onClick={() => { setShowRejectBox(false); setRejectReason("") }}
+                    className="flex items-center gap-1.5 px-4 py-2.5 bg-white border border-gray-200 hover:bg-gray-50 rounded-xl transition-all cursor-pointer"
+                  >
+                    <span className="text-gray-600 text-sm font-semibold">Cancel</span>
+                  </button>
+                  <button
+                    onClick={() => handleReject(selectedSale._id)}
+                    disabled={!rejectReason.trim()}
+                    className="flex items-center gap-1.5 px-4 py-2.5 bg-red-600 hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed rounded-xl transition-all shadow-sm cursor-pointer"
+                  >
+                    <XCircle size={16} className="text-white" />
+                    <span className="text-white text-sm font-semibold">Confirm Reject</span>
+                  </button>
+                </>
+              ) : (
+                <>
+                  <button
+                    onClick={() => setShowRejectBox(true)}
+                    className="flex items-center gap-1.5 px-4 py-2.5 bg-white border border-red-200 hover:bg-red-50 hover:border-red-300 rounded-xl transition-all cursor-pointer"
+                  >
+                    <XCircle size={16} className="text-red-500" />
+                    <span className="text-red-500 text-sm font-semibold">Reject</span>
+                  </button>
+                  <button
+                    onClick={() => handleApprove(selectedSale._id)}
+                    className="flex items-center gap-1.5 px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 rounded-xl transition-all shadow-sm cursor-pointer"
+                  >
+                    <CheckCircle2 size={16} className="text-white" />
+                    <span className="text-white text-sm font-semibold">Approve</span>
+                  </button>
+                </>
+              )}
             </div>
 
           </div>

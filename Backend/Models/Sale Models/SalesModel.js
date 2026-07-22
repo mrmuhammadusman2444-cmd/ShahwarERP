@@ -21,6 +21,7 @@ const NewSaleSchema = new mongoose.Schema({
         enum: ["pending", "approved", "rejected"],
         default: "pending"
     },
+    rejectReason: { type: String, default: "" },
 })
 
 const SaleModel = mongoose.model('sale', NewSaleSchema)

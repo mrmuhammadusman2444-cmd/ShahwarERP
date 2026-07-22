@@ -122,7 +122,7 @@ const ManageSale = () => {
           counter++,
           item.name,
           item.carton || 0,
-          item.cartonSize || 0,
+          item.storeLimit || item.cartonSize || "-",
           `Rs. ${cartonRate.toLocaleString()}`,
           `Rs. ${Number(item.total || 0).toLocaleString()}`,
         ])
@@ -785,11 +785,19 @@ const ManageSale = () => {
                             </div>
                           </div>
                         ) : (
-                          <div className="flex items-center justify-center">
-                            <span className="flex items-center gap-1.5 bg-amber-50 text-amber-600 text-[11px] font-semibold px-3 py-1.5 rounded-full ring-1 ring-amber-200">
-                              <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse" />
+                          <div className="flex flex-col items-center gap-1">
+                            <span className={`flex items-center gap-1.5 text-[11px] font-semibold px-3 py-1.5 rounded-full ring-1 ${sale.status === "rejected"
+                              ? "bg-red-50 text-red-600 ring-red-200"
+                              : "bg-amber-50 text-amber-600 ring-amber-200"
+                              }`}>
+                              <span className={`w-1.5 h-1.5 rounded-full ${sale.status === "rejected" ? "bg-red-500" : "bg-amber-500 animate-pulse"}`} />
                               {sale.status === "rejected" ? "Rejected" : "Pending Approval"}
                             </span>
+                            {sale.status === "rejected" && sale.rejectReason && (
+                              <span className="text-gray-900 text-[10px]  max-w-40 text-center " title={sale.rejectReason}>
+                                {sale.rejectReason}
+                              </span>
+                            )}
                           </div>
                         )}
                       </td>

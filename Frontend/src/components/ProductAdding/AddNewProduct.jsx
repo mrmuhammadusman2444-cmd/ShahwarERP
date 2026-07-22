@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
 import axios from 'axios'
+import SelectUnit from './SelectUnit.jsx'
 import { motion, AnimatePresence } from "framer-motion";
 import SequenceCategory from './SequenceCategory.jsx'
-import { Loader2, LayoutList, Check, Save } from "lucide-react";
+import { Loader2, LayoutList, Check, Save, AlertCircle  } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 
@@ -205,11 +206,13 @@ const AddNewProduct = () => {
               ))}
 
               <div className="col-span-2">
-                <label className="text-gray-500 text-xs font-semibold uppercase tracking-wide block mb-1.5">Store Limit</label>
-                <input onChange={(e) => {
-                  setNewProduct({ ...newProduct, storeLimit: e.target.value })
-                }} type="number" placeholder="0"
-                  className="w-full bg-emerald-50 border border-emerald-100 focus:border-emerald-400 focus:bg-white rounded-xl px-3 py-2.5 text-gray-700 placeholder-gray-400 text-sm focus:outline-none transition-all" />
+                <label className="text-gray-500 text-xs font-semibold uppercase tracking-wide block mb-1.5">Select Unit</label>
+                <SelectUnit
+                  value={newProduct.storeLimit}
+                  onChange={(unitValue) => {
+                    setNewProduct({ ...newProduct, storeLimit: unitValue })
+                  }}
+                />
               </div>
 
             </div>

@@ -72,7 +72,7 @@ router.put('/approve/sale/:id', async function (req, res) {
 router.put('/reject/sale/:id', async function (req, res) {
     let rejectedSale = await SaleModel.findByIdAndUpdate(
         req.params.id,
-        { status: "rejected" },
+        { status: "rejected", rejectReason: req.body.rejectReason || "" },
         { new: true }
     )
     res.json(rejectedSale)
