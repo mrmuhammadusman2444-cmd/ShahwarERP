@@ -17,8 +17,8 @@ const Sidebar = () => {
   const [showSetting, setShowSetting] = useState(false)
   const [showHelp, setShowHelp] = useState(false)
   const [collapsed, setCollapsed] = useState(false)
-  
-  
+
+
 
   useEffect(() => {
     function handleClickOutside(e) {
@@ -33,8 +33,7 @@ const Sidebar = () => {
   return (
     <aside className="h-screen flex flex-row">
 
-      <nav className={`h-screen flex flex-col ${collapsed ? 'w-16' : 'w-67'} bg-slate-900 border-r border-slate-100 shadow-sm transition-all duration-300`}>
-
+      <nav onMouseEnter={() => setCollapsed(false)} onMouseLeave={() => setCollapsed(true)} className={`h-screen flex flex-col ${collapsed ? 'w-16' : 'w-67'} bg-slate-900 border-r border-slate-100 shadow-sm transition-all duration-300`}>
 
         <style>{`
     .sidebar-scroll::-webkit-scrollbar { width: 4px; }
@@ -52,7 +51,7 @@ const Sidebar = () => {
               className=" cursor-pointer text-slate-100  transition-colors"
               size={20}
             />}
-            
+
           </div>
           {collapsed && (
             <div className="relative group/tooltip flex justify-center w-full border-t border-slate-900">

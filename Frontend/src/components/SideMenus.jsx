@@ -1,4 +1,5 @@
 import React from 'react'
+import './SidebarMenus.css'
 import { useState, useEffect } from 'react';
 import axios from 'axios'
 import { useNavigate, useLocation } from 'react-router-dom';
@@ -81,21 +82,15 @@ const SideMenus = ({ collapsed }) => {
     const isDashboard = location.pathname === '/dashboard'
 
 
+    const isActivePath = (path) => location.pathname.toLowerCase() === path.toLowerCase()
 
+    const isParentActive = (paths) => paths.some((p) => isActivePath(p))
 
 
 
     return (
         <div>
-            <style>{`
-  .no-scrollbar::-webkit-scrollbar {
-    display: none;
-  }
-  .no-scrollbar {
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-  }
-`}</style>
+
             {!collapsed && (
                 <div className="px-2 pt-2.5 pb-2">
                     <div className="flex  items-center gap-2 h-8.75 rounded-full px-1.5 border  bg-slate-800 cursor-text">
@@ -113,23 +108,7 @@ const SideMenus = ({ collapsed }) => {
             )}
 
             <div className="px-2 pb-2.5 ">
-                <style>{`
-                    .env-flap {
-                      transform-origin: 7.5px 2px;
-                      transform: rotateX(0deg);
-                      transition: transform 0.35s cubic-bezier(0.4,0,0.2,1);
-                    }
-                    .group:hover .env-flap {
-                      transform: rotateX(-160deg);
-                    }
-                    .env-letter {
-                      transform: translateY(0px);
-                      transition: transform 0.35s cubic-bezier(0.4,0,0.2,1) 0.05s;
-                    }
-                    .group:hover .env-letter {
-                      transform: translateY(-4px);
-                    }
-                  `}</style>
+
                 {menuMatches('Inbox', []) && (
                     <div onMouseEnter={setTip} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer  border-transparent hover:bg-emerald-800 transition-all mb-px ${collapsed ? 'justify-start' : ''}`}>
 
@@ -157,17 +136,7 @@ const SideMenus = ({ collapsed }) => {
                         )}
                     </div>
                 )}
-                <style>{`
-                  @keyframes bell-ring {
-                    0%   { transform: rotate(0deg); }
-                    20%  { transform: rotate(15deg); }
-                    40%  { transform: rotate(-15deg); }
-                    60%  { transform: rotate(10deg); }
-                    80%  { transform: rotate(-10deg); }
-                    100% { transform: rotate(0deg); }
-                     }
-                     .group:hover .bell-icon { animation: bell-ring 0.5s ease; }
-                     `}</style>
+
                 {menuMatches('Notifications', []) && (
 
                     <div onMouseEnter={setTip} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer  border-transparent hover:bg-emerald-800 ransition-all ${collapsed ? 'justify-start' : ''}`}>
@@ -204,17 +173,7 @@ const SideMenus = ({ collapsed }) => {
                     </div>
                 )}
 
-                <style>{`
-                         @keyframes bar-wave {
-                         0%   { transform: scaleY(1); }
-                         33%  { transform: scaleY(1.5); }
-                         66%  { transform: scaleY(0.7); }
-                        100% { transform: scaleY(1); }
-                                    }
-                       .group:hover .bar1 { animation: bar-wave 0.6s ease 0s infinite; }
-                      .group:hover .bar2 { animation: bar-wave 0.6s ease 0.15s infinite; }
-                            .group:hover .bar3 { animation: bar-wave 0.6s ease 0.3s infinite; }
-                         `}</style>
+
                 {menuMatches('Analytics', []) && (
 
                     <div onClick={() => { navigate('/analytics') }} onMouseEnter={setTip} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer  hover:bg-emerald-800  transition-all mb-px ${collapsed ? 'justify-start' : ''}${isAnalytics ? 'bg-emerald-800' : 'hover:bg-emerald-800'}`}>
@@ -260,9 +219,12 @@ const SideMenus = ({ collapsed }) => {
                 )} */}
 
                 {menuMatches('Customers', ['New Customers', 'Manage Customers', 'Manage Factory Customers', 'Customers Ledger', 'Customers Advance']) && (
-                    <div onMouseEnter={setTip} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 hover:bg-emerald-800 rounded-lg px-2 cursor-pointer transition-all mb-px ${collapsed ? 'justify-start' : ''}`}
+                    <div onMouseEnter={setTip} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer transition-all mb-px ${collapsed ? 'justify-start' : ''} ${isParentActive(['/newcustomer', '/manageCustomer', '/factoryCustomer', '/CustomerLedgerPage', '/CustomerAdvancePage']) ? 'bg-emerald-800' : 'hover:bg-emerald-800'}`}
                         onClick={() => setCustomerOpen(!customerOpen)}
                     >
+                        {isParentActive(['/newcustomer', '/manageCustomer', '/factoryCustomer', '/CustomerLedgerPage', '/CustomerAdvancePage']) && !collapsed && (
+                            <span className="absolute left-0 top-1/2 -translate-y-1/2 w-0.75 h-4.5 bg-emerald-400 rounded-r-full" />
+                        )}
                         <Users className="text-slate-100 shrink-0 group-hover:scale-110 transition-transform duration-300" size={23} />
                         {!collapsed && <span className="text-[12.5px] text-slate-100 flex-1">Customers</span>}
                         {!collapsed && <ChevronDown className={`text-slate-100 w-3.5 h-3.5 transition-transform duration-300 ${customerOpen ? 'rotate-180' : ''}`} />}
@@ -312,7 +274,10 @@ const SideMenus = ({ collapsed }) => {
                 )}
 
                 {menuMatches('Orders', ['New Orders', 'Manage Orders', 'Orders Reports', 'Dispatch Orders']) && (
-                    <div onMouseEnter={setTip} onClick={() => setOrderOpen(!orderOpen)} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer  hover:bg-emerald-800  transition-all mb-px ${collapsed ? 'justify-start' : ''}`}>
+                    <div onMouseEnter={setTip} onClick={() => setOrderOpen(!orderOpen)} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer transition-all mb-px ${collapsed ? 'justify-start' : ''} ${isParentActive(['/NewOrdersPage', '/ManageOrdersPage', '/OrderReportPage', '/DispatchOrderPage']) ? 'bg-emerald-800' : 'hover:bg-emerald-800'}`}>
+                        {isParentActive(['/NewOrdersPage', '/ManageOrdersPage', '/OrderReportPage', '/DispatchOrderPage']) && !collapsed && (
+                            <span className="absolute left-0 top-1/2 -translate-y-1/2 w-0.75 h-4.5 bg-emerald-400 rounded-r-full" />
+                        )}
                         <Truck className="text-slate-100   shrink-0 group-hover:translate-x-1.5 transition-transform duration-300" size={23} />
                         {!collapsed && <span className="text-[12.5px] text-slate-100 flex-1">Orders</span>}
                         {!collapsed && <ChevronDown className={`text-slate-100  w-3.5 h-3.5 transition-transform duration-300 ${orderOpen ? 'rotate-180' : ''}`} />}
@@ -323,7 +288,6 @@ const SideMenus = ({ collapsed }) => {
                         )}
                     </div>
                 )}
-
                 {!collapsed && (
                     <div
                         style={{
@@ -359,21 +323,13 @@ const SideMenus = ({ collapsed }) => {
 
 
 
-                <style>{`
-                         @keyframes dollar-bounce {
-                             0%   { transform: translateX(0px) scale(1); }
-                             30%  { transform: translateX(6px) translateY(-3px) scale(1.15); }
-                             55%  { transform: translateX(6px) translateY(1px) scale(1.05); }
-                             75%  { transform: translateX(6px) translateY(-1px) scale(1.08); }
-                             100% { transform: translateX(6px) scale(1.1); }
-                         }
-                         .group:hover .sale-icon {
-                             animation: dollar-bounce 0.5s cubic-bezier(0.36, 0.07, 0.19, 0.97) forwards;
-                         }
-                     `}</style>
+
 
                 {menuMatches('Sales', ['New Sales', 'Manage Sales']) && (
-                    <div onMouseEnter={setTip} onClick={() => setsaleOpen(!saleOpen)} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer  hover:bg-emerald-800  transition-all mb-px ${collapsed ? 'justify-start' : ''}`}>
+                    <div onMouseEnter={setTip} onClick={() => setsaleOpen(!saleOpen)} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer transition-all mb-px ${collapsed ? 'justify-start' : ''} ${isParentActive(['/newSale', '/manageSale']) ? 'bg-emerald-800' : 'hover:bg-emerald-800'}`}>
+                        {isParentActive(['/newSale', '/manageSale']) && !collapsed && (
+                            <span className="absolute left-0 top-1/2 -translate-y-1/2 w-0.75 h-4.5 bg-emerald-400 rounded-r-full" />
+                        )}
                         <BadgeDollarSign className="text-slate-100  shrink-0  sale-icon" size={23} />
                         {!collapsed && <span className="text-[12.5px] text-slate-100 flex-1">Sales</span>}
                         {!collapsed && <ChevronDown className={`text-slate-100  w-3.5 h-3.5 transition-transform duration-300 ${saleOpen ? 'rotate-180' : ''}`} />}
@@ -410,7 +366,10 @@ const SideMenus = ({ collapsed }) => {
 
                 {menuMatches('Approval', ['Invoice Approval', 'Purchase Approval', 'Customer Payment Approval', 'Supplier Payment Approval']) && (
 
-                    <div onMouseEnter={setTip} onClick={() => setapprovalOpen(!approvalOpen)} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer  hover:bg-emerald-800 transition-all mb-px ${collapsed ? 'justify-start' : ''}`}>
+                    <div onMouseEnter={setTip} onClick={() => setapprovalOpen(!approvalOpen)} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer transition-all mb-px ${collapsed ? 'justify-start' : ''} ${isParentActive(['/invoiceapprovalpage', '/purchaseapprovalpage', '/customerpaymentpage', '/supplierpaymentpage']) ? 'bg-emerald-800' : 'hover:bg-emerald-800'}`}>
+                        {isParentActive(['/invoiceapprovalpage', '/purchaseapprovalpage', '/customerpaymentpage', '/supplierpaymentpage']) && !collapsed && (
+                            <span className="absolute left-0 top-1/2 -translate-y-1/2 w-0.75 h-4.5 bg-emerald-400 rounded-r-full" />
+                        )}
                         <div className="relative shrink-0">
                             <Handshake className="text-slate-100 group-hover:translate-x-1.5 transition-transform duration-300" size={23} />
                             {collapsed && pendingInvoiceCount > 0 && (
@@ -481,7 +440,10 @@ const SideMenus = ({ collapsed }) => {
 
                 {menuMatches('Products', ['New Products', 'Manage Products', 'Category', 'Unit', 'Main Category', 'Scheme Products', 'Products Price List']) && (
 
-                    <div onMouseEnter={setTip} onClick={() => setproductOpen(!productOpen)} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer  hover:bg-emerald-800 transition-all mb-px ${collapsed ? 'justify-start' : ''}`}>
+                    <div onMouseEnter={setTip} onClick={() => setproductOpen(!productOpen)} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer transition-all mb-px ${collapsed ? 'justify-start' : ''} ${isParentActive(['/newProduct', '/manageproductpage', '/productcategorypage', '/unitpage', '/maincategorypage', '/schemeproductspage']) ? 'bg-emerald-800' : 'hover:bg-emerald-800'}`}>
+                        {isParentActive(['/newProduct', '/manageproductpage', '/productcategorypage', '/unitpage', '/maincategorypage', '/schemeproductspage']) && !collapsed && (
+                            <span className="absolute left-0 top-1/2 -translate-y-1/2 w-0.75 h-4.5 bg-emerald-400 rounded-r-full" />
+                        )}
                         <PackageOpen className="text-slate-100  shrink-0  group-hover:translate-x-1.5 transition-transform duration-300" size={23} />
                         {!collapsed && <span className="text-[12.5px] text-slate-100 flex-1">Products</span>}
                         {!collapsed && <ChevronDown className={`text-slate-100  w-3.5 h-3.5 transition-transform duration-300 ${productOpen ? 'rotate-180' : ''}`} />}
@@ -524,11 +486,11 @@ const SideMenus = ({ collapsed }) => {
                                 Unit
                             </div>
                         )}
-                        {subMatches('Main Category') && (
+                        {/* {subMatches('Main Category') && (
                             <div onClick={() => { navigate('/maincategorypage') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                                 Main Category
                             </div>
-                        )}
+                        )} */}
                         {subMatches('Scheme Products') && (
                             <div onClick={() => { navigate('/schemeproductspage') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                                 Scheme Products
@@ -544,7 +506,10 @@ const SideMenus = ({ collapsed }) => {
 
                 {menuMatches('Suppliers', ['Add New Suppliers', 'Manage Suppliers', 'Suppliers Ledger', 'Suppliers Advance']) && (
 
-                    <div onMouseEnter={setTip} onClick={() => setsupplierOpen(!supplierOpen)} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer  hover:bg-emerald-800 transition-all mb-px ${collapsed ? 'justify-start' : ''}`}>
+                    <div onMouseEnter={setTip} onClick={() => setsupplierOpen(!supplierOpen)} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer transition-all mb-px ${collapsed ? 'justify-start' : ''} ${isParentActive(['/addSupplierPage', '/ManageSupplierPage', '/SupplierLedgerPage', '/SupplierAdvancePage']) ? 'bg-emerald-800' : 'hover:bg-emerald-800'}`}>
+                        {isParentActive(['/addSupplierPage', '/ManageSupplierPage', '/SupplierLedgerPage', '/SupplierAdvancePage']) && !collapsed && (
+                            <span className="absolute left-0 top-1/2 -translate-y-1/2 w-0.75 h-4.5 bg-emerald-400 rounded-r-full" />
+                        )}
                         <PackageCheck className="text-slate-100   shrink-0 group-hover:translate-x-1.5 transition-transform duration-300" size={23} />
                         {!collapsed && <span className="text-[12.5px] text-slate-100 flex-1">Suppliers</span>}
                         {!collapsed && <ChevronDown className={`text-slate-100  w-3.5 h-3.5 transition-transform duration-300 ${supplierOpen ? 'rotate-180' : ''}`} />}
@@ -592,7 +557,10 @@ const SideMenus = ({ collapsed }) => {
 
                 {menuMatches('Purchase', ['Add Purchase', 'Manage Purchase', 'Add Purchase Order', 'Manage Purchase Order']) && (
 
-                    <div onMouseEnter={setTip} onClick={() => setpurchaseOpen(!purchaseOpen)} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer  hover:bg-emerald-800 transition-all mb-px ${collapsed ? 'justify-start' : ''}`}>
+                    <div onMouseEnter={setTip} onClick={() => setpurchaseOpen(!purchaseOpen)} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer transition-all mb-px ${collapsed ? 'justify-start' : ''} ${isParentActive(['/AddPurchasePage', '/ManagePurchasePage', '/AddPurchaseOrderPage', '/ManagePurchaseOrder']) ? 'bg-emerald-800' : 'hover:bg-emerald-800'}`}>
+                        {isParentActive(['/AddPurchasePage', '/ManagePurchasePage', '/AddPurchaseOrderPage', '/ManagePurchaseOrder']) && !collapsed && (
+                            <span className="absolute left-0 top-1/2 -translate-y-1/2 w-0.75 h-4.5 bg-emerald-400 rounded-r-full" />
+                        )}
                         <ShoppingCart className="text-slate-100   shrink-0 group-hover:translate-x-1.5 transition-transform duration-300" size={23} />
                         {!collapsed && <span className="text-[12.5px] text-slate-100 flex-1">Purchase</span>}
                         {!collapsed && <ChevronDown className={`text-slate-100  w-3.5 h-3.5 transition-transform duration-300 ${purchaseOpen ? 'rotate-180' : ''}`} />}
@@ -640,7 +608,10 @@ const SideMenus = ({ collapsed }) => {
 
                 {menuMatches('Warehouse Finish Product', ['New Finish Product', 'Manage Finish Product', 'Finish Product Stock']) && (
 
-                    <div onMouseEnter={setTip} onClick={() => setwarehouseOpen(!warehouseOpen)} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer  hover:bg-emerald-800 transition-all mb-px ${collapsed ? 'justify-start' : ''}`}>
+                    <div onMouseEnter={setTip} onClick={() => setwarehouseOpen(!warehouseOpen)} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer transition-all mb-px ${collapsed ? 'justify-start' : ''} ${isParentActive(['/NewFinishProductPage', '/ManageFinishProductPage', '/FinishProductStockPage']) ? 'bg-emerald-800' : 'hover:bg-emerald-800'}`}>
+                        {isParentActive(['/NewFinishProductPage', '/ManageFinishProductPage', '/FinishProductStockPage']) && !collapsed && (
+                            <span className="absolute left-0 top-1/2 -translate-y-1/2 w-0.75 h-4.5 bg-emerald-400 rounded-r-full" />
+                        )}
                         <PackageCheck className="text-slate-100   shrink-0 group-hover:translate-x-1.5 transition-transform duration-300" size={23} />
                         {!collapsed && <span className="text-[12.5px] text-slate-100 flex-1">Warehouse Finish Product</span>}
                         {!collapsed && <ChevronDown className={`text-slate-100  w-3.5 h-3.5 transition-transform duration-300 ${warehouseOpen ? 'rotate-180' : ''}`} />}
@@ -650,6 +621,7 @@ const SideMenus = ({ collapsed }) => {
                             </span>
                         )}
                     </div>
+
                 )}
 
                 {!collapsed && (
@@ -682,7 +654,10 @@ const SideMenus = ({ collapsed }) => {
 
                 {menuMatches('Stock', ['Finish Stock', 'Raw Material Stock', 'Reel Stock', 'Beverage Stock', 'Tea Stock', 'Out of Stock', 'Raw Packing Stock', ' Assign User to Stock']) && (
 
-                    <div onMouseEnter={setTip} onClick={() => setstockOpen(!stockOpen)} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer  hover:bg-emerald-800 transition-all mb-px ${collapsed ? 'justify-start' : ''}`}>
+                    <div onMouseEnter={setTip} onClick={() => setstockOpen(!stockOpen)} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer transition-all mb-px ${collapsed ? 'justify-start' : ''} ${isParentActive(['/finish/stock', '/raw/material/stock', '/reel/stock', '/Beverage/stock', '/tea/stock', '/out/of/stock', '/raw/packing/stock', '/assign/user/stock']) ? 'bg-emerald-800' : 'hover:bg-emerald-800'}`}>
+                        {isParentActive(['/finish/stock', '/raw/material/stock', '/reel/stock', '/Beverage/stock', '/tea/stock', '/out/of/stock', '/raw/packing/stock', '/assign/user/stock']) && !collapsed && (
+                            <span className="absolute left-0 top-1/2 -translate-y-1/2 w-0.75 h-4.5 bg-emerald-400 rounded-r-full" />
+                        )}
                         <Blocks className="text-slate-100 shrink-0   group-hover:translate-x-1.5 transition-transform duration-300" size={23} />
                         {!collapsed && <span className="text-[12.5px] text-slate-100 flex-1">Stock</span>}
                         {!collapsed && <ChevronDown className={`text-slate-100  w-3.5 h-3.5 transition-transform duration-300 ${stockOpen ? 'rotate-180' : ''}`} />}
@@ -756,7 +731,10 @@ const SideMenus = ({ collapsed }) => {
                 )}
                 {menuMatches('Warehouse Wise Sale', ['New Stock', 'Manage Stock', 'New Sale', 'Manage Warehouse Sale', 'Warehouse Stock']) && (
 
-                    <div onMouseEnter={setTip} onClick={() => setwarehouseSaleOpen(!warehouseSaleOpen)} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer  hover:bg-emerald-800 transition-all mb-px ${collapsed ? 'justify-start' : ''}`}>
+                    <div onMouseEnter={setTip} onClick={() => setwarehouseSaleOpen(!warehouseSaleOpen)} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer transition-all mb-px ${collapsed ? 'justify-start' : ''} ${isParentActive(['/PATH_HERE_1', '/PATH_HERE_2']) ? 'bg-emerald-800' : 'hover:bg-emerald-800'}`}>
+                        {isParentActive(['/PATH_HERE_1', '/PATH_HERE_2']) && !collapsed && (
+                            <span className="absolute left-0 top-1/2 -translate-y-1/2 w-0.75 h-4.5 bg-emerald-400 rounded-r-full" />
+                        )}
                         <ChartNoAxesCombined className="text-slate-100 shrink-0   group-hover:translate-x-1.5 transition-transform duration-300" size={23} />
                         {!collapsed && <span className="text-[12.5px] text-slate-100 flex-1">Warehouse Wise Sale</span>}
                         {!collapsed && <ChevronDown className={`text-slate-100  w-3.5 h-3.5 transition-transform duration-300 ${warehouseSaleOpen ? 'rotate-180' : ''}`} />}
@@ -808,7 +786,10 @@ const SideMenus = ({ collapsed }) => {
 
                 {menuMatches('Scheme Report', ['Scheme Report', 'Warehouse Report']) && (
 
-                    <div onMouseEnter={setTip} onClick={() => setschemeOpen(!schemeOpen)} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer  hover:bg-emerald-800 transition-all mb-px ${collapsed ? 'justify-start' : ''}`}>
+                    <div onMouseEnter={setTip} onClick={() => setschemeOpen(!schemeOpen)} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer transition-all mb-px ${collapsed ? 'justify-start' : ''} ${isParentActive(['/scheme/report', '/warehouse/scheme/report']) ? 'bg-emerald-800' : 'hover:bg-emerald-800'}`}>
+                        {isParentActive(['/scheme/report', '/warehouse/scheme/report']) && !collapsed && (
+                            <span className="absolute left-0 top-1/2 -translate-y-1/2 w-0.75 h-4.5 bg-emerald-400 rounded-r-full" />
+                        )}
                         <Gift className="text-slate-100   shrink-0  group-hover:translate-x-1.5 transition-transform duration-300" size={23} />
                         {!collapsed && <span className="text-[12.5px] text-slate-100 flex-1">Scheme Report</span>}
                         {!collapsed && <ChevronDown className={`text-slate-100  w-3.5 h-3.5 transition-transform duration-300 ${schemeOpen ? 'rotate-180' : ''}`} />}
@@ -845,7 +826,10 @@ const SideMenus = ({ collapsed }) => {
 
                 {menuMatches('Return', ['Return', 'Manage Return']) && (
 
-                    <div onMouseEnter={setTip} onClick={() => setreturnOpen(!returnOpen)} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer  hover:bg-emerald-800 hover:border-slate-600 transition-all mb-px ${collapsed ? 'justify-start' : ''}`}>
+                    <div onMouseEnter={setTip} onClick={() => setreturnOpen(!returnOpen)} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer hover:border-slate-600 transition-all mb-px ${collapsed ? 'justify-start' : ''} ${isParentActive(['/return', '/manage/return']) ? 'bg-emerald-800' : 'hover:bg-emerald-800'}`}>
+                        {isParentActive(['/return', '/manage/return']) && !collapsed && (
+                            <span className="absolute left-0 top-1/2 -translate-y-1/2 w-0.75 h-4.5 bg-emerald-400 rounded-r-full" />
+                        )}
                         <Repeat2 className="text-slate-100 shrink-0   group-hover:translate-x-1.5 transition-transform duration-300" size={23} />
                         {!collapsed && <span className="text-[12.5px] text-slate-100 flex-1">Return</span>}
                         {!collapsed && <ChevronDown className={`text-slate-100  w-3.5 h-3.5 transition-transform duration-300 ${returnOpen ? 'rotate-180' : ''}`} />}
@@ -884,7 +868,10 @@ const SideMenus = ({ collapsed }) => {
 
                 {menuMatches('Distributor Order', ['Manage Hafiz Order']) && (
 
-                    <div onMouseEnter={setTip} onClick={() => setdistributorOpen(!distributorOpen)} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer  hover:bg-emerald-800 hover:border-slate-600 transition-all mb-px ${collapsed ? 'justify-start' : ''}`}>
+                    <div onMouseEnter={setTip} onClick={() => setdistributorOpen(!distributorOpen)} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer hover:border-slate-600 transition-all mb-px ${collapsed ? 'justify-start' : ''} ${isParentActive(['/manage/distributor/order']) ? 'bg-emerald-800' : 'hover:bg-emerald-800'}`}>
+                        {isParentActive(['/manage/distributor/order']) && !collapsed && (
+                            <span className="absolute left-0 top-1/2 -translate-y-1/2 w-0.75 h-4.5 bg-emerald-400 rounded-r-full" />
+                        )}
                         <ClipboardList className="text-slate-100 shrink-0   group-hover:translate-x-1.5 transition-transform duration-300" size={23} />
                         {!collapsed && <span className="text-[12.5px] text-slate-100 flex-1">Distributor Order</span>}
                         {!collapsed && <ChevronDown className={`text-slate-100  w-3.5 h-3.5 transition-transform duration-300 ${distributorOpen ? 'rotate-180' : ''}`} />}
@@ -914,7 +901,10 @@ const SideMenus = ({ collapsed }) => {
                 )}
                 {menuMatches('Report', ['Today customer Report', 'User Wise Reciept Report', 'Supplier Reciept', 'Sale Report', 'Sale Report (Product Wise)']) && (
 
-                    <div onMouseEnter={setTip} onClick={() => setreportOpen(!reportOpen)} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer  hover:bg-emerald-800 hover:border-slate-600 transition-all mb-px ${collapsed ? 'justify-start' : ''}`}>
+                    <div onMouseEnter={setTip} onClick={() => setreportOpen(!reportOpen)} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer hover:border-slate-600 transition-all mb-px ${collapsed ? 'justify-start' : ''} ${isParentActive(['/PATH_HERE_1', '/PATH_HERE_2', '/PATH_HERE_3', '/PATH_HERE_4', '/PATH_HERE_5']) ? 'bg-emerald-800' : 'hover:bg-emerald-800'}`}>
+                        {isParentActive(['/PATH_HERE_1', '/PATH_HERE_2', '/PATH_HERE_3', '/PATH_HERE_4', '/PATH_HERE_5']) && !collapsed && (
+                            <span className="absolute left-0 top-1/2 -translate-y-1/2 w-0.75 h-4.5 bg-emerald-400 rounded-r-full" />
+                        )}
                         <Flag className="text-slate-100 shrink-0   group-hover:translate-x-1.5 transition-transform duration-300" size={23} />
                         {!collapsed && <span className="text-[12.5px] text-slate-100 flex-1">Report</span>}
                         {!collapsed && <ChevronDown className={`text-slate-100  w-3.5 h-3.5 transition-transform duration-300 ${reportOpen ? 'rotate-180' : ''}`} />}
@@ -965,7 +955,10 @@ const SideMenus = ({ collapsed }) => {
 
                 {menuMatches('Accounts', ['Supplier Payment', 'Supplier Tally Ledger', 'Customer Tally Ledger', 'Customer Recieve', 'Assets Payment', 'Cash Adjustment', 'Reports']) && (
 
-                    <div onMouseEnter={setTip} onClick={() => setaccountOpen(!accountOpen)} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer  hover:bg-emerald-800 hover:border-slate-600 transition-all mb-px ${collapsed ? 'justify-start' : ''}`}>
+                    <div onMouseEnter={setTip} onClick={() => setaccountOpen(!accountOpen)} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer hover:border-slate-600 transition-all mb-px ${collapsed ? 'justify-start' : ''} ${isParentActive(['/SupplierPaymentPage', '/SupplierLedgerPage', '/CustomerLedgerPage', '/CustomerPaymentPage', '/PATH_ASSETS_PAYMENT', '/PATH_CASH_ADJUSTMENT', '/PATH_REPORTS']) ? 'bg-emerald-800' : 'hover:bg-emerald-800'}`}>
+                        {isParentActive(['/SupplierPaymentPage', '/SupplierLedgerPage', '/CustomerLedgerPage', '/CustomerPaymentPage', '/PATH_ASSETS_PAYMENT', '/PATH_CASH_ADJUSTMENT', '/PATH_REPORTS']) && !collapsed && (
+                            <span className="absolute left-0 top-1/2 -translate-y-1/2 w-0.75 h-4.5 bg-emerald-400 rounded-r-full" />
+                        )}
                         <Wallet className="text-slate-100  shrink-0  group-hover:translate-x-1.5 transition-transform duration-300" size={23} />
                         {!collapsed && <span className="text-[12.5px] text-slate-100 flex-1">Accounts</span>}
                         {!collapsed && <ChevronDown className={`text-slate-100  w-3.5 h-3.5 transition-transform duration-300 ${accountOpen ? 'rotate-180' : ''}`} />}
@@ -1028,7 +1021,10 @@ const SideMenus = ({ collapsed }) => {
 
                 {menuMatches('Bank', ['Add New', 'Add New Transaction', 'Manage Bank', 'Bank Ledger']) && (
 
-                    <div onMouseEnter={setTip} onClick={() => setbankOpen(!bankOpen)} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer  hover:bg-emerald-800 transition-all mb-px ${collapsed ? 'justify-start' : ''}`}>
+                    <div onMouseEnter={setTip} onClick={() => setbankOpen(!bankOpen)} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer transition-all mb-px ${collapsed ? 'justify-start' : ''} ${isParentActive(['/new/bank', '/add/new/transaction', '/manage/bank', '/bank/ledger']) ? 'bg-emerald-800' : 'hover:bg-emerald-800'}`}>
+                        {isParentActive(['/new/bank', '/add/new/transaction', '/manage/bank', '/bank/ledger']) && !collapsed && (
+                            <span className="absolute left-0 top-1/2 -translate-y-1/2 w-0.75 h-4.5 bg-emerald-400 rounded-r-full" />
+                        )}
                         <Landmark className="text-slate-100 shrink-0   group-hover:translate-x-1.5 transition-transform duration-300" size={23} />
                         {!collapsed && <span className="text-[12.5px] text-slate-100 flex-1">Bank</span>}
                         {!collapsed && <ChevronDown className={`text-slate-100  w-3.5 h-3.5 transition-transform duration-300 ${bankOpen ? 'rotate-180' : ''}`} />}
@@ -1074,7 +1070,10 @@ const SideMenus = ({ collapsed }) => {
 
                 {menuMatches('Salary', ['Employee', 'Add Employee', 'Manage Employee', 'Manage Employee Salary', 'Attendence', 'Attendance', 'Attendance Report', 'Salary', 'Employee Salary', 'Ledger']) && (
 
-                    <div onMouseEnter={setTip} onClick={() => setsalaryOpen(!salaryOpen)} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer  hover:bg-emerald-800 transition-all mb-px ${collapsed ? 'justify-start' : ''}`}>
+                    <div onMouseEnter={setTip} onClick={() => setsalaryOpen(!salaryOpen)} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer transition-all mb-px ${collapsed ? 'justify-start' : ''} ${isParentActive(['/salary', '/attendence', '/attendence/report', '/add/employee', '/manage/employee', '/manage/employee/salary']) ? 'bg-emerald-800' : 'hover:bg-emerald-800'}`}>
+                        {isParentActive(['/salary', '/attendence', '/attendence/report', '/add/employee', '/manage/employee', '/manage/employee/salary']) && !collapsed && (
+                            <span className="absolute left-0 top-1/2 -translate-y-1/2 w-0.75 h-4.5 bg-emerald-400 rounded-r-full" />
+                        )}
                         <HandCoins className="text-slate-100 shrink-0   group-hover:translate-x-1.5 transition-transform duration-300" size={23} />
                         {!collapsed && <span className="text-[12.5px] text-slate-100 flex-1">Salary</span>}
                         {!collapsed && <ChevronDown className={`text-slate-100  w-3.5 h-3.5 transition-transform duration-300 ${salaryOpen ? 'rotate-180' : ''}`} />}
@@ -1186,7 +1185,10 @@ const SideMenus = ({ collapsed }) => {
                 )}
 
                 {menuMatches('Assets', ['Add Assets', 'Manage Assets', 'Assets Ledger']) && (
-                    <div onMouseEnter={setTip} onClick={() => setassetsOpen(!assetsOpen)} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer  hover:bg-emerald-800 transition-all mb-px ${collapsed ? 'justify-start' : ''}`}>
+                    <div onMouseEnter={setTip} onClick={() => setassetsOpen(!assetsOpen)} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer transition-all mb-px ${collapsed ? 'justify-start' : ''} ${isParentActive(['/assets', '/manage/assets', '/assets/ledger']) ? 'bg-emerald-800' : 'hover:bg-emerald-800'}`}>
+                        {isParentActive(['/assets', '/manage/assets', '/assets/ledger']) && !collapsed && (
+                            <span className="absolute left-0 top-1/2 -translate-y-1/2 w-0.75 h-4.5 bg-emerald-400 rounded-r-full" />
+                        )}
                         <BriefcaseBusiness className="text-slate-100 shrink-0   group-hover:translate-x-1.5 transition-transform duration-300" size={23} />
                         {!collapsed && <span className="text-[12.5px] text-slate-100 flex-1">Assets</span>}
                         {!collapsed && <ChevronDown className={`text-slate-100  w-3.5 h-3.5 transition-transform duration-300 ${assetsOpen ? 'rotate-180' : ''}`} />}

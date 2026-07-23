@@ -14,7 +14,18 @@ const ManageSale = () => {
   const [sales, setSales] = useState([]);
   const [search, setSearch] = useState('')
   const [viewSale, setViewSale] = useState(null);
+  const [categoryOrder, setCategoryOrder] = useState([])
 
+
+
+
+  useEffect(() => {
+    async function fetchCategories() {
+      let res = await axios.get('http://localhost:3000/find/category')
+      setCategoryOrder(res.data.map(c => c.CategoryName))
+    }
+    fetchCategories()
+  }, [])
 
 
   useEffect(() => {
@@ -113,7 +124,11 @@ const ManageSale = () => {
 
     const rows = []
     let counter = 1
-    Object.keys(grouped).forEach((category) => {
+    const sortedKeys = [
+      ...categoryOrder.filter(c => grouped[c]),
+      ...Object.keys(grouped).filter(c => !categoryOrder.includes(c))
+    ]
+    sortedKeys.forEach((category) => {
       rows.push([{ content: category, colSpan: 6, styles: { fontStyle: "bold", fillColor: [255, 255, 255], textColor: [0, 0, 0] } }])
 
       grouped[category].forEach((item) => {
@@ -710,13 +725,11 @@ const ManageSale = () => {
                         {sale.status === "approved" ? (
                           <div className="flex items-center justify-center gap-1.5 opacity-0 group-hover:opacity-100 bg-slate-100 p-1.5 rounded-lg w-fit mx-auto transition-opacity">
                             <div className="relative group/tooltip">
-                              <button onClick={() => setViewSale(sale)} className="flex h-7 w-7 items-center justify-center rounded-lg bg-teal-50 text-teal-600 hover:bg-teal-600 hover:text-white hover:scale-110 active:scale-95 transition-all cursor-pointer" >
+                              <button className="flex h-7 w-7 items-center justify-center rounded-lg bg-teal-50 text-teal-600 hover:bg-teal-600 hover:text-white hover:scale-110 active:scale-95 transition-all cursor-pointer" >
                                 <BadgeDollarSign className="w-3.5 h-3.5" strokeWidth={2} />
                               </button>
                               <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 flex flex-col items-center opacity-0 translate-y-1 group-hover/tooltip:opacity-100 group-hover/tooltip:translate-y-0 transition-all duration-200 ease-out pointer-events-none z-20">
-                                <span className="whitespace-nowrap rounded-md bg-emerald-900 px-2 py-1 text-[11px] font-medium text-white shadow-lg shadow-emerald-900/30">
-                                  Sale
-                                </span>
+                                <span className="whitespace-nowrap rounded-md bg-emerald-900 px-2 py-1 text-[11px] font-medium text-white shadow-lg shadow-emerald-900/30">Sale</span>
                                 <span className="-mt-1 h-2 w-2 rotate-45 bg-emerald-900"></span>
                               </div>
                             </div>
@@ -726,9 +739,7 @@ const ManageSale = () => {
                                 <IdCardLanyard className="w-3.5 h-3.5" strokeWidth={2} />
                               </button>
                               <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 flex flex-col items-center opacity-0 translate-y-1 group-hover/tooltip:opacity-100 group-hover/tooltip:translate-y-0 transition-all duration-200 ease-out pointer-events-none z-20">
-                                <span className="whitespace-nowrap rounded-md bg-emerald-900 px-2 py-1 text-[11px] font-medium text-white shadow-lg shadow-emerald-900/30">
-                                  Gate Pass
-                                </span>
+                                <span className="whitespace-nowrap rounded-md bg-emerald-900 px-2 py-1 text-[11px] font-medium text-white shadow-lg shadow-emerald-900/30">Gate Pass</span>
                                 <span className="-mt-1 h-2 w-2 rotate-45 bg-emerald-900"></span>
                               </div>
                             </div>
@@ -738,24 +749,17 @@ const ManageSale = () => {
                                 <CreditCard className="w-3.5 h-3.5" strokeWidth={2} />
                               </button>
                               <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 flex flex-col items-center opacity-0 translate-y-1 group-hover/tooltip:opacity-100 group-hover/tooltip:translate-y-0 transition-all duration-200 ease-out pointer-events-none z-20">
-                                <span className="whitespace-nowrap rounded-md bg-emerald-900 px-2 py-1 text-[11px] font-medium text-white shadow-lg shadow-emerald-900/30">
-                                  POS Sale
-                                </span>
+                                <span className="whitespace-nowrap rounded-md bg-emerald-900 px-2 py-1 text-[11px] font-medium text-white shadow-lg shadow-emerald-900/30">POS Sale</span>
                                 <span className="-mt-1 h-2 w-2 rotate-45 bg-emerald-900"></span>
                               </div>
                             </div>
 
                             <div className="relative group/tooltip">
-                              <button
-                                onClick={() => handleDownloadInvoice(sale)}
-                                className="flex h-7 w-7 items-center justify-center rounded-lg bg-gray-100 text-gray-500 hover:bg-gray-600 hover:text-white hover:scale-110 active:scale-95 transition-all cursor-pointer"
-                              >
+                              <button onClick={() => handleDownloadInvoice(sale)} className="flex h-7 w-7 items-center justify-center rounded-lg bg-gray-100 text-gray-500 hover:bg-gray-600 hover:text-white hover:scale-110 active:scale-95 transition-all cursor-pointer">
                                 <Download className="w-3.5 h-3.5" strokeWidth={2} />
                               </button>
                               <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 flex flex-col items-center opacity-0 translate-y-1 group-hover/tooltip:opacity-100 group-hover/tooltip:translate-y-0 transition-all duration-200 ease-out pointer-events-none z-20">
-                                <span className="whitespace-nowrap rounded-md bg-emerald-900 px-2 py-1 text-[11px] font-medium text-white shadow-lg shadow-emerald-900/30">
-                                  Download
-                                </span>
+                                <span className="whitespace-nowrap rounded-md bg-emerald-900 px-2 py-1 text-[11px] font-medium text-white shadow-lg shadow-emerald-900/30">Download</span>
                                 <span className="-mt-1 h-2 w-2 rotate-45 bg-emerald-900"></span>
                               </div>
                             </div>
@@ -765,9 +769,7 @@ const ManageSale = () => {
                                 <SquarePen className="w-3.5 h-3.5" strokeWidth={2} />
                               </button>
                               <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 flex flex-col items-center opacity-0 translate-y-1 group-hover/tooltip:opacity-100 group-hover/tooltip:translate-y-0 transition-all duration-200 ease-out pointer-events-none z-20">
-                                <span className="whitespace-nowrap rounded-md bg-emerald-900 px-2 py-1 text-[11px] font-medium text-white shadow-lg shadow-emerald-900/30">
-                                  Edit
-                                </span>
+                                <span className="whitespace-nowrap rounded-md bg-emerald-900 px-2 py-1 text-[11px] font-medium text-white shadow-lg shadow-emerald-900/30">Edit</span>
                                 <span className="-mt-1 h-2 w-2 rotate-45 bg-emerald-900"></span>
                               </div>
                             </div>
@@ -777,27 +779,37 @@ const ManageSale = () => {
                                 <Trash2 className="w-3.5 h-3.5" strokeWidth={2} />
                               </button>
                               <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 flex flex-col items-center opacity-0 translate-y-1 group-hover/tooltip:opacity-100 group-hover/tooltip:translate-y-0 transition-all duration-200 ease-out pointer-events-none z-20">
-                                <span className="whitespace-nowrap rounded-md bg-emerald-900 px-2 py-1 text-[11px] font-medium text-white shadow-lg shadow-emerald-900/30">
-                                  Delete
-                                </span>
+                                <span className="whitespace-nowrap rounded-md bg-emerald-900 px-2 py-1 text-[11px] font-medium text-white shadow-lg shadow-emerald-900/30">Delete</span>
                                 <span className="-mt-1 h-2 w-2 rotate-45 bg-emerald-900"></span>
                               </div>
                             </div>
                           </div>
-                        ) : (
-                          <div className="flex flex-col items-center gap-1">
-                            <span className={`flex items-center gap-1.5 text-[11px] font-semibold px-3 py-1.5 rounded-full ring-1 ${sale.status === "rejected"
-                              ? "bg-red-50 text-red-600 ring-red-200"
-                              : "bg-amber-50 text-amber-600 ring-amber-200"
-                              }`}>
-                              <span className={`w-1.5 h-1.5 rounded-full ${sale.status === "rejected" ? "bg-red-500" : "bg-amber-500 animate-pulse"}`} />
-                              {sale.status === "rejected" ? "Rejected" : "Pending Approval"}
-                            </span>
-                            {sale.status === "rejected" && sale.rejectReason && (
-                              <span className="text-gray-900 text-[10px]  max-w-40 text-center " title={sale.rejectReason}>
-                                {sale.rejectReason}
+                        ) : sale.status === "rejected" ? (
+                          <div className="flex items-start justify-center gap-2 pt-0.5">
+                            <div className="flex flex-col items-center">
+                              <span className="flex items-center  gap-1.5 bg-red-50 text-red-600 text-[11px] font-semibold px-3 py-1.5 rounded-full ring-1 ring-red-200 w-fit">
+                                <span className="w-1.5 h-1.5   rounded-full bg-red-500" />
+                                Rejected
                               </span>
-                            )}
+                              {sale.rejectReason && (
+                                <span className="text-gray-400 text-[10px] italic max-w-32 truncate mt-0.5" title={sale.rejectReason}>                                  "{sale.rejectReason}"
+                                </span>
+                              )}
+                            </div>
+                            <button
+                              onClick={() => handleDeleteSale(sale._id)}
+                              className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-red-50 text-red-500 hover:bg-red-500 hover:text-white hover:scale-110 active:scale-95 transition-all cursor-pointer"
+                              title="Delete"
+                            >
+                              <Trash2 className="w-3.5 h-3.5" strokeWidth={2} />
+                            </button>
+                          </div>
+                        ) : (
+                          <div className="flex items-center justify-center">
+                            <span className="flex items-center gap-1.5 bg-amber-50 text-amber-600 text-[11px] font-semibold px-3 py-1.5 rounded-full ring-1 ring-amber-200">
+                              <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse" />
+                              Pending Approval
+                            </span>
                           </div>
                         )}
                       </td>

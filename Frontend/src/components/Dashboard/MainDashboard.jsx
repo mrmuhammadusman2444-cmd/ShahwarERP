@@ -110,7 +110,7 @@ const useParticleCanvas = (canvasRef) => {
 
         const init = () => {
             resize();
-            particles = Array.from({ length: 22 }, makeParticle);
+            particles = Array.from({ length: 10 }, makeParticle);
         };
 
         const loop = () => {

@@ -16,6 +16,7 @@ const NewSaleSchema = new mongoose.Schema({
     grandTotal: { type: Number },
     totalCartons: { type: Number },
     saleBy: { type: String },
+    order: { type: Number, default: 0 },
     status: {
         type: String,
         enum: ["pending", "approved", "rejected"],
