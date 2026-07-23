@@ -260,9 +260,8 @@ const ManageProduct = () => {
                                                             )}
                                                         </p>
                                                         <p className="text-gray-400 text-[11px] truncate font-mono">
-                                                            #{product._id.slice(-6).toUpperCase()}
-                                                            {product.cartonSize ? ` · ${product.cartonSize}/carton` : ""}
-                                                            {product.weight ? ` · ${product.weight}${product.weightUnit || "g"}` : ""}
+                                                            {product.cartonSize ? `  ${product.cartonSize}/carton` : ""}
+                                                            {product.weight ? ` ${product.weight}${product.weightUnit || "g"}` : ""}
                                                         </p>
                                                     </div>
                                                 </div>

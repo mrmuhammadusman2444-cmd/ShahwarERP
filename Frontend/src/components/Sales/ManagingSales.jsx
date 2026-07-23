@@ -146,7 +146,7 @@ const ManageSale = () => {
 
     autoTable(doc, {
       startY: 62,
-      head: [["S.No", "Product", "Carton", "Qty", "Rate (Carton Wise)", "Total"]],
+      head: [["S.No", "Product", "Carton", "Pack", "Rate (Carton Wise)", "Total"]],
       body: rows,
       theme: "grid",
       headStyles: {

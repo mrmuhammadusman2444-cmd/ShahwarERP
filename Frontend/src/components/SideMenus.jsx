@@ -91,9 +91,9 @@ const SideMenus = ({ collapsed }) => {
     return (
         <div>
 
-            {!collapsed && (
-                <div className="px-2 pt-2.5 pb-2">
-                    <div className="flex  items-center gap-2 h-8.75 rounded-full px-1.5 border  bg-slate-800 cursor-text">
+            <div className="px-2 pt-2.5 pb-2">
+                {!collapsed ? (
+                    <div className="flex items-center gap-2 h-10 rounded-xl px-1.5 border bg-slate-800 cursor-text">
                         <Search className="text-slate-100 ml-2" size={18} />
                         <input
                             type="text"
@@ -102,10 +102,16 @@ const SideMenus = ({ collapsed }) => {
                             onChange={(e) => setSearchQuery(e.target.value)}
                             className="text-[12px] placeholder:text-slate-500 text-slate-100 flex-1 bg-transparent border-none focus:outline-none"
                         />
-
                     </div>
-                </div>
-            )}
+                ) : (
+                    <div onMouseEnter={setTip} className="relative group group/tooltip flex items-center justify-center h-8.75 rounded-full bg-slate-800 cursor-pointer hover:bg-slate-700 transition-colors">
+                        <Search className="text-slate-100" size={18} />
+                        <span style={{ top: 'var(--tooltip-y, 50%)', transform: 'translateY(-50%)' }} className="fixed left-16 ml-1 bg-emerald-500 text-white text-[11px] px-2 py-1 rounded-md whitespace-nowrap opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-200 pointer-events-none z-999">
+                            Search
+                        </span>
+                    </div>
+                )}
+            </div>
 
             <div className="px-2 pb-2.5 ">
 
