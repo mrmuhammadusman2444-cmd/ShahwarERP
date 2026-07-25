@@ -398,6 +398,12 @@ const ManageProduct = () => {
                                                                     : <span className="text-gray-300">—</span>}
                                                             </p>
                                                         </div>
+                                                        <div className="bg-white rounded-xl border border-emerald-100 px-3.5 py-2.5">
+                                                            <p className="text-gray-400 text-[10px] font-semibold uppercase tracking-wide">Dozen</p>
+                                                            <p className="mt-0.5 text-sm font-bold tabular-nums text-gray-700">
+                                                               
+                                                            </p>
+                                                        </div>
 
 
                                                     </div>

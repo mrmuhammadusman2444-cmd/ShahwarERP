@@ -105,15 +105,16 @@ function CustomTooltip({ active, payload, label, formatter }) {
 }
 
 
-export default function AnalyticsPage() {
+
+
+
+const Analytics = () => {
     const [range, setRange] = useState('6M');
 
     const monthlySales = range === '3M' ? monthlySalesFull.slice(-3) : monthlySalesFull;
-
     return (
-        <div className="p-4 bg-slate-50 h-screen overflow-hidden flex flex-col">
+        <div className="p-4 bg-slate-50 h-screen overflow-hidden flex flex-col" style={{ contain: 'layout paint' }}>
 
-            {/* Header */}
             <div className="flex items-center justify-between mb-3 shrink-0">
                 <div className="flex items-center gap-2.5">
                     <div className="w-8 h-8 rounded-lg bg-emerald-600 flex items-center justify-center">
@@ -160,7 +161,7 @@ export default function AnalyticsPage() {
                         </div>
                     }
                 >
-                    <ResponsiveContainer width="100%" height="100%" className="flex-1">
+                    <ResponsiveContainer width="100%" height="100%" className="flex-1" debounce={200}>
                         <LineChart data={monthlySales} margin={{ top: 5, right: 10, left: 0, bottom: 0 }}>
                             <CartesianGrid strokeDasharray="3 3" stroke="#F1F5F9" vertical={false} />
                             <XAxis dataKey="month" tick={{ fontSize: 10, fill: '#94A3B8' }} axisLine={false} tickLine={false} />
@@ -180,13 +181,14 @@ export default function AnalyticsPage() {
                                 strokeWidth={2}
                                 dot={{ r: 3, fill: '#2563EB' }}
                                 activeDot={{ r: 5 }}
+                                isAnimationActive={false}
                             />
                         </LineChart>
                     </ResponsiveContainer>
                 </ChartCard>
 
                 <ChartCard icon={Users} title="Customer revenue" subtitle="% share" className="flex flex-col">
-                    <ResponsiveContainer width="100%" height="100%" className="flex-1">
+                    <ResponsiveContainer width="100%" height={90} debounce={200}>
                         <PieChart>
                             <Pie
                                 data={customerRevenue}
@@ -198,6 +200,7 @@ export default function AnalyticsPage() {
                                 outerRadius={48}
                                 paddingAngle={2}
                                 labelLine={false}
+                                isAnimationActive={false}
                                 label={({ cx, cy, midAngle, innerRadius, outerRadius, percent }) => {
                                     const RADIAN = Math.PI / 180;
                                     const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
@@ -255,7 +258,7 @@ export default function AnalyticsPage() {
                                 width={95}
                             />
                             <Tooltip content={<CustomTooltip formatter={formatRs} />} />
-                            <Bar dataKey="revenue" name="Revenue" fill="#2563EB" barSize={9} />
+                            <Bar dataKey="revenue" name="Revenue" fill="#2563EB" barSize={9} isAnimationActive={false} />
                         </BarChart>
                     </ResponsiveContainer>
                 </ChartCard>
@@ -273,8 +276,8 @@ export default function AnalyticsPage() {
                                 width={24}
                             />
                             <Tooltip content={<CustomTooltip formatter={formatRs} />} />
-                            <Bar dataKey="target" name="Target" fill="#CBD5E1" barSize={10} />
-                            <Bar dataKey="achieved" name="Achieved" fill="#2563EB" barSize={10} />
+                            <Bar dataKey="target" name="Target" fill="#CBD5E1" barSize={10} isAnimationActive={false} />
+                            <Bar dataKey="achieved" name="Achieved" fill="#2563EB" barSize={10} isAnimationActive={false} />
                         </BarChart>
                     </ResponsiveContainer>
                 </ChartCard>
@@ -286,9 +289,9 @@ export default function AnalyticsPage() {
                             <XAxis dataKey="name" tick={{ fontSize: 7, fill: '#64748B' }} axisLine={false} tickLine={false} interval={0} />
                             <YAxis tick={{ fontSize: 9, fill: '#94A3B8' }} axisLine={false} tickLine={false} width={20} />
                             <Tooltip content={<CustomTooltip formatter={(v) => `${v}x/month`} />} />
-                            <Bar dataKey="turnover" name="Turnover" barSize={16}>
-                                {stockTurnover.map((entry, i) => (
-                                    <Cell key={i} fill={entry.turnover < 2 ? '#EF4444' : entry.turnover < 5 ? '#F59E0B' : '#10B981'} />
+                            <Bar dataKey="amount" name="Pending" barSize={22} isAnimationActive={false}>
+                                {agingData.map((entry, i) => (
+                                    <Cell key={i} fill={['#10B981', '#F59E0B', '#F97316', '#EF4444'][i]} />
                                 ))}
                             </Bar>
                         </BarChart>
@@ -326,7 +329,7 @@ export default function AnalyticsPage() {
                         <XAxis type="number" tick={{ fontSize: 7, fill: '#94A3B8' }} axisLine={false} tickLine={false} tickFormatter={(v) => `${v}%`} />
                         <YAxis type="category" dataKey="category" tick={{ fontSize: 7, fill: '#475569' }} axisLine={false} tickLine={false} width={45} />
                         <Tooltip content={<CustomTooltip formatter={(v) => `${v}%`} />} />
-                        <Bar dataKey="margin" name="Margin" fill="#8B5CF6" barSize={8} />
+                        <Bar dataKey="margin" name="Margin" fill="#8B5CF6" barSize={8} isAnimationActive={false} />
                     </BarChart>
                 </ResponsiveContainer>
             </ChartCard>
@@ -334,3 +337,6 @@ export default function AnalyticsPage() {
         </div>
     );
 }
+
+export default Analytics
+

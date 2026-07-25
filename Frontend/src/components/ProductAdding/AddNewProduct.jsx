@@ -3,7 +3,7 @@ import axios from 'axios'
 import SelectUnit from './SelectUnit.jsx'
 import { motion, AnimatePresence } from "framer-motion";
 import SequenceCategory from './SequenceCategory.jsx'
-import { Loader2, LayoutList, Check, Save, AlertCircle  } from "lucide-react";
+import { Loader2, LayoutList, Check, Save, AlertCircle } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 
@@ -26,7 +26,8 @@ const AddNewProduct = () => {
     wholesaleRate: '',
     codOnlinePrice: '',
     unitSchemePoint: '',
-    storeLimit: ''
+    storeLimit: '',
+    Dozen: ''
   })
 
   async function handleNewProduct() {
@@ -109,10 +110,13 @@ const AddNewProduct = () => {
 
               <div>
                 <label className="text-gray-500 text-xs font-semibold uppercase tracking-wide block mb-1.5">Carton Size</label>
-                <input onChange={(e) => {
-                  setNewProduct({ ...newProduct, cartonSize: e.target.value })
-                }} type="number" placeholder="e.g. 12"
-                  className="w-full bg-emerald-50 border border-emerald-100 focus:border-emerald-400 focus:bg-white rounded-xl px-3 py-2.5 text-gray-700 placeholder-gray-400 text-sm focus:outline-none transition-all" />
+                <input
+                  value={newProduct.cartonSize}
+                  disabled={newProduct.saleRawCategory === "Raw"}
+                  onChange={(e) => {
+                    setNewProduct({ ...newProduct, cartonSize: e.target.value })
+                  }} type="number" placeholder="e.g. 12"
+                  className="w-full bg-emerald-50 border border-emerald-100 focus:border-emerald-400 focus:bg-white rounded-xl px-3 py-2.5 text-gray-700 placeholder-gray-400 text-sm focus:outline-none transition-all disabled:opacity-60 disabled:cursor-not-allowed" />
               </div>
 
               <div>
@@ -150,9 +154,16 @@ const AddNewProduct = () => {
 
               <div>
                 <label className="text-gray-500 text-xs font-semibold uppercase tracking-wide block mb-1.5">Sale / Raw Category</label>
-                <select onChange={(e) => {
-                  setNewProduct({ ...newProduct, saleRawCategory: e.target.value })
-                }} className="w-full bg-emerald-50 border border-emerald-100 focus:border-emerald-400 focus:bg-white rounded-xl px-3 py-2.5 text-gray-700 text-sm focus:outline-none transition-all appearance-none cursor-pointer">
+                <select
+                  value={newProduct.saleRawCategory}
+                  onChange={(e) => {
+                    const val = e.target.value
+                    if (val === "Raw") {
+                      setNewProduct({ ...newProduct, saleRawCategory: val, cartonSize: "1", Dozen: "1" })
+                    } else {
+                      setNewProduct({ ...newProduct, saleRawCategory: val })
+                    }
+                  }} className="w-full bg-emerald-50 border border-emerald-100 focus:border-emerald-400 focus:bg-white rounded-xl px-3 py-2.5 text-gray-700 text-sm focus:outline-none transition-all appearance-none cursor-pointer">
                   <option value="">Select category</option>
                   <option>Sale</option>
                   <option>Raw</option>
@@ -171,7 +182,7 @@ const AddNewProduct = () => {
 
               {[
                 { name: "costPrice", label: "Cost Price", required: true },
-                { name: "distributorPrice", label: "Distributor Price", required: true },
+                { name: "distributorPrice", label: newProduct.saleRawCategory === "Raw" ? "Distributor Price (per kg)" : "Distributor Price", required: true },
                 { name: "retailPrice", label: "Retail Price", required: true },
                 { name: "wholesaleRate", label: "Wholesale Rate", required: false },
                 { name: "codOnlinePrice", label: "COD / Online Price", required: false },
@@ -205,7 +216,7 @@ const AddNewProduct = () => {
                 </div>
               ))}
 
-              <div className="col-span-2">
+              <div>
                 <label className="text-gray-500 text-xs font-semibold uppercase tracking-wide block mb-1.5">Select Unit</label>
                 <SelectUnit
                   value={newProduct.storeLimit}
@@ -214,6 +225,19 @@ const AddNewProduct = () => {
                   }}
                 />
               </div>
+
+              <div>
+                <label className="text-gray-500 text-xs font-semibold uppercase tracking-wide block mb-1.5">Dozen</label>
+                <input
+                  onChange={(e) => {
+                    setNewProduct({ ...newProduct, Dozen: e.target.value })
+                  }}
+                  type="number"
+                  placeholder="e.g. 12"
+                  className="w-full bg-emerald-50 border border-emerald-100 focus:border-emerald-400 focus:bg-white rounded-xl px-3 py-2.5 text-gray-700 placeholder-gray-400 text-sm focus:outline-none transition-all"
+                />
+              </div>
+
 
             </div>
           </div>
@@ -229,6 +253,7 @@ const AddNewProduct = () => {
               <option value="">Select category</option>
               <option>Recipe</option>
               <option>Juices</option>
+              <option>Spicies</option>
               <option>Dessert & Beverages</option>
             </select>
           </div>

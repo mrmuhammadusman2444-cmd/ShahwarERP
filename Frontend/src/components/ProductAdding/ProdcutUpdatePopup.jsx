@@ -42,7 +42,8 @@ const ProdcutUpdatePopup = ({ setShowProductPopup, updateData, handleManageProdc
         wholesaleRate: '',
         codOnlinePrice: '',
         unitSchemePoint: '',
-        storeLimit: ''
+        storeLimit: '',
+        Dozen: ''
     })
 
     useEffect(() => {
@@ -53,13 +54,14 @@ const ProdcutUpdatePopup = ({ setShowProductPopup, updateData, handleManageProdc
 
     async function handleUpdateProduct() {
         setStatus("saving")
-
         const minDelay = new Promise(r => setTimeout(r, 700))
 
         try {
             await axios.post(`http://localhost:3000/update/product/${updateData._id}`, product)
             await minDelay
             setStatus("saved")
+            await handleManageProdcut()
+
             setTimeout(() => {
                 setStatus("idle")
                 setShowProductPopup(false)
@@ -340,13 +342,28 @@ const ProdcutUpdatePopup = ({ setShowProductPopup, updateData, handleManageProdc
                                     </div>
                                 </div>
 
-                                <div className="group col-span-2">
+                                <div className="group">
                                     <label className="mb-1.5 block text-[11px] font-semibold uppercase tracking-wide text-gray-500">Store limit</label>
                                     <div className="relative">
                                         <Warehouse size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-emerald-400 transition-colors group-focus-within:text-emerald-600" />
                                         <input
                                             value={product.storeLimit}
                                             onChange={(e) => setProduct({ ...product, storeLimit: e.target.value })}
+                                            type="number"
+                                            placeholder="0"
+                                            className="w-full cursor-text rounded-xl border border-emerald-100 bg-emerald-50/70 py-2.5 pl-10 pr-14 text-sm text-gray-800 placeholder-gray-400 transition-all duration-200 focus:border-emerald-400 focus:bg-white focus:shadow-lg focus:shadow-emerald-100/70 focus:outline-none"
+                                        />
+                                        <span className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[10px] font-semibold uppercase tracking-wide text-gray-400">units</span>
+                                    </div>
+                                </div>
+
+                                <div className="group">
+                                    <label className="mb-1.5 block text-[11px] font-semibold uppercase tracking-wide text-gray-500">Dozen</label>
+                                    <div className="relative">
+                                        <Warehouse size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-emerald-400 transition-colors group-focus-within:text-emerald-600" />
+                                        <input
+                                            value={product.Dozen}
+                                            onChange={(e) => setProduct({ ...product, Dozen: e.target.value })}
                                             type="number"
                                             placeholder="0"
                                             className="w-full cursor-text rounded-xl border border-emerald-100 bg-emerald-50/70 py-2.5 pl-10 pr-14 text-sm text-gray-800 placeholder-gray-400 transition-all duration-200 focus:border-emerald-400 focus:bg-white focus:shadow-lg focus:shadow-emerald-100/70 focus:outline-none"

@@ -63,7 +63,13 @@ const tt = {
 
 const useCountUp = (target, duration = 1200) => {
     const [count, setCount] = useState(0);
+    const hasRun = useRef(false)
     useEffect(() => {
+        if (hasRun.current) {
+            setCount(target)
+            return
+        }
+        hasRun.current = true
         const start = performance.now();
         const tick = (now) => {
             const t = Math.min((now - start) / duration, 1);
@@ -134,40 +140,29 @@ const useParticleCanvas = (canvasRef) => {
                 ctx.fill();
             }
 
-            for (let i = 0; i < particles.length; i++) {
-                for (let j = i + 1; j < particles.length; j++) {
-                    const dx = particles[i].x - particles[j].x;
-                    const dy = particles[i].y - particles[j].y;
-                    const dist = Math.sqrt(dx * dx + dy * dy);
-                    if (dist < 48) {
-                        ctx.beginPath();
-                        ctx.moveTo(particles[i].x, particles[i].y);
-                        ctx.lineTo(particles[j].x, particles[j].y);
-                        ctx.strokeStyle = `rgba(255,255,255,${0.12 * (1 - dist / 48)})`;
-                        ctx.lineWidth = 0.5;
-                        ctx.stroke();
-                    }
-                }
-            }
+            // Connection lines removed for performance
         };
 
         init();
         loop();
 
-        const ro = new ResizeObserver(resize);
+        let resizeTimeout;
+        const debouncedResize = () => {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(resize, 150);
+        };
+        const ro = new ResizeObserver(debouncedResize);
         ro.observe(canvas);
 
         return () => {
             cancelAnimationFrame(animId);
             ro.disconnect();
+            clearTimeout(resizeTimeout);
         };
     }, [canvasRef]);
 };
 
 const PayBandCard = ({ item }) => {
-    const canvasRef = useRef(null);
-    useParticleCanvas(canvasRef);
-
     const count = useCountUp(item.value);
     const formatted = count >= 1000
         ? count.toLocaleString("en-PK")
@@ -181,7 +176,9 @@ const PayBandCard = ({ item }) => {
                 boxShadow: "0 2px 8px rgba(0,0,0,0.18)",
             }}
         >
-            <canvas ref={canvasRef} className="absolute inset-0 w-full h-full pointer-events-none" />
+            <span className="absolute top-3 left-6 w-1 h-1 rounded-full bg-white/40 css-float" style={{ animationDelay: '0s' }} />
+            <span className="absolute top-8 left-16 w-1.5 h-1.5 rounded-full bg-white/30 css-float" style={{ animationDelay: '0.6s' }} />
+            <span className="absolute top-4 right-8 w-1 h-1 rounded-full bg-white/35 css-float" style={{ animationDelay: '1.2s' }} />
 
             <div className="absolute -top-4 -right-4 w-16 h-16 rounded-full bg-white/10 transition-all duration-300 group-hover:scale-125 group-hover:bg-white/18 pointer-events-none" />
             <div className="absolute -bottom-5 -left-3 w-20 h-20 rounded-full bg-white/10 transition-all duration-300 group-hover:scale-125 group-hover:bg-white/18 pointer-events-none" />
@@ -241,7 +238,7 @@ const MainDashboard = () => {
     const user = JSON.parse(localStorage.getItem('user')) || {}   // 👈 yeh line honi chahiye
 
     return (
-        <div className="p-4 md:p-5 bg-slate-50 h-screen">
+        <div className="p-4 md:p-5 bg-slate-50 h-screen" style={{ contain: 'layout paint' }}>
             {
                 showSetting == true ? <Setting setShowSetting={setShowSetting} /> : <UserSelectMenu setShowSetting={setShowSetting} />
             }
@@ -278,7 +275,7 @@ const MainDashboard = () => {
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
                     <div className="lg:col-span-2">
                         <ChartCard title="Monthly Sales & Orders" subtitle="Jan – Dec">
-                            <ResponsiveContainer width="100%" height={140}>
+                            <ResponsiveContainer width="100%" height={140} debounce={200}>
                                 <BarChart data={monthlySales} margin={{ top: 2, right: 8, left: -20, bottom: 0 }} barSize={10}>
                                     <CartesianGrid strokeDasharray="3 3" stroke="#f0f4ff" />
                                     <XAxis dataKey="month" tick={{ fontSize: 10, fill: "#94a3b8" }} axisLine={false} tickLine={false} />
@@ -293,7 +290,7 @@ const MainDashboard = () => {
                     </div>
                     <div className="lg:col-span-1">
                         <ChartCard title="Revenue Split" subtitle="By category">
-                            <ResponsiveContainer width="100%" height={140}>
+                            <ResponsiveContainer width="100%" height={140} debounce={200}>
                                 <PieChart>
                                     <Pie data={revenueSplit} cx="50%" cy="50%" innerRadius={35} outerRadius={58}
                                         paddingAngle={3} dataKey="value" labelLine={false} label={renderPieLabel}>
@@ -309,7 +306,7 @@ const MainDashboard = () => {
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <ChartCard title="Weekly Revenue" subtitle="Current month">
-                        <ResponsiveContainer width="100%" height={140}>
+                        <ResponsiveContainer width="100%" height={140} debounce={200}>
                             <LineChart data={weeklyRevenue} margin={{ top: 2, right: 8, left: -20, bottom: 0 }}>
                                 <CartesianGrid strokeDasharray="3 3" stroke="#f0f4ff" />
                                 <XAxis dataKey="week" tick={{ fontSize: 10, fill: "#94a3b8" }} axisLine={false} tickLine={false} />
@@ -322,7 +319,7 @@ const MainDashboard = () => {
                     </ChartCard>
 
                     <ChartCard title="Customer Distribution" subtitle="New vs Returning vs Inactive">
-                        <ResponsiveContainer width="100%" height={150}>
+                        <ResponsiveContainer width="100%" height={150} debounce={200}>
                             <PieChart>
                                 <Pie data={customerPie} cx="50%" cy="50%" innerRadius={38} outerRadius={60}
                                     paddingAngle={3} dataKey="value" labelLine={false} label={renderPieLabel}>
@@ -336,7 +333,10 @@ const MainDashboard = () => {
                 </div>
 
             </div>
+            
         </div>
+        
+        
     )
 }
 

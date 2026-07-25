@@ -104,7 +104,7 @@ const SideMenus = ({ collapsed }) => {
                         />
                     </div>
                 ) : (
-                    <div onMouseEnter={setTip} className="relative group group/tooltip flex items-center justify-center h-8.75 rounded-full bg-slate-800 cursor-pointer hover:bg-slate-700 transition-colors">
+                    <div onMouseEnter={setTip} className="relative group group/tooltip flex items-center justify-center h-10 w-10 rounded-full bg-slate-800 cursor-pointer hover:bg-slate-700 transition-colors">
                         <Search className="text-slate-100" size={18} />
                         <span style={{ top: 'var(--tooltip-y, 50%)', transform: 'translateY(-50%)' }} className="fixed left-16 ml-1 bg-emerald-500 text-white text-[11px] px-2 py-1 rounded-md whitespace-nowrap opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-200 pointer-events-none z-999">
                             Search
@@ -1241,4 +1241,4 @@ const SideMenus = ({ collapsed }) => {
     )
 }
 
-export default SideMenus
+export default React.memo(SideMenus)

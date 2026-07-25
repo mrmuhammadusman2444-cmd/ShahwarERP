@@ -30,6 +30,10 @@ router.get('/find/product', async function (req, res) {
     let findProduct = await AddProductModel.find()
     res.json(findProduct)
 })
+router.get('/find/raw/products', async function (req, res) {
+    let rawProducts = await AddProductModel.find({ saleRawCategory: "Raw" })
+    res.json(rawProducts)
+})
 
 router.post('/delete/product', async (req, res) => {
     let deleted = await AddProductModel.findByIdAndDelete(req.body._id)
