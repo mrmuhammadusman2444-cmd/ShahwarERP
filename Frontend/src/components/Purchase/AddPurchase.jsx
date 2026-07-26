@@ -2,9 +2,14 @@ import React from 'react';
 import axios from 'axios'
 import SelectProducts from './SelectProduct.jsx'
 import { useState } from 'react';
+import { toast } from 'react-toastify'
+import SelectSupplier from './SelectSupplier.jsx';
+import { useNavigate } from 'react-router-dom'
 import { ShoppingCart, Building2, Factory, Truck, FileText, MapPin, Calendar, Hash, UserCheck, UserPlus, Plus, Trash2, Package, ClipboardList, StickyNote, ListOrdered, Wallet, Percent, TrendingUp, CircleDollarSign, AlertCircle } from 'lucide-react';
 
 const AddPurchase = () => {
+    const navigate = useNavigate()
+
     const [newPurchase, setNewPurchase] = useState({
         supplierName: '',
         factory: '',
@@ -15,12 +20,29 @@ const AddPurchase = () => {
         builtyNo: '',
         receivedBy: '',
         gatePassNo: '',
+        freightCharges: ''
     })
 
     async function handlePurchase() {
-        let res = await axios.post('http://localhost:3000/new/purchase', newPurchase)
-        console.log(res.data)
+        try {
+            let payload = {
+                ...newPurchase,
+                items: rows,
+                freightCharges: freightCharges,
+                totalAmount: totalAmount,
+                totalDiscount: totalDiscount,
+                grandTotal: grandTotal,
+            }
+            let res = await axios.post('http://localhost:3000/new/purchase', payload)
+            console.log(res.data)
+            toast.success('Purchase Saved Successfully', { position: 'bottom-right', autoClose: 800 })
+            navigate('/managepurchasepage')
+        } catch (err) {
+            console.log("PURCHASE FAILED:", err.response?.data || err.message)
+            toast.error('Something went wrong', { position: 'bottom-right', autoClose: 800 })
+        }
     }
+
     const [rows, setRows] = useState([
         { id: 1, product: '', invQty: '', stkQty: '', rate: '', dis: '', total: 0 }
     ])
@@ -58,6 +80,15 @@ const AddPurchase = () => {
             return updated
         }))
     }
+    const [freightCharges, setFreightCharges] = useState('')
+
+    const totalAmount = rows.reduce((sum, row) => sum + (Number(row.invQty) || 0) * (Number(row.rate) || 0), 0)
+    const totalDiscount = rows.reduce((sum, row) => {
+        const subtotal = (Number(row.invQty) || 0) * (Number(row.rate) || 0)
+        const discAmount = subtotal * ((Number(row.dis) || 0) / 100)
+        return sum + discAmount
+    }, 0)
+    const grandTotal = totalAmount - totalDiscount - (Number(freightCharges) || 0)
     return (
         <div className="p-4 bg-slate-50 min-h-screen">
 
@@ -85,70 +116,7 @@ const AddPurchase = () => {
             </div>
 
             {/* ── Payment Summary ── */}
-            <div className="bg-white rounded-xl border border-slate-100 shadow-sm px-4 py-3 mb-4">
-                <div className="flex items-center gap-2 mb-2.5">
-                    <div className="w-5 h-5 rounded-md bg-linear-to-br from-emerald-500 to-emerald-700 flex items-center justify-center">
-                        <Wallet className="w-3 h-3 text-white" />
-                    </div>
-                    <p className="text-[11.5px] font-bold text-slate-700">Payment summary</p>
-                    <span className="ml-auto flex items-center gap-1 text-[9px] font-bold uppercase tracking-wider text-emerald-600">
-                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                        Live
-                    </span>
-                </div>
 
-                <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-2">
-
-                    <div className="flex items-center justify-between gap-2 rounded-lg border border-slate-100 bg-slate-50/60 px-2.5 py-1.5">
-                        <span className="flex items-center gap-1 text-[9.5px] font-bold uppercase tracking-wider text-slate-400 whitespace-nowrap">
-                            <Package className="w-3 h-3" /> Total
-                        </span>
-                        <input disabled placeholder="0.00"
-                            className="w-16 text-[12.5px] text-slate-700 font-bold bg-transparent border-0 p-0 text-right focus:outline-none tabular-nums" />
-                    </div>
-
-                    <div className="flex items-center justify-between gap-2 rounded-lg border border-slate-100 bg-slate-50/60 px-2.5 py-1.5">
-                        <span className="flex items-center gap-1 text-[9.5px] font-bold uppercase tracking-wider text-slate-400 whitespace-nowrap">
-                            <Percent className="w-3 h-3 text-amber-400" /> Disc
-                        </span>
-                        <input disabled placeholder="0.00"
-                            className="w-16 text-[12.5px] text-amber-600 font-bold bg-transparent border-0 p-0 text-right focus:outline-none tabular-nums" />
-                    </div>
-
-                    <div className="flex items-center justify-between gap-2 rounded-lg border border-emerald-100 bg-emerald-50/40 px-2.5 py-1.5 transition-all hover:border-emerald-300 focus-within:border-emerald-400 focus-within:ring-2 focus-within:ring-emerald-100">
-                        <span className="flex items-center gap-1 text-[9.5px] font-bold uppercase tracking-wider text-slate-400 whitespace-nowrap">
-                            <Truck className="w-3 h-3 text-emerald-400" /> Freight
-                        </span>
-                        <input type="text" placeholder="0.00"
-                            className="w-16 text-[12.5px] text-slate-900 font-bold placeholder-slate-300 bg-transparent border-0 p-0 text-right focus:outline-none tabular-nums" />
-                    </div>
-
-                    <div className="flex items-center justify-between gap-2 rounded-lg border border-emerald-200 bg-linear-to-r from-emerald-50 to-emerald-100/50 px-2.5 py-1.5 shadow-sm">
-                        <span className="flex items-center gap-1 text-[9.5px] font-bold uppercase tracking-wider text-emerald-700 whitespace-nowrap">
-                            <TrendingUp className="w-3 h-3" /> Grand
-                        </span>
-                        <input disabled placeholder="0.00"
-                            className="w-16 text-[13px] text-emerald-700 font-bold bg-transparent border-0 p-0 text-right focus:outline-none tabular-nums" />
-                    </div>
-
-                    <div className="flex items-center justify-between gap-2 rounded-lg border border-emerald-100 bg-emerald-50/40 px-2.5 py-1.5 transition-all hover:border-emerald-300 focus-within:border-emerald-400 focus-within:ring-2 focus-within:ring-emerald-100">
-                        <span className="flex items-center gap-1 text-[9.5px] font-bold uppercase tracking-wider text-slate-400 whitespace-nowrap">
-                            <CircleDollarSign className="w-3 h-3 text-emerald-400" /> Paid
-                        </span>
-                        <input type="text" placeholder="0.00"
-                            className="w-16 text-[12.5px] text-slate-900 font-bold placeholder-slate-300 bg-transparent border-0 p-0 text-right focus:outline-none tabular-nums" />
-                    </div>
-
-                    <div className="flex items-center justify-between gap-2 rounded-lg border border-rose-200 bg-linear-to-r from-rose-50 to-rose-100/40 px-2.5 py-1.5 shadow-sm">
-                        <span className="flex items-center gap-1 text-[9.5px] font-bold uppercase tracking-wider text-rose-600 whitespace-nowrap">
-                            <AlertCircle className="w-3 h-3" /> Due
-                        </span>
-                        <input disabled placeholder="0.00"
-                            className="w-16 text-[13px] text-rose-600 font-bold bg-transparent border-0 p-0 text-right focus:outline-none tabular-nums" />
-                    </div>
-
-                </div>
-            </div>
 
             {/* ── Main Grid ── */}
             <div className="grid grid-cols-1 xl:grid-cols-2 gap-4 items-start">
@@ -170,19 +138,18 @@ const AddPurchase = () => {
                                 Supplier <span className="text-red-500">*</span>
                             </label>
                             <div className="flex items-center gap-2">
-                                <div className="flex-1 min-w-0">
-                                    <div className="relative">
-                                        <Building2 className="w-3.5 h-3.5 text-emerald-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
-                                        <select onChange={(e) => setNewPurchase({ ...newPurchase, supplierName: e.target.value })}
-                                            className="w-full text-[12.5px] text-slate-900 cursor-pointer bg-emerald-50/50 border border-emerald-100 rounded-lg pl-9 pr-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-emerald-200 focus:border-emerald-400 transition-all">
-                                            <option value="">Select supplier</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <button type="button"
-                                    className="shrink-0 w-9 h-9 rounded-lg bg-linear-to-br from-emerald-500 to-emerald-700 hover:from-emerald-500 hover:to-emerald-600 flex items-center justify-center shadow-sm shadow-emerald-200 transition-all hover:-translate-y-0.5 cursor-pointer">
-                                    <UserPlus className="w-4 h-4 text-white" />
-                                </button>
+                                <div className="flex items-center gap-2 w-full flex-nowrap">
+    <div className="flex-1 min-w-0">
+        <SelectSupplier
+            value={newPurchase.supplierName}
+            onChange={(name) => setNewPurchase({ ...newPurchase, supplierName: name })}
+        />
+    </div>
+    <button type="button"
+        className="shrink-0 w-9 h-9 rounded-lg bg-linear-to-br from-emerald-500 to-emerald-700 hover:from-emerald-500 hover:to-emerald-600 flex items-center justify-center shadow-sm shadow-emerald-200 transition-all hover:-translate-y-0.5 cursor-pointer">
+        <UserPlus className="w-4 h-4 text-white" />
+    </button>
+</div>
                             </div>
                         </div>
 
@@ -202,9 +169,11 @@ const AddPurchase = () => {
                             <label className="block text-[10.5px] font-bold text-slate-500 uppercase tracking-wide mb-1.5">Factory</label>
                             <div className="relative">
                                 <Factory className="w-3.5 h-3.5 text-emerald-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
-                                <select onChange={(e) => setNewPurchase({ ...newPurchase, Factory: e.target.value })}
+                                <select onChange={(e) => setNewPurchase({ ...newPurchase, factory: e.target.value })}
                                     className="w-full text-[12.5px] text-slate-900 cursor-pointer bg-emerald-50/50 border border-emerald-100 rounded-lg pl-9 pr-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-emerald-200 focus:border-emerald-400 transition-all">
                                     <option value="">Select factory</option>
+                                    <option value="Hattar">Hattar</option>
+
                                 </select>
                             </div>
                         </div>
@@ -236,6 +205,8 @@ const AddPurchase = () => {
                                 <select onChange={(e) => setNewPurchase({ ...newPurchase, receivedBy: e.target.value })}
                                     className="w-full text-[12.5px] text-slate-900 cursor-pointer bg-emerald-50/50 border border-emerald-100 rounded-lg pl-9 pr-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-emerald-200 focus:border-emerald-400 transition-all">
                                     <option value="">Select option</option>
+                                    <option value="Guddi">Guddi</option>
+
                                 </select>
                             </div>
                         </div>
@@ -398,6 +369,71 @@ const AddPurchase = () => {
                                 ))}
                             </tbody>
                         </table>
+                    </div>
+
+                </div>
+
+            </div>
+            <div className="bg-white rounded-xl border border-slate-100 mt-2 shadow-sm px-4 py-3 mb-4">
+                <div className="flex items-center gap-2 mb-2.5">
+                    <div className="w-5 h-5 rounded-md bg-linear-to-br from-emerald-500 to-emerald-700 flex items-center justify-center">
+                        <Wallet className="w-3 h-3 text-white" />
+                    </div>
+                    <p className="text-[11.5px] font-bold text-slate-700">Payment summary</p>
+                    <span className="ml-auto flex items-center gap-1 text-[9px] font-bold uppercase tracking-wider text-emerald-600">
+                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                        Live
+                    </span>
+                </div>
+
+                <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-2">
+
+                    <div className="flex items-center justify-between gap-2 rounded-lg border border-slate-100 bg-slate-50/60 px-2.5 py-1.5">
+                        <span className="flex items-center gap-1 text-[9.5px] font-bold uppercase tracking-wider text-slate-400 whitespace-nowrap">
+                            <Package className="w-3 h-3" /> Total
+                        </span>
+                        <input disabled value={totalAmount.toFixed(2)}
+                            className="w-16 text-[12.5px] text-slate-700 font-bold bg-transparent border-0 p-0 text-right focus:outline-none tabular-nums" />
+                    </div>
+
+                    <div className="flex items-center justify-between gap-2 rounded-lg border border-slate-100 bg-slate-50/60 px-2.5 py-1.5">
+                        <span className="flex items-center gap-1 text-[9.5px] font-bold uppercase tracking-wider text-slate-400 whitespace-nowrap">
+                            <Percent className="w-3 h-3 text-amber-400" /> Disc
+                        </span>
+                        <input disabled value={totalDiscount.toFixed(2)}
+                            className="w-16 text-[12.5px] text-amber-600 font-bold bg-transparent border-0 p-0 text-right focus:outline-none tabular-nums" />
+                    </div>
+
+                    <div className="flex items-center justify-between gap-2 rounded-lg border border-emerald-100 bg-emerald-50/40 px-2.5 py-1.5 transition-all hover:border-emerald-300 focus-within:border-emerald-400 focus-within:ring-2 focus-within:ring-emerald-100">
+                        <span className="flex items-center gap-1 text-[9.5px] font-bold uppercase tracking-wider text-slate-400 whitespace-nowrap">
+                            <Truck className="w-3 h-3 text-emerald-400" /> Freight
+                        </span>
+                        <input type="text" value={freightCharges} onChange={(e) => setFreightCharges(e.target.value)} placeholder="0.00"
+                            className="w-16 text-[12.5px] text-slate-900 font-bold placeholder-slate-300 bg-transparent border-0 p-0 text-right focus:outline-none tabular-nums" />
+                    </div>
+
+                    <div className="flex items-center justify-between gap-2 rounded-lg border border-emerald-200 bg-linear-to-r from-emerald-50 to-emerald-100/50 px-2.5 py-1.5 shadow-sm">
+                        <span className="flex items-center gap-1 text-[9.5px] font-bold uppercase tracking-wider text-emerald-700 whitespace-nowrap">
+                            <TrendingUp className="w-3 h-3" /> Grand
+                        </span>
+                        <input disabled value={grandTotal.toFixed(2)}
+                            className="w-16 text-[13px] text-emerald-700 font-bold bg-transparent border-0 p-0 text-right focus:outline-none tabular-nums" />
+                    </div>
+
+                    <div className="flex items-center justify-between gap-2 rounded-lg border border-emerald-100 bg-emerald-50/40 px-2.5 py-1.5 transition-all hover:border-emerald-300 focus-within:border-emerald-400 focus-within:ring-2 focus-within:ring-emerald-100">
+                        <span className="flex items-center gap-1 text-[9.5px] font-bold uppercase tracking-wider text-slate-400 whitespace-nowrap">
+                            <CircleDollarSign className="w-3 h-3 text-emerald-400" /> Paid
+                        </span>
+                        <input type="text" placeholder="0.00"
+                            className="w-16 text-[12.5px] text-slate-900 font-bold placeholder-slate-300 bg-transparent border-0 p-0 text-right focus:outline-none tabular-nums" />
+                    </div>
+
+                    <div className="flex items-center justify-between gap-2 rounded-lg border border-rose-200 bg-linear-to-r from-rose-50 to-rose-100/40 px-2.5 py-1.5 shadow-sm">
+                        <span className="flex items-center gap-1 text-[9.5px] font-bold uppercase tracking-wider text-rose-600 whitespace-nowrap">
+                            <AlertCircle className="w-3 h-3" /> Due
+                        </span>
+                        <input disabled placeholder="0.00"
+                            className="w-16 text-[13px] text-rose-600 font-bold bg-transparent border-0 p-0 text-right focus:outline-none tabular-nums" />
                     </div>
 
                 </div>

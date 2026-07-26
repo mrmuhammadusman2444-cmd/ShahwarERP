@@ -1,14 +1,33 @@
+import React from "react";
+import axios from 'axios'
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 
 
 
-const NewCustomer = () => {
-
-
-
+const AddSupplier = () => {
   const navigate = useNavigate()
+  const [addSupplier, setAddSupplier] = useState({
+    supplierName: '',
+    email: '',
+    phoneNo: '',
+    address: '',
+    supplierDetails: '',
+    supplierCredits: '',
+    previouseCreditsBalance: ''
+  })
 
+  async function handleSupplier() {
+    let res = await axios.post('http://localhost:3000/new/supplier', addSupplier)
+    console.log(res.data)
+  }
+
+  async function handleFindSupplier() {
+    let res = await axios.get('http://localhost:3000/find/supplier')
+    console.log(res.data)
+
+  }
   return (
     <div className="p-4 md:p-5">
 
@@ -42,7 +61,8 @@ const NewCustomer = () => {
                 <label className="text-gray-500 text-xs font-semibold uppercase tracking-wide block mb-1">
                   Supplier Name <span className="text-red-400">*</span>
                 </label>
-                <input type="text" placeholder="Enter customer name..."
+                <input onChange={(e) => { setAddSupplier({ ...addSupplier, supplierName: e.target.value }) }}
+                  type="text" placeholder="Enter customer name..."
                   className="w-full bg-emerald-50 border border-emerald-100 focus:border-emerald-400 focus:bg-white rounded-xl px-3 py-2 text-gray-700 placeholder-gray-400 text-sm focus:outline-none transition-all" />
               </div>
 
@@ -50,7 +70,8 @@ const NewCustomer = () => {
                 <label className="text-gray-500 text-xs font-semibold uppercase tracking-wide block mb-1">
                   Email <span className="text-red-400">*</span>
                 </label>
-                <input type="email" placeholder="supplier@email.com"
+                <input onChange={(e) => { setAddSupplier({ ...addSupplier, email: e.target.value }) }}
+                  type="email" placeholder="supplier@email.com"
                   className="w-full bg-emerald-50 border border-emerald-100 focus:border-emerald-400 focus:bg-white rounded-xl px-3 py-2 text-gray-700 placeholder-gray-400 text-sm focus:outline-none transition-all" />
               </div>
 
@@ -58,14 +79,16 @@ const NewCustomer = () => {
                 <label className="text-gray-500 text-xs font-semibold uppercase tracking-wide block mb-1">
                   Phone No <span className="text-red-400">*</span>
                 </label>
-                <input type="tel" placeholder="03xx-xxxxxxx"
+                <input onChange={(e) => { setAddSupplier({ ...addSupplier, phoneNo: e.target.value }) }}
+                  type="tel" placeholder="03xx-xxxxxxx"
                   className="w-full bg-emerald-50 border border-emerald-100 focus:border-emerald-400 focus:bg-white rounded-xl px-3 py-2 text-gray-700 placeholder-gray-400 text-sm focus:outline-none transition-all" />
               </div>
               <div>
                 <label className="text-gray-500 text-xs font-semibold uppercase tracking-wide block mb-1">
                   Address <span className="text-red-400">*</span>
                 </label>
-                <input type="tel" placeholder="03xx-xxxxxxx"
+                <input onChange={(e) => { setAddSupplier({ ...addSupplier, address: e.target.value }) }}
+                  type="tel" placeholder="03xx-xxxxxxx"
                   className="w-full bg-emerald-50 border border-emerald-100 focus:border-emerald-400 focus:bg-white rounded-xl px-3 py-2 text-gray-700 placeholder-gray-400 text-sm focus:outline-none transition-all" />
               </div>
 
@@ -87,7 +110,8 @@ const NewCustomer = () => {
                 <label className="text-gray-500 text-xs font-semibold uppercase tracking-wide block mb-1">
                   Type Supplier Details <span className="text-red-400">*</span>
                 </label>
-                <textarea
+                <textarea onChange={(e) => { setAddSupplier({ ...addSupplier, supplierDetails: e.target.value }) }}
+
                   placeholder="Type Supplier Details..."
                   className="w-230 resize-none bg-emerald-50 border border-emerald-100 focus:border-emerald-400 focus:bg-white rounded-xl px-3 h-30 py-2 text-gray-700 placeholder-gray-400 text-sm focus:outline-none transition-all"
                 />
@@ -111,7 +135,8 @@ const NewCustomer = () => {
                 <label className="text-gray-500 text-xs font-semibold uppercase tracking-wide block mb-1">Supplier Credits</label>
                 <div className="relative">
                   <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs font-semibold">Rs.</span>
-                  <input type="number" placeholder="0.00"
+                  <input onChange={(e) => { setAddSupplier({ ...addSupplier, supplierCredits: e.target.value }) }}
+                    type="number" placeholder="0.00"
                     className="w-full bg-emerald-50 border border-emerald-100 focus:border-emerald-400 focus:bg-white rounded-xl pl-9 pr-3 py-2 text-gray-700 placeholder-gray-400 text-sm focus:outline-none transition-all" />
                 </div>
               </div>
@@ -120,7 +145,7 @@ const NewCustomer = () => {
                 <label className="text-gray-500 text-xs font-semibold uppercase tracking-wide block mb-1">Previous Credits Balance</label>
                 <div className="relative">
                   <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs font-semibold">Rs.</span>
-                  <input type="number" placeholder="0.00"
+                  <input onChange={(e) => { setAddSupplier({ ...addSupplier, previousCreditsBalance: e.target.value }) }} type="number" placeholder="0.00"
                     className="w-full bg-emerald-50 border border-emerald-100 focus:border-emerald-400 focus:bg-white rounded-xl pl-9 pr-3 py-2 text-gray-700 placeholder-gray-400 text-sm focus:outline-none transition-all" />
                 </div>
               </div>
@@ -161,13 +186,13 @@ const NewCustomer = () => {
             <p className="text-gray-400 text-xs flex items-center gap-1">
               <span className="text-red-400 font-bold">*</span> Required fields must be filled
             </p>
-            <button type="button"
+            <button onClick={() => { handleFindSupplier(); handleSupplier(); }} type="button"
               className="w-full py-2.5 bg-linear-to-r from-emerald-600 to-emerald-700 hover:from-emerald-500 hover:to-emerald-600 cursor-pointer text-white text-sm font-semibold rounded-xl shadow-md shadow-emerald-200 transition-all hover:-translate-y-0.5 active:translate-y-0">
               Save Supplier
             </button>
-           
-            
-            <button onClick={()=>{navigate('/managesupplierpage')}} type="button"
+
+
+            <button onClick={() => { navigate('/managesupplierpage') }} type="button"
               className="w-full py-2 bg-white border border-emerald-200 hover:bg-emerald-50 text-emerald-600 text-sm cursor-pointer font-semibold rounded-xl transition-all">
               Manage Supplier
             </button>
@@ -179,6 +204,9 @@ const NewCustomer = () => {
 
     </div>
   );
-};
+}
 
-export default NewCustomer;
+export default AddSupplier
+
+
+

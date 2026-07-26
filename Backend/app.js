@@ -8,6 +8,7 @@ import categoryRoute from './Routes/Category.route.js'
 import saleRoute from './Routes/Sale.route.js'
 import UnitRoute from './Routes/Unit.route.js'
 import PurchaseRoute from './Routes/Purchase.route.js'
+import SupplierRoute from './Routes/Supplier.route.js'
 
 DbConnection()
 
@@ -23,6 +24,8 @@ app.use('/', categoryRoute)
 app.use('/', saleRoute)
 app.use('/', UnitRoute)
 app.use('/', PurchaseRoute)
+app.use('/', SupplierRoute)
+
 
 app.listen(3000, () => {
     console.log('Server is running on port 3000');
