@@ -15,6 +15,8 @@ const PurchaseSchema = new mongoose.Schema({
     totalAmount: { type: Number },
     totalDiscount: { type: Number },
     grandTotal: { type: Number },
+    status: { type: String, default: "pending" },
+    rejectReason: { type: String, default: "" },
 })
 
 const PurchaseModel = mongoose.model('purchase', PurchaseSchema)

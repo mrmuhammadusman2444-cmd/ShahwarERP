@@ -29,8 +29,9 @@ const SideMenus = ({ collapsed }) => {
     const [attendanceOpen, setattendanceOpen] = useState(false)
     const [salaryDetailOpen, setsalaryDetailOpen] = useState(false)
     const [searchQuery, setSearchQuery] = useState('')
-
+    const [pendingPurchase, setPendingPurchase] = useState(0)
     const [pendingInvoiceCount, setPendingInvoiceCount] = useState(0)
+    const [pendingPurchaseCount, setPendingPurchaseCount] = useState(0)
 
     useEffect(() => {
         async function loadPendingCount() {
@@ -54,6 +55,26 @@ const SideMenus = ({ collapsed }) => {
         }
     }, [])
 
+
+
+
+    useEffect(() => {
+        async function countPendingPurchase() {
+            try {
+                let res = await axios.get('http://localhost:3000/find/purchase')
+                let count = res.data.filter(p => p.status !== "approved" && p.status !== "rejected").length
+                setPendingPurchaseCount(count)
+            } catch (err) {
+                console.log("COUNT PURCHASE FAILED:", err.response?.data || err.message)
+            }
+        }
+
+        countPendingPurchase()
+
+        window.addEventListener("approval-changed", countPendingPurchase)
+
+        return () => window.removeEventListener("approval-changed", countPendingPurchase)
+    }, [])
     const isSearching = searchQuery.trim().length > 0
 
     const menuMatches = (parentLabel, subLabels) => {
@@ -86,7 +107,7 @@ const SideMenus = ({ collapsed }) => {
 
     const isParentActive = (paths) => paths.some((p) => isActivePath(p))
 
-
+    const totalPendingApprovals = pendingInvoiceCount + pendingPurchaseCount
 
     return (
         <div>
@@ -160,7 +181,21 @@ const SideMenus = ({ collapsed }) => {
             </div>
 
             <div className="px-2 pt-3 pb-1">
-                <span className="text-[10px] font-semibold text-slate-200  uppercase tracking-widest px-1">Menu</span>
+                {collapsed ? (
+                    <div className="flex justify-center">
+                        <span className="flex items-center justify-center w-7 h-6 rounded-md bg-slate-800/60 text-slate-400">
+                            <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                            </svg>
+                        </span>
+                    </div>
+                ) : (
+                    <div className="flex items-center gap-2 px-1">
+                        <span className="w-1 h-1 rounded-full bg-emerald-500 shrink-0" />
+                        <span className="text-[10px] font-semibold text-slate-400 uppercase tracking-[0.18em] shrink-0">Menu</span>
+                        <span className="flex-1 h-px bg-linear-to-r from-slate-700/80 via-slate-800 to-transparent" />
+                    </div>
+                )}
             </div>
 
             <div className="px-2">
@@ -378,19 +413,19 @@ const SideMenus = ({ collapsed }) => {
                         )}
                         <div className="relative shrink-0">
                             <Handshake className="text-slate-100 group-hover:translate-x-1.5 transition-transform duration-300" size={23} />
-                            {collapsed && pendingInvoiceCount > 0 && (
+                            {collapsed && totalPendingApprovals > 0 && (
                                 <span className="absolute -top-1 -right-1.5 flex h-3.5 min-w-3.5 items-center justify-center rounded-full bg-emerald-500 px-0.5 text-[9px] font-bold text-white animate-pulse ring-2 ring-emerald-900">
-                                    {pendingInvoiceCount > 9 ? "9+" : pendingInvoiceCount}
+                                    {totalPendingApprovals > 9 ? "9+" : totalPendingApprovals}
                                 </span>
                             )}
                         </div>
 
                         {!collapsed && <span className="text-[12.5px] text-slate-100 flex-1">Approval</span>}
 
-                        {!collapsed && pendingInvoiceCount > 0 && (
+                        {!collapsed && totalPendingApprovals > 0 && (
                             <span className="relative flex h-4.5 min-w-4.5 items-center justify-center rounded-full bg-linear-to-br from-emerald-400 to-emerald-600 px-1 text-[10px] font-bold text-white shadow-sm shadow-emerald-500/50 ring-2 ring-emerald-900/40">
                                 <span className="absolute inset-0 rounded-full bg-emerald-400 animate-ping opacity-40" />
-                                <span className="relative">{pendingInvoiceCount}</span>
+                                <span className="relative">{totalPendingApprovals}</span>
                             </span>
                         )}
 
@@ -426,8 +461,14 @@ const SideMenus = ({ collapsed }) => {
                             </div>
                         )}
                         {subMatches('Purchase Approval') && (
-                            <div onClick={() => { navigate('/purchaseapprovalpage') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
-                                Purchase Approval
+                            <div onClick={() => { navigate('/purchaseapprovalpage') }} className="flex items-center justify-between text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                                <span>Purchase Approval</span>
+                                {pendingPurchaseCount > 0 && (
+                                    <span className="relative flex h-4.5 min-w-4.5 items-center animate-pulse justify-center rounded-full bg-linear-to-br from-emerald-400 to-emerald-600 px-1 text-[10px] font-bold text-white shadow-sm shadow-emerald-500/50 ring-2 ring-emerald-900/40">
+                                        <span className="absolute inset-0 rounded-full bg-emerald-400 animate-ping opacity-40" />
+                                        <span className="relative">{pendingPurchaseCount}</span>
+                                    </span>
+                                )}
                             </div>
                         )}
                         {subMatches('Customer Payment Approval') && (

@@ -1,6 +1,7 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import SupplierUpdatePopup from './SupplierUpdatePopup.jsx'
 import { ClipboardList, Plus, Eye, BookOpen, Receipt, Copy, FileSpreadsheet, FileText, Printer, Search, ArrowUpDown, FileBarChart, Pencil, Trash2 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
@@ -10,6 +11,8 @@ export default function ManageSupplier() {
   const [supplier, setSupplier] = useState([])
   const [allSupplier, setAllSupplier] = useState([])
   const [search, setSearch] = useState("")
+  const [showUpdatePopup, setShowUpdatePopup] = useState(false)    
+  const [updateSupplierData, setUpdateSupplierData] = useState(null)
 
   async function handleFindSupplier() {
     try {
@@ -51,7 +54,13 @@ export default function ManageSupplier() {
 
   return (
     <div className="p-4 bg-slate-50 min-h-screen">
-
+      {showUpdatePopup && updateSupplierData && (
+        <SupplierUpdatePopup
+          setShowUpdatePopup={setShowUpdatePopup}
+          updateData={updateSupplierData}
+          handleFindSupplier={handleFindSupplier}
+        />
+      )}
       <div className="flex items-center justify-between mb-3.5 flex-wrap gap-2.5">
         <div className="flex items-center gap-2.5">
           <div className="w-8 h-8 rounded-lg bg-emerald-600 flex items-center justify-center shrink-0">
@@ -68,19 +77,38 @@ export default function ManageSupplier() {
       </div>
 
       <div className="flex items-center gap-2.5 flex-wrap mb-3.5">
-        <button onClick={() => { navigate('/addsupplierpage') }} className="flex items-center gap-1.5 cursor-pointer bg-emerald-500 hover:bg-emerald-600 text-white text-[12.5px] font-semibold rounded-lg px-4 py-2.5 shadow-sm shadow-emerald-200 transition-colors">
-          <Plus className="w-4 h-4" />
-          Add Supplier
-        </button>
-        <button onClick={() => { navigate('/supplierledgerpage') }} className="flex items-center gap-1.5 cursor-pointer bg-emerald-600 hover:bg-emerald-700 text-white text-[12.5px] font-semibold rounded-lg px-4 py-2.5 shadow-sm shadow-emerald-200 transition-colors">
-          <BookOpen className="w-4 h-4" />
-          Supplier Ledger
-        </button>
-        <button className="flex items-center gap-1.5 cursor-pointer bg-emerald-600 hover:bg-emerald-700 text-white text-[12.5px] font-semibold rounded-lg px-4 py-2.5 shadow-sm shadow-emerald-200 transition-colors">
-          <Receipt className="w-4 h-4" />
-          Supplier Sales Details
-        </button>
-      </div>
+
+  <button
+    onClick={() => { navigate('/addsupplierpage') }}
+    className="group relative flex items-center gap-2 overflow-hidden cursor-pointer bg-linear-to-br from-emerald-500 to-emerald-600 hover:from-emerald-500 hover:to-emerald-700 text-white text-[12.5px] font-semibold rounded-xl pl-2.5 pr-4 py-2 shadow-md shadow-emerald-200/60 transition-all hover:-translate-y-0.5 active:translate-y-0"
+  >
+    <span className="flex items-center justify-center w-7 h-7 rounded-lg bg-white/20 group-hover:bg-white/25 transition-colors">
+      <Plus className="w-4 h-4 transition-transform duration-300 group-hover:rotate-90" />
+    </span>
+    Add Supplier
+    <span className="absolute inset-0 -translate-x-full group-hover:translate-x-full bg-linear-to-r from-transparent via-white/20 to-transparent transition-transform duration-700 ease-in-out" />
+  </button>
+
+  <button
+    onClick={() => { navigate('/supplierledgerpage') }}
+    className="group relative flex items-center gap-2 overflow-hidden cursor-pointer bg-white border border-emerald-200 hover:border-emerald-300 text-emerald-700 text-[12.5px] font-semibold rounded-xl pl-2.5 pr-4 py-2 shadow-sm hover:shadow-md hover:shadow-emerald-100 transition-all hover:-translate-y-0.5 active:translate-y-0"
+  >
+    <span className="flex items-center justify-center w-7 h-7 rounded-lg bg-emerald-50 text-emerald-600 group-hover:bg-emerald-100 transition-colors">
+      <BookOpen className="w-4 h-4" />
+    </span>
+    Supplier Ledger
+  </button>
+
+  <button
+    className="group relative flex items-center gap-2 overflow-hidden cursor-pointer bg-white border border-emerald-200 hover:border-emerald-300 text-emerald-700 text-[12.5px] font-semibold rounded-xl pl-2.5 pr-4 py-2 shadow-sm hover:shadow-md hover:shadow-emerald-100 transition-all hover:-translate-y-0.5 active:translate-y-0"
+  >
+    <span className="flex items-center justify-center w-7 h-7 rounded-lg bg-emerald-50 text-emerald-600 group-hover:bg-emerald-100 transition-colors">
+      <Receipt className="w-4 h-4" />
+    </span>
+    Supplier Sales Details
+  </button>
+
+</div>
 
       <div className="bg-white rounded-xl border border-slate-100 shadow-sm overflow-hidden">
 
@@ -124,15 +152,15 @@ export default function ManageSupplier() {
           </div>
 
           <div className="flex items-center gap-2">
-            <span className="text-[12px] text-slate-500">Search:</span>
-            <div className="flex items-center gap-1.5 border border-slate-200 rounded-md px-2.5 py-1.5 bg-indigo-50/60 focus-within:border-emerald-400 focus-within:bg-white transition-all">
-              <Search className="w-3.5 h-3.5 text-slate-400" />
+            <span className="text-[12px] text-emerald-500">Search:</span>
+            <div className="flex items-center gap-1.5 border border-emerald-200 rounded-md px-2.5 py-1.5 bg-emerald-50/60 focus-within:border-emerald-400 focus-within:bg-white transition-all">
+              <Search className="w-3.5 h-3.5 text-emerald-400" />
               <input
                 type="text"
                 value={search}
                 onChange={(e) => handleSearch(e.target.value)}
                 placeholder="Search supplier..."
-                className="text-[12px] bg-transparent border-none focus:outline-none w-36" />
+                className="text-[12px] bg-transparent border-none placeholder:text-emerald-500 focus:outline-none w-36" />
             </div>
           </div>
         </div>
@@ -249,7 +277,7 @@ export default function ManageSupplier() {
                         <button className="p-1.5 rounded-lg text-gray-400 hover:text-emerald-600 hover:bg-emerald-100 cursor-pointer transition-all" title="View">
                           <Eye size={16} />
                         </button>
-                        <button className="p-1.5 rounded-lg text-gray-400 hover:text-emerald-600 hover:bg-emerald-100 cursor-pointer transition-all" title="Edit">
+                        <button onClick={() => { setUpdateSupplierData(item); setShowUpdatePopup(true) }} className="p-1.5 rounded-lg text-gray-400 hover:text-emerald-600 hover:bg-emerald-100 cursor-pointer transition-all" title="Edit">
                           <Pencil size={16} />
                         </button>
                         <button onClick={() => handleDeleteSupplier(item._id)} className="p-1.5 rounded-lg text-gray-400 hover:text-red-600 hover:bg-red-100 cursor-pointer transition-all" title="Delete">

@@ -1,13 +1,16 @@
 import React from 'react';
 import axios from 'axios'
 import SelectProducts from './SelectProduct.jsx'
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { toast } from 'react-toastify'
 import SelectSupplier from './SelectSupplier.jsx';
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom';
 import { ShoppingCart, Building2, Factory, Truck, FileText, MapPin, Calendar, Hash, UserCheck, UserPlus, Plus, Trash2, Package, ClipboardList, StickyNote, ListOrdered, Wallet, Percent, TrendingUp, CircleDollarSign, AlertCircle } from 'lucide-react';
 
 const AddPurchase = () => {
+    let { id } = useParams()
+    const isEditMode = Boolean(id)
+
     const navigate = useNavigate()
 
     const [newPurchase, setNewPurchase] = useState({
@@ -23,6 +26,35 @@ const AddPurchase = () => {
         freightCharges: ''
     })
 
+    useEffect(() => {
+        async function loadPurchaseForEdit() {
+            if (!id) return
+            try {
+                let res = await axios.get(`http://localhost:3000/find/purchase/${id}`)
+                let purchase = res.data
+
+                setNewPurchase({
+                    supplierName: purchase.supplierName || '',
+                    factory: purchase.factory || '',
+                    vehicleNo: purchase.vehicleNo || '',
+                    invoiceNo: purchase.invoiceNo || '',
+                    Details: purchase.Details || '',
+                    purchaseDate: purchase.purchaseDate ? purchase.purchaseDate.split('T')[0] : '',
+                    builtyNo: purchase.builtyNo || '',
+                    receivedBy: purchase.receivedBy || '',
+                    gatePassNo: purchase.gatePassNo || '',
+                })
+
+                setRows(purchase.items && purchase.items.length > 0 ? purchase.items : rows)
+                setFreightCharges(purchase.freightCharges || '')
+            } catch (err) {
+                console.log("LOAD PURCHASE FOR EDIT FAILED:", err.response?.data || err.message)
+            }
+        }
+        loadPurchaseForEdit()
+    }, [id])
+
+
     async function handlePurchase() {
         try {
             let payload = {
@@ -33,9 +65,17 @@ const AddPurchase = () => {
                 totalDiscount: totalDiscount,
                 grandTotal: grandTotal,
             }
-            let res = await axios.post('http://localhost:3000/new/purchase', payload)
-            console.log(res.data)
-            toast.success('Purchase Saved Successfully', { position: 'bottom-right', autoClose: 800 })
+
+            if (isEditMode) {
+                let res = await axios.put(`http://localhost:3000/update/purchase/${id}`, payload)
+                console.log(res.data)
+                toast.success('Purchase Updated Successfully', { position: 'bottom-right', autoClose: 800 })
+            } else {
+                let res = await axios.post('http://localhost:3000/new/purchase', payload)
+                console.log(res.data)
+                toast.success('Purchase Saved Successfully', { position: 'bottom-right', autoClose: 800 })
+            }
+
             navigate('/managepurchasepage')
         } catch (err) {
             console.log("PURCHASE FAILED:", err.response?.data || err.message)
@@ -89,10 +129,10 @@ const AddPurchase = () => {
         return sum + discAmount
     }, 0)
     const grandTotal = totalAmount - totalDiscount - (Number(freightCharges) || 0)
+    console.log("EDIT MODE:", isEditMode, "ID:", id)
     return (
         <div className="p-4 bg-slate-50 min-h-screen">
 
-            {/* ── Header ── */}
             <div className="flex items-center justify-between mb-4 flex-wrap gap-2.5">
                 <div className="flex items-center gap-2.5">
                     <div className="w-9 h-9 rounded-xl bg-linear-to-br from-emerald-500 to-emerald-700 flex items-center justify-center shrink-0 shadow-md shadow-emerald-200">
@@ -110,18 +150,16 @@ const AddPurchase = () => {
                     </button>
                     <button onClick={handlePurchase} type="button"
                         className="bg-linear-to-r from-emerald-600 to-emerald-700 hover:from-emerald-500 hover:to-emerald-600 text-white text-[12.5px] font-semibold rounded-lg px-6 py-2 shadow-md shadow-emerald-200 transition-all hover:-translate-y-0.5 active:translate-y-0 cursor-pointer">
-                        Submit
+                        {isEditMode ? "Update Purchase" : "Submit"}
                     </button>
                 </div>
             </div>
 
-            {/* ── Payment Summary ── */}
 
 
-            {/* ── Main Grid ── */}
             <div className="grid grid-cols-1 xl:grid-cols-2 gap-4 items-start">
 
-                {/* ── Purchase Information ── */}
+
                 <div className="bg-white rounded-xl border border-slate-100 shadow-sm p-3.5">
 
                     <div className="flex items-center gap-2 mb-2.5 pb-2 border-b border-emerald-100">
@@ -139,17 +177,17 @@ const AddPurchase = () => {
                             </label>
                             <div className="flex items-center gap-2">
                                 <div className="flex items-center gap-2 w-full flex-nowrap">
-    <div className="flex-1 min-w-0">
-        <SelectSupplier
-            value={newPurchase.supplierName}
-            onChange={(name) => setNewPurchase({ ...newPurchase, supplierName: name })}
-        />
-    </div>
-    <button type="button"
-        className="shrink-0 w-9 h-9 rounded-lg bg-linear-to-br from-emerald-500 to-emerald-700 hover:from-emerald-500 hover:to-emerald-600 flex items-center justify-center shadow-sm shadow-emerald-200 transition-all hover:-translate-y-0.5 cursor-pointer">
-        <UserPlus className="w-4 h-4 text-white" />
-    </button>
-</div>
+                                    <div className="flex-1 min-w-0">
+                                        <SelectSupplier
+                                            value={newPurchase.supplierName}
+                                            onChange={(name) => setNewPurchase({ ...newPurchase, supplierName: name })}
+                                        />
+                                    </div>
+                                    <button type="button"
+                                        className="shrink-0 w-9 h-9 rounded-lg bg-linear-to-br from-emerald-500 to-emerald-700 hover:from-emerald-500 hover:to-emerald-600 flex items-center justify-center shadow-sm shadow-emerald-200 transition-all hover:-translate-y-0.5 cursor-pointer">
+                                        <UserPlus className="w-4 h-4 text-white" />
+                                    </button>
+                                </div>
                             </div>
                         </div>
 
@@ -159,7 +197,7 @@ const AddPurchase = () => {
                             </label>
                             <div className="relative">
                                 <Calendar className="w-3.5 h-3.5 text-emerald-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
-                                <input onChange={(e) => setNewPurchase({ ...newPurchase, purchaseDate: e.target.value })}
+                                <input value={newPurchase.purchaseDate} onChange={(e) => setNewPurchase({ ...newPurchase, purchaseDate: e.target.value })}
                                     type="date"
                                     className="w-full text-[12.5px] text-slate-900 bg-emerald-50/50 border border-emerald-100 rounded-lg pl-9 pr-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-emerald-200 focus:border-emerald-400 transition-all" />
                             </div>
@@ -169,7 +207,7 @@ const AddPurchase = () => {
                             <label className="block text-[10.5px] font-bold text-slate-500 uppercase tracking-wide mb-1.5">Factory</label>
                             <div className="relative">
                                 <Factory className="w-3.5 h-3.5 text-emerald-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
-                                <select onChange={(e) => setNewPurchase({ ...newPurchase, factory: e.target.value })}
+                                <select value={newPurchase.factory} onChange={(e) => setNewPurchase({ ...newPurchase, factory: e.target.value })}
                                     className="w-full text-[12.5px] text-slate-900 cursor-pointer bg-emerald-50/50 border border-emerald-100 rounded-lg pl-9 pr-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-emerald-200 focus:border-emerald-400 transition-all">
                                     <option value="">Select factory</option>
                                     <option value="Hattar">Hattar</option>
@@ -182,7 +220,7 @@ const AddPurchase = () => {
                             <label className="block text-[10.5px] font-bold text-slate-500 uppercase tracking-wide mb-1.5">Builty No</label>
                             <div className="relative">
                                 <Hash className="w-3.5 h-3.5 text-emerald-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
-                                <input onChange={(e) => setNewPurchase({ ...newPurchase, builtyNo: e.target.value })}
+                                <input value={newPurchase.builtyNo} onChange={(e) => setNewPurchase({ ...newPurchase, builtyNo: e.target.value })}
                                     type="text" placeholder="Builty No"
                                     className="w-full text-[12.5px] text-slate-900 placeholder-slate-400 bg-emerald-50/50 border border-emerald-100 rounded-lg pl-9 pr-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-emerald-200 focus:border-emerald-400 transition-all" />
                             </div>
@@ -192,7 +230,7 @@ const AddPurchase = () => {
                             <label className="block text-[10.5px] font-bold text-slate-500 uppercase tracking-wide mb-1.5">Vehicle No</label>
                             <div className="relative">
                                 <Truck className="w-3.5 h-3.5 text-emerald-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
-                                <input onChange={(e) => setNewPurchase({ ...newPurchase, vehicleNo: e.target.value })}
+                                <input value={newPurchase.vehicleNo} onChange={(e) => setNewPurchase({ ...newPurchase, vehicleNo: e.target.value })}
                                     type="text" placeholder="Vehicle No"
                                     className="w-full text-[12.5px] text-slate-900 placeholder-slate-400 bg-emerald-50/50 border border-emerald-100 rounded-lg pl-9 pr-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-emerald-200 focus:border-emerald-400 transition-all" />
                             </div>
@@ -202,7 +240,7 @@ const AddPurchase = () => {
                             <label className="block text-[10.5px] font-bold text-slate-500 uppercase tracking-wide mb-1.5">Received By</label>
                             <div className="relative">
                                 <UserCheck className="w-3.5 h-3.5 text-emerald-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
-                                <select onChange={(e) => setNewPurchase({ ...newPurchase, receivedBy: e.target.value })}
+                                <select value={newPurchase.receivedBy} onChange={(e) => setNewPurchase({ ...newPurchase, receivedBy: e.target.value })}
                                     className="w-full text-[12.5px] text-slate-900 cursor-pointer bg-emerald-50/50 border border-emerald-100 rounded-lg pl-9 pr-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-emerald-200 focus:border-emerald-400 transition-all">
                                     <option value="">Select option</option>
                                     <option value="Guddi">Guddi</option>
@@ -215,7 +253,7 @@ const AddPurchase = () => {
                             <label className="block text-[10.5px] font-bold text-slate-500 uppercase tracking-wide mb-1.5">Invoice No</label>
                             <div className="relative">
                                 <FileText className="w-3.5 h-3.5 text-emerald-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
-                                <input onChange={(e) => setNewPurchase({ ...newPurchase, invoiceNo: e.target.value })}
+                                <input value={newPurchase.invoiceNo} onChange={(e) => setNewPurchase({ ...newPurchase, invoiceNo: e.target.value })}
                                     type="text" placeholder="Invoice No"
                                     className="w-full text-[12.5px] text-slate-900 placeholder-slate-400 bg-emerald-50/50 border border-emerald-100 rounded-lg pl-9 pr-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-emerald-200 focus:border-emerald-400 transition-all" />
                             </div>
@@ -225,7 +263,7 @@ const AddPurchase = () => {
                             <label className="block text-[10.5px] font-bold text-slate-500 uppercase tracking-wide mb-1.5">Gate Pass No</label>
                             <div className="relative">
                                 <MapPin className="w-3.5 h-3.5 text-emerald-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
-                                <input onChange={(e) => setNewPurchase({ ...newPurchase, gatePassNo: e.target.value })}
+                                <input value={newPurchase.gatePassNo} onChange={(e) => setNewPurchase({ ...newPurchase, gatePassNo: e.target.value })}
                                     type="text" placeholder="Gate Pass No"
                                     className="w-full text-[12.5px] text-slate-900 placeholder-slate-400 bg-emerald-50/50 border border-emerald-100 rounded-lg pl-9 pr-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-emerald-200 focus:border-emerald-400 transition-all" />
                             </div>
@@ -235,7 +273,7 @@ const AddPurchase = () => {
                             <label className="block text-[10.5px] font-bold text-slate-500 uppercase tracking-wide mb-1.5">Details</label>
                             <div className="relative">
                                 <StickyNote className="w-3.5 h-3.5 text-emerald-400 absolute left-3 top-3 pointer-events-none" />
-                                <textarea onChange={(e) => setNewPurchase({ ...newPurchase, Details: e.target.value })}
+                                <textarea value={newPurchase.Details} onChange={(e) => setNewPurchase({ ...newPurchase, Details: e.target.value })}
                                     placeholder="Details..."
                                     className="w-full text-[12.5px] text-slate-900 placeholder-slate-400 bg-emerald-50/50 border border-emerald-100 rounded-lg pl-9 pr-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-emerald-200 focus:border-emerald-400 transition-all h-37 resize-none" />
                             </div>
@@ -244,7 +282,7 @@ const AddPurchase = () => {
                     </div>
                 </div>
 
-                {/* ── Purchase Items ── */}
+
                 <div className="bg-white rounded-xl border border-slate-100 h-134 shadow-sm overflow-hidden">
                     <div className="flex items-center justify-between gap-3 px-4 py-3  border-b border-emerald-100 bg-linear-to-r from-emerald-50 via-white to-emerald-50 rounded-t-xl">
                         <div className="flex items-center gap-2.5">

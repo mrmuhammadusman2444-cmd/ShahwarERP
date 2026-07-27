@@ -122,6 +122,7 @@ const App = () => {
         <Route path='/SupplierAdvancePage' element={<SupplierAdvancePage />} />
         <Route path='/Analytics' element={<AnalyticsPage />} />
         <Route path='/AddPurchasePage' element={<AddPurchasePage />} />
+        <Route path='/editpurchase/:id' element={<AddPurchasePage />} />
         <Route path='/ManagePurchasePage' element={<ManagePurchasePage />} />
         <Route path='/AddPurchaseOrderPage' element={<AddPurchaseOrderPage />} />
         <Route path='/ManagePurchaseOrder' element={<ManagePurchaseOrderPage />} />
