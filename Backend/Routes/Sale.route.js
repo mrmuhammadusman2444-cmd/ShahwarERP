@@ -90,5 +90,49 @@ router.post('/delete/sale', async function (req, res) {
         res.status(500).json({ success: false, msg: 'Server error while deleting sale' })
     }
 })
+router.get('/customer/ledger/:customerName', async function (req, res) {
+    try {
+        let customerName = req.params.customerName
+
+        let sales = await SaleModel.find({
+            customerName: customerName,
+            status: "approved"
+        }).sort({ Date: 1 })
+
+        let runningBalance = 0
+        let entries = sales.map((sale) => {
+            let debit = Number(sale.grandTotal) || 0
+            runningBalance = runningBalance + debit
+
+            return {
+                date: sale.Date,
+                description: `Invoice ${sale.invoiceNo || "-"}`,
+                invoiceId: sale.invoiceNo || "",
+                depositId: "",
+                debit: debit,
+                credit: 0,
+                balance: runningBalance,
+            }
+        })
+
+        res.json({
+            entries: entries,
+            closingBalance: runningBalance,
+        })
+    } catch (err) {
+        console.log("CUSTOMER LEDGER ERROR:", err.message)
+        res.status(500).json({ message: err.message })
+    }
+})
+router.get('/find/sale/invoice/:invoiceNo', async function (req, res) {
+    let invoiceNo = req.params.invoiceNo
+    let sale = await SaleModel.findOne({ invoiceNo: invoiceNo })
+
+    if (!sale) {
+        return res.status(404).json({ message: "Sale not found" })
+    }
+
+    res.json(sale)
+})
 
 export default router

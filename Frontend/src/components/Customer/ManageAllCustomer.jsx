@@ -13,6 +13,7 @@ const ManageCustomers = () => {
   const [showEditPopup, setShowEditPopup] = useState(false)
   const [showDeleteAlert, setShowDeleteAlert] = useState(false)
   const [deleteData, setDeleteData] = useState(null)
+  
 
 
   async function handleManageCustomer() {

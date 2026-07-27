@@ -9,12 +9,16 @@ import { BadgeDollarSign, IdCardLanyard, CreditCard, Download, SquarePen, Trash2
 
 
 
+
 const ManageSale = () => {
   let navigate = useNavigate()
   const [sales, setSales] = useState([]);
   const [search, setSearch] = useState('')
   const [viewSale, setViewSale] = useState(null);
   const [categoryOrder, setCategoryOrder] = useState([])
+  const [startDate, setStartDate] = useState('')
+  const [endDate, setEndDate] = useState('')
+  const [filteredSale, setFilteredSale] = useState([])
 
 
 
@@ -27,6 +31,33 @@ const ManageSale = () => {
     fetchCategories()
   }, [])
 
+
+
+  // ✅ Theek:
+  function handleFind() {
+    if (!startDate && !endDate) {
+      setFilteredSale(sales)
+      return
+    }
+    const filtered = sales.filter((c) => {
+      const created = new Date(c.Date)  
+      const from = startDate ? new Date(startDate) : null
+      const to = endDate ? new Date(endDate) : null
+      if (from && to) return created >= from && created <= to
+      if (from) return created >= from
+      if (to) return created <= to
+      return true
+    })
+    setFilteredSale(filtered)
+  }
+  useEffect(() => {
+    async function fetchSale() {
+      let res = await axios.get('http://localhost:3000/find/new/sale')
+      setSales(res.data)
+      setFilteredSale(res.data)
+    }
+    fetchSale()
+  }, [])
 
   useEffect(() => {
     async function handleFindNewSale() {
@@ -61,13 +92,14 @@ const ManageSale = () => {
 
 
 
-  const filteredSales = sales.filter((sale) => {
+  const filteredSales = filteredSale.filter((sale) => {
     const query = search.toLowerCase();
     return (
       sale.customerName?.toLowerCase().includes(query) ||
       sale.invoiceNo?.toLowerCase().includes(query)
     );
   });
+
   function handleDownloadInvoice(sale) {
 
     const doc = new jsPDF()
@@ -541,15 +573,17 @@ const ManageSale = () => {
         <div className="flex flex-col sm:flex-row items-start sm:items-end gap-3">
           <div>
             <label className="text-gray-500 text-xs font-semibold uppercase tracking-wide block mb-1.5">Start Date</label>
-            <input type="date"
+            <input value={startDate}
+              onChange={(e) => setStartDate(e.target.value)} type="date"
               className="bg-blue-50 border border-blue-100 focus:border-blue-400 focus:bg-white rounded-xl px-3 py-2.5 text-gray-700 text-sm focus:outline-none transition-all" />
           </div>
           <div>
             <label className="text-gray-500 text-xs font-semibold uppercase tracking-wide block mb-1.5">End Date</label>
-            <input type="date"
+            <input value={endDate}
+              onChange={(e) => setEndDate(e.target.value)} type="date"
               className="bg-blue-50 border border-blue-100 focus:border-blue-400 focus:bg-white rounded-xl px-3 py-2.5 text-gray-700 text-sm focus:outline-none transition-all" />
           </div>
-          <button className="px-6 py-2.5 cursor-pointer bg-linear-to-b from-emerald-500 to-emerald-700 hover:from-emerald-400 hover:to-emerald-600 text-white text-sm font-semibold rounded-xl shadow-md shadow-emerald-200 transition-all hover:-translate-y-0.5">
+          <button onClick={handleFind} className="px-6 py-2.5 cursor-pointer bg-linear-to-b from-emerald-500 to-emerald-700 hover:from-emerald-400 hover:to-emerald-600 text-white text-sm font-semibold rounded-xl shadow-md shadow-emerald-200 transition-all hover:-translate-y-0.5">
             Find
           </button>
           <button onClick={() => { navigate('/newSale') }} className="flex items-center cursor-pointer gap-2 px-4 py-2.5 bg-linear-to-b from-emerald-500 to-emerald-700 hover:from-emerald-400 hover:to-emerald-600 text-white text-sm font-semibold rounded-xl shadow-md shadow-emerald-200 transition-all hover:-translate-y-0.5">
@@ -642,7 +676,7 @@ const ManageSale = () => {
                       </div>
 
                       <div>
-                        <p class Name="text-gray-700 text-base font-bold">No Sales Yet</p>
+                        <p className="text-gray-700 text-base font-bold">No Sales Yet</p>
                         <p className="text-gray-400 text-xs mt-1 max-w-xs">Your sales will appear here once you create your first invoice</p>
                       </div>
 

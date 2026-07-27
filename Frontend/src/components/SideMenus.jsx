@@ -99,7 +99,7 @@ const SideMenus = ({ collapsed }) => {
 
     const navigate = useNavigate()
     const location = useLocation()
-    const isAnalytics = location.pathname === '/analyticspage'
+    const isAnalytics = location.pathname === '/analytics'
     const isDashboard = location.pathname === '/dashboard'
 
 
@@ -191,8 +191,8 @@ const SideMenus = ({ collapsed }) => {
                     </div>
                 ) : (
                     <div className="flex items-center gap-2 px-1">
-                        <span className="w-1 h-1 rounded-full bg-emerald-500 shrink-0" />
-                        <span className="text-[10px] font-semibold text-slate-400 uppercase tracking-[0.18em] shrink-0">Menu</span>
+                        <span className="w-1 h-1 rounded-full bg-emerald-500 animate-pulse shrink-0" />
+                        <span className="text-[12px] font-semibold text-slate-400 uppercase tracking-[0.18em] shrink-0">Menu</span>
                         <span className="flex-1 h-px bg-linear-to-r from-slate-700/80 via-slate-800 to-transparent" />
                     </div>
                 )}
@@ -201,8 +201,10 @@ const SideMenus = ({ collapsed }) => {
             <div className="px-2">
 
                 {menuMatches('Dashboard', []) && (
-                    <div onClick={() => { navigate('/dashboard') }} onMouseEnter={setTip} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 hover:bg-emerald-800 rounded-lg px-2 cursor-pointer   overflow-hidden  mb-px ${collapsed ? 'justify-start' : ''}${isDashboard ? 'bg-emerald-800' : 'hover:bg-emerald-800'}`}>
-                        {!collapsed && <span className="absolute left-0 top-1/2 -translate-y-1/2 w-0.75 h-4.5 bg-emerald-800  rounded-r-full" />}
+                    <div onClick={() => { navigate('/dashboard') }} onMouseEnter={setTip} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer overflow-hidden mb-px ${collapsed ? 'justify-start' : ''} ${isDashboard ? 'bg-emerald-800' : 'hover:bg-emerald-800'}`}>
+                        {isDashboard && !collapsed && (
+                            <span className="absolute left-0 top-1/2 -translate-y-1/2 w-0.75 h-4.5 bg-emerald-400 rounded-r-full" />
+                        )}
                         <LayoutGrid className="text-slate-100 shrink-0   group-hover:scale-110 group-hover:rotate-6 transition-transform duration-300" size={23} />
                         {!collapsed && <span className="text-[12.5px] text-blue-100 font-medium">Dashboard</span>}
 
@@ -217,7 +219,11 @@ const SideMenus = ({ collapsed }) => {
 
                 {menuMatches('Analytics', []) && (
 
-                    <div onClick={() => { navigate('/analytics') }} onMouseEnter={setTip} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer  hover:bg-emerald-800  transition-all mb-px ${collapsed ? 'justify-start' : ''}${isAnalytics ? 'bg-emerald-800' : 'hover:bg-emerald-800'}`}>
+                    <div onClick={() => { navigate('/analytics') }} onMouseEnter={setTip} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer transition-all mb-px ${collapsed ? 'justify-start' : ''} ${isAnalytics ? 'bg-emerald-800' : 'hover:bg-emerald-800'}`}>
+                        {isAnalytics && !collapsed && (
+                            <span className="absolute left-0 top-1/2 -translate-y-1/2 w-0.75 h-4.5 bg-emerald-400 rounded-r-full" />
+                        )}
+
                         <svg width="20" height="20" viewBox="0 0 24 24" text="#ffffff" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-slate-600 shrink-0 /50">
                             <line x1="18" y1="20" x2="18" y2="10" className="bar3 text-slate-100" style={{ transformOrigin: '18px 20px' }} />
                             <line x1="12" y1="20" x2="12" y2="4" className="bar2  text-slate-100" style={{ transformOrigin: '12px 20px' }} />
