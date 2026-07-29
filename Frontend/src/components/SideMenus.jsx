@@ -32,11 +32,12 @@ const SideMenus = ({ collapsed }) => {
     const [pendingPurchase, setPendingPurchase] = useState(0)
     const [pendingInvoiceCount, setPendingInvoiceCount] = useState(0)
     const [pendingPurchaseCount, setPendingPurchaseCount] = useState(0)
+    const [pendingPaymentCount, setPendingPaymentCount] = useState(0)
 
     useEffect(() => {
         async function loadPendingCount() {
             try {
-                let res = await axios.get('http://localhost:3000/find/pending/sale')
+                let res = await axios.get('http://localhost:3000/all/pending/invoices')
                 setPendingInvoiceCount(res.data.length)
             } catch (err) {
                 console.log("PENDING COUNT LOAD FAILED:", err.response?.data || err.message)
@@ -48,13 +49,14 @@ const SideMenus = ({ collapsed }) => {
         const interval = setInterval(loadPendingCount, 30000)
 
         window.addEventListener('saleCreated', loadPendingCount)
+        window.addEventListener('approval-changed', loadPendingCount)
 
         return () => {
             clearInterval(interval)
             window.removeEventListener('saleCreated', loadPendingCount)
+            window.removeEventListener('approval-changed', loadPendingCount)
         }
     }, [])
-
 
 
 
@@ -74,6 +76,49 @@ const SideMenus = ({ collapsed }) => {
         window.addEventListener("approval-changed", countPendingPurchase)
 
         return () => window.removeEventListener("approval-changed", countPendingPurchase)
+    }, [])
+    useEffect(() => {
+        async function countPendingPayment() {
+            try {
+                let res = await axios.get('http://localhost:3000/find/supplier/payment')
+                let count = res.data.filter(p => p.status !== "approved" && p.status !== "rejected").length
+                setPendingPaymentCount(count)
+            } catch (err) {
+                console.log("COUNT PAYMENT FAILED:", err.response?.data || err.message)
+            }
+        }
+        countPendingPayment()
+        window.addEventListener("approval-changed", countPendingPayment)
+        return () => window.removeEventListener("approval-changed", countPendingPayment)
+    }, [])
+
+    useEffect(() => {
+        async function countPendingInvoice() {
+            try {
+                let res = await axios.get('http://localhost:3000/all/pending/invoices')
+                setPendingInvoiceCount(res.data.length)
+            } catch (err) {
+                console.log("COUNT INVOICE FAILED:", err.message)
+            }
+        }
+        countPendingInvoice()
+        window.addEventListener("approval-changed", countPendingInvoice)
+        return () => window.removeEventListener("approval-changed", countPendingInvoice)
+    }, [])
+
+    useEffect(() => {
+        async function countPendingPayment() {
+            try {
+                let res = await axios.get('http://localhost:3000/find/supplier/payment')
+                let count = res.data.filter(p => p.status !== "approved" && p.status !== "rejected").length
+                setPendingPaymentCount(count)
+            } catch (err) {
+                console.log("COUNT PAYMENT FAILED:", err.response?.data || err.message)
+            }
+        }
+        countPendingPayment()
+        window.addEventListener("approval-changed", countPendingPayment)
+        return () => window.removeEventListener("approval-changed", countPendingPayment)
     }, [])
     const isSearching = searchQuery.trim().length > 0
 
@@ -107,7 +152,7 @@ const SideMenus = ({ collapsed }) => {
 
     const isParentActive = (paths) => paths.some((p) => isActivePath(p))
 
-    const totalPendingApprovals = pendingInvoiceCount + pendingPurchaseCount
+    const totalPendingApprovals = pendingInvoiceCount + pendingPurchaseCount + pendingPaymentCount
 
     return (
         <div>
@@ -420,7 +465,7 @@ const SideMenus = ({ collapsed }) => {
                         <div className="relative shrink-0">
                             <Handshake className="text-slate-100 group-hover:translate-x-1.5 transition-transform duration-300" size={23} />
                             {collapsed && totalPendingApprovals > 0 && (
-                                <span className="absolute -top-1 -right-1.5 flex h-3.5 min-w-3.5 items-center justify-center rounded-full bg-emerald-500 px-0.5 text-[9px] font-bold text-white animate-pulse ring-2 ring-emerald-900">
+                                <span className="absolute -top-1 right-0 flex h-3.5 min-w-3.5 items-center justify-center rounded-full bg-emerald-500 px-0.5 text-[9px] font-bold text-white animate-pulse ring-2 ring-emerald-900">
                                     {totalPendingApprovals > 9 ? "9+" : totalPendingApprovals}
                                 </span>
                             )}
@@ -483,8 +528,14 @@ const SideMenus = ({ collapsed }) => {
                             </div>
                         )}
                         {subMatches('Supplier Payment Approval') && (
-                            <div onClick={() => { navigate('/supplierpaymentpage') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
-                                Supplier Payment Approval
+                            <div onClick={() => { navigate('/Supplier/Payment/Approval') }} className="flex items-center justify-between text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                                <span>Supplier Payment Approval</span>
+                                {pendingPaymentCount > 0 && (
+                                    <span className="relative flex h-4.5 min-w-4.5 items-center animate-pulse justify-center rounded-full bg-linear-to-br from-emerald-400 to-emerald-600 px-1 text-[10px] font-bold text-white shadow-sm shadow-emerald-500/50 ring-2 ring-emerald-900/40">
+                                        <span className="absolute inset-0 rounded-full bg-emerald-400 animate-ping opacity-40" />
+                                        <span className="relative">{pendingPaymentCount}</span>
+                                    </span>
+                                )}
                             </div>
                         )}
                     </div>
@@ -1035,7 +1086,7 @@ const SideMenus = ({ collapsed }) => {
                         className="ml-7 border-l border-slate-700 pl-3 flex flex-col gap-0.5 overflow-hidden"
                     >
                         {subMatches('Supplier Payment') && (
-                            <div className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                            <div onClick={() => { navigate('/supplier/payments') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                                 Supplier Payment
                             </div>
                         )}

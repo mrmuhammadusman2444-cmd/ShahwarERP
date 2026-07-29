@@ -6,6 +6,8 @@ const SelectSupplier = ({ value, onChange }) => {
     const [open, setOpen] = useState(false);
     const [search, setSearch] = useState("");
     const ref = useRef(null);
+    const [dropdownPos, setDropdownPos] = useState({ top: 0, left: 0 });
+
     const searchRef = useRef(null);
 
     useEffect(() => {
@@ -20,7 +22,15 @@ const SelectSupplier = ({ value, onChange }) => {
         }
         loadSuppliers()
     }, [])
-
+    useEffect(() => {
+        if (open && ref.current) {
+            const rect = ref.current.getBoundingClientRect();
+            setDropdownPos({
+                top: rect.bottom + 4,
+                left: rect.left,
+            });
+        }
+    }, [open]);
     const selected = suppliers.find((s) => s.supplierName === value);
 
     const filtered = suppliers.filter((s) =>
@@ -63,7 +73,13 @@ const SelectSupplier = ({ value, onChange }) => {
             </button>
 
             {open && (
-                <div className="absolute top-[calc(100%+6px)] left-0 z-50 bg-white border border-emerald-100 rounded-2xl shadow-lg shadow-emerald-100/50 min-w-60">
+                <div
+                    className="fixed z-99999 w-64 bg-white border border-emerald-100 rounded-xl shadow-xl shadow-emerald-100/50 overflow-hidden"
+                    style={{
+                        top: dropdownPos.top + 'px',
+                        left: dropdownPos.left + 'px',
+                    }}
+                >
 
                     <div className="p-2 border-b border-emerald-50">
                         <div className="flex items-center gap-2 bg-emerald-50 border border-emerald-100 rounded-xl px-3 py-2 focus-within:border-emerald-400 transition-all">

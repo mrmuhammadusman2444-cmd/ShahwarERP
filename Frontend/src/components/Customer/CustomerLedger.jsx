@@ -12,6 +12,7 @@ const CustomerLedger = () => {
   const [filteredEntries, setFilteredEntries] = useState([])
   const [selectedCustomer, setSelectedCustomer] = useState("")
   const [closingBalance, setClosingBalance] = useState(0)
+  const [openingBalance, setOpeningBalance] = useState(0)
 
   function handleSearch() {
     if (!fromDate && !toDate) {
@@ -41,6 +42,7 @@ const CustomerLedger = () => {
       setEntries(res.data.entries)
       setFilteredEntries(res.data.entries)
       setClosingBalance(res.data.closingBalance)
+      setOpeningBalance(res.data.openingBalance)
     } catch (err) {
       console.log("LEDGER LOAD FAILED:", err.response?.data || err.message)
     }
@@ -99,81 +101,121 @@ const CustomerLedger = () => {
 
       const doc = new jsPDF()
 
+      // ===== HEADER — company =====
       doc.setFillColor(5, 150, 105)
       doc.rect(0, 0, 210, 32, "F")
+
       doc.setTextColor(255, 255, 255)
       doc.setFontSize(20)
       doc.setFont("helvetica", "bold")
       doc.text("SHAHWAR FOODS", 14, 15)
+
       doc.setFontSize(9)
       doc.setFont("helvetica", "normal")
       doc.text("Distribution Management System", 14, 22)
       doc.text("info@shahwarfoods.com", 14, 27)
+
+      // invoice number — right side
       doc.setFontSize(16)
       doc.setFont("helvetica", "bold")
-      doc.text("SALE INVOICE", 196, 15, { align: "right" })
+      doc.text("INVOICE", 196, 15, { align: "right" })
       doc.setFontSize(10)
       doc.setFont("helvetica", "normal")
       doc.text(sale.invoiceNo || "-", 196, 22, { align: "right" })
 
+      // ===== CUSTOMER INFO =====
       doc.setTextColor(60, 60, 60)
       doc.setFontSize(9)
       doc.setFont("helvetica", "bold")
-      doc.text("CUSTOMER", 14, 45)
+      doc.text("BILL TO", 14, 45)
+
       doc.setFont("helvetica", "normal")
       doc.setFontSize(11)
       doc.text(sale.customerName || "-", 14, 52)
+
+      // date — right side
       doc.setFontSize(9)
       doc.setFont("helvetica", "bold")
       doc.text("DATE", 196, 45, { align: "right" })
       doc.setFont("helvetica", "normal")
-      doc.text(sale.Date ? new Date(sale.Date).toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" }) : "-", 196, 52, { align: "right" })
+      doc.text(
+        sale.Date ? new Date(sale.Date).toLocaleDateString() : "-",
+        196, 52, { align: "right" }
+      )
 
-      let y = 62
-      doc.setFontSize(8.5)
-      doc.setTextColor(100, 100, 100)
-      doc.text(`Gate Pass: ${sale.gatePass || "-"}`, 14, y)
-      doc.text(`Sale By: ${sale.saleBy || "-"}`, 80, y)
-      doc.text(`Rate: ${sale.showRate || "-"}`, 146, y)
+      // Group items by category
+      const grouped = {}
+        ; (sale.items || []).forEach((item) => {
+          const cat = item.mainCategory || "Uncategorized"
+          if (!grouped[cat]) grouped[cat] = []
+          grouped[cat].push(item)
+        })
 
-      const rows = (sale.items || []).map((item, i) => [
-        i + 1,
-        item.product,
-        item.invQty || item.qty || 0,
-        `Rs. ${Number(item.rate || 0).toLocaleString()}`,
-        `${item.dis || 0}%`,
-        `Rs. ${Number(item.total || 0).toLocaleString()}`,
-      ])
+      const rows = []
+      let counter = 1
+      Object.keys(grouped).forEach((category) => {
+        rows.push([{ content: category, colSpan: 6, styles: { fontStyle: "bold", fillColor: [255, 255, 255], textColor: [0, 0, 0] } }])
+
+        grouped[category].forEach((item) => {
+          const cartonRate = (Number(item.rate) || 0) * (Number(item.cartonSize) || 0)
+          rows.push([
+            counter++,
+            item.name,
+            item.carton || 0,
+            item.storeLimit || item.cartonSize || "-",
+            `Rs. ${cartonRate.toLocaleString()}`,
+            `Rs. ${Number(item.total || 0).toLocaleString()}`,
+          ])
+        })
+      })
 
       autoTable(doc, {
-        startY: y + 8,
-        head: [["S.No", "Product", "Qty", "Rate", "Dis", "Total"]],
+        startY: 62,
+        head: [["S.No", "Product", "Carton", "Pack", "Rate (Carton Wise)", "Total"]],
         body: rows,
         theme: "grid",
-        headStyles: { fillColor: [5, 150, 105], textColor: 255, fontSize: 9, fontStyle: "bold" },
+        headStyles: {
+          fillColor: [5, 150, 105],
+          textColor: 255,
+          fontSize: 9,
+          fontStyle: "bold",
+        },
         bodyStyles: { fontSize: 9, textColor: [60, 60, 60] },
         alternateRowStyles: { fillColor: [240, 253, 244] },
         columnStyles: {
-          0: { cellWidth: 12, halign: "center" },
-          2: { halign: "center" }, 3: { halign: "center" }, 4: { halign: "center" }, 5: { halign: "center" },
+          0: { cellWidth: 12, halign: "left" },
+          1: { halign: "left" },
+          2: { halign: "center" },
+          3: { halign: "center" },
+          4: { halign: "center" },
+          5: { halign: "center" },
         },
       })
 
-      let ty = doc.lastAutoTable.finalY + 10
+      // ===== TOTALS =====
+      let y = doc.lastAutoTable.finalY + 10
+
       doc.setFontSize(9)
       doc.setTextColor(100, 100, 100)
-      doc.text("Freight Charges:", 130, ty)
-      doc.text(`Rs. ${Number(sale.freightCharges || 0).toLocaleString()}`, 196, ty, { align: "right" })
-      ty += 4
+      doc.text("Freight Charges:", 140, y)
+      doc.text(`Rs. ${Number(sale.freightCharges || 0).toLocaleString()}`, 196, y, { align: "right" })
+
+      y += 6
+      doc.text("Total Cartons:", 140, y)
+      doc.text(`${sale.totalCartons || 0}`, 196, y, { align: "right" })
+
+      y += 4
       doc.setDrawColor(200, 200, 200)
-      doc.line(130, ty, 196, ty)
-      ty += 8
+      doc.line(140, y, 196, y)
+
+      y += 8
       doc.setFontSize(12)
       doc.setFont("helvetica", "bold")
       doc.setTextColor(5, 150, 105)
-      doc.text("GRAND TOTAL", 110, ty)
-      doc.text(`Rs. ${Number(sale.grandTotal || 0).toLocaleString()}`, 196, ty, { align: "right" })
+      doc.text("GRAND TOTAL", 135, y)
+      doc.text(`Rs. ${Number(sale.grandTotal || 0).toLocaleString()}`, 196, y, { align: "right" })
 
+      // ===== FOOTER =====
       doc.setFontSize(8)
       doc.setFont("helvetica", "normal")
       doc.setTextColor(150, 150, 150)
@@ -248,22 +290,35 @@ const CustomerLedger = () => {
 
       <div className="bg-white border border-slate-200/70 rounded-2xl shadow-sm overflow-hidden">
 
-        <div className="py-3 px-5 border-b border-slate-100 bg-slate-50/40 flex flex-wrap items-center justify-center gap-x-6 gap-y-1">
-          <h2 className="text-gray-800 text-sm font-bold">
-            {selectedCustomer || "—"}
-          </h2>
-          <span className="text-gray-300 text-xs hidden sm:block">|</span>
-          <p className="text-gray-500 text-xs">Print Date: {new Date().toLocaleDateString()}</p>
-          <span className="text-gray-300 text-xs hidden sm:block">|</span>
-          <p className="text-emerald-700 text-xs font-bold">
-            Balance : Rs. {closingBalance.toLocaleString()}
-          </p>
+        <div className="px-5 py-3 border-b border-slate-100 bg-linear-to-r from-emerald-50/50 to-white flex flex-wrap items-center justify-between gap-3">
+
+          <div className="flex items-center gap-2.5">
+            <span className="w-7 h-7 rounded-lg bg-linear-to-br from-emerald-500 to-emerald-700 flex items-center justify-center text-white text-[11px] font-bold shrink-0">
+              {(selectedCustomer || "?").charAt(0).toUpperCase()}
+            </span>
+            <h2 className="text-gray-800 text-sm font-bold">{selectedCustomer || "No customer"}</h2>
+            <span className="text-gray-500 text-[11px] flex items-center gap-1 bg-white border border-slate-100 rounded-full px-2.5 py-0.5">
+              <svg className="w-3 h-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+              </svg>
+              {new Date().toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" })}
+            </span>
+          </div>
+
+          <div className="flex items-center gap-2 bg-white border border-emerald-100 rounded-full pl-3 pr-1.5 py-1 shadow-sm">
+            <span className="text-gray-700 text-[10px] font-bold  tracking-wide">Balance</span>
+            <span className="bg-emerald-600 text-white text-xs font-bold tabular-nums rounded-full px-3 py-1">
+              <span className="text-emerald-100 text-[9px] font-normal mr-0.5">Rs.</span>
+              {Number(closingBalance || 0).toLocaleString()}
+            </span>
+          </div>
+
         </div>
 
-        <div className="overflow-x-auto">
+        <div className="overflow-y-auto max-h-[60vh]">
           <table className="w-full text-sm border-collapse">
             <thead>
-              <tr className="bg-linear-to-b from-emerald-500 to-emerald-700 text-white">
+              <tr className="bg-linear-to-b from-emerald-500 to-emerald-700 text-white sticky top-0 z-10">
                 <th className="text-left text-[12px] font-semibold  tracking-wider px-4 py-3 whitespace-nowrap">Date</th>
                 <th className="text-left text-[12px] font-semibold  tracking-wider px-4 py-3">Description</th>
                 <th className="text-left text-[12px] font-semibold  tracking-wider px-4 py-3 whitespace-nowrap">Invoice ID</th>
@@ -276,18 +331,17 @@ const CustomerLedger = () => {
 
             <tbody>
 
-              <tr className="bg-linear-to-r from-emerald-50 to-transparent border-b border-emerald-100">
-                <td className="px-4 py-3 text-left" colSpan={4}>
-                  <span className="inline-flex items-center gap-2 text-gray-600 text-[11px] font-bold uppercase tracking-wider">
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+              <tr className="bg-emerald-50 border-b border-emerald-100">
+                <td className="px-4 py-3 text-left" colSpan={6}>
+                  <span className="inline-flex items-center gap-2 text-emerald-800 text-[11px] font-bold uppercase tracking-wider">
+                    <span className="w-1.5 h-1.5 animate-ping rounded-full bg-emerald-500" />
                     Opening Balance
                   </span>
                 </td>
-                <td className="px-4 py-3" />
-                <td className="px-4 py-3" />
                 <td className="px-4 py-3 text-right">
-                  <span className="text-gray-800 text-xs font-bold tabular-nums">
-                    {customer?.openingBalance || "—"}
+                  <span className="text-emerald-900 text-xs font-bold tabular-nums">
+                    <span className="text-emerald-500 text-[10px] font-normal mr-0.5">Rs.</span>
+                    {Number(openingBalance || 0).toLocaleString()}
                   </span>
                 </td>
               </tr>
@@ -329,19 +383,27 @@ const CustomerLedger = () => {
                       </td>
 
                       <td className="px-4 py-3.5 text-left">
-                        <button
-                          onClick={() => handleDownloadInvoice(entry.invoiceId)}
-                          className="inline-flex items-center gap-1.5 text-gray-700 hover:text-emerald-600 text-xs font-medium cursor-pointer group/desc transition-colors"
-                          title="Download invoice">
-                          <svg className="w-3.5 h-3.5 text-gray-300 group-hover/desc:text-emerald-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-                          </svg>
-                          <span className="group-hover/desc:underline">
+                        {entry.invoiceId ? (
+                          <button
+                            onClick={() => handleDownloadInvoice(entry.invoiceId)}
+                            className="inline-flex items-center gap-1.5 text-gray-700 hover:text-emerald-600 text-xs font-medium cursor-pointer group/desc transition-colors"
+                            title="Download invoice">
+                            <svg className="w-3.5 h-3.5 text-gray-300 group-hover/desc:text-emerald-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                            </svg>
+                            <span className="group-hover/desc:underline">
+                              {Array.isArray(entry.description)
+                                ? entry.description.map((line, i) => <p key={i}>{line}</p>)
+                                : entry.description}
+                            </span>
+                          </button>
+                        ) : (
+                          <span className="text-gray-700 text-xs font-medium">
                             {Array.isArray(entry.description)
                               ? entry.description.map((line, i) => <p key={i}>{line}</p>)
                               : entry.description}
                           </span>
-                        </button>
+                        )}
                       </td>
 
                       <td className="px-4 py-3.5 text-left whitespace-nowrap">

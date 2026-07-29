@@ -24,7 +24,7 @@ import SchemeProductsPage from './pages/Products/SchemeProductsPage.jsx'
 import InvoiceApprovalPage from './pages/Approvals/InvoiceApprovalPage.jsx'
 import PurchaseApprovalPage from './pages/Approvals/PurchaseApprovalPage.jsx'
 import CustomerPaymentPage from './pages/Approvals/CustomerPaymentPage.jsx'
-import SupplierPaymentPage from './pages/Approvals/SupplierPaymentPage.jsx'
+import SupplierPaymentApprovalPage from './pages/Approvals/SupplierPaymentApprovalPage.jsx'
 import AnalyticsPage from './pages/Analytics/AnalyticsPage.jsx'
 import AddSupplierPage from './pages/Supplier/AddSupplierPage.jsx'
 import SupplierLedgerPage from './pages/Supplier/SupplierLedgerPage.jsx'
@@ -69,8 +69,8 @@ import RawPackingStockPage from './pages/Stock/RawPackingStockPage.jsx'
 import OutOfStockPage from './pages/Stock/OutOfStockPage.jsx'
 import AssignUserToStockPage from './pages/Stock/AssignUserToStockPage.jsx'
 import Preloader from './components/Preloader.jsx'
-
-
+//Accounts
+import SupplierPaymentsPage from './pages/Accounts/SupplierPaymentsPage.jsx'
 
 
 
@@ -114,7 +114,7 @@ const App = () => {
         <Route path='/InvoiceApprovalPage' element={<InvoiceApprovalPage />} />
         <Route path='/PurchaseApprovalPage' element={<PurchaseApprovalPage />} />
         <Route path='/CustomerPaymentPage' element={<CustomerPaymentPage />} />
-        <Route path='/SupplierPaymentPage' element={<SupplierPaymentPage />} />
+        <Route path='/Supplier/Payment/Approval' element={<SupplierPaymentApprovalPage />} />
         <Route path='/addSupplierPage' element={<AddSupplierPage />} />
         <Route path='/addSupplierPage' element={<AddSupplierPage />} />
         <Route path='/SupplierLedgerPage' element={<SupplierLedgerPage />} />
@@ -161,6 +161,8 @@ const App = () => {
         <Route path='/raw/packing/stock' element={<RawPackingStockPage />} />
         <Route path='/out/of/stock' element={<OutOfStockPage />} />
         <Route path='/assign/user/stock' element={<AssignUserToStockPage />} />
+        //Accounts
+        <Route path='/supplier/payments' element={<SupplierPaymentsPage/>} />
 
 
 

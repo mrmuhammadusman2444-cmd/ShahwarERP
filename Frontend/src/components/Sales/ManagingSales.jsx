@@ -33,14 +33,13 @@ const ManageSale = () => {
 
 
 
-  // ✅ Theek:
   function handleFind() {
     if (!startDate && !endDate) {
       setFilteredSale(sales)
       return
     }
     const filtered = sales.filter((c) => {
-      const created = new Date(c.Date)  
+      const created = new Date(c.Date)
       const from = startDate ? new Date(startDate) : null
       const to = endDate ? new Date(endDate) : null
       if (from && to) return created >= from && created <= to
@@ -52,36 +51,21 @@ const ManageSale = () => {
   }
   useEffect(() => {
     async function fetchSale() {
-      let res = await axios.get('http://localhost:3000/find/new/sale')
+      let res = await axios.get('http://localhost:3000/find/sale')
       setSales(res.data)
       setFilteredSale(res.data)
     }
     fetchSale()
   }, [])
 
-  useEffect(() => {
-    async function handleFindNewSale() {
 
-      let res = await axios.get('http://localhost:3000/find/new/sale')
-      console.log(res.data)
-      setSales(res.data)
-
-    }
-    handleFindNewSale()
-  }, [])
 
 
   async function handleDeleteSale(id) {
     try {
-      let res = await axios.post('http://localhost:3000/delete/sale', { _id: id })
-
-      if (res.data.success === false) {
-        toast.error(res.data.msg || 'Sale not found', { position: 'bottom-right', autoClose: 800 })
-        return
-      }
-
+      await axios.delete(`http://localhost:3000/delete/sale/${id}`)
       setSales((prev) => prev.filter((sale) => sale._id !== id))
-
+      setFilteredSale((prev) => prev.filter((sale) => sale._id !== id))
       toast.success('Sale Deleted Successfully', { position: 'bottom-right', autoClose: 800 })
     } catch (error) {
       console.error(error)

@@ -1,5 +1,7 @@
 import express from 'express'
 import CustomerModel from '../Models/CustomerModels/CustomerModel.js'
+import SaleModel from '../Models/Sale Models/SalesModel.js'
+import SupplierPaymentsModel from '../Models/Accounts/SupplierPaymentsModel.js'
 
 const router = express.Router()
 
@@ -38,5 +40,64 @@ router.post('/update/customer/:id', async function (req, res) {
     )
     res.json(updateCustomer)
 })
+router.get('/customer/ledger/:customerName', async function (req, res) {
+    let customerName = req.params.customerName
 
+    // customer — opening balance
+    let customer = await CustomerModel.findOne({ customerName: customerName })
+    let openingBalance = Number(customer?.PreviouseCreditsBalance) || 0
+
+    // approved sales (debit)
+    let sales = await SaleModel.find({
+        customerName: customerName,
+        status: "approved"
+    })
+
+    // approved payments (credit) — fromCustomer se match
+    let payments = await SupplierPaymentsModel.find({
+        fromCustomer: customerName,
+        status: "approved"
+    })
+
+    // dono ko ek list me daalo — common shape ke saath
+    let combined = []
+
+    sales.forEach((sale) => {
+        combined.push({
+            date: sale.Date,
+            description: `Invoice ${sale.invoiceNo || "-"}`,
+            invoiceId: sale.invoiceNo || "",
+            depositId: "",
+            debit: Number(sale.grandTotal) || 0,
+            credit: 0,
+        })
+    })
+
+    payments.forEach((pay) => {
+        combined.push({
+            date: pay.date,
+            description: ` ${(pay.allocations && [0]?.supplierName) || ""}${pay.remark ? "  " + pay.remark : ""}`,
+            invoiceId: "",
+            depositId: pay.voucherNo || "",
+            debit: 0,
+            credit: Number(pay.totalAmount) || 0,
+        })
+    })
+
+    // date se sort (purani pehle)
+    combined.sort((a, b) => new Date(a.date) - new Date(b.date))
+
+    // running balance — opening se shuru, debit +, credit -
+    let runningBalance = openingBalance
+    let entries = combined.map((item) => {
+        runningBalance = runningBalance + item.debit - item.credit
+        return { ...item, balance: runningBalance }
+    })
+
+    res.json({
+        openingBalance: openingBalance,
+        entries: entries,
+        closingBalance: runningBalance,
+    })
+})
 export default router

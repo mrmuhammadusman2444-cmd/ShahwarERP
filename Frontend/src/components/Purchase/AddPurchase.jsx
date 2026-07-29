@@ -243,7 +243,7 @@ const AddPurchase = () => {
                                 <select value={newPurchase.receivedBy} onChange={(e) => setNewPurchase({ ...newPurchase, receivedBy: e.target.value })}
                                     className="w-full text-[12.5px] text-slate-900 cursor-pointer bg-emerald-50/50 border border-emerald-100 rounded-lg pl-9 pr-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-emerald-200 focus:border-emerald-400 transition-all">
                                     <option value="">Select option</option>
-                                    <option value="Guddi">Guddi</option>
+                                    <option value="Fahad">Fahad</option>
 
                                 </select>
                             </div>

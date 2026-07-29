@@ -9,6 +9,7 @@ import saleRoute from './Routes/Sale.route.js'
 import UnitRoute from './Routes/Unit.route.js'
 import PurchaseRoute from './Routes/Purchase.route.js'
 import SupplierRoute from './Routes/Supplier.route.js'
+import SupplierPaymentRoute from './Routes/SupplierPayment.route.js'
 
 DbConnection()
 
@@ -25,6 +26,8 @@ app.use('/', saleRoute)
 app.use('/', UnitRoute)
 app.use('/', PurchaseRoute)
 app.use('/', SupplierRoute)
+app.use('/', SupplierPaymentRoute)
+
 
 
 app.listen(3000, () => {

@@ -1,138 +1,98 @@
-import express from 'express'
+import express from "express";
 import SaleModel from '../Models/Sale Models/SalesModel.js'
+const router = express.Router();
 
-const router = express.Router()
 
-router.post('/new/sale', async function (req, res) {
-    try {
-        let data = req.body
-        let count = await SaleModel.countDocuments()
-        let invoiceNo = "INV-" + String(count + 1).padStart(4, "0")
+router.post("/new/sale", async (req, res) => {
+    let data = req.body
 
-        const object = {
-            invoiceNo: invoiceNo,
-            customerName: data.customerName,
-            Date: data.Date,
-            showRate: data.showRate,
-            freightCharges: data.freightCharges,
-            previouseAmount: data.previouseAmount,
-            items: data.items,
-            grandTotal: data.grandTotal,
-            totalCartons: data.totalCartons,
-            saleBy: data.saleBy,
-
-        }
-
-        let createNewSale = await SaleModel.create(object)
-        res.json(createNewSale)
-    } catch (err) {
-        console.log("SALE ERROR:", err.message)
-        res.status(500).json({ message: err.message })
+    // last sale dhoondo (jiska invoice number sabse bada ho)
+    let lastSale = await SaleModel.findOne().sort({ _id: -1 })
+    // naya invoice number banao — INV-0001, INV-0002...
+    let nextNumber = 1
+    if (lastSale && lastSale.invoiceNo) {
+        let lastNum = parseInt(lastSale.invoiceNo.replace("INV-", "")) || 0
+        nextNumber = lastNum + 1
     }
-})
+    let invoiceNo = "INV-" + String(nextNumber).padStart(4, "0")
 
-router.get('/find/new/sale', async function (req, res) {
-    try {
-        let sales = await SaleModel.find()
-        res.json(sales)
-    } catch (err) {
-        console.log("FIND ERROR:", err.message)
-        res.status(500).json({ message: err.message })
+    let newSale = {
+        gatePass: data.gatePass,
+        customerName: data.customerName,
+        Date: data.Date,
+        showRate: data.showRate,
+        invoiceNo: invoiceNo,
+        freightCharges: data.freightCharges,
+        previousAmount: data.previousAmount,
+        items: data.items,
+        grandTotal: data.grandTotal,
+        totalCartons: data.totalCartons,
+        saleBy: data.saleBy,
     }
+    let createSale = await SaleModel.create(newSale)
+    res.json(createSale)
 })
 
-router.get('/find/sale/:id', async function (req, res) {
-    let sale = await SaleModel.findById(req.params.id)
-    res.json(sale)
+router.get("/find/sale", async (req, res) => {
+    let sales = await SaleModel.find()
+    res.json(sales)
 })
 
-router.put('/update/sale/:id', async function (req, res) {
-    let updatedSale = await SaleModel.findByIdAndUpdate(
-        req.params.id,
-        req.body,
-        { new: true }
-    )
-    res.json(updatedSale)
-})
-
-router.get('/find/pending/sale', async function (req, res) {
-    let pendingSales = await SaleModel.find({ status: "pending" })
-    res.json(pendingSales)
-})
-
-router.put('/approve/sale/:id', async function (req, res) {
-    let approvedSale = await SaleModel.findByIdAndUpdate(
-        req.params.id,
-        { status: "approved" },
-        { new: true }
-    )
-    res.json(approvedSale)
-})
-
-router.put('/reject/sale/:id', async function (req, res) {
-    let rejectedSale = await SaleModel.findByIdAndUpdate(
-        req.params.id,
-        { status: "rejected", rejectReason: req.body.rejectReason || "" },
-        { new: true }
-    )
-    res.json(rejectedSale)
-})
-
-router.post('/delete/sale', async function (req, res) {
-    try {
-        let deleteSale = await SaleModel.findByIdAndDelete(req.body._id)
-        if (!deleteSale) {
-            return res.json({ success: false, msg: 'Sale not found' })
-        }
-        res.json({ success: true, data: deleteSale })
-    } catch (error) {
-        console.error(error)
-        res.status(500).json({ success: false, msg: 'Server error while deleting sale' })
-    }
-})
-router.get('/customer/ledger/:customerName', async function (req, res) {
-    try {
-        let customerName = req.params.customerName
-
-        let sales = await SaleModel.find({
-            customerName: customerName,
-            status: "approved"
-        }).sort({ Date: 1 })
-
-        let runningBalance = 0
-        let entries = sales.map((sale) => {
-            let debit = Number(sale.grandTotal) || 0
-            runningBalance = runningBalance + debit
-
-            return {
-                date: sale.Date,
-                description: `Invoice ${sale.invoiceNo || "-"}`,
-                invoiceId: sale.invoiceNo || "",
-                depositId: "",
-                debit: debit,
-                credit: 0,
-                balance: runningBalance,
-            }
-        })
-
-        res.json({
-            entries: entries,
-            closingBalance: runningBalance,
-        })
-    } catch (err) {
-        console.log("CUSTOMER LEDGER ERROR:", err.message)
-        res.status(500).json({ message: err.message })
-    }
-})
 router.get('/find/sale/invoice/:invoiceNo', async function (req, res) {
     let invoiceNo = req.params.invoiceNo
     let sale = await SaleModel.findOne({ invoiceNo: invoiceNo })
-
     if (!sale) {
         return res.status(404).json({ message: "Sale not found" })
     }
-
     res.json(sale)
+})
+
+router.get('/find/sale/:id', async (req, res) => {
+    let sale = await SaleModel.findById(req.params.id)
+    if (!sale) return res.status(404).json({ message: "Sale not found" })
+    res.json(sale)
+})
+
+router.get('/all/pending/invoices', async (req, res) => {
+    const pendingInvoices = await SaleModel.find({ status: "pending" })
+    res.json(pendingInvoices)
+})
+
+router.put('/update/sale/:id', async (req, res) => {
+    let id = req.params.id
+    let data = req.body
+    let updated = await SaleModel.findByIdAndUpdate(id, data, { new: true })
+    if (!updated) return res.status(404).json({ message: "Sale not found" })
+    res.json(updated)
+})
+
+router.put('/invoice/approve/:id', async (req, res) => {
+    let id = req.params.id
+    let approved = await SaleModel.findByIdAndUpdate(
+        id,
+        { status: "approved" },
+        { new: true }
+    )
+    if (!approved) return res.status(404).json({ message: "Sale not found" })
+    res.json(approved)
+})
+
+router.put('/invoice/reject/:id', async (req, res) => {
+    let id = req.params.id
+    let rejected = await SaleModel.findByIdAndUpdate(
+        id,
+        { status: "rejected", rejectReason: req.body.rejectReason || "" },
+        { new: true }
+    )
+    if (!rejected) return res.status(404).json({ message: "Sale not found" })
+    res.json(rejected)
+})
+
+router.delete("/delete/sale/:id", async (req, res) => {
+    let id = req.params.id
+    let deleted = await SaleModel.findByIdAndDelete(id)
+    if (!deleted) return res.status(404).json({ message: "Sale not found" })
+    res.json({ message: "Sale deleted successfully" })
 })
 
 export default router

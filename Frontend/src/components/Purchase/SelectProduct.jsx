@@ -16,7 +16,6 @@ const SelectProducts = ({ value, onChange }) => {
         (p.productName || "").toLowerCase().includes(search.toLowerCase())
     );
 
-    // ── Position calculate karo jab open ho ──
     useEffect(() => {
         if (open && ref.current) {
             const rect = ref.current.getBoundingClientRect();

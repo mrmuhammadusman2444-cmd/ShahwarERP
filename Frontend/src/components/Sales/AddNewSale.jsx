@@ -25,6 +25,7 @@ const NewSale = ({ setManageCustomer }) => {
     showRate: 'Distributor Rate',
     freightCharges: '',
     previousAmount: '',
+    
   })
 
   useEffect(() => {
@@ -162,6 +163,7 @@ const NewSale = ({ setManageCustomer }) => {
 
         let response = await axios.post('http://localhost:3000/new/sale', payload)
         console.log(response.data)
+        window.dispatchEvent(new Event("approval-changed"))
         window.dispatchEvent(new Event('saleCreated'))
       }
 
