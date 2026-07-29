@@ -53,13 +53,11 @@ router.get('/customer/ledger/:customerName', async function (req, res) {
         status: "approved"
     })
 
-    // approved payments (credit) — fromCustomer se match
     let payments = await SupplierPaymentsModel.find({
         fromCustomer: customerName,
         status: "approved"
     })
 
-    // dono ko ek list me daalo — common shape ke saath
     let combined = []
 
     sales.forEach((sale) => {
@@ -84,10 +82,8 @@ router.get('/customer/ledger/:customerName', async function (req, res) {
         })
     })
 
-    // date se sort (purani pehle)
     combined.sort((a, b) => new Date(a.date) - new Date(b.date))
 
-    // running balance — opening se shuru, debit +, credit -
     let runningBalance = openingBalance
     let entries = combined.map((item) => {
         runningBalance = runningBalance + item.debit - item.credit

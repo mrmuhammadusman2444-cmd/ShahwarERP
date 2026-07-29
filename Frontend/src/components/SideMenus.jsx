@@ -475,7 +475,7 @@ const SideMenus = ({ collapsed }) => {
 
                         {!collapsed && totalPendingApprovals > 0 && (
                             <span className="relative flex h-4.5 min-w-4.5 items-center justify-center rounded-full bg-linear-to-br from-emerald-400 to-emerald-600 px-1 text-[10px] font-bold text-white shadow-sm shadow-emerald-500/50 ring-2 ring-emerald-900/40">
-                                <span className="absolute inset-0 rounded-full bg-emerald-400 animate-ping opacity-40" />
+                                <span className="absolute inset-0 rounded-full bg-emerald-400  opacity-40" />
                                 <span className="relative">{totalPendingApprovals}</span>
                             </span>
                         )}
@@ -1057,7 +1057,7 @@ const SideMenus = ({ collapsed }) => {
                     </div>
                 )}
 
-                {menuMatches('Accounts', ['Supplier Payment', 'Supplier Tally Ledger', 'Customer Tally Ledger', 'Customer Recieve', 'Assets Payment', 'Cash Adjustment', 'Reports']) && (
+                {menuMatches('Accounts', ['Supplier Payment', 'Supplier Tally Ledger', 'Customer Tally Ledger', 'Customer Recieve', 'Assets Payment', ' Fund Transfer', 'Cash Adjustment', 'Reports']) && (
 
                     <div onMouseEnter={setTip} onClick={() => setaccountOpen(!accountOpen)} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer hover:border-slate-600 transition-all mb-px ${collapsed ? 'justify-start' : ''} ${isParentActive(['/SupplierPaymentPage', '/SupplierLedgerPage', '/CustomerLedgerPage', '/CustomerPaymentPage', '/PATH_ASSETS_PAYMENT', '/PATH_CASH_ADJUSTMENT', '/PATH_REPORTS']) ? 'bg-emerald-800' : 'hover:bg-emerald-800'}`}>
                         {isParentActive(['/SupplierPaymentPage', '/SupplierLedgerPage', '/CustomerLedgerPage', '/CustomerPaymentPage', '/PATH_ASSETS_PAYMENT', '/PATH_CASH_ADJUSTMENT', '/PATH_REPORTS']) && !collapsed && (
@@ -1088,6 +1088,11 @@ const SideMenus = ({ collapsed }) => {
                         {subMatches('Supplier Payment') && (
                             <div onClick={() => { navigate('/supplier/payments') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                                 Supplier Payment
+                            </div>
+                        )}
+                         {subMatches('Fund Transfer') && (
+                            <div onClick={() => { navigate('/fund/transfer') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                                Fund Transfer
                             </div>
                         )}
                         {subMatches('Supplier Tally Ledger') && (

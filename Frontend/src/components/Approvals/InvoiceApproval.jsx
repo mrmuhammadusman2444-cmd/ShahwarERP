@@ -1,5 +1,7 @@
 import axios from 'axios'
 import { useEffect, useState } from 'react'
+import { ChevronLeft, ChevronRight } from "lucide-react";
+
 
 const InvoiceApproval = () => {
     const [pendingInvoice, setPendingInvoice] = useState([])
@@ -163,6 +165,23 @@ const InvoiceApproval = () => {
                         </tbody>
                     </table>
                 </div>
+                <div className="flex flex-col sm:flex-row items-center justify-between gap-4 px-5 py-4 border-t border-emerald-100 bg-white">
+                    <p className="text-sm text-gray-500 ">
+                        Showing {pendingInvoice.length === 0 ? 0 : 1} to {pendingInvoice.length} of {pendingInvoice.length} entries
+                    </p>
+
+                    <div className="flex items-center gap-2">
+                        <button className="flex items-center gap-1 text-xs text-gray-500 hover:text-emerald-600 bg-emerald-50 hover:bg-emerald-100 px-3 py-1.5 rounded-lg transition-all cursor-pointer">
+                            <ChevronLeft className="w-3.5 h-3.5" /> Previous
+                        </button>
+
+                        <button className="w-8 h-8 rounded-lg bg-emerald-600 text-white text-xs font-bold flex items-center justify-center cursor-pointer">1</button>
+
+                        <button className="flex items-center gap-1 text-xs text-gray-500 hover:text-me-600 bg-emerald-50 hover:bg-emerald-100 px-3 py-1.5 rounded-lg transition-all cursor-pointer">
+                            Next <ChevronRight className="w-3.5 h-3.5" />
+                        </button>
+                    </div>
+                </div>
             </div>
 
             {viewInvoice && (
@@ -253,11 +272,11 @@ const InvoiceApproval = () => {
                                 </div>
                             ) : (
                                 <div className="flex items-center gap-2">
-                                    <button onClick={() => handleApprove(viewInvoice._id)} className="flex-1 flex items-center justify-center gap-1.5 px-3 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold rounded-lg transition-colors cursor-pointer">
+                                    <button onClick={() => handleApprove(viewInvoice._id)} className="flex-1 flex items-center justify-center gap-1.5 px-3 py-3 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold rounded-lg transition-colors cursor-pointer">
                                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                                         Approve
                                     </button>
-                                    <button onClick={() => setShowReject(true)} className="flex-1 flex items-center justify-center gap-1.5 px-3 py-2 bg-white border border-red-200 hover:bg-red-50 text-red-600 text-xs font-semibold rounded-lg transition-colors cursor-pointer">
+                                    <button onClick={() => setShowReject(true)} className="flex-1 flex items-center justify-center gap-1.5 px-3 py-3 bg-white border border-red-200 hover:bg-red-50 text-red-600 text-xs font-semibold rounded-lg transition-colors cursor-pointer">
                                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
                                         Reject
                                     </button>

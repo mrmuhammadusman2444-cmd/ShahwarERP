@@ -71,7 +71,7 @@ import AssignUserToStockPage from './pages/Stock/AssignUserToStockPage.jsx'
 import Preloader from './components/Preloader.jsx'
 //Accounts
 import SupplierPaymentsPage from './pages/Accounts/SupplierPaymentsPage.jsx'
-
+import FundTransferPage from './pages/Accounts/FundTransferPage.jsx'
 
 
 const App = () => {
@@ -163,6 +163,8 @@ const App = () => {
         <Route path='/assign/user/stock' element={<AssignUserToStockPage />} />
         //Accounts
         <Route path='/supplier/payments' element={<SupplierPaymentsPage/>} />
+        <Route path='/fund/transfer' element={<FundTransferPage/>} />
+
 
 
 

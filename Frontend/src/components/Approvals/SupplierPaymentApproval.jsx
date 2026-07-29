@@ -1,6 +1,9 @@
 import React from 'react'
 import { useState, useEffect } from 'react'
 import axios from 'axios'
+import { ChevronLeft, ChevronRight } from "lucide-react";
+
+
 
 const SupplierPaymentApproval = () => {
     const [payment, setPayment] = useState([])
@@ -11,9 +14,9 @@ const SupplierPaymentApproval = () => {
     async function handleFindPending() {
         try {
             let res = await axios.get('http://localhost:3000/find/supplier/payment')
-            console.log("PAYMENTS AAYE:", res.data.length) 
+            console.log("PAYMENTS AAYE:", res.data.length)
             let pending = res.data.filter(p => p.status !== "approved" && p.status !== "rejected")
-            console.log("PENDING:", pending.length) 
+            console.log("PENDING:", pending.length)
             setPayment(pending)
         } catch (err) {
             console.log("FIND PENDING FAILED:", err.response?.data || err.message)
@@ -100,9 +103,9 @@ const SupplierPaymentApproval = () => {
                     </span>
                 </div>
 
-                <div>
+                <div className="max-h-112.5 overflow-y-auto">
                     <table className="w-full text-sm border-collapse">
-                        <thead>
+                        <thead className="sticky top-0 z-10">
                             <tr className="bg-emerald-600 text-white">
                                 <th className="text-left text-xs font-semibold px-4 py-3 whitespace-nowrap">Date</th>
                                 <th className="text-left text-xs font-semibold px-4 py-3 whitespace-nowrap">Voucher No</th>
@@ -112,6 +115,7 @@ const SupplierPaymentApproval = () => {
                                 <th className="text-center text-xs font-semibold px-4 py-3 whitespace-nowrap">Action</th>
                             </tr>
                         </thead>
+
                         <tbody className="divide-y divide-gray-100">
                             {payment.length === 0 ? (
                                 <tr>
@@ -130,28 +134,38 @@ const SupplierPaymentApproval = () => {
                                         <td className="px-4 py-3 text-gray-600 text-xs whitespace-nowrap">
                                             {item.date ? new Date(item.date).toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" }) : "-"}
                                         </td>
+
                                         <td className="px-4 py-3 whitespace-nowrap">
                                             <span className="bg-emerald-50 text-emerald-700 text-xs font-semibold px-2 py-1 rounded-md">
                                                 {item.voucherNo || "-"}
                                             </span>
                                         </td>
+
                                         <td className="px-4 py-3">
                                             <div className="flex items-center gap-2.5">
                                                 <div className="w-7 h-7 rounded-full bg-emerald-100 text-emerald-600 text-xs font-bold flex items-center justify-center shrink-0">
                                                     {item.fromCustomer ? item.fromCustomer.charAt(0).toUpperCase() : "?"}
                                                 </div>
-                                                <p className="text-gray-700 text-xs font-medium">{item.fromCustomer || "-"}</p>
+                                                <p className="text-gray-700 text-xs font-medium">
+                                                    {item.fromCustomer || "-"}
+                                                </p>
                                             </div>
                                         </td>
-                                        <td className="px-4 py-3 text-gray-600 text-xs whitespace-nowrap">{item.paymentType || "-"}</td>
+
+                                        <td className="px-4 py-3 text-gray-600 text-xs whitespace-nowrap">
+                                            {item.paymentType || "-"}
+                                        </td>
+
                                         <td className="px-4 py-3 text-right text-gray-800 text-xs font-bold whitespace-nowrap">
                                             Rs. {Number(item.totalAmount || 0).toLocaleString()}
                                         </td>
+
                                         <td className="px-4 py-3">
                                             <div className="flex items-center justify-center">
                                                 <button
                                                     onClick={() => setViewData(item)}
-                                                    className="flex items-center gap-1.5 px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold rounded-lg transition-colors shadow-sm cursor-pointer">
+                                                    className="flex items-center gap-1.5 px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold rounded-lg transition-colors shadow-sm cursor-pointer"
+                                                >
                                                     <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
@@ -165,6 +179,24 @@ const SupplierPaymentApproval = () => {
                             )}
                         </tbody>
                     </table>
+                </div>
+
+                <div className="flex flex-col sm:flex-row items-center justify-between gap-4 px-5 py-4 border-t border-emerald-100 bg-white">
+                    <p className="text-sm text-gray-500 ">
+                        Showing {payment.length === 0 ? 0 : 1} to {payment.length} of {payment.length} entries
+                    </p>
+
+                    <div className="flex items-center gap-2">
+                        <button className="flex items-center gap-1 text-xs text-gray-500 hover:text-emerald-600 bg-emerald-50 hover:bg-emerald-100 px-3 py-1.5 rounded-lg transition-all cursor-pointer">
+                            <ChevronLeft className="w-3.5 h-3.5" /> Previous
+                        </button>
+
+                        <button className="w-8 h-8 rounded-lg bg-emerald-600 text-white text-xs font-bold flex items-center justify-center cursor-pointer">1</button>
+
+                        <button className="flex items-center gap-1 text-xs text-gray-500 hover:text-me-600 bg-emerald-50 hover:bg-emerald-100 px-3 py-1.5 rounded-lg transition-all cursor-pointer">
+                            Next <ChevronRight className="w-3.5 h-3.5" />
+                        </button>
+                    </div>
                 </div>
             </div>
 
