@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import axios from "axios";
 import { Building2, Users, Coins, Package, Receipt, Bell, Palette, Sun, Moon, Monitor, Download, Database, FileSpreadsheet, HardDriveDownload, Check, X, } from "lucide-react";
 
 const NAV_ITEMS = [
@@ -45,7 +46,7 @@ function Input(props) {
   return (
     <input
       {...props}
-      className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+      className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
     />
   );
 }
@@ -54,7 +55,7 @@ function Select({ children, ...props }) {
   return (
     <select
       {...props}
-      className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
+      className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-emerald-500 bg-white"
     >
       {children}
     </select>
@@ -69,7 +70,7 @@ function Checkbox({ label, defaultChecked }) {
         type="checkbox"
         checked={checked}
         onChange={() => setChecked(!checked)}
-        className="w-4 h-4 accent-blue-600 cursor-pointer"
+        className="w-4 h-4 accent-emerald-600 cursor-pointer"
       />
       {label}
     </label>
@@ -83,7 +84,7 @@ function Radio({ label, name, defaultChecked }) {
         type="radio"
         name={name}
         defaultChecked={defaultChecked}
-        className="w-4 h-4 accent-blue-600 cursor-pointer"
+        className="w-4 h-4 accent-emerald-600 cursor-pointer"
       />
       {label}
     </label>
@@ -100,8 +101,8 @@ function SaveButton() {
     <button
       onClick={handleSave}
       className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium cursor-pointer transition-all duration-200 ${saved
-          ? "bg-green-50 text-green-700 border border-green-200"
-          : "bg-blue-600 text-white hover:bg-blue-700 active:scale-95"
+        ? "bg-green-50 text-green-700 border border-green-200"
+        : "bg-emerald-600 text-white hover:bg-emerald-700 active:scale-95"
         }`}
     >
       {saved && <Check size={14} />}
@@ -140,7 +141,7 @@ function GeneralSection() {
               <textarea
                 defaultValue="Lahore, Punjab, Pakistan"
                 rows={2}
-                className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm text-gray-800 resize-y focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm text-gray-800 resize-y focus:outline-none focus:ring-2 focus:ring-emerald-500"
               />
             </Field>
           </div>
@@ -183,38 +184,205 @@ function GeneralSection() {
   );
 }
 
+const MODULES = [
+  { key: "dashboard", label: "Dashboard" },
+  { key: "analytics", label: "Analytics" },
+  { key: "customers", label: "Customers" },
+  { key: "orders", label: "Orders" },
+  { key: "sales", label: "Sales" },
+  { key: "approval", label: "Approval" },
+  { key: "products", label: "Products" },
+  { key: "suppliers", label: "Suppliers" },
+  { key: "purchase", label: "Purchase" },
+  { key: "warehouseFinishProduct", label: "Warehouse Finish Product" },
+  { key: "stock", label: "Stock" },
+  { key: "warehouseWiseSale", label: "Warehouse Wise Sale" },
+  { key: "schemeReport", label: "Scheme Report" },
+  { key: "return", label: "Return" },
+  { key: "distributorOrder", label: "Distributor Order" },
+  { key: "report", label: "Report" },
+  { key: "accounts", label: "Accounts" },
+  { key: "bank", label: "Bank" },
+  { key: "salary", label: "Salary" },
+  { key: "assets", label: "Assets" },
+];
+
+const ROLES = ["Admin", "Accountant", "Cash & Expense", "Raw Material", "Employee Attendance", "Stock Manager"];
+const ACTIONS = ["view", "create", "update", "delete"];
+
 function UsersSection() {
+  const [users, setUsers] = useState([]);
+  const [selected, setSelected] = useState(null);
+  const [role, setRole] = useState("");
+  const [permissions, setPermissions] = useState({});
+  const [saving, setSaving] = useState(false);
+
+  async function loadUsers() {
+    try {
+      let res = await axios.get("http://localhost:3000/all/users");
+      setUsers(res.data);
+    } catch (err) {
+      console.log("LOAD USERS FAILED:", err.response?.data || err.message);
+    }
+  }
+
+  useEffect(() => { loadUsers(); }, []);
+
+  function openUser(user) {
+    setSelected(user);
+    setRole(user.role || "Stock Manager");
+    setPermissions(user.permissions || {});
+  }
+
+  function toggle(moduleKey, action) {
+    setPermissions((prev) => {
+      let mod = prev[moduleKey] || {};
+      return { ...prev, [moduleKey]: { ...mod, [action]: !mod[action] } };
+    });
+  }
+
+  function toggleAll(moduleKey, value) {
+    setPermissions((prev) => ({
+      ...prev,
+      [moduleKey]: { view: value, create: value, update: value, delete: value },
+    }));
+  }
+
+  async function handleSave() {
+    if (!selected) return;
+    setSaving(true);
+    try {
+      await axios.put(`http://localhost:3000/update/user/permissions/${selected._id}`, { role, permissions });
+      await loadUsers();
+      setSaving(false);
+    } catch (err) {
+      console.log("SAVE FAILED:", err.response?.data || err.message);
+      setSaving(false);
+    }
+  }
+
   return (
     <div>
-      <h2 className="text-lg font-medium text-gray-900 mb-1">Users & Roles</h2>
+      <h2 className="text-lg font-medium  text-gray-900 mb-1">Users & Roles</h2>
       <p className="text-sm text-gray-500 mb-5">Access control aur permissions manage karo</p>
 
-      <Card title="Default role for new users">
-        <Select className="w-60">
-          <option>Viewer</option>
-          <option>Sales Staff</option>
-          <option>Manager</option>
-          <option>Admin</option>
-        </Select>
-      </Card>
+      {!selected ? (
+        <Card title="Select a user to manage permissions">
+          <div className="flex flex-col gap-1">
+            {users.length === 0 ? (
+              <p className="text-sm text-gray-400 py-4 text-center">No users found</p>
+            ) : (
+              users.map((u) => (
+                <button
+                  key={u._id}
+                  onClick={() => openUser(u)}
+                  className="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-gray-50 text-left cursor-pointer transition-colors"
+                >
+                  <div className="w-8 h-8 rounded-full bg-emerald-100 text-emerald-600 text-xs font-bold flex items-center justify-center shrink-0">
+                    {(u.firstName || "?").charAt(0).toUpperCase()}
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <p className="text-sm font-medium text-gray-800 truncate">{u.firstName} {u.lastName}</p>
+                    <p className="text-xs text-gray-400 truncate">{u.email}</p>
+                  </div>
+                  <span className="text-[10px] font-medium text-emerald-600 bg-emerald-50 rounded-full px-2 py-0.5 shrink-0">
+                    {u.role || "—"}
+                  </span>
+                </button>
+              ))
+            )}
+          </div>
+        </Card>
+      ) : (
+        <>
+          <div className="flex items-center justify-between mb-4">
+            <button
+              onClick={() => setSelected(null)}
+              className="text-xs text-gray-500 hover:text-gray-700 cursor-pointer"
+            >
+              ← Back to users
+            </button>
+          </div>
 
-      <Card title="Session & security">
-        <div className="grid grid-cols-2 gap-3 mb-4">
-          <Field label="Session timeout (minutes)">
-            <Input type="number" defaultValue={30} />
-          </Field>
-          <Field label="Max login attempts">
-            <Input type="number" defaultValue={5} />
-          </Field>
-        </div>
-        <div className="flex flex-col gap-3">
-          <Checkbox label="Require strong password" defaultChecked />
-          <Checkbox label="Enable two-factor authentication (2FA)" />
-          <Checkbox label="Log user activity" defaultChecked />
-        </div>
-      </Card>
+          <Card>
+            <div className="flex items-center justify-between gap-3 flex-wrap">
+              <div className="flex items-center gap-3">
+                <div className="w-9 h-9 rounded-full bg-emerald-600 text-white text-sm font-bold flex items-center justify-center shrink-0">
+                  {(selected.firstName || "?").charAt(0).toUpperCase()}
+                </div>
+                <div>
+                  <p className="text-sm font-medium text-gray-800">{selected.firstName} {selected.lastName}</p>
+                  <p className="text-xs text-gray-400">{selected.email}</p>
+                </div>
+              </div>
+              <Field label="Role">
+                <Select value={role} onChange={(e) => setRole(e.target.value)}>
+                  {ROLES.map((r) => <option key={r} value={r}>{r}</option>)}
+                </Select>
+              </Field>
+            </div>
+          </Card>
 
-      <SaveButton />
+          {role === "Admin" ? (
+            <Card>
+              <p className="text-sm text-gray-600">Admin has full access to all modules — individual permissions are not needed.</p>
+            </Card>
+          ) : (
+            <Card title="Module permissions">
+              <div className="overflow-x-auto">
+                <table className="w-full text-sm border-collapse">
+                  <thead>
+                    <tr className="border-b border-gray-200">
+                      <th className="text-left text-xs font-medium text-gray-500 px-2 py-2">Module</th>
+                      {ACTIONS.map((a) => (
+                        <th key={a} className="text-center text-xs font-medium text-gray-500 px-2 py-2 capitalize">{a}</th>
+                      ))}
+                      <th className="text-center text-xs font-medium text-gray-500 px-2 py-2">All</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {MODULES.map((m) => {
+                      const mp = permissions[m.key] || {};
+                      const allOn = ACTIONS.every((a) => mp[a]);
+                      return (
+                        <tr key={m.key} className="border-b border-gray-50">
+                          <td className="px-2 py-2 text-sm text-gray-700">{m.label}</td>
+                          {ACTIONS.map((a) => (
+                            <td key={a} className="px-2 py-2 text-center">
+                              <input
+                                type="checkbox"
+                                checked={!!mp[a]}
+                                onChange={() => toggle(m.key, a)}
+                                className="w-4 h-4 accent-emerald-600 cursor-pointer"
+                              />
+                            </td>
+                          ))}
+                          <td className="px-2 py-2 text-center">
+                            <button
+                              onClick={() => toggleAll(m.key, !allOn)}
+                              className={`text-[10px] font-bold px-2 py-1 rounded cursor-pointer transition-colors ${allOn ? "bg-emerald-100 text-emerald-700" : "bg-gray-100 text-gray-500 hover:bg-gray-200"}`}
+                            >
+                              {allOn ? "ON" : "OFF"}
+                            </button>
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+            </Card>
+          )}
+
+          <button
+            onClick={handleSave}
+            disabled={saving}
+            className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium cursor-pointer transition-all bg-emerald-600 text-white hover:bg-emerald-700 active:scale-95 disabled:opacity-60"
+          >
+            {saving ? "Saving..." : "Save changes"}
+          </button>
+        </>
+      )}
     </div>
   );
 }
@@ -384,8 +552,8 @@ function AppearanceSection() {
               key={id}
               onClick={() => setTheme(id)}
               className={`flex flex-col items-center  cursor-pointer gap-2 px-6 py-3 rounded-lg border transition-all ${theme === id
-                  ? "border-blue-500 border-2 text-blue-600"
-                  : "border-gray-200 text-gray-500 hover:border-gray-300"
+                ? "border-emerald-500 border-2 text-emerald-600"
+                : "border-gray-200 text-gray-500 hover:border-gray-300"
                 }`}
             >
               <Icon size={20} />
@@ -517,9 +685,9 @@ export default function Setting({ onClose, setShowSetting }) {
                 <button
                   key={id}
                   onClick={() => setActive(id)}
-                  className={`flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm transition-all w-full text-left ${isActive
-                      ? "bg-blue-50 text-blue-600 font-medium"
-                      : "text-gray-500 hover:bg-gray-50 hover:text-gray-700"
+                  className={`flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm cursor-pointer transition-all w-full text-left ${isActive
+                    ? "bg-emerald-50 text-emerald-600 font-medium"
+                    : "text-gray-500 hover:bg-gray-50 hover:text-gray-700"
                     }`}
                 >
                   <Icon size={16} />

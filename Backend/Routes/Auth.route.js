@@ -44,9 +44,35 @@ router.post('/signin', async function (req, res) {
             firstName: FindLogin.firstName,
             lastName: FindLogin.lastName,
             email: FindLogin.email,
+            role: FindLogin.role,
+            permissions: FindLogin.permissions,
         }
     })
 })
+router.get('/make/admin/:email', async function (req, res) {
+    let updated = await SignupModel.findOneAndUpdate(
+        { email: req.params.email },
+        { role: "Admin", permissions: {} },
+        { new: true }
+    )
+    res.json(updated)
+})
 
+router.get('/all/users', async function (req, res) {
+    let users = await SignupModel.find().select('-password -confirmPassword')
+    res.json(users)
+})
+
+router.put('/update/user/permissions/:id', async function (req, res) {
+    let id = req.params.id
+    let { role, permissions } = req.body
+    let updated = await SignupModel.findByIdAndUpdate(
+        id,
+        { role, permissions },
+        { new: true }
+    )
+    if (!updated) return res.status(404).json({ message: "User not found" })
+    res.json(updated)
+})
 
 export default router

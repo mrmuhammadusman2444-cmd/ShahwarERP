@@ -174,9 +174,12 @@ const SupplierPayment = () => {
                             </label>
                             <div className="flex items-center gap-2 bg-emerald-50/60 border border-emerald-100 rounded-lg px-2.5 py-2 focus-within:ring-2 focus-within:ring-emerald-500/25 focus-within:border-emerald-500 transition-shadow">
                                 <ArrowLeftRight size={14} className="text-emerald-600 shrink-0" />
-                                <input onChange={(e) => { setPayment({ ...payment, voucherNo: e.target.value }) }}
+                                <input
+                                    readOnly
+                                    value="Auto-generated"
+                                    onChange={(e) => { setPayment({ ...payment, voucherNo: e.target.value }) }}
                                     placeholder="Voucher No"
-                                    className="flex-1 bg-transparent text-sm text-zinc-700 outline-none"
+                                    className="flex-1 bg-transparent text-sm cursor-not-allowed text-zinc-700 outline-none"
                                 />
                             </div>
                         </div>

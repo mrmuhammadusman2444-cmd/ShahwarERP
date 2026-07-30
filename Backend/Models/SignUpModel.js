@@ -11,8 +11,8 @@ const SignupSchema = new mongoose.Schema({
     email: {
         type: String
     },
-    phoneNo:{
-        type:Number
+    phoneNo: {
+        type: Number
     },
     password: {
         type: String
@@ -20,8 +20,18 @@ const SignupSchema = new mongoose.Schema({
     confirmPassword: {
         type: String
     },
-    
-    
+
+    role: {
+        type: String,
+        enum: ["Admin", "Accountant", "Cash & Expense", "Raw Material", "Employee Attendance", "Stock Manager"],
+        default: "Stock Manager"
+    },
+
+    permissions: {
+        type: Object,
+        default: {}
+    },
+
 })
 
 const SignupModel = mongoose.model('Registration', SignupSchema)

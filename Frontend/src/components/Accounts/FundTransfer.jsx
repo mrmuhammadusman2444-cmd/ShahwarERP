@@ -67,7 +67,7 @@ function DropdownField({ icon: Icon, label, placeholder, value, options, onSelec
     )
 }
 
-// ---- Nested picker that expands only for Customer / Bank ----
+// ---- Nested picker that expands only for Customer / Bank / Supplier ----
 function NestedPicker({ title, placeholder }) {
     const [query, setQuery] = useState('')
     return (
@@ -167,6 +167,9 @@ export default function FundTransfer() {
                                 options={TO_OPTIONS}
                                 onSelect={setToType}
                             />
+                            {toType === 'supplier' && (
+                                <NestedPicker title="Select supplier" placeholder="Search supplier..." />
+                            )}
                             {toType === 'bank' && (
                                 <NestedPicker title="Select bank account" placeholder="Search bank..." />
                             )}
