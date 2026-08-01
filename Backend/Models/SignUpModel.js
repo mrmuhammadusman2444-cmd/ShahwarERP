@@ -31,7 +31,10 @@ const SignupSchema = new mongoose.Schema({
         type: Object,
         default: {}
     },
-
+    image: {
+        type: String,
+        default: ""
+    },
 })
 
 const SignupModel = mongoose.model('Registration', SignupSchema)

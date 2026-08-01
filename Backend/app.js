@@ -27,6 +27,7 @@ app.use('/', UnitRoute)
 app.use('/', PurchaseRoute)
 app.use('/', SupplierRoute)
 app.use('/', SupplierPaymentRoute)
+app.use('/uploads', express.static('uploads'))
 
 
 

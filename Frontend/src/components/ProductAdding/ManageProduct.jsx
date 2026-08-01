@@ -5,6 +5,7 @@ import axios from 'axios';
 import { Pencil, Trash2, ChevronDown, Plus, TrendingUp, TrendingDown, Package } from 'lucide-react';
 import { toast } from 'react-toastify'
 import { motion } from "framer-motion";
+import { can } from '../../Utils/Permissions.js'
 import DeleteAlertPopup from './DeleteAlertPopup.jsx'
 import ProdcutUpdatePopup from './ProdcutUpdatePopup.jsx';
 
@@ -350,15 +351,19 @@ const ManageProduct = () => {
                                                             }`}>
                                                         <ChevronDown size={15} className={`transition-transform ${isOpen ? "rotate-180" : ""}`} />
                                                     </button>
-                                                    <button
-                                                        onClick={() => { setUpdateProduct(product); setShowProductPopup(true) }}
-                                                        className="p-1.5 rounded-lg text-gray-400 hover:text-blue-600 hover:bg-blue-100 cursor-pointer transition-all">
-                                                        <Pencil size={15} />
-                                                    </button>
-                                                    <button onClick={() => { setDeleteProduct(product); setShowDeletePopup(true) }}
-                                                        className="p-1.5 rounded-lg text-gray-400 hover:text-rose-600 hover:bg-rose-100 cursor-pointer transition-all">
-                                                        <Trash2 size={15} />
-                                                    </button>
+                                                    {can('products', 'update') && (
+                                                        <button
+                                                            onClick={() => { setUpdateProduct(product); setShowProductPopup(true) }}
+                                                            className="p-1.5 rounded-lg text-gray-400 hover:text-blue-600 hover:bg-blue-100 cursor-pointer transition-all">
+                                                            <Pencil size={15} />
+                                                        </button>
+                                                    )}
+                                                    {can('products', 'delete') && (
+                                                        <button onClick={() => { setDeleteProduct(product); setShowDeletePopup(true) }}
+                                                            className="p-1.5 rounded-lg text-gray-400 hover:text-rose-600 hover:bg-rose-100 cursor-pointer transition-all">
+                                                            <Trash2 size={15} />
+                                                        </button>
+                                                    )}
                                                 </div>
                                             </td>
 
@@ -401,7 +406,7 @@ const ManageProduct = () => {
                                                         <div className="bg-white rounded-xl border border-emerald-100 px-3.5 py-2.5">
                                                             <p className="text-gray-400 text-[10px] font-semibold uppercase tracking-wide">Dozen</p>
                                                             <p className="mt-0.5 text-sm font-bold tabular-nums text-gray-700">
-                                                               
+
                                                             </p>
                                                         </div>
 

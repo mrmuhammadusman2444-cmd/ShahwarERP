@@ -8,7 +8,6 @@ router.post('/add/new/product', async (req, res) => {
 
         let data = req.body;
 
-        // Last Product Find
         const lastProduct = await AddProductModel
             .findOne()
             .sort({ createdAt: -1 });

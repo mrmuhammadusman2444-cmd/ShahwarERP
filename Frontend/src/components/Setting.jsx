@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { Building2, Search, ShieldCheck, ChevronDown, Users, Coins, Package, Receipt, Bell, Palette, Sun, Moon, Monitor, Download, Database, FileSpreadsheet, HardDriveDownload, Check, X, } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Building2, Loader2, Search, ShieldCheck, ChevronDown, Users, Coins, Package, Receipt, Bell, Palette, Sun, Moon, Monitor, Download, Database, FileSpreadsheet, HardDriveDownload, Check, X, Crown, Calculator, Wallet, CalendarCheck, Boxes } from "lucide-react";
+
 
 const NAV_ITEMS = [
   { id: "general", label: "General", icon: Building2 },
@@ -337,7 +339,14 @@ const MODULES = [
   },
 ];
 
-const ROLES = ["Admin", "Accountant", "Cash & Expense", "Raw Material", "Employee Attendance", "Stock Manager"];
+const ROLES = [
+  { name: "Admin", icon: Crown },
+  { name: "Accountant", icon: Calculator },
+  { name: "Cash & Expense", icon: Wallet },
+  { name: "Raw Material", icon: Package },
+  { name: "Employee Attendance", icon: CalendarCheck },
+  { name: "Stock Manager", icon: Boxes },
+];
 const ACTIONS = ["view", "create", "update", "delete"];
 
 // ---- Reusable toggle switch (advance) ----
@@ -367,9 +376,11 @@ function UsersSection() {
   const [permissions, setPermissions] = useState({});
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
-  const [expanded, setExpanded] = useState(null);   // kaunsा module card khula
+  const [expanded, setExpanded] = useState(null);
   const [search, setSearch] = useState("");
-
+  const [dirty, setDirty] = useState(false);
+  const [confirmAction, setConfirmAction] = useState(null);
+  const [roleOpen, setRoleOpen] = useState(false);
   async function loadUsers() {
     try {
       let res = await axios.get("http://localhost:3000/all/users");
@@ -382,22 +393,37 @@ function UsersSection() {
   useEffect(() => { loadUsers(); }, []);
 
   function openUser(user) {
+    if (dirty) {
+      setConfirmAction({
+        message: "You have unsaved changes. Discard them and switch user?",
+        onConfirm: () => {
+          setSelected(user);
+          setRole(user.role || "Stock Manager");
+          setPermissions(user.permissions || {});
+          setExpanded(null);
+          setDirty(false);
+          setConfirmAction(null);
+        }
+      });
+      return;
+    }
     setSelected(user);
     setRole(user.role || "Stock Manager");
     setPermissions(user.permissions || {});
     setExpanded(null);
+    setDirty(false);
   }
 
-  // module action toggle (view/create/update/delete)
   function toggleAction(mKey, action) {
+    setDirty(true);
     setPermissions((prev) => {
       let mod = prev[mKey] || {};
       return { ...prev, [mKey]: { ...mod, [action]: !mod[action] } };
     });
   }
 
-  // sub-menu toggle
   function toggleSub(mKey, subKey) {
+    setDirty(true);
     setPermissions((prev) => {
       let mod = prev[mKey] || {};
       let subs = mod.subMenus || {};
@@ -405,8 +431,8 @@ function UsersSection() {
     });
   }
 
-  // poora module ON/OFF (saare actions + saare sub-menus)
   function toggleModule(mod, value) {
+    setDirty(true);
     setPermissions((prev) => {
       let subMenus = {};
       mod.subs.forEach((s) => { subMenus[s.key] = value; });
@@ -420,7 +446,6 @@ function UsersSection() {
     });
   }
 
-  // check module poora ON hai kya
   function isModuleAllOn(mod) {
     const mp = permissions[mod.key] || {};
     const actionsOn = ACTIONS.every((a) => mp[a]);
@@ -431,12 +456,15 @@ function UsersSection() {
   async function handleSave() {
     if (!selected) return;
     setSaving(true);
+    const minDelay = new Promise(r => setTimeout(r, 1500));
     try {
       await axios.put(`http://localhost:3000/update/user/permissions/${selected._id}`, { role, permissions });
       await loadUsers();
+      await minDelay;
+      setDirty(false);
       setSaving(false);
       setSaved(true);
-      setTimeout(() => setSaved(false), 2000);
+      setTimeout(() => setSaved(false), 2500);
     } catch (err) {
       console.log("SAVE FAILED:", err.response?.data || err.message);
       setSaving(false);
@@ -447,7 +475,7 @@ function UsersSection() {
     m.label.toLowerCase().includes(search.toLowerCase())
   );
 
-  // ============ USERS LIST (koi user select nahi) ============
+
   if (!selected) {
     return (
       <div>
@@ -458,7 +486,7 @@ function UsersSection() {
           <div className="px-4 py-3 border-b border-gray-100 bg-gray-50/60">
             <p className="text-sm font-medium text-gray-700">All Users <span className="text-emerald-600">({users.length})</span></p>
           </div>
-          <div className="divide-y divide-gray-50 max-h-[400px] overflow-y-auto">
+          <div className="divide-y divide-gray-50 max-h-100 overflow-y-auto">
             {users.length === 0 ? (
               <p className="text-center text-gray-400 text-sm py-8">No users found</p>
             ) : (
@@ -488,17 +516,25 @@ function UsersSection() {
     );
   }
 
-  // ============ PERMISSION EDITOR (user selected) ============
   return (
     <div>
       <button
-        onClick={() => setSelected(null)}
+        onClick={() => {
+          if (dirty) {
+            setConfirmAction({
+              message: "You have unsaved changes. Discard them?",
+              onConfirm: () => { setSelected(null); setDirty(false); setConfirmAction(null); }
+            });
+            return;
+          }
+          setSelected(null);
+          setDirty(false);
+        }}
         className="text-xs text-gray-500 hover:text-emerald-600 cursor-pointer mb-3 flex items-center gap-1"
       >
         ← Back to all users
       </button>
 
-      {/* User + Role header */}
       <div className="bg-linear-to-r from-emerald-50 to-white border border-emerald-100 rounded-xl p-4 mb-4 flex items-center justify-between flex-wrap gap-3">
         <div className="flex items-center gap-3">
           <div className="w-11 h-11 rounded-full bg-linear-to-br from-emerald-500 to-emerald-700 text-white text-base font-bold flex items-center justify-center shrink-0">
@@ -511,13 +547,50 @@ function UsersSection() {
         </div>
         <div className="flex items-center gap-2">
           <label className="text-[11px] font-bold text-gray-500 uppercase tracking-wide">Role</label>
-          <select
-            value={role}
-            onChange={(e) => setRole(e.target.value)}
-            className="border border-emerald-200 rounded-lg px-3 py-2 text-sm text-gray-700 bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-400 cursor-pointer"
-          >
-            {ROLES.map((r) => <option key={r} value={r}>{r}</option>)}
-          </select>
+          <div className="relative">
+            <button
+              type="button"
+              onClick={() => setRoleOpen((o) => !o)}
+              className="flex items-center gap-2 bg-white border border-emerald-200 hover:border-emerald-400 rounded-lg px-3 py-2 cursor-pointer focus:outline-none focus:ring-2 focus:ring-emerald-500/20 transition-all min-w-44"
+            >
+              <span className="flex items-center justify-center w-6 h-6 rounded-md bg-emerald-100 text-emerald-600 shrink-0">
+                {(() => {
+                  const RoleIcon = ROLES.find((r) => r.name === role)?.icon || ShieldCheck;
+                  return <RoleIcon size={13} />;
+                })()}
+              </span>
+              <span className="flex-1 text-left text-sm font-semibold text-gray-700">{role}</span>
+              <ChevronDown size={15} className={`text-emerald-400 shrink-0 transition-transform duration-300 ${roleOpen ? "rotate-180" : ""}`} />
+            </button>
+
+            {roleOpen && (
+
+
+              <>
+                <div className="fixed inset-0 z-40" onClick={() => setRoleOpen(false)} />
+                <div className="absolute top-full mt-1.5 right-0 z-50 w-56 bg-white border border-emerald-100 rounded-xl shadow-lg shadow-emerald-100/50 p-1.5 animate-[roleDrop_0.2s_ease-out]">
+                  {ROLES.map((r) => {
+                    const active = role === r.name;
+                    const RoleIcon = r.icon;
+                    return (
+                      <button
+                        key={r.name}
+                        type="button"
+                        onClick={() => { setRole(r.name); setDirty(true); setRoleOpen(false); }}
+                        className={`w-full flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-sm cursor-pointer transition-colors ${active ? "bg-emerald-50 text-emerald-700 font-semibold" : "text-gray-600 hover:bg-emerald-50/60 hover:text-emerald-600"}`}
+                      >
+                        <span className={`flex items-center justify-center w-7 h-7 rounded-lg shrink-0 ${active ? "bg-emerald-600 text-white" : "bg-gray-100 text-gray-400"}`}>
+                          <RoleIcon size={14} />
+                        </span>
+                        <span className="flex-1 text-left">{r.name}</span>
+                        {active && <Check size={15} className="text-emerald-600 shrink-0" />}
+                      </button>
+                    );
+                  })}
+                </div>
+              </>
+            )}
+          </div>
         </div>
       </div>
 
@@ -531,7 +604,6 @@ function UsersSection() {
         </div>
       ) : (
         <>
-          {/* Search modules */}
           <div className="flex items-center gap-2 bg-white border border-gray-200 rounded-lg px-3 py-2 mb-3">
             <Search size={15} className="text-gray-400 shrink-0" />
             <input
@@ -611,19 +683,89 @@ function UsersSection() {
               );
             })}
           </div>
+          {confirmAction && (
+            <div className="fixed inset-0 z-60 flex items-center justify-center bg-black/40 p-4" onClick={() => setConfirmAction(null)}>
+              <div onClick={(e) => e.stopPropagation()} className="bg-white rounded-2xl shadow-xl w-full max-w-sm overflow-hidden">
+                <div className="p-5">
+                  <div className="w-11 h-11 rounded-full bg-amber-50 flex items-center justify-center mb-3">
+                    <svg className="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                    </svg>
+                  </div>
+                  <h3 className="text-sm font-bold text-gray-800 mb-1">Unsaved changes</h3>
+                  <p className="text-xs text-gray-500 leading-relaxed">{confirmAction.message}</p>
+                </div>
+                <div className="flex items-center justify-end gap-2 px-5 py-3 bg-gray-50 border-t border-gray-100">
+                  <button
+                    onClick={() => setConfirmAction(null)}
+                    className="px-3.5 py-2 text-xs font-semibold text-gray-600 hover:text-gray-800 cursor-pointer">
+                    Cancel
+                  </button>
+                  <button
+                    onClick={confirmAction.onConfirm}
+                    className="px-4 py-2 text-xs font-semibold text-white bg-rose-600 hover:bg-rose-700 rounded-lg cursor-pointer transition-colors">
+                    Discard
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
         </>
       )}
 
       {/* Save */}
       <div className="flex justify-end mt-5">
-        <button
+        <motion.button
           onClick={handleSave}
-          disabled={saving}
-          className={`flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-semibold cursor-pointer transition-all ${saved ? "bg-emerald-50 text-emerald-700 border border-emerald-200" : "bg-emerald-600 text-white hover:bg-emerald-700 active:scale-95"} disabled:opacity-60`}
+          disabled={saving || saved}
+          whileTap={(!saving && !saved) ? { scale: 0.97 } : {}}
+          transition={{ type: "spring", stiffness: 400, damping: 25 }}
+          className={`relative flex w-48 h-11 items-center justify-center gap-2 rounded-lg text-sm font-semibold cursor-pointer overflow-hidden transition-colors shadow-sm disabled:cursor-not-allowed ${saved ? "bg-emerald-600 text-white shadow-emerald-200" : "bg-emerald-600 text-white hover:bg-emerald-700 shadow-emerald-200"}`}
         >
-          {saved && <Check size={15} />}
-          {saving ? "Saving..." : saved ? "Saved!" : "Save Permissions"}
-        </button>
+          <AnimatePresence mode="wait">
+            {saving && (
+              <motion.span key="saving"
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -8 }}
+                transition={{ duration: 0.15 }}
+                className="flex items-center gap-2 whitespace-nowrap">
+                <Loader2 size={15} className="animate-spin [animation-duration:1s]" />
+                Saving...
+              </motion.span>
+            )}
+
+            {saved && (
+              <motion.span key="saved"
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -8 }}
+                transition={{ duration: 0.15 }}
+                className="flex items-center gap-2 whitespace-nowrap">
+                <motion.span
+                  initial={{ scale: 0, rotate: -90 }}
+                  animate={{ scale: 1, rotate: 0 }}
+                  transition={{ type: "spring", stiffness: 500, damping: 15, delay: 0.05 }}
+                  className="flex h-4 w-4 items-center justify-center rounded-full bg-white">
+                  <Check size={11} strokeWidth={4} className="text-emerald-600" />
+                </motion.span>
+                Saved!
+              </motion.span>
+            )}
+
+            {!saving && !saved && (
+              <motion.span key="idle"
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -8 }}
+                transition={{ duration: 0.15 }}
+                className="flex items-center gap-2 whitespace-nowrap">
+                <Check size={15} />
+                Save Permissions
+              </motion.span>
+            )}
+          </AnimatePresence>
+        </motion.button>
       </div>
     </div>
   );
