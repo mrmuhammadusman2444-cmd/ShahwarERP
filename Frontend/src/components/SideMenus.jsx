@@ -3,7 +3,7 @@ import './SidebarMenus.css'
 import { useState, useEffect } from 'react';
 import axios from 'axios'
 import { useNavigate, useLocation } from 'react-router-dom';
-import { can } from '../Utils/Permissions.js'
+import { can, canSub } from '../Utils/Permissions.js'
 import { Search, Inbox, Bell, LayoutDashboard, Wallet, HandCoins, BriefcaseBusiness, ClipboardList, Landmark, Gift, ChartNoAxesCombined, Repeat2, Flag, BarChart2, LayoutGrid, Package, FileText, Users, Truck, ChevronDown, BadgeDollarSign, Handshake, PackageOpen, ShoppingCart, PackageCheck, Blocks } from "lucide-react";
 
 const SideMenus = ({ collapsed }) => {
@@ -246,7 +246,7 @@ const SideMenus = ({ collapsed }) => {
 
             <div className="px-2">
 
-                {can("Dashboard", "view") && menuMatches('Dashboard', []) && (
+                {can("dashboard", "view") && menuMatches('Dashboard', []) && (
                     <div onClick={() => { navigate('/dashboard') }} onMouseEnter={setTip} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer overflow-hidden mb-px ${collapsed ? 'justify-start' : ''} ${isDashboard ? 'bg-emerald-800' : 'hover:bg-emerald-800'}`}>
                         {isDashboard && !collapsed && (
                             <span className="absolute left-0 top-1/2 -translate-y-1/2 w-0.75 h-4.5 bg-emerald-400 rounded-r-full" />
@@ -263,7 +263,7 @@ const SideMenus = ({ collapsed }) => {
                 )}
 
 
-                {can("Analytics", "view") && menuMatches('Analytics', []) && (
+                {can("analytics", "view") && menuMatches('Analytics', []) && (
 
                     <div onClick={() => { navigate('/analytics') }} onMouseEnter={setTip} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer transition-all mb-px ${collapsed ? 'justify-start' : ''} ${isAnalytics ? 'bg-emerald-800' : 'hover:bg-emerald-800'}`}>
                         {isAnalytics && !collapsed && (
@@ -311,7 +311,7 @@ const SideMenus = ({ collapsed }) => {
                     </div>
                 )} */}
 
-                {can("Customers", "view") && menuMatches('Customers', ['New Customers', 'Manage Customers', 'Manage Factory Customers', 'Customers Ledger', 'Customers Advance']) && (
+                {can("customers", "view") && menuMatches('Customers', ['New Customers', 'Manage Customers', 'Manage Factory Customers', 'Customers Ledger', 'Customers Advance']) && (
                     <div onMouseEnter={setTip} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer transition-all mb-px ${collapsed ? 'justify-start' : ''} ${isParentActive(['/newcustomer', '/manageCustomer', '/factoryCustomer', '/CustomerLedgerPage', '/CustomerAdvancePage']) ? 'bg-emerald-800' : 'hover:bg-emerald-800'}`}
                         onClick={() => setCustomerOpen(!customerOpen)}
                     >
@@ -338,27 +338,27 @@ const SideMenus = ({ collapsed }) => {
                     }}
                         className="ml-7 border-l border-slate-700 pl-3 flex flex-col gap-0.5 overflow-hidden"
                     >
-                        {subMatches('New Customers') && (
+                        {canSub("customers", "newCustomer") && subMatches('New Customers') && (
                             <div onClick={() => navigate('/newcustomer')} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                                 New Customers
                             </div>
                         )}
-                        {subMatches('Manage Customers') && (
+                        {canSub("customers", "manageCustomer") && subMatches('Manage Customers') && (
                             <div onClick={() => navigate('/manageCustomer')} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                                 Manage Customers
                             </div>
                         )}
-                        {subMatches('Manage Factory Customers') && (
+                        {canSub("customers", "manageFactoryCustomer") && subMatches('Manage Factory Customers') && (
                             <div onClick={() => navigate('/factoryCustomer')} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                                 Manage Factory Customers
                             </div>
                         )}
-                        {subMatches('Customers Ledger') && (
+                        {canSub("customers", "customerLedger") && subMatches('Customers Ledger') && (
                             <div onClick={() => navigate('/customerledgerpage')} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                                 Customers Ledger
                             </div>
                         )}
-                        {subMatches('Customers Advance') && (
+                        {canSub("customers", "customerAdvance") && subMatches('Customers Advance') && (
                             <div onClick={() => navigate('/customeradvancepage')} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                                 Customers Advance
                             </div>
@@ -391,29 +391,28 @@ const SideMenus = ({ collapsed }) => {
                         }}
                         className="ml-7 border-l border-slate-700 pl-3 flex flex-col gap-0.5 overflow-hidden"
                     >
-                        {subMatches('New Orders') && (
+                        {canSub("orders", "newOrders") && subMatches('New Orders') && (
                             <div onClick={() => { navigate('/neworderspage') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                                 New Orders
                             </div>
                         )}
-                        {subMatches('Manage Orders') && (
+                        {canSub("orders", "manageOrders") && subMatches('Manage Orders') && (
                             <div onClick={() => { navigate('/ManageOrdersPage') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                                 Manage Orders
                             </div>
                         )}
-                        {subMatches('Orders Reports') && (
+                        {canSub("orders", "ordersReports") && subMatches('Orders Reports') && (
                             <div onClick={() => { navigate('/orderreportpage') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                                 Orders Reports
                             </div>
                         )}
-                        {subMatches('Dispatch Orders') && (
+                        {canSub("orders", "dispatchOrders") && subMatches('Dispatch Orders') && (
                             <div onClick={() => { navigate('/dispatchorderpage') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                                 Dispatch Orders
                             </div>
                         )}
                     </div>
                 )}
-
 
 
 
@@ -444,12 +443,12 @@ const SideMenus = ({ collapsed }) => {
                         }}
                         className="ml-7 border-l border-slate-700 pl-3 flex flex-col gap-0.5 overflow-hidden"
                     >
-                        {subMatches('New Sales') && (
+                        {canSub("sales", "newSales") && subMatches('New Sales') && (
                             <div onClick={() => { navigate('/newSale') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                                 New Sales
                             </div>
                         )}
-                        {subMatches('Manage Sales') && (
+                        {canSub("sales", "manageSales") && subMatches('Manage Sales') && (
                             <div onClick={() => { navigate('/manageSale') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                                 Manage Sales
                             </div>
@@ -489,6 +488,7 @@ const SideMenus = ({ collapsed }) => {
                         )}
                     </div>
                 )}
+
                 {!collapsed && (
                     <div
                         style={{
@@ -501,7 +501,7 @@ const SideMenus = ({ collapsed }) => {
                         }}
                         className="ml-7 border-l border-slate-700 pl-3 flex flex-col gap-0.5 overflow-hidden"
                     >
-                        {subMatches('Invoice Approval') && (
+                        {canSub("approval", "invoiceApproval") && subMatches('Invoice Approval') && (
                             <div onClick={() => { navigate('/invoiceapprovalpage') }} className="flex items-center justify-between text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                                 <span>Invoice Approval</span>
                                 {pendingInvoiceCount > 0 && (
@@ -512,7 +512,7 @@ const SideMenus = ({ collapsed }) => {
                                 )}
                             </div>
                         )}
-                        {subMatches('Purchase Approval') && (
+                        {canSub("approval", "purchaseApproval") && subMatches('Purchase Approval') && (
                             <div onClick={() => { navigate('/purchaseapprovalpage') }} className="flex items-center justify-between text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                                 <span>Purchase Approval</span>
                                 {pendingPurchaseCount > 0 && (
@@ -523,12 +523,13 @@ const SideMenus = ({ collapsed }) => {
                                 )}
                             </div>
                         )}
-                        {subMatches('Customer Payment Approval') && (
+                        {canSub("approval", "customerPaymentApproval") && subMatches('Customer Payment Approval') && (
                             <div onClick={() => { navigate('/customerpaymentpage') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                                 Customer Payment Approval
                             </div>
                         )}
-                        {subMatches('Supplier Payment Approval') && (
+
+                        {canSub("approval", "supplierPaymentApproval") && subMatches('Supplier Payment Approval') && (
                             <div onClick={() => { navigate('/Supplier/Payment/Approval') }} className="flex items-center justify-between text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                                 <span>Supplier Payment Approval</span>
                                 {pendingPaymentCount > 0 && (
@@ -571,37 +572,37 @@ const SideMenus = ({ collapsed }) => {
                         }}
                         className="ml-7 border-l border-slate-700 pl-3 flex flex-col gap-0.5 overflow-hidden"
                     >
-                        {subMatches('New Products') && (
+                        {canSub("products", "newProducts") && subMatches('New Products') && (
                             <div onClick={() => { navigate('/newProduct') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                                 New Product
                             </div>
                         )}
-                        {subMatches('Manage Products') && (
+                        {canSub("products", "manageProducts") && subMatches('Manage Products') && (
                             <div onClick={() => { navigate('/manageproductpage') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                                 Manage Products
                             </div>
                         )}
-                        {subMatches('Category') && (
+                        {canSub("products", "category") && subMatches('Category') && (
                             <div onClick={() => { navigate('/productcategorypage') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                                 Category
                             </div>
                         )}
-                        {subMatches('Unit') && (
+                        {canSub("products", "unit") && subMatches('Unit') && (
                             <div onClick={() => { navigate('/unitpage') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                                 Unit
                             </div>
                         )}
                         {/* {subMatches('Main Category') && (
-                            <div onClick={() => { navigate('/maincategorypage') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
-                                Main Category
+                         <div onClick={() => { navigate('/maincategorypage') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                           Main Category
                             </div>
                         )} */}
-                        {subMatches('Scheme Products') && (
+                        {canSub("products", "schemeProducts") && subMatches('Scheme Products') && (
                             <div onClick={() => { navigate('/schemeproductspage') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                                 Scheme Products
                             </div>
                         )}
-                        {subMatches('Products Price List') && (
+                        {canSub("products", "productsPriceList") && subMatches('Products Price List') && (
                             <div onClick={() => { navigate('/product/price/list') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                                 Products Price List
                             </div>
@@ -637,22 +638,22 @@ const SideMenus = ({ collapsed }) => {
                         }}
                         className="ml-7 border-l border-slate-700 pl-3 flex flex-col gap-0.5 overflow-hidden"
                     >
-                        {subMatches('Add New Suppliers') && (
+                        {canSub("suppliers", "addNewSuppliers") && subMatches('Add New Suppliers') && (
                             <div onClick={() => { navigate('/addsupplierpage') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                                 Add New Suppliers
                             </div>
                         )}
-                        {subMatches('Manage Suppliers') && (
+                        {canSub("suppliers", "manageSuppliers") && subMatches('Manage Suppliers') && (
                             <div onClick={() => { navigate('/managesupplierpage') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                                 Manage Suppliers
                             </div>
                         )}
-                        {subMatches('Suppliers Ledger') && (
+                        {canSub("suppliers", "suppliersLedger") && subMatches('Suppliers Ledger') && (
                             <div onClick={() => { navigate('/supplierledgerpage') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                                 Suppliers Ledger
                             </div>
                         )}
-                        {subMatches('Suppliers Advance') && (
+                        {canSub("suppliers", "suppliersAdvance") && subMatches('Suppliers Advance') && (
                             <div onClick={() => { navigate('/supplieradvancepage') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                                 Suppliers Advance
                             </div>
@@ -688,22 +689,22 @@ const SideMenus = ({ collapsed }) => {
                         }}
                         className="ml-7 border-l border-slate-700 pl-3 flex flex-col gap-0.5 overflow-hidden"
                     >
-                        {subMatches('Add Purchase') && (
+                        {canSub("purchase", "addPurchase") && subMatches('Add Purchase') && (
                             <div onClick={() => { navigate('/addpurchasepage') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                                 Add Purchase
                             </div>
                         )}
-                        {subMatches('Manage Purchase') && (
+                        {canSub("purchase", "managePurchase") && subMatches('Manage Purchase') && (
                             <div onClick={() => { navigate('/managepurchasepage') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                                 Manage Purchase
                             </div>
                         )}
-                        {subMatches('Add Purchase Order') && (
+                        {canSub("purchase", "addPurchaseOrder") && subMatches('Add Purchase Order') && (
                             <div onClick={() => { navigate('/addpurchaseorderpage') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                                 Add Purchase Order
                             </div>
                         )}
-                        {subMatches('Manage Purchase Order') && (
+                        {canSub("purchase", "managePurchaseOrder") && subMatches('Manage Purchase Order') && (
                             <div onClick={() => { navigate('/managepurchaseorder') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                                 Manage Purchase Order
                             </div>
@@ -739,17 +740,17 @@ const SideMenus = ({ collapsed }) => {
                         }}
                         className="ml-7 border-l border-slate-700 pl-3 flex flex-col gap-0.5 overflow-hidden"
                     >
-                        {subMatches('New Finish Product') && (
+                        {canSub("warehouseFinishProduct", "newFinishProduct") && subMatches('New Finish Product') && (
                             <div onClick={() => { navigate('/newfinishproductpage') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                                 New Finish Product
                             </div>
                         )}
-                        {subMatches('Manage Finish Product') && (
+                        {canSub("warehouseFinishProduct", "manageFinishProduct") && subMatches('Manage Finish Product') && (
                             <div onClick={() => { navigate('/managefinishproductpage') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                                 Manage Finish Product
                             </div>
                         )}
-                        {subMatches('Finish Product Stock') && (
+                        {canSub("warehouseFinishProduct", "finishProductStock") && subMatches('Finish Product Stock') && (
                             <div onClick={() => { navigate('/finishstock') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                                 Finish Product Stock
                             </div>
@@ -785,48 +786,42 @@ const SideMenus = ({ collapsed }) => {
 
                     >
 
-                        {subMatches('Finish Stock') && (
+                        {canSub("stock", "finishStock") && subMatches('Finish Stock') && (
                             <div onClick={() => { navigate('/finish/stock') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                                 Finish Stock
                             </div>
                         )}
-                        {subMatches('Raw Material Stock') && (
+                        {canSub("stock", "rawMaterialStock") && subMatches('Raw Material Stock') && (
                             <div onClick={() => { navigate('/raw/material/stock') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                                 Raw Material Stock
                             </div>
                         )}
-                        {subMatches(' Reel Stock') && (
+                        {canSub("stock", "reelStock") && subMatches(' Reel Stock') && (
                             <div onClick={() => { navigate('/reel/stock') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                                 Reel Stock
                             </div>
-
                         )}
-                        {subMatches(' Beverage Stock') && (
-
+                        {canSub("stock", "beverageStock") && subMatches(' Beverage Stock') && (
                             <div onClick={() => { navigate('/beverage/stock') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                                 Beverage Stock
                             </div>
                         )}
-                        {subMatches(' Tea Stock') && (
-
+                        {canSub("stock", "teaStock") && subMatches(' Tea Stock') && (
                             <div onClick={() => { navigate('/tea/stock') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                                 Tea Stock
                             </div>
                         )}
-                        {subMatches(' Raw Packing Stock') && (
-
+                        {canSub("stock", "rawPackingStock") && subMatches(' Raw Packing Stock') && (
                             <div onClick={() => { navigate('/raw/packing/stock') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                                 Raw Packing Stock
                             </div>
                         )}
-                        {subMatches(' Out of Stock') && (
-
+                        {canSub("stock", "outOfStock") && subMatches(' Out of Stock') && (
                             <div onClick={() => { navigate('/out/of/stock') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                                 Out of Stock
                             </div>
                         )}
-                        {subMatches('  Assign User to Stock') && (
-
+                        {canSub("stock", "assignUserToStock") && subMatches('  Assign User to Stock') && (
                             <div onClick={() => { navigate('/assign/user/stock') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                                 Assign User to Stock
                             </div>
@@ -860,27 +855,27 @@ const SideMenus = ({ collapsed }) => {
                         }}
                         className="ml-7 border-l border-slate-700 pl-3 flex flex-col gap-0.5 overflow-hidden"
                     >
-                        {subMatches('New Stock') && (
+                        {canSub("warehouseWiseSale", "newStock") && subMatches('New Stock') && (
                             <div className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                                 New Stock
                             </div>
                         )}
-                        {subMatches('Manage Stock') && (
+                        {canSub("warehouseWiseSale", "manageStock") && subMatches('Manage Stock') && (
                             <div className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                                 Manage Stock
                             </div>
                         )}
-                        {subMatches('New Sale') && (
+                        {canSub("warehouseWiseSale", "newSale") && subMatches('New Sale') && (
                             <div className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                                 New Sale
                             </div>
                         )}
-                        {subMatches('Manage Warehouse Sale') && (
+                        {canSub("warehouseWiseSale", "manageWarehouseSale") && subMatches('Manage Warehouse Sale') && (
                             <div className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                                 Manage Warehouse Sale
                             </div>
                         )}
-                        {subMatches('Warehouse Stock') && (
+                        {canSub("warehouseWiseSale", "warehouseStock") && subMatches('Warehouse Stock') && (
                             <div className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                                 Warehouse Stock
                             </div>
@@ -914,12 +909,12 @@ const SideMenus = ({ collapsed }) => {
                         }}
                         className="ml-7 border-l border-slate-700 pl-3 flex flex-col gap-0.5 overflow-hidden"
                     >
-                        {subMatches('Scheme Report') && (
+                        {canSub("schemeReport", "schemeReport") && subMatches('Scheme Report') && (
                             <div onClick={() => { navigate('/scheme/report') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                                 Scheme Report
                             </div>
                         )}
-                        {subMatches('Warehouse Report') && (
+                        {canSub("schemeReport", "warehouseReport") && subMatches('Warehouse Report') && (
                             <div onClick={() => { navigate('/warehouse/scheme/report') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                                 Warehouse Report
                             </div>
@@ -955,12 +950,12 @@ const SideMenus = ({ collapsed }) => {
                         }}
                         className="ml-7 border-l border-slate-700 pl-3 flex flex-col gap-0.5 overflow-hidden"
                     >
-                        {subMatches('Return') && (
+                        {canSub("return", "return") && subMatches('Return') && (
                             <div onClick={() => { navigate('/return') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                                 Return
                             </div>
                         )}
-                        {subMatches('Manage Return') && (
+                        {canSub("return", " ") && subMatches('Manage Return') && (
                             <div onClick={() => { navigate('/manage/return') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                                 Manage Return
                             </div>
@@ -996,7 +991,7 @@ const SideMenus = ({ collapsed }) => {
                         }}
                         className="ml-7 border-l border-slate-700 pl-3 flex flex-col gap-0.5 overflow-hidden"
                     >
-                        {subMatches('Manage Hafiz Orders') && (
+                        {canSub("distributorOrder", "manageHafizOrders") && subMatches('Manage Hafiz Orders') && (
                             <div onClick={() => { navigate('/manage/distributor/order') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                                 Manage Hafiz Order
                             </div>
@@ -1028,27 +1023,27 @@ const SideMenus = ({ collapsed }) => {
                         }}
                         className="ml-7 border-l border-slate-700 pl-3 flex flex-col gap-0.5 overflow-hidden"
                     >
-                        {subMatches('Today customer Report') && (
+                        {canSub("report", "todayCustomerReport") && subMatches('Today customer Report') && (
                             <div className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                                 Today customer Report
                             </div>
                         )}
-                        {subMatches('User Wise Reciept Report') && (
+                        {canSub("report", "userWiseReceiptReport") && subMatches('User Wise Reciept Report') && (
                             <div className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                                 User Wise Reciept Report
                             </div>
                         )}
-                        {subMatches('Supplier Reciept') && (
+                        {canSub("report", "supplierReceipt") && subMatches('Supplier Reciept') && (
                             <div className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                                 Supplier Reciept
                             </div>
                         )}
-                        {subMatches('Sale Report') && (
+                        {canSub("report", "saleReport") && subMatches('Sale Report') && (
                             <div className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                                 Sale Report
                             </div>
                         )}
-                        {subMatches('Sale Report (Product Wise)') && (
+                        {canSub("report", "saleReportProductWise") && subMatches('Sale Report (Product Wise)') && (
                             <div className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                                 Sale Report (Product Wise)
                             </div>
@@ -1083,48 +1078,48 @@ const SideMenus = ({ collapsed }) => {
                         }}
                         className="ml-7 border-l border-slate-700 pl-3 flex flex-col gap-0.5 overflow-hidden"
                     >
-                        {subMatches('Supplier Payment', 'Accounts') && (
+                        {canSub("accounts", "supplierPayment") && subMatches('Supplier Payment', 'Accounts') && (
                             <div onClick={() => { navigate('/supplier/payments') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                                 Supplier Payment
                             </div>
                         )}
-                        {subMatches('Fund Transfer', 'Accounts') && (
+                        {canSub("accounts", "fundTransfer") && subMatches('Fund Transfer', 'Accounts') && (
 
                             <div onClick={() => { navigate('/fund/transfer') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                                 Fund Transfer
                             </div>
                         )}
-                        {subMatches('Supplier Tally Ledger', 'Accounts') && (
+                        {canSub("accounts", "supplierTallyLedger") && subMatches('Supplier Tally Ledger', 'Accounts') && (
 
                             <div className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                                 Supplier Tally Ledger
                             </div>
                         )}
-                        {subMatches('Customer Tally Ledger', 'Accounts') && (
+                        {canSub("accounts", "customerTallyLedger") && subMatches('Customer Tally Ledger', 'Accounts') && (
 
                             <div className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                                 Customer Tally Ledger
                             </div>
                         )}
-                        {subMatches('Customer Recieve', 'Accounts') && (
+                        {canSub("accounts", "customerRecieve") && subMatches('Customer Recieve', 'Accounts') && (
 
                             <div className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                                 Customer Recieve
                             </div>
                         )}
-                        {subMatches('Assets Payment', 'Accounts') && (
+                        {canSub("accounts", "assetsPayment") && subMatches('Assets Payment', 'Accounts') && (
 
                             <div className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                                 Assets Payment
                             </div>
                         )}
-                        {subMatches('Cash Adjustment', 'Accounts') && (
+                        {canSub("accounts", "cashAdjustment") && subMatches('Cash Adjustment', 'Accounts') && (
 
                             <div className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                                 Cash Adjustment
                             </div>
                         )}
-                        {subMatches('Reports', 'Accounts') && (
+                        {canSub("accounts", "reports") && subMatches('Reports', 'Accounts') && (
                             <div className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                                 Reports
                             </div>
@@ -1158,22 +1153,22 @@ const SideMenus = ({ collapsed }) => {
                         }}
                         className="ml-7 border-l border-slate-700 pl-3 flex flex-col gap-0.5 overflow-hidden"
                     >
-                        {subMatches('Add New') && (
+                        {canSub("bank", "addNew") && subMatches('Add New') && (
                             <div onClick={() => { navigate('/new/bank') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                                 Add New
                             </div>
                         )}
-                        {subMatches('Add New Transaction') && (
+                        {canSub("bank", "addNewTransaction") && subMatches('Add New Transaction') && (
                             <div onClick={() => { navigate('/add/new/transaction') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                                 Add New Transaction
                             </div>
                         )}
-                        {subMatches('Manage Bank') && (
+                        {canSub("bank", "manageBank") && subMatches('Manage Bank') && (
                             <div onClick={() => { navigate('/manage/bank') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                                 Manage Bank
                             </div>
                         )}
-                        {subMatches('Bank Ledger') && (
+                        {canSub("bank", "bankLedger") && subMatches('Bank Ledger') && (
                             <div onClick={() => { navigate('/bank/ledger') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                                 Bank Ledger
                             </div>
@@ -1207,7 +1202,7 @@ const SideMenus = ({ collapsed }) => {
                         }}
                         className="ml-7 border-l border-slate-700 pl-3 flex flex-col gap-0.5 overflow-hidden"
                     >
-                        {subMatches('Employee') && (
+                        {canSub("salary", "employee") && subMatches('Employee') && (
                             <div onClick={() => setemployeeOpen(!employeeOpen)} className="flex items-center justify-between text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                                 <span>Employee</span>
                                 <ChevronDown className={`w-3 h-3 transition-transform duration-300 ${employeeOpen ? 'rotate-180' : ''}`} />
@@ -1223,17 +1218,17 @@ const SideMenus = ({ collapsed }) => {
                                 }}
                                 className="ml-4 border-l border-slate-700 pl-3 flex flex-col gap-0.5 overflow-hidden"
                             >
-                                {subMatches('Add Employee') && (
+                                {canSub("salary", "addEmployee") && subMatches('Add Employee') && (
                                     <div onClick={() => navigate('/add/employee')} className="text-[11.5px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                                         Add Employee
                                     </div>
                                 )}
-                                {subMatches('Manage Employee') && (
+                                {canSub("salary", "manageEmployee") && subMatches('Manage Employee') && (
                                     <div onClick={() => navigate('/manage/employee')} className="text-[11.5px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                                         Manage Employee
                                     </div>
                                 )}
-                                {subMatches('Manage Employee Salary') && (
+                                {canSub("salary", "manageEmployeeSalary") && subMatches('Manage Employee Salary') && (
                                     <div onClick={() => navigate('/manage/employee/salary')} className="text-[11.5px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                                         Manage Employee Salary
                                     </div>
@@ -1241,7 +1236,7 @@ const SideMenus = ({ collapsed }) => {
                             </div>
                         )}
 
-                        {subMatches('Attendence') && (
+                        {canSub("salary", "attendance") && subMatches('Attendence') && (
                             <div onClick={() => setattendanceOpen(!attendanceOpen)} className="flex items-center justify-between text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                                 <span>Attendence</span>
                                 <ChevronDown className={`w-3 h-3 transition-transform duration-300 ${attendanceOpen ? 'rotate-180' : ''}`} />
@@ -1257,12 +1252,12 @@ const SideMenus = ({ collapsed }) => {
                                 }}
                                 className="ml-4 border-l border-slate-700 pl-3 flex flex-col gap-0.5 overflow-hidden"
                             >
-                                {subMatches('Attendance') && (
+                                {canSub("salary", "attendance") && subMatches('Attendance') && (
                                     <div onClick={() => { navigate('/attendence') }} className="text-[11.5px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                                         Attendance
                                     </div>
                                 )}
-                                {subMatches('Attendance Report') && (
+                                {canSub("salary", "attendanceReport") && subMatches('Attendance Report') && (
                                     <div onClick={() => { navigate('/attendence/report') }} className="text-[11.5px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                                         Attendance Report
                                     </div>
@@ -1270,7 +1265,7 @@ const SideMenus = ({ collapsed }) => {
                             </div>
                         )}
 
-                        {subMatches('Salary') && (
+                        {canSub("salary", "salary") && subMatches('Salary') && (
                             <div onClick={() => setsalaryDetailOpen(!salaryDetailOpen)} className="flex items-center justify-between text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                                 <span>Salary</span>
                                 <ChevronDown className={`w-3 h-3 transition-transform duration-300 ${salaryDetailOpen ? 'rotate-180' : ''}`} />
@@ -1286,7 +1281,7 @@ const SideMenus = ({ collapsed }) => {
                                 }}
                                 className="ml-4 border-l border-slate-700 pl-3 flex flex-col gap-0.5 overflow-hidden"
                             >
-                                {subMatches('Employee Salary') && (
+                                {canSub("salary", "employeeSalary") && subMatches('Employee Salary') && (
                                     <div onClick={() => { navigate('/salary') }} className="text-[11.5px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                                         Employee Salary Ledger
                                     </div>
@@ -1323,17 +1318,17 @@ const SideMenus = ({ collapsed }) => {
                         }}
                         className="ml-7 border-l border-slate-700 pl-3 flex flex-col gap-0.5 overflow-hidden"
                     >
-                        {subMatches('Add Assets') && (
+                        {canSub("assets", "addAssets") && subMatches('Add Assets') && (
                             <div onClick={() => { navigate('/assets') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                                 Add Assets
                             </div>
                         )}
-                        {subMatches('Manage Assets') && (
+                        {canSub("assets", "manageAssets") && subMatches('Manage Assets') && (
                             <div onClick={() => { navigate('/manage/assets') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                                 Manage Assets
                             </div>
                         )}
-                        {subMatches('Assets Ledger') && (
+                        {canSub("assets", "assetsLedger") && subMatches('Assets Ledger') && (
                             <div onClick={() => { navigate('/assets/ledger') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                                 Assets Ledger
                             </div>

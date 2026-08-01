@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import axios from 'axios'
 import DeleteAlertPopup from "./DeleteAlertPopup";
 import EditCustomerPopup from "./EditCustomerPopup";
+import { can } from '../../Utils/Permissions.js'
 import { Users, Plus, Copy, FileText, Sheet, File, Printer, Search, ArrowUpDown, Pencil, Eye, Trash2, ChevronLeft, ChevronRight } from "lucide-react";
 import { toast } from 'react-toastify'
 
@@ -275,14 +276,20 @@ const ManageCustomers = () => {
                         <button className="p-1.5 rounded-lg text-gray-400 hover:text-emerald-600 hover:bg-emerald-100 cursor-pointer transition-all">
                           <Eye size={16} />
                         </button>
-                        <button onClick={() => { setEditData(customer), setShowEditPopup(true) }} className="p-1.5 rounded-lg text-gray-400 hover:text-emerald-600 hover:bg-emerald-100 cursor-pointer transition-all">
-                          <Pencil size={16} />
-                        </button>
-                        <button
-                          onClick={() => { setDeleteData(customer); setShowDeleteAlert(true) }}
-                          className="p-1.5 rounded-lg text-gray-400 hover:text-red-600 hover:bg-red-100 cursor-pointer transition-all">
-                          <Trash2 size={16} />
-                        </button>
+                        {can('customers', 'update') &&
+                          <button onClick={() => { setEditData(customer), setShowEditPopup(true) }} className="p-1.5 rounded-lg text-gray-400 hover:text-emerald-600 hover:bg-emerald-100 cursor-pointer transition-all">
+                            <Pencil size={16} />
+                          </button>
+                        }
+
+
+                        {can("customers", "delete") && (
+                          <button
+                            onClick={() => { setDeleteData(customer); setShowDeleteAlert(true) }}
+                            className="p-1.5 rounded-lg text-gray-400 hover:text-red-600 hover:bg-red-100 cursor-pointer transition-all">
+                            <Trash2 size={16} />
+                          </button>
+                        )}
                       </div>
                     </td>
 

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { Building2, Users, Coins, Package, Receipt, Bell, Palette, Sun, Moon, Monitor, Download, Database, FileSpreadsheet, HardDriveDownload, Check, X, } from "lucide-react";
+import { Building2, Search, ShieldCheck, ChevronDown, Users, Coins, Package, Receipt, Bell, Palette, Sun, Moon, Monitor, Download, Database, FileSpreadsheet, HardDriveDownload, Check, X, } from "lucide-react";
 
 const NAV_ITEMS = [
   { id: "general", label: "General", icon: Building2 },
@@ -185,30 +185,180 @@ function GeneralSection() {
 }
 
 const MODULES = [
-  { key: "dashboard", label: "Dashboard" },
-  { key: "analytics", label: "Analytics" },
-  { key: "customers", label: "Customers" },
-  { key: "orders", label: "Orders" },
-  { key: "sales", label: "Sales" },
-  { key: "approval", label: "Approval" },
-  { key: "products", label: "Products" },
-  { key: "suppliers", label: "Suppliers" },
-  { key: "purchase", label: "Purchase" },
-  { key: "warehouseFinishProduct", label: "Warehouse Finish Product" },
-  { key: "stock", label: "Stock" },
-  { key: "warehouseWiseSale", label: "Warehouse Wise Sale" },
-  { key: "schemeReport", label: "Scheme Report" },
-  { key: "return", label: "Return" },
-  { key: "distributorOrder", label: "Distributor Order" },
-  { key: "report", label: "Report" },
-  { key: "accounts", label: "Accounts" },
-  { key: "bank", label: "Bank" },
-  { key: "salary", label: "Salary" },
-  { key: "assets", label: "Assets" },
+  { key: "dashboard", label: "Dashboard", subs: [] },
+  { key: "analytics", label: "Analytics", subs: [] },
+  {
+    key: "customers", label: "Customers", subs: [
+      { key: "newCustomer", label: "New Customers" },
+      { key: "manageCustomer", label: "Manage Customers" },
+      { key: "manageFactoryCustomer", label: "Manage Factory Customers" },
+      { key: "customerLedger", label: "Customers Ledger" },
+      { key: "customerAdvance", label: "Customers Advance" },
+    ]
+  },
+  {
+    key: "orders", label: "Orders", subs: [
+      { key: "newOrders", label: "New Orders" },
+      { key: "manageOrders", label: "Manage Orders" },
+      { key: "ordersReports", label: "Orders Reports" },
+      { key: "dispatchOrders", label: "Dispatch Orders" },
+    ]
+  },
+  {
+    key: "sales", label: "Sales", subs: [
+      { key: "newSales", label: "New Sales" },
+      { key: "manageSales", label: "Manage Sales" },
+    ]
+  },
+  {
+    key: "approval", label: "Approval", subs: [
+      { key: "invoiceApproval", label: "Invoice Approval" },
+      { key: "purchaseApproval", label: "Purchase Approval" },
+      { key: "customerPaymentApproval", label: "Customer Payment Approval" },
+      { key: "supplierPaymentApproval", label: "Supplier Payment Approval" },
+    ]
+  },
+  {
+    key: "products", label: "Products", subs: [
+      { key: "newProducts", label: "New Products" },
+      { key: "manageProducts", label: "Manage Products" },
+      { key: "category", label: "Category" },
+      { key: "unit", label: "Unit" },
+      { key: "schemeProducts", label: "Scheme Products" },
+      { key: "productsPriceList", label: "Products Price List" },
+    ]
+  },
+  {
+    key: "suppliers", label: "Suppliers", subs: [
+      { key: "addNewSuppliers", label: "Add New Suppliers" },
+      { key: "manageSuppliers", label: "Manage Suppliers" },
+      { key: "suppliersLedger", label: "Suppliers Ledger" },
+      { key: "suppliersAdvance", label: "Suppliers Advance" },
+    ]
+  },
+  {
+    key: "purchase", label: "Purchase", subs: [
+      { key: "addPurchase", label: "Add Purchase" },
+      { key: "managePurchase", label: "Manage Purchase" },
+      { key: "addPurchaseOrder", label: "Add Purchase Order" },
+      { key: "managePurchaseOrder", label: "Manage Purchase Order" },
+    ]
+  },
+  {
+    key: "warehouseFinishProduct", label: "Warehouse Finish Product", subs: [
+      { key: "newFinishProduct", label: "New Finish Product" },
+      { key: "manageFinishProduct", label: "Manage Finish Product" },
+      { key: "finishProductStock", label: "Finish Product Stock" },
+    ]
+  },
+  {
+    key: "stock", label: "Stock", subs: [
+      { key: "finishStock", label: "Finish Stock" },
+      { key: "rawMaterialStock", label: "Raw Material Stock" },
+      { key: "reelStock", label: "Reel Stock" },
+      { key: "beverageStock", label: "Beverage Stock" },
+      { key: "teaStock", label: "Tea Stock" },
+      { key: "rawPackingStock", label: "Raw Packing Stock" },
+      { key: "outOfStock", label: "Out of Stock" },
+      { key: "assignUserToStock", label: "Assign User to Stock" },
+    ]
+  },
+  {
+    key: "warehouseWiseSale", label: "Warehouse Wise Sale", subs: [
+      { key: "newStock", label: "New Stock" },
+      { key: "manageStock", label: "Manage Stock" },
+      { key: "newSale", label: "New Sale" },
+      { key: "manageWarehouseSale", label: "Manage Warehouse Sale" },
+      { key: "warehouseStock", label: "Warehouse Stock" },
+    ]
+  },
+  {
+    key: "schemeReport", label: "Scheme Report", subs: [
+      { key: "schemeReport", label: "Scheme Report" },
+      { key: "warehouseReport", label: "Warehouse Report" },
+    ]
+  },
+  {
+    key: "return", label: "Return", subs: [
+      { key: "return", label: "Return" },
+      { key: "manageReturn", label: "Manage Return" },
+    ]
+  },
+  {
+    key: "distributorOrder", label: "Distributor Order", subs: [
+      { key: "manageHafizOrders", label: "Manage Hafiz Order" },
+    ]
+  },
+  {
+    key: "report", label: "Report", subs: [
+      { key: "todayCustomerReport", label: "Today Customer Report" },
+      { key: "userWiseReceiptReport", label: "User Wise Receipt Report" },
+      { key: "supplierReceipt", label: "Supplier Receipt" },
+      { key: "saleReport", label: "Sale Report" },
+      { key: "saleReportProductWise", label: "Sale Report (Product Wise)" },
+    ]
+  },
+  {
+    key: "accounts", label: "Accounts", subs: [
+      { key: "supplierPayment", label: "Supplier Payment" },
+      { key: "supplierTallyLedger", label: "Supplier Tally Ledger" },
+      { key: "customerTallyLedger", label: "Customer Tally Ledger" },
+      { key: "customerRecieve", label: "Customer Receive" },
+      { key: "assetsPayment", label: "Assets Payment" },
+      { key: "fundTransfer", label: "Fund Transfer" },
+      { key: "cashAdjustment", label: "Cash Adjustment" },
+      { key: "reports", label: "Reports" },
+    ]
+  },
+  {
+    key: "bank", label: "Bank", subs: [
+      { key: "addNew", label: "Add New" },
+      { key: "addNewTransaction", label: "Add New Transaction" },
+      { key: "manageBank", label: "Manage Bank" },
+      { key: "bankLedger", label: "Bank Ledger" },
+    ]
+  },
+  {
+    key: "salary", label: "Salary", subs: [
+      { key: "addEmployee", label: "Add Employee" },
+      { key: "manageEmployee", label: "Manage Employee" },
+      { key: "manageEmployeeSalary", label: "Manage Employee Salary" },
+      { key: "attendance", label: "Attendance" },
+      { key: "attendanceReport", label: "Attendance Report" },
+      { key: "employeeSalary", label: "Employee Salary" },
+    ]
+  },
+  {
+    key: "assets", label: "Assets", subs: [
+      { key: "addAssets", label: "Add Assets" },
+      { key: "manageAssets", label: "Manage Assets" },
+      { key: "assetsLedger", label: "Assets Ledger" },
+    ]
+  },
 ];
 
 const ROLES = ["Admin", "Accountant", "Cash & Expense", "Raw Material", "Employee Attendance", "Stock Manager"];
 const ACTIONS = ["view", "create", "update", "delete"];
+
+// ---- Reusable toggle switch (advance) ----
+function Toggle({ on, onChange, size = "md" }) {
+  const isSm = size === "sm";
+  return (
+    <button
+      type="button"
+      onClick={onChange}
+      className={`relative rounded-full transition-colors duration-300 cursor-pointer shrink-0 ${on ? "bg-emerald-500" : "bg-gray-300"} ${isSm ? "w-9 h-5" : "w-11 h-6"}`}
+    >
+      <span
+        className={`absolute top-1/2 bg-white rounded-full shadow-sm transition-all duration-300 ${isSm ? "w-3.5 h-3.5" : "w-4.5 h-4.5"}`}
+        style={{
+          left: on ? "calc(100% - 2px)" : "2px",
+          transform: on ? "translate(-100%, -50%)" : "translate(0, -50%)",
+        }}
+      />
+    </button>
+  );
+}
 
 function UsersSection() {
   const [users, setUsers] = useState([]);
@@ -216,6 +366,9 @@ function UsersSection() {
   const [role, setRole] = useState("");
   const [permissions, setPermissions] = useState({});
   const [saving, setSaving] = useState(false);
+  const [saved, setSaved] = useState(false);
+  const [expanded, setExpanded] = useState(null);   // kaunsा module card khula
+  const [search, setSearch] = useState("");
 
   async function loadUsers() {
     try {
@@ -232,20 +385,47 @@ function UsersSection() {
     setSelected(user);
     setRole(user.role || "Stock Manager");
     setPermissions(user.permissions || {});
+    setExpanded(null);
   }
 
-  function toggle(moduleKey, action) {
+  // module action toggle (view/create/update/delete)
+  function toggleAction(mKey, action) {
     setPermissions((prev) => {
-      let mod = prev[moduleKey] || {};
-      return { ...prev, [moduleKey]: { ...mod, [action]: !mod[action] } };
+      let mod = prev[mKey] || {};
+      return { ...prev, [mKey]: { ...mod, [action]: !mod[action] } };
     });
   }
 
-  function toggleAll(moduleKey, value) {
-    setPermissions((prev) => ({
-      ...prev,
-      [moduleKey]: { view: value, create: value, update: value, delete: value },
-    }));
+  // sub-menu toggle
+  function toggleSub(mKey, subKey) {
+    setPermissions((prev) => {
+      let mod = prev[mKey] || {};
+      let subs = mod.subMenus || {};
+      return { ...prev, [mKey]: { ...mod, subMenus: { ...subs, [subKey]: !subs[subKey] } } };
+    });
+  }
+
+  // poora module ON/OFF (saare actions + saare sub-menus)
+  function toggleModule(mod, value) {
+    setPermissions((prev) => {
+      let subMenus = {};
+      mod.subs.forEach((s) => { subMenus[s.key] = value; });
+      return {
+        ...prev,
+        [mod.key]: {
+          view: value, create: value, update: value, delete: value,
+          subMenus,
+        }
+      };
+    });
+  }
+
+  // check module poora ON hai kya
+  function isModuleAllOn(mod) {
+    const mp = permissions[mod.key] || {};
+    const actionsOn = ACTIONS.every((a) => mp[a]);
+    const subsOn = mod.subs.length === 0 || mod.subs.every((s) => mp.subMenus?.[s.key]);
+    return actionsOn && subsOn;
   }
 
   async function handleSave() {
@@ -255,134 +435,196 @@ function UsersSection() {
       await axios.put(`http://localhost:3000/update/user/permissions/${selected._id}`, { role, permissions });
       await loadUsers();
       setSaving(false);
+      setSaved(true);
+      setTimeout(() => setSaved(false), 2000);
     } catch (err) {
       console.log("SAVE FAILED:", err.response?.data || err.message);
       setSaving(false);
     }
   }
 
-  return (
-    <div>
-      <h2 className="text-lg font-medium  text-gray-900 mb-1">Users & Roles</h2>
-      <p className="text-sm text-gray-500 mb-5">Access control aur permissions manage karo</p>
+  const filteredModules = MODULES.filter((m) =>
+    m.label.toLowerCase().includes(search.toLowerCase())
+  );
 
-      {!selected ? (
-        <Card title="Select a user to manage permissions">
-          <div className="flex flex-col gap-1">
+  // ============ USERS LIST (koi user select nahi) ============
+  if (!selected) {
+    return (
+      <div>
+        <h2 className="text-lg font-medium text-gray-900 mb-1">Users & Roles</h2>
+        <p className="text-sm text-gray-500 mb-5">Access control aur permissions manage karo</p>
+
+        <div className="bg-white border border-gray-200 rounded-xl overflow-hidden">
+          <div className="px-4 py-3 border-b border-gray-100 bg-gray-50/60">
+            <p className="text-sm font-medium text-gray-700">All Users <span className="text-emerald-600">({users.length})</span></p>
+          </div>
+          <div className="divide-y divide-gray-50 max-h-[400px] overflow-y-auto">
             {users.length === 0 ? (
-              <p className="text-sm text-gray-400 py-4 text-center">No users found</p>
+              <p className="text-center text-gray-400 text-sm py-8">No users found</p>
             ) : (
               users.map((u) => (
                 <button
                   key={u._id}
                   onClick={() => openUser(u)}
-                  className="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-gray-50 text-left cursor-pointer transition-colors"
+                  className="w-full flex items-center gap-3 px-4 py-3 hover:bg-emerald-50/40 text-left cursor-pointer transition-colors"
                 >
-                  <div className="w-8 h-8 rounded-full bg-emerald-100 text-emerald-600 text-xs font-bold flex items-center justify-center shrink-0">
+                  <div className="w-9 h-9 rounded-full bg-linear-to-br from-emerald-400 to-emerald-600 text-white text-sm font-bold flex items-center justify-center shrink-0">
                     {(u.firstName || "?").charAt(0).toUpperCase()}
                   </div>
                   <div className="min-w-0 flex-1">
                     <p className="text-sm font-medium text-gray-800 truncate">{u.firstName} {u.lastName}</p>
                     <p className="text-xs text-gray-400 truncate">{u.email}</p>
                   </div>
-                  <span className="text-[10px] font-medium text-emerald-600 bg-emerald-50 rounded-full px-2 py-0.5 shrink-0">
+                  <span className={`text-[10px] font-semibold rounded-full px-2.5 py-1 shrink-0 ${u.role === "Admin" ? "bg-emerald-100 text-emerald-700" : "bg-gray-100 text-gray-500"}`}>
                     {u.role || "—"}
                   </span>
+                  <ChevronDown size={15} className="text-gray-300 -rotate-90 shrink-0" />
                 </button>
               ))
             )}
           </div>
-        </Card>
+        </div>
+      </div>
+    );
+  }
+
+  // ============ PERMISSION EDITOR (user selected) ============
+  return (
+    <div>
+      <button
+        onClick={() => setSelected(null)}
+        className="text-xs text-gray-500 hover:text-emerald-600 cursor-pointer mb-3 flex items-center gap-1"
+      >
+        ← Back to all users
+      </button>
+
+      {/* User + Role header */}
+      <div className="bg-linear-to-r from-emerald-50 to-white border border-emerald-100 rounded-xl p-4 mb-4 flex items-center justify-between flex-wrap gap-3">
+        <div className="flex items-center gap-3">
+          <div className="w-11 h-11 rounded-full bg-linear-to-br from-emerald-500 to-emerald-700 text-white text-base font-bold flex items-center justify-center shrink-0">
+            {(selected.firstName || "?").charAt(0).toUpperCase()}
+          </div>
+          <div>
+            <p className="text-sm font-bold text-gray-800">{selected.firstName} {selected.lastName}</p>
+            <p className="text-xs text-gray-400">{selected.email}</p>
+          </div>
+        </div>
+        <div className="flex items-center gap-2">
+          <label className="text-[11px] font-bold text-gray-500 uppercase tracking-wide">Role</label>
+          <select
+            value={role}
+            onChange={(e) => setRole(e.target.value)}
+            className="border border-emerald-200 rounded-lg px-3 py-2 text-sm text-gray-700 bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-400 cursor-pointer"
+          >
+            {ROLES.map((r) => <option key={r} value={r}>{r}</option>)}
+          </select>
+        </div>
+      </div>
+
+      {role === "Admin" ? (
+        <div className="bg-emerald-50 border border-emerald-100 rounded-xl px-4 py-8 flex flex-col items-center gap-2 text-center">
+          <div className="w-12 h-12 rounded-2xl bg-emerald-100 flex items-center justify-center">
+            <ShieldCheck size={22} className="text-emerald-600" />
+          </div>
+          <p className="text-sm font-semibold text-emerald-800">Full Access</p>
+          <p className="text-xs text-emerald-600 max-w-xs">Admin role has complete access to every module and sub-menu. Individual permissions are not required.</p>
+        </div>
       ) : (
         <>
-          <div className="flex items-center justify-between mb-4">
-            <button
-              onClick={() => setSelected(null)}
-              className="text-xs text-gray-500 hover:text-gray-700 cursor-pointer"
-            >
-              ← Back to users
-            </button>
+          {/* Search modules */}
+          <div className="flex items-center gap-2 bg-white border border-gray-200 rounded-lg px-3 py-2 mb-3">
+            <Search size={15} className="text-gray-400 shrink-0" />
+            <input
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder="Search module..."
+              className="w-full text-sm text-gray-700 placeholder-gray-400 focus:outline-none"
+            />
           </div>
 
-          <Card>
-            <div className="flex items-center justify-between gap-3 flex-wrap">
-              <div className="flex items-center gap-3">
-                <div className="w-9 h-9 rounded-full bg-emerald-600 text-white text-sm font-bold flex items-center justify-center shrink-0">
-                  {(selected.firstName || "?").charAt(0).toUpperCase()}
-                </div>
-                <div>
-                  <p className="text-sm font-medium text-gray-800">{selected.firstName} {selected.lastName}</p>
-                  <p className="text-xs text-gray-400">{selected.email}</p>
-                </div>
-              </div>
-              <Field label="Role">
-                <Select value={role} onChange={(e) => setRole(e.target.value)}>
-                  {ROLES.map((r) => <option key={r} value={r}>{r}</option>)}
-                </Select>
-              </Field>
-            </div>
-          </Card>
+          {/* Module cards */}
+          <div className="flex flex-col gap-2">
+            {filteredModules.map((mod) => {
+              const mp = permissions[mod.key] || {};
+              const isOpen = expanded === mod.key;
+              const allOn = isModuleAllOn(mod);
+              const anyOn = ACTIONS.some((a) => mp[a]) || mod.subs.some((s) => mp.subMenus?.[s.key]);
 
-          {role === "Admin" ? (
-            <Card>
-              <p className="text-sm text-gray-600">Admin has full access to all modules — individual permissions are not needed.</p>
-            </Card>
-          ) : (
-            <Card title="Module permissions">
-              <div className="overflow-x-auto">
-                <table className="w-full text-sm border-collapse">
-                  <thead>
-                    <tr className="border-b border-gray-200">
-                      <th className="text-left text-xs font-medium text-gray-500 px-2 py-2">Module</th>
-                      {ACTIONS.map((a) => (
-                        <th key={a} className="text-center text-xs font-medium text-gray-500 px-2 py-2 capitalize">{a}</th>
-                      ))}
-                      <th className="text-center text-xs font-medium text-gray-500 px-2 py-2">All</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {MODULES.map((m) => {
-                      const mp = permissions[m.key] || {};
-                      const allOn = ACTIONS.every((a) => mp[a]);
-                      return (
-                        <tr key={m.key} className="border-b border-gray-50">
-                          <td className="px-2 py-2 text-sm text-gray-700">{m.label}</td>
-                          {ACTIONS.map((a) => (
-                            <td key={a} className="px-2 py-2 text-center">
-                              <input
-                                type="checkbox"
-                                checked={!!mp[a]}
-                                onChange={() => toggle(m.key, a)}
-                                className="w-4 h-4 accent-emerald-600 cursor-pointer"
-                              />
-                            </td>
-                          ))}
-                          <td className="px-2 py-2 text-center">
-                            <button
-                              onClick={() => toggleAll(m.key, !allOn)}
-                              className={`text-[10px] font-bold px-2 py-1 rounded cursor-pointer transition-colors ${allOn ? "bg-emerald-100 text-emerald-700" : "bg-gray-100 text-gray-500 hover:bg-gray-200"}`}
-                            >
-                              {allOn ? "ON" : "OFF"}
-                            </button>
-                          </td>
-                        </tr>
-                      );
-                    })}
-                  </tbody>
-                </table>
-              </div>
-            </Card>
-          )}
+              return (
+                <div key={mod.key} className={`border rounded-xl overflow-hidden transition-colors ${anyOn ? "border-emerald-200 bg-emerald-50/20" : "border-gray-200 bg-white"}`}>
+                  {/* Card header */}
+                  <div className="flex items-center gap-3 px-4 py-3">
+                    <button
+                      onClick={() => setExpanded(isOpen ? null : mod.key)}
+                      className="flex items-center gap-2 flex-1 text-left cursor-pointer"
+                    >
+                      <ChevronDown size={16} className={`text-gray-400 transition-transform duration-300 ${isOpen ? "rotate-0" : "-rotate-90"}`} />
+                      <span className="text-sm font-semibold text-gray-800">{mod.label}</span>
+                      {anyOn && !allOn && (
+                        <span className="text-[9px] font-bold text-amber-600 bg-amber-100 rounded-full px-1.5 py-0.5">PARTIAL</span>
+                      )}
+                      {allOn && (
+                        <span className="text-[9px] font-bold text-emerald-700 bg-emerald-100 rounded-full px-1.5 py-0.5">FULL</span>
+                      )}
+                    </button>
+                    {/* Master toggle — poora module on/off */}
+                    <Toggle on={allOn} onChange={() => toggleModule(mod, !allOn)} />
+                  </div>
 
-          <button
-            onClick={handleSave}
-            disabled={saving}
-            className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium cursor-pointer transition-all bg-emerald-600 text-white hover:bg-emerald-700 active:scale-95 disabled:opacity-60"
-          >
-            {saving ? "Saving..." : "Save changes"}
-          </button>
+                  {/* Expanded content */}
+                  <div
+                    style={{ maxHeight: isOpen ? "600px" : "0px", opacity: isOpen ? 1 : 0 }}
+                    className="transition-all duration-400 ease-out overflow-hidden"
+                  >
+                    <div className="px-4 pb-4 pt-1 border-t border-emerald-50">
+                      {/* Actions row */}
+                      <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wide mt-2 mb-2">Permissions</p>
+                      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-3">
+                        {ACTIONS.map((a) => (
+                          <div key={a} className={`flex items-center justify-between gap-2 rounded-lg px-3 py-2 border ${mp[a] ? "border-emerald-200 bg-emerald-50" : "border-gray-100 bg-gray-50"}`}>
+                            <span className="text-xs font-medium text-gray-600 capitalize">{a}</span>
+                            <Toggle size="sm" on={!!mp[a]} onChange={() => toggleAction(mod.key, a)} />
+                          </div>
+                        ))}
+                      </div>
+
+                      {/* Sub-menus */}
+                      {mod.subs.length > 0 && (
+                        <>
+                          <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wide mb-2">Sub-menus</p>
+                          <div className="flex flex-col gap-1.5">
+                            {mod.subs.map((s) => {
+                              const on = !!mp.subMenus?.[s.key];
+                              return (
+                                <div key={s.key} className={`flex items-center justify-between gap-2 rounded-lg px-3 py-2 border ${on ? "border-emerald-200 bg-emerald-50/60" : "border-gray-100 bg-white"}`}>
+                                  <span className="text-[13px] text-gray-700">{s.label}</span>
+                                  <Toggle size="sm" on={on} onChange={() => toggleSub(mod.key, s.key)} />
+                                </div>
+                              );
+                            })}
+                          </div>
+                        </>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
         </>
       )}
+
+      {/* Save */}
+      <div className="flex justify-end mt-5">
+        <button
+          onClick={handleSave}
+          disabled={saving}
+          className={`flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-semibold cursor-pointer transition-all ${saved ? "bg-emerald-50 text-emerald-700 border border-emerald-200" : "bg-emerald-600 text-white hover:bg-emerald-700 active:scale-95"} disabled:opacity-60`}
+        >
+          {saved && <Check size={15} />}
+          {saving ? "Saving..." : saved ? "Saved!" : "Save Permissions"}
+        </button>
+      </div>
     </div>
   );
 }
