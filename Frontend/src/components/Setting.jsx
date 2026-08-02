@@ -190,7 +190,7 @@ const MODULES = [
   { key: "dashboard", label: "Dashboard", subs: [] },
   { key: "analytics", label: "Analytics", subs: [] },
   {
-    key: "customers", label: "Customers", subs: [
+    key: "customers", label: "Customers", actions: ["view", "update", "delete"], subs: [
       { key: "newCustomer", label: "New Customers" },
       { key: "manageCustomer", label: "Manage Customers" },
       { key: "manageFactoryCustomer", label: "Manage Factory Customers" },
@@ -207,7 +207,7 @@ const MODULES = [
     ]
   },
   {
-    key: "sales", label: "Sales", subs: [
+    key: "sales", label: "Sales", actions: ["gatePass", "download", "update", "delete"], subs: [
       { key: "newSales", label: "New Sales" },
       { key: "manageSales", label: "Manage Sales" },
     ]
@@ -221,7 +221,7 @@ const MODULES = [
     ]
   },
   {
-    key: "products", label: "Products", subs: [
+    key: "products", label: "Products", actions: ["update", "delete"], subs: [
       { key: "newProducts", label: "New Products" },
       { key: "manageProducts", label: "Manage Products" },
       { key: "category", label: "Category" },
@@ -231,7 +231,7 @@ const MODULES = [
     ]
   },
   {
-    key: "suppliers", label: "Suppliers", subs: [
+    key: "suppliers", label: "Suppliers", actions: ["view", "update", "delete"], subs: [
       { key: "addNewSuppliers", label: "Add New Suppliers" },
       { key: "manageSuppliers", label: "Manage Suppliers" },
       { key: "suppliersLedger", label: "Suppliers Ledger" },
@@ -239,7 +239,7 @@ const MODULES = [
     ]
   },
   {
-    key: "purchase", label: "Purchase", subs: [
+    key: "purchase", label: "Purchase", actions: ["download", "update", "delete"], subs: [
       { key: "addPurchase", label: "Add Purchase" },
       { key: "managePurchase", label: "Manage Purchase" },
       { key: "addPurchaseOrder", label: "Add Purchase Order" },
@@ -436,19 +436,16 @@ function UsersSection() {
     setPermissions((prev) => {
       let subMenus = {};
       mod.subs.forEach((s) => { subMenus[s.key] = value; });
-      return {
-        ...prev,
-        [mod.key]: {
-          view: value, create: value, update: value, delete: value,
-          subMenus,
-        }
-      };
+      let actionsObj = {};
+      (mod.actions || ACTIONS).forEach((a) => { actionsObj[a] = value; });
+      return { ...prev, [mod.key]: { ...actionsObj, subMenus } };
     });
   }
 
   function isModuleAllOn(mod) {
     const mp = permissions[mod.key] || {};
-    const actionsOn = ACTIONS.every((a) => mp[a]);
+    const acts = mod.actions || ACTIONS;
+    const actionsOn = acts.every((a) => mp[a]);
     const subsOn = mod.subs.length === 0 || mod.subs.every((s) => mp.subMenus?.[s.key]);
     return actionsOn && subsOn;
   }
@@ -652,7 +649,8 @@ function UsersSection() {
                       {/* Actions row */}
                       <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wide mt-2 mb-2">Permissions</p>
                       <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-3">
-                        {ACTIONS.map((a) => (
+
+                        {(mod.actions || ACTIONS).map((a) => (
                           <div key={a} className={`flex items-center justify-between gap-2 rounded-lg px-3 py-2 border ${mp[a] ? "border-emerald-200 bg-emerald-50" : "border-gray-100 bg-gray-50"}`}>
                             <span className="text-xs font-medium text-gray-600 capitalize">{a}</span>
                             <Toggle size="sm" on={!!mp[a]} onChange={() => toggleAction(mod.key, a)} />

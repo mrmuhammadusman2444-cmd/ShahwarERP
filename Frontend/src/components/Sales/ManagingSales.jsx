@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
+import { can } from '../../Utils/Permissions.js'
 import { toast } from 'react-toastify'
 import { useEffect, useState } from 'react';
 import jsPDF from "jspdf";
@@ -783,9 +784,12 @@ const ManageSale = () => {
                             </div>
 
                             <div className="relative group/tooltip">
-                              <button onClick={() => navigate(`/editSale/${sale._id}`)} className="flex h-7 w-7 items-center justify-center rounded-lg bg-sky-50 text-sky-600 hover:bg-sky-500 hover:text-white hover:scale-110 active:scale-95 transition-all cursor-pointer" >
-                                <SquarePen className="w-3.5 h-3.5" strokeWidth={2} />
-                              </button>
+                              {can('sales', 'edit') && (
+                                <button onClick={() => navigate(`/editSale/${sale._id}`)} className="flex h-7 w-7 items-center justify-center rounded-lg bg-sky-50 text-sky-600 hover:bg-sky-500 hover:text-white hover:scale-110 active:scale-95 transition-all cursor-pointer" >
+                                  <SquarePen className="w-3.5 h-3.5" strokeWidth={2} />
+                                </button>
+                              )}
+
                               <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 flex flex-col items-center opacity-0 translate-y-1 group-hover/tooltip:opacity-100 group-hover/tooltip:translate-y-0 transition-all duration-200 ease-out pointer-events-none z-20">
                                 <span className="whitespace-nowrap rounded-md bg-emerald-900 px-2 py-1 text-[11px] font-medium text-white shadow-lg shadow-emerald-900/30">Edit</span>
                                 <span className="-mt-1 h-2 w-2 rotate-45 bg-emerald-900"></span>
@@ -793,9 +797,14 @@ const ManageSale = () => {
                             </div>
 
                             <div className="relative group/tooltip">
-                              <button onClick={() => handleDeleteSale(sale._id)} className="flex h-7 w-7 items-center justify-center rounded-lg bg-red-50 text-red-500 hover:bg-red-500 hover:text-white hover:scale-110 active:scale-95 transition-all cursor-pointer">
-                                <Trash2 className="w-3.5 h-3.5" strokeWidth={2} />
-                              </button>
+                              {can('sales', 'delete') && (
+
+                                <button onClick={() => handleDeleteSale(sale._id)} className="flex h-7 w-7 items-center justify-center rounded-lg bg-red-50 text-red-500 hover:bg-red-500 hover:text-white hover:scale-110 active:scale-95 transition-all cursor-pointer">
+                                  <Trash2 className="w-3.5 h-3.5" strokeWidth={2} />
+                                </button>
+
+                              )}
+
                               <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 flex flex-col items-center opacity-0 translate-y-1 group-hover/tooltip:opacity-100 group-hover/tooltip:translate-y-0 transition-all duration-200 ease-out pointer-events-none z-20">
                                 <span className="whitespace-nowrap rounded-md bg-emerald-900 px-2 py-1 text-[11px] font-medium text-white shadow-lg shadow-emerald-900/30">Delete</span>
                                 <span className="-mt-1 h-2 w-2 rotate-45 bg-emerald-900"></span>

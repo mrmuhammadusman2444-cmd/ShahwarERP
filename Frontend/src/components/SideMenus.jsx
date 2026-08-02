@@ -3,7 +3,7 @@ import './SidebarMenus.css'
 import { useState, useEffect } from 'react';
 import axios from 'axios'
 import { useNavigate, useLocation } from 'react-router-dom';
-import { can, canSub } from '../Utils/Permissions.js'
+import { can, canSub, canAnySub } from '../Utils/Permissions.js'
 import { Search, Inbox, Bell, LayoutDashboard, Wallet, HandCoins, BriefcaseBusiness, ClipboardList, Landmark, Gift, ChartNoAxesCombined, Repeat2, Flag, BarChart2, LayoutGrid, Package, FileText, Users, Truck, ChevronDown, BadgeDollarSign, Handshake, PackageOpen, ShoppingCart, PackageCheck, Blocks } from "lucide-react";
 
 const SideMenus = ({ collapsed }) => {
@@ -311,7 +311,7 @@ const SideMenus = ({ collapsed }) => {
                     </div>
                 )} */}
 
-                {can("customers", "view") && menuMatches('Customers', ['New Customers', 'Manage Customers', 'Manage Factory Customers', 'Customers Ledger', 'Customers Advance']) && (
+                {(can("customers", "view") || canAnySub("customers")) && menuMatches('Customers', ['New Customers', 'Manage Customers', 'Manage Factory Customers', 'Customers Ledger', 'Customers Advance']) && (
                     <div onMouseEnter={setTip} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer transition-all mb-px ${collapsed ? 'justify-start' : ''} ${isParentActive(['/newcustomer', '/manageCustomer', '/factoryCustomer', '/CustomerLedgerPage', '/CustomerAdvancePage']) ? 'bg-emerald-800' : 'hover:bg-emerald-800'}`}
                         onClick={() => setCustomerOpen(!customerOpen)}
                     >
@@ -417,7 +417,7 @@ const SideMenus = ({ collapsed }) => {
 
 
 
-                {can("sales", "view") && menuMatches('Sales', ['New Sales', 'Manage Sales']) && (
+                {(can("sales", "view") || canAnySub("sales")) && menuMatches('Sales', ['New Sales', 'Manage Sales']) && (
                     <div onMouseEnter={setTip} onClick={() => setsaleOpen(!saleOpen)} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer transition-all mb-px ${collapsed ? 'justify-start' : ''} ${isParentActive(['/newSale', '/manageSale']) ? 'bg-emerald-800' : 'hover:bg-emerald-800'}`}>
                         {isParentActive(['/newSale', '/manageSale']) && !collapsed && (
                             <span className="absolute left-0 top-1/2 -translate-y-1/2 w-0.75 h-4.5 bg-emerald-400 rounded-r-full" />
@@ -544,7 +544,7 @@ const SideMenus = ({ collapsed }) => {
                 )}
 
 
-                {can("products", "view") && menuMatches('Products', ['New Products', 'Manage Products', 'Category', 'Unit', 'Main Category', 'Scheme Products', 'Products Price List']) && (
+                {(can("products", "view") || canAnySub("products")) && menuMatches('Products', ['New Products', 'Manage Products', 'Category', 'Unit', 'Main Category', 'Scheme Products', 'Products Price List']) && (
 
                     <div onMouseEnter={setTip} onClick={() => setproductOpen(!productOpen)} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer transition-all mb-px ${collapsed ? 'justify-start' : ''} ${isParentActive(['/newProduct', '/manageproductpage', '/productcategorypage', '/unitpage', '/maincategorypage', '/schemeproductspage']) ? 'bg-emerald-800' : 'hover:bg-emerald-800'}`}>
                         {isParentActive(['/newProduct', '/manageproductpage', '/productcategorypage', '/unitpage', '/maincategorypage', '/schemeproductspage']) && !collapsed && (
@@ -610,7 +610,7 @@ const SideMenus = ({ collapsed }) => {
                     </div>
                 )}
 
-                {can("suppliers", "view") && menuMatches('Suppliers', ['Add New Suppliers', 'Manage Suppliers', 'Suppliers Ledger', 'Suppliers Advance']) && (
+                {(can("suppliers", "view") || canAnySub("suppliers")) && menuMatches('Suppliers', ['Add New Suppliers', 'Manage Suppliers', 'Suppliers Ledger', 'Suppliers Advance']) && (
 
                     <div onMouseEnter={setTip} onClick={() => setsupplierOpen(!supplierOpen)} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer transition-all mb-px ${collapsed ? 'justify-start' : ''} ${isParentActive(['/addSupplierPage', '/ManageSupplierPage', '/SupplierLedgerPage', '/SupplierAdvancePage']) ? 'bg-emerald-800' : 'hover:bg-emerald-800'}`}>
                         {isParentActive(['/addSupplierPage', '/ManageSupplierPage', '/SupplierLedgerPage', '/SupplierAdvancePage']) && !collapsed && (
@@ -661,7 +661,7 @@ const SideMenus = ({ collapsed }) => {
                     </div>
                 )}
 
-                {can("purchase", "view") && menuMatches('Purchase', ['Add Purchase', 'Manage Purchase', 'Add Purchase Order', 'Manage Purchase Order']) && (
+                {(can("purchase", "view") || canAnySub("purchase")) && menuMatches('Purchase', ['Add Purchase', 'Manage Purchase', 'Add Purchase Order', 'Manage Purchase Order']) && (
 
                     <div onMouseEnter={setTip} onClick={() => setpurchaseOpen(!purchaseOpen)} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer transition-all mb-px ${collapsed ? 'justify-start' : ''} ${isParentActive(['/AddPurchasePage', '/ManagePurchasePage', '/AddPurchaseOrderPage', '/ManagePurchaseOrder']) ? 'bg-emerald-800' : 'hover:bg-emerald-800'}`}>
                         {isParentActive(['/AddPurchasePage', '/ManagePurchasePage', '/AddPurchaseOrderPage', '/ManagePurchaseOrder']) && !collapsed && (

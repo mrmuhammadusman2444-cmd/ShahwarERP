@@ -273,15 +273,17 @@ const ManageCustomers = () => {
 
                     <td className="px-4 py-3">
                       <div className="flex items-center justify-end gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                        <button className="p-1.5 rounded-lg text-gray-400 hover:text-emerald-600 hover:bg-emerald-100 cursor-pointer transition-all">
-                          <Eye size={16} />
-                        </button>
-                        {can('customers', 'update') &&
+                        {can("customers", "view") && (
+                          <button className="p-1.5 rounded-lg text-gray-400 hover:text-emerald-600 hover:bg-emerald-100 cursor-pointer transition-all">
+                            <Eye size={16} />
+                          </button>
+                        )}
+
+                        {can("customers", "update") && (
                           <button onClick={() => { setEditData(customer), setShowEditPopup(true) }} className="p-1.5 rounded-lg text-gray-400 hover:text-emerald-600 hover:bg-emerald-100 cursor-pointer transition-all">
                             <Pencil size={16} />
                           </button>
-                        }
-
+                        )}
 
                         {can("customers", "delete") && (
                           <button
