@@ -16,12 +16,19 @@ const NAV_ITEMS = [
 ];
 
 const ACCENT_COLORS = [
-  "#1D4ED8",
-  "#0F6E56",
-  "#993556",
-  "#854F0B",
-  "#534AB7",
-  "#5F5E5A",
+  "#059669", // Emerald (default)
+  "#0d9488", // Teal
+  "#0891b2", // Cyan
+  "#2563eb", // Blue
+  "#4f46e5", // Indigo
+  "#7c3aed", // Violet
+  "#9333ea", // Purple
+  "#db2777", // Pink
+  "#e11d48", // Rose
+  "#dc2626", // Red
+  "#ea580c", // Orange
+  "#d97706", // Amber
+  "#475569", // Slate
 ];
 
 function Card({ title, children }) {
@@ -913,8 +920,10 @@ function NotificationsSection() {
 }
 
 function AppearanceSection() {
-  const [theme, setTheme] = useState();
-  const [accent, setAccent] = useState(ACCENT_COLORS[0]);
+  const [theme, setTheme] = useState(() => localStorage.getItem("theme") || "system");
+  const [accent, setAccent] = useState(
+    () => localStorage.getItem("accent") || ACCENT_COLORS[0]
+  );
 
   const themes = [
     { id: "light", label: "Light", icon: Sun },
@@ -922,19 +931,60 @@ function AppearanceSection() {
     { id: "system", label: "System", icon: Monitor },
   ];
 
+  // theme apply + persist
+  useEffect(() => {
+    const root = document.documentElement;
+    const applyResolved = (mode) => {
+      const isDark =
+        mode === "dark" ||
+        (mode === "system" && window.matchMedia("(prefers-color-scheme: dark)").matches);
+      root.classList.toggle("dark", isDark);
+      root.setAttribute("data-theme", isDark ? "dark" : "light");
+    };
+    applyResolved(theme);
+    localStorage.setItem("theme", theme);
+    if (theme === "system") {
+      const mq = window.matchMedia("(prefers-color-scheme: dark)");
+      const onChange = () => applyResolved("system");
+      mq.addEventListener("change", onChange);
+      return () => mq.removeEventListener("change", onChange);
+    }
+  }, [theme]);
+
+  // accent apply + persist (with auto-contrast)
+  useEffect(() => {
+    const root = document.documentElement;
+
+    const getContrast = (hex) => {
+      const c = hex.replace("#", "");
+      const r = parseInt(c.substring(0, 2), 16);
+      const g = parseInt(c.substring(2, 4), 16);
+      const b = parseInt(c.substring(4, 6), 16);
+      const lum = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+      return lum > 0.6 ? "#111827" : "#ffffff"; // light accent -> dark text
+    };
+
+    root.style.setProperty("--accent", accent);
+    root.style.setProperty("--accent-contrast", getContrast(accent));
+    root.style.setProperty("--nav-active", `color-mix(in srgb, ${accent} 38%, #0f1729)`);
+    root.style.setProperty("--nav-strip", accent);
+
+    localStorage.setItem("accent", accent);
+  }, [accent]);
+
   return (
     <div>
       <h2 className="text-lg font-medium text-gray-900 mb-1">Appearance</h2>
       <p className="text-sm text-gray-500 mb-5">Theme aur UI preferences</p>
 
       <Card title="Theme">
-        <div className="flex  gap-3">
+        <div className="flex gap-3">
           {themes.map(({ id, label, icon: Icon }) => (
             <button
               key={id}
               onClick={() => setTheme(id)}
-              className={`flex flex-col items-center  cursor-pointer gap-2 px-6 py-3 rounded-lg border transition-all ${theme === id
-                ? "border-emerald-500 border-2 text-emerald-600"
+              className={`flex flex-col items-center cursor-pointer gap-2 px-6 py-3 rounded-lg border transition-all ${theme === id
+                ? "border-[var(--accent)] border-2 text-[color:var(--accent)]"
                 : "border-gray-200 text-gray-500 hover:border-gray-300"
                 }`}
             >
@@ -959,6 +1009,32 @@ function AppearanceSection() {
               className="w-7 h-7 rounded-full cursor-pointer transition-all"
             />
           ))}
+
+          {/* Custom color */}
+          <label
+            title="Custom color"
+            className="relative w-7 h-7 rounded-full cursor-pointer overflow-hidden"
+            style={
+              !ACCENT_COLORS.includes(accent)
+                ? { outline: `2px solid ${accent}`, outlineOffset: "2px" }
+                : undefined
+            }
+          >
+            <span
+              className="absolute inset-0"
+              style={{
+                background: ACCENT_COLORS.includes(accent)
+                  ? "conic-gradient(red, orange, yellow, lime, cyan, blue, magenta, red)"
+                  : accent,
+              }}
+            />
+            <input
+              type="color"
+              value={ACCENT_COLORS.includes(accent) ? "#059669" : accent}
+              onChange={(e) => setAccent(e.target.value)}
+              className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+            />
+          </label>
         </div>
       </Card>
 
@@ -970,7 +1046,18 @@ function AppearanceSection() {
         </div>
       </Card>
 
-      <SaveButton />
+      <div className="flex items-center gap-3 mt-4">
+        <SaveButton />
+        <button
+          onClick={() => {
+            setTheme("system");
+            setAccent(ACCENT_COLORS[0]); // default emerald
+          }}
+          className="text-xs text-gray-500 hover:text-[color:var(--accent)] underline cursor-pointer"
+        >
+          Reset to default
+        </button>
+      </div>
     </div>
   );
 }

@@ -1,4 +1,7 @@
 @import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
 @media print {
   body * {
     visibility: hidden;
@@ -116,3 +119,244 @@ body {
     box-shadow: 0 0 0 8px rgba(16, 185, 129, 0);
   }
 }
+:root {
+  --nav-active: #065f46;  
+  --nav-strip:  #34d399;  
+}
+
+/* ============ GLOBAL DARK THEME (all pages) ============ */
+
+/* Page = pure black */
+.dark body { background-color: #000000; }
+.dark .bg-gray-100, .dark .bg-slate-100,
+.dark .bg-gray-200, .dark .bg-slate-200,
+.dark .bg-gray-50  { background-color: #000000 !important; }
+
+/* Cards / containers = grey (float above black) + subtle border & shadow */
+.dark .bg-white, .dark .bg-slate-50 {
+  background-color: #161618 !important;
+  border-color: #2a2a2e !important;
+  box-shadow: 0 1px 0 rgba(255,255,255,0.02), 0 8px 24px rgba(0,0,0,0.5) !important;
+}
+
+/* Text — slate-50 headings, muted greys for the rest */
+.dark .text-black, .dark .text-gray-900, .dark .text-gray-800,
+.dark .text-slate-900, .dark .text-slate-800 { color: #f8fafc !important; } /* slate-50 */
+.dark .text-gray-700, .dark .text-gray-600,
+.dark .text-slate-700, .dark .text-slate-600 { color: #a1a1aa !important; }
+.dark .text-gray-500, .dark .text-gray-400,
+.dark .text-slate-500, .dark .text-slate-400 { color: #71717a !important; }
+
+/* Borders / dividers */
+.dark .border-gray-100, .dark .border-gray-200, .dark .border-gray-300,
+.dark .border-slate-100, .dark .border-slate-200, .dark .border-slate-300,
+.dark .divide-gray-200 > *, .dark .divide-slate-200 > * { border-color: #2a2a2e !important; }
+
+/* Inputs / selects / search = darker grey with border */
+.dark input, .dark select, .dark textarea {
+  background-color: #202024 !important;
+  border-color: #33333a !important;
+  color: #f8fafc !important;
+}
+.dark ::placeholder { color: #6b7280 !important; }
+/* light framed toggles / segmented controls in dark */
+.dark .bg-white.rounded-full,
+.dark .bg-gray-100.rounded-full { background-color: #161618 !important; }
+
+/* Light pills/chips (bg-*-50/100) -> soft translucent, colored text stays */
+.dark [class*="bg-emerald-50"], .dark [class*="bg-green-50"],
+.dark [class*="bg-blue-50"], .dark [class*="bg-red-50"],
+.dark [class*="bg-amber-50"], .dark [class*="bg-purple-50"] {
+  background-color: rgba(255,255,255,0.04) !important;
+}
+
+/* Table rows — subtle hover + row divider */
+.dark tbody tr { border-color: #232327 !important; }
+.dark tbody tr:hover { background-color: #1c1c20 !important; }
+
+/* Nicer dark scrollbar */
+.dark ::-webkit-scrollbar { width: 10px; height: 10px; }
+.dark ::-webkit-scrollbar-thumb { background: #2f2f36; border-radius: 8px; }
+.dark ::-webkit-scrollbar-track { background: #0a0a0a; }
+/* ===== DARK: emerald-tinted form surfaces (New Customer & all forms) ===== */
+
+/* Inputs / selects (bg-emerald-50) -> dark field */
+.dark input[class*="bg-emerald"],
+.dark select[class*="bg-emerald"],
+.dark textarea[class*="bg-emerald"] {
+  background-color: #202024 !important;
+  color: #f8fafc !important;
+}
+
+/* focus: pehle white flash karta tha -> ab dark rahega */
+.dark .focus\:bg-white:focus { background-color: #26262b !important; }
+
+/* emerald static borders + dividers -> neutral dark (focus ka emerald ring bacha rehta hai) */
+.dark .border-emerald-50,
+.dark .border-emerald-100,
+.dark .border-emerald-200 { border-color: #2a2a2e !important; }
+
+/* radio/label chips (bg-emerald-50) -> dark */
+.dark label[class*="bg-emerald-50"] { background-color: #202024 !important; }
+.dark .hover\:bg-emerald-50:hover { background-color: #26262b !important; }
+
+/* decorative light-emerald avatar tile -> muted dark emerald */
+.dark [class*="from-emerald-100"] {
+  background-image: linear-gradient(to bottom right, #0f2f24, #0a2019) !important;
+}
+/* ===== DARK: list pages (Manage Customers etc.) ===== */
+
+/* Page bg gradient (from-emerald-50 via-white ...) -> solid black */
+.dark [class*="via-white"] {
+  background-image: none !important;
+  background-color: #000000 !important;
+}
+
+/* Colored soft chips / avatars / hovers (bg-*-100) -> translucent tint (text colour stays) */
+.dark [class*="bg-emerald-100"] { background-color: rgba(16,185,129,0.15) !important; }
+.dark [class*="bg-amber-100"]   { background-color: rgba(245,158,11,0.15) !important; }
+.dark [class*="bg-sky-100"]     { background-color: rgba(14,165,233,0.15) !important; }
+.dark [class*="bg-rose-100"]    { background-color: rgba(244,63,94,0.15) !important; }
+.dark [class*="bg-violet-100"]  { background-color: rgba(139,92,246,0.15) !important; }
+.dark [class*="bg-red-100"]     { background-color: rgba(239,68,68,0.15) !important; }
+
+/* very-dark colored text on light chips -> lighter (readable) */
+.dark .text-emerald-900 { color: #6ee7b7 !important; }
+
+/* soft chips (bg-*-50) not covered before */
+.dark [class*="bg-sky-50"], .dark [class*="bg-rose-50"], .dark [class*="bg-violet-50"] {
+  background-color: rgba(255,255,255,0.04) !important;
+}
+
+/* progress-bar track -> subtle grey (na ke pure black) */
+.dark .h-1\.5.bg-gray-100 { background-color: #2a2a2e !important; }
+/* ===== DARK: blue-tinted borders (Customer Advance etc.) ===== */
+.dark .border-blue-50,
+.dark .border-blue-100,
+.dark .border-blue-200 { border-color: #2a2a2e !important; }
+/* ===== DARK: ledger / detail pages ===== */
+
+/* slate borders incl. opacity variants (border-slate-200/70 etc.) */
+.dark [class*="border-slate-100"],
+.dark [class*="border-slate-200"],
+.dark [class*="border-slate-300"] { border-color: #2a2a2e !important; }
+
+/* light gradient strips (…to-white / from-emerald-50 / bg-slate-50) -> card grey */
+.dark [class*="to-white"],
+.dark [class*="from-emerald-50"],
+.dark [class*="bg-slate-50"] {
+  background-image: none !important;
+  background-color: #17171a !important;
+}
+
+/* deep emerald text on tinted rows -> readable */
+.dark .text-emerald-900, .dark .text-emerald-800 { color: #6ee7b7 !important; }
+.dark .text-emerald-700 { color: #34d399 !important; }
+
+/* small neutral icon tiles (bg-gray-50 chips) -> grey, not black hole */
+.dark [class*="bg-gray-50"].rounded-lg { background-color: #202024 !important; }
+/* =========================================================
+   GLOBAL DARK THEME  — replace ALL previously added dark CSS
+   Palette: page #000 · cards #161618 · inputs #202024 · text slate-50
+   ========================================================= */
+
+/* Page = pure black */
+.dark body { background-color:#000000; }
+.dark [class*="bg-gray-100"], .dark [class*="bg-gray-200"],
+.dark [class*="bg-slate-100"], .dark [class*="bg-slate-200"] { background-color:#000000 !important; }
+
+/* Cards / containers = grey  (buttons/links EXEMPT) */
+.dark .bg-white:not(button):not(a),
+.dark [class~="bg-slate-50"]:not(button) {
+  background-color:#161618 !important;
+  border-color:#2a2a2e !important;
+  box-shadow:0 1px 0 rgba(255,255,255,.02), 0 8px 24px rgba(0,0,0,.5) !important;
+}
+
+/* Text tiers — headings slate-50, rest muted */
+.dark [class*="text-black"], .dark [class*="text-gray-900"], .dark [class*="text-gray-800"],
+.dark [class*="text-slate-900"], .dark [class*="text-slate-800"] { color:#f8fafc !important; }
+.dark [class*="text-gray-700"], .dark [class*="text-gray-600"],
+.dark [class*="text-slate-700"], .dark [class*="text-slate-600"] { color:#a1a1aa !important; }
+.dark [class*="text-gray-500"], .dark [class*="text-gray-400"],
+.dark [class*="text-slate-500"], .dark [class*="text-slate-400"] { color:#71717a !important; }
+
+/* Deep emerald text -> readable */
+.dark [class*="text-emerald-900"], .dark [class*="text-emerald-800"] { color:#6ee7b7 !important; }
+.dark [class*="text-emerald-700"] { color:#34d399 !important; }
+
+/* Borders / dividers (incl. -50 whole-token, opacity variants, blue/slate/emerald) */
+.dark [class*="border-gray-100"], .dark [class*="border-gray-200"], .dark [class*="border-gray-300"],
+.dark [class*="border-slate-100"], .dark [class*="border-slate-200"], .dark [class*="border-slate-300"],
+.dark [class*="border-emerald-100"], .dark [class*="border-emerald-200"], .dark [class*="border-emerald-300"],
+.dark [class*="border-blue-100"], .dark [class*="border-blue-200"],
+.dark [class~="border-gray-50"], .dark [class~="border-slate-50"],
+.dark [class~="border-emerald-50"], .dark [class~="border-blue-50"] { border-color:#2a2a2e !important; }
+
+/* Inputs / selects / textarea = dark field */
+.dark input, .dark select, .dark textarea {
+  background-color:#202024 !important; border-color:#33333a !important; color:#f8fafc !important;
+}
+.dark ::placeholder { color:#6b7280 !important; }
+.dark .focus\:bg-white:focus { background-color:#26262b !important; }
+
+/* Colored soft chips / pills / avatars (bg-*-100) -> translucent tint (buttons EXEMPT) */
+.dark [class*="bg-emerald-100"]:not(button) { background-color:rgba(16,185,129,.15) !important; }
+.dark [class*="bg-amber-100"]:not(button)   { background-color:rgba(245,158,11,.15) !important; }
+.dark [class*="bg-sky-100"]:not(button)     { background-color:rgba(14,165,233,.15) !important; }
+.dark [class*="bg-rose-100"]:not(button)    { background-color:rgba(244,63,94,.15) !important; }
+.dark [class*="bg-violet-100"]:not(button)  { background-color:rgba(139,92,246,.15) !important; }
+.dark [class*="bg-red-100"]:not(button)     { background-color:rgba(239,68,68,.15) !important; }
+
+/* -50 soft chips (whole-token only, so -500 & hover: variants are NOT touched) */
+.dark [class~="bg-emerald-50"]:not(button),
+.dark [class~="bg-sky-50"]:not(button), .dark [class~="bg-rose-50"]:not(button),
+.dark [class~="bg-violet-50"]:not(button), .dark [class~="bg-amber-50"]:not(button) {
+  background-color:rgba(255,255,255,.04) !important;
+}
+
+/* Light gradient strips (…to-white / from-emerald-50 tint) -> card grey */
+.dark [class*="via-white"], .dark [class*="to-white"],
+.dark [class~="from-emerald-50"], .dark [class*="from-emerald-50/"] {
+  background-image:none !important; background-color:#161618 !important;
+}
+
+/* Decorative light-emerald avatar tile -> muted dark emerald */
+.dark [class*="from-emerald-100"] {
+  background-image:linear-gradient(to bottom right,#0f2f24,#0a2019) !important;
+}
+
+/* Small neutral icon tiles + progress-bar track -> subtle grey (not black hole) */
+.dark [class~="bg-gray-50"].rounded-lg { background-color:#202024 !important; }
+.dark .bg-gray-100.rounded-full { background-color:#2a2a2e !important; }
+
+/* Table rows */
+.dark tbody tr { border-color:#232327 !important; }
+.dark tbody tr:hover { background-color:#1c1c20 !important; }
+
+/* Dark scrollbar */
+.dark ::-webkit-scrollbar { width:10px; height:10px; }
+.dark ::-webkit-scrollbar-thumb { background:#2f2f36; border-radius:8px; }
+.dark ::-webkit-scrollbar-track { background:#0a0a0a; }
+/* ============================================================
+   DARK: buttons + gradient icon tiles keep ORIGINAL colors
+   (paste at the VERY END — must be last so it wins)
+   ============================================================ */
+
+/* Emerald gradient buttons + icon/header tiles -> emerald gradient wapas */
+.dark button[class*="from-emerald"],
+.dark [class~="from-emerald-500"],
+.dark [class~="from-emerald-600"],
+.dark [class~="from-emerald-700"] {
+  background-image: linear-gradient(135deg, #10b981, #047857) !important;
+}
+
+/* White / outline secondary buttons -> white hi rahein (dark na hon) */
+.dark button[class*="bg-white"] { background-color: #ffffff !important; }
+
+/* Solid colored buttons -> apni asli color */
+.dark button[class*="bg-emerald-6"] { background-color: #059669 !important; }
+.dark button[class*="bg-green-6"]   { background-color: #16a34a !important; }
+.dark button[class*="bg-red-6"]     { background-color: #dc2626 !important; }
+.dark button[class*="bg-cyan-6"]    { background-color: #0891b2 !important; }
+.dark button[class*="bg-gray-7"]    { background-color: #374151 !important; }
