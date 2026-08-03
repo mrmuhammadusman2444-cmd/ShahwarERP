@@ -360,3 +360,34 @@ body {
 .dark button[class*="bg-red-6"]     { background-color: #dc2626 !important; }
 .dark button[class*="bg-cyan-6"]    { background-color: #0891b2 !important; }
 .dark button[class*="bg-gray-7"]    { background-color: #374151 !important; }
+/* ===== DARK: Settings modal sidebar tabs (highest priority) ===== */
+.dark aside nav button:not(.tab-active),
+html.dark aside nav button:not(.tab-active) {
+    background: transparent !important;
+    background-color: transparent !important;
+    background-image: none !important;
+    box-shadow: none !important;
+    border-color: transparent !important;
+}
+.dark aside nav button:not(.tab-active):hover,
+html.dark aside nav button:not(.tab-active):hover {
+    background-color: rgba(255,255,255,0.08) !important;
+    color: #ffffff !important;
+}
+.dark aside nav button.tab-active {
+    background-color: rgba(255,255,255,0.10) !important;
+    color: #34d399 !important;
+}
+/* ERP Toggle */
+
+.dark button.bg-emerald-500 {
+  background-color: #10b981 !important;
+}
+
+.dark button.bg-gray-300 {
+  background-color: #3f3f46 !important;
+}
+
+.dark button.bg-zinc-700 {
+  background-color: #3f3f46 !important;
+}

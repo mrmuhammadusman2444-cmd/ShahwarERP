@@ -39,7 +39,7 @@ const UserSelectMenu = ({ setShowSetting }) => {
             {showProfile && <MyProfile onClose={() => setShowProfile(false)} />}
             <div
                 onClick={() => setProfileOpen(!profileOpen)}
-                className="flex items-center gap-2.5 px-2 py-1.5 rounded-lg cursor-pointer  bg-slate-200 hover:bg-slate-300 transition-all duration-200   "
+                className="flex items-center gap-2.5 px-2 py-1.5 rounded-full cursor-pointer  bg-slate-200 hover:bg-slate-300 transition-all duration-200   "
             >
                 <div className="relative">
                     <div className="w-9 h-9 rounded-full bg-emerald-500 flex items-center justify-center text-white text-[13px] font-semibold ring-2 ring-white shadow-sm overflow-hidden">

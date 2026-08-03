@@ -17,6 +17,15 @@ const Sidebar = () => {
   const [showSetting, setShowSetting] = useState(false)
   const [showHelp, setShowHelp] = useState(false)
   const [collapsed, setCollapsed] = useState(false)
+  const [sidebarColor, setSidebarColor] = useState(localStorage.getItem("sidebarColor") || "bg-slate-900")
+
+  useEffect(() => {
+    function handleColorChange() {
+      setSidebarColor(localStorage.getItem("sidebarColor") || "bg-slate-900")
+    }
+    window.addEventListener("sidebar-color-changed", handleColorChange)
+    return () => window.removeEventListener("sidebar-color-changed", handleColorChange)
+  }, [])
 
 
 
@@ -33,7 +42,7 @@ const Sidebar = () => {
   return (
     <aside className="h-screen flex flex-row">
 
-      <nav onMouseEnter={() => setCollapsed(false)} onMouseLeave={() => setCollapsed(true)} className={`h-screen flex flex-col ${collapsed ? 'w-16' : 'w-67'} bg-slate-900 border-r border-slate-100 shadow-sm transition-all duration-300`}>
+      <nav onMouseEnter={() => setCollapsed(false)} onMouseLeave={() => setCollapsed(true)} className={`h-screen flex flex-col ${collapsed ? 'w-16' : 'w-67'} ${sidebarColor} border-r border-slate-100 shadow-sm transition-all duration-300`}>
 
         <style>{`
     .sidebar-scroll::-webkit-scrollbar { width: 4px; }

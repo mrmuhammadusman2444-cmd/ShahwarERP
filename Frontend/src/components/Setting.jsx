@@ -925,6 +925,7 @@ function AppearanceSection() {
     () => localStorage.getItem("accent") || ACCENT_COLORS[0]
   );
 
+
   const themes = [
     { id: "light", label: "Light", icon: Sun },
     { id: "dark", label: "Dark", icon: Moon },
@@ -935,9 +936,7 @@ function AppearanceSection() {
   useEffect(() => {
     const root = document.documentElement;
     const applyResolved = (mode) => {
-      const isDark =
-        mode === "dark" ||
-        (mode === "system" && window.matchMedia("(prefers-color-scheme: dark)").matches);
+      const isDark = mode === "dark";
       root.classList.toggle("dark", isDark);
       root.setAttribute("data-theme", isDark ? "dark" : "light");
     };
@@ -1038,6 +1037,10 @@ function AppearanceSection() {
         </div>
       </Card>
 
+      <Card title="Sidebar color">
+        <SidebarColorPicker />
+      </Card>
+
       <Card title="Layout preferences">
         <div className="flex flex-col gap-3">
           <Checkbox label="Compact sidebar" defaultChecked />
@@ -1050,8 +1053,9 @@ function AppearanceSection() {
         <SaveButton />
         <button
           onClick={() => {
-            setTheme("system");
+            setTheme("light");
             setAccent(ACCENT_COLORS[0]); // default emerald
+            setSidebarColor("bg-slate-900"); // default navy
           }}
           className="text-xs text-gray-500 hover:text-[color:var(--accent)] underline cursor-pointer"
         >
@@ -1060,6 +1064,49 @@ function AppearanceSection() {
       </div>
     </div>
   );
+}
+// Sidebar Color swatches — Appearance section me add karo
+function SidebarColorPicker() {
+  const [selected, setSelected] = useState(localStorage.getItem("sidebarColor") || "bg-slate-900")
+
+  const colors = [
+    { name: "Navy", class: "bg-slate-900", hex: "#0f172a" },
+    { name: "Emerald", class: "bg-emerald-950", hex: "#022c22" },
+    { name: "Black", class: "bg-neutral-950", hex: "#0a0a0a" },
+    { name: "Indigo", class: "bg-indigo-950", hex: "#1e1b4b" },
+    { name: "Blue", class: "bg-blue-950", hex: "#172554" },
+    { name: "Zinc", class: "bg-zinc-900", hex: "#18181b" },
+  ]
+
+  function pick(colorClass) {
+    setSelected(colorClass)
+    localStorage.setItem("sidebarColor", colorClass)
+    window.dispatchEvent(new Event("sidebar-color-changed"))   // sidebar ko batao
+  }
+
+  return (
+    <div>
+      <label className="block text-sm font-medium text-gray-700 mb-2">Sidebar Color</label>
+      <div className="flex flex-wrap gap-2.5">
+        {colors.map((c) => (
+          <button
+            key={c.class}
+            onClick={() => pick(c.class)}
+            title={c.name}
+            className={`relative w-10 h-10 rounded-xl cursor-pointer transition-all hover:scale-110 ${selected === c.class ? "ring-2 ring-offset-2 ring-emerald-500" : "ring-1 ring-gray-200"}`}
+            style={{ backgroundColor: c.hex }}
+          >
+            {selected === c.class && (
+              <span className="absolute inset-0 flex items-center justify-center">
+                <Check size={16} className="text-white" />
+              </span>
+            )}
+          </button>
+        ))}
+      </div>
+      <p className="text-xs text-gray-400 mt-2">Choose your sidebar background color</p>
+    </div>
+  )
 }
 
 function BackupSection() {
@@ -1143,7 +1190,7 @@ export default function Setting({ onClose, setShowSetting }) {
           <X size={18} />
         </button>
 
-        <aside className="w-52 shrink-0 bg-white border-r border-gray-200 py-4 flex flex-col">
+        <aside className="w-52 shrink-0 bg-white dark:bg-neutral-900 border-r border-gray-200 dark:border-white/10 py-4 flex flex-col">
           <p className="text-[11px] font-medium text-gray-400 uppercase tracking-widest px-4 mb-2">
             Settings
           </p>
@@ -1154,9 +1201,24 @@ export default function Setting({ onClose, setShowSetting }) {
                 <button
                   key={id}
                   onClick={() => setActive(id)}
-                  className={`flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm cursor-pointer transition-all w-full text-left ${isActive
-                    ? "bg-emerald-50 text-emerald-600 font-medium"
-                    : "text-gray-500 hover:bg-gray-50 hover:text-gray-700"
+                  style={
+                    !isActive && document.documentElement.classList.contains('dark')
+                      ? { backgroundColor: 'transparent', boxShadow: 'none', borderColor: 'transparent' }
+                      : undefined
+                  }
+                  onMouseEnter={(e) => {
+                    if (!isActive && document.documentElement.classList.contains('dark')) {
+                      e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.08)'
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (!isActive && document.documentElement.classList.contains('dark')) {
+                      e.currentTarget.style.backgroundColor = 'transparent'
+                    }
+                  }}
+                  className={`flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm cursor-pointer transition-colors w-full text-left ${isActive
+                    ? "tab-active bg-emerald-50 text-emerald-600 font-medium"
+                    : "text-gray-500 hover:text-gray-700"
                     }`}
                 >
                   <Icon size={16} />
