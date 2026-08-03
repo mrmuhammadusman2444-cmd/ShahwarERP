@@ -486,19 +486,34 @@ function UsersSection() {
         <h2 className="text-lg font-medium text-gray-900 mb-1">Users & Roles</h2>
         <p className="text-sm text-gray-500 mb-5">Access control aur permissions manage karo</p>
 
-        <div className="bg-white border border-gray-200 rounded-xl overflow-hidden">
-          <div className="px-4 py-3 border-b border-gray-100 bg-gray-50/60">
+        <div
+          style={document.documentElement.classList.contains('dark') ? { backgroundColor: '#161618', borderColor: '#2a2a2e' } : undefined}
+          className="bg-white border border-gray-200 rounded-xl overflow-hidden"
+        >
+          <div
+            style={document.documentElement.classList.contains('dark') ? { backgroundColor: '#19191a', borderColor: '#2a2a2e' } : undefined}
+            className="px-4 py-3 bg-gray-50/60"
+          >
             <p className="text-sm font-medium text-gray-700">All Users <span className="text-emerald-600">({users.length})</span></p>
           </div>
-          <div className="divide-y divide-gray-50 max-h-100 overflow-y-auto">
+          <div className="max-h-100 overflow-y-auto">
             {users.length === 0 ? (
               <p className="text-center text-gray-400 text-sm py-8">No users found</p>
             ) : (
-              users.map((u) => (
+              users.map((u, idx) => (
                 <button
                   key={u._id}
                   onClick={() => openUser(u)}
-                  className="w-full flex items-center gap-3 px-4 py-3 hover:bg-emerald-50/40 text-left cursor-pointer transition-colors"
+                  style={document.documentElement.classList.contains('dark') && idx !== 0 ? { borderTop: '1px solid #232327' } : (idx !== 0 ? { borderTop: '1px solid #f9fafb' } : undefined)}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.backgroundColor = document.documentElement.classList.contains('dark')
+                      ? 'rgba(255,255,255,0.05)'
+                      : 'rgba(16,185,129,0.08)'
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.backgroundColor = 'transparent'
+                  }}
+                  className="w-full flex items-center gap-3 px-4 py-3 text-left cursor-pointer transition-colors"
                 >
                   <div className="w-9 h-9 rounded-full bg-linear-to-br from-emerald-400 to-emerald-600 text-white text-sm font-bold flex items-center justify-center shrink-0">
                     {(u.firstName || "?").charAt(0).toUpperCase()}
@@ -555,7 +570,11 @@ function UsersSection() {
             <button
               type="button"
               onClick={() => setRoleOpen((o) => !o)}
-              className="flex items-center gap-2 bg-white border border-emerald-200 hover:border-emerald-400 rounded-lg px-3 py-2 cursor-pointer focus:outline-none focus:ring-2 focus:ring-emerald-500/20 transition-all min-w-44"
+              style={{
+                backgroundColor: document.documentElement.classList.contains('dark') ? '#202024' : '#ffffff',
+                borderColor: document.documentElement.classList.contains('dark') ? '#33333a' : '#a7f3d0'
+              }}
+              className="flex items-center gap-2 border hover:border-emerald-400 rounded-lg px-3 py-2 cursor-pointer focus:outline-none focus:ring-2 focus:ring-emerald-500/20 transition-all min-w-44"
             >
               <span className="flex items-center justify-center w-6 h-6 rounded-md bg-emerald-100 text-emerald-600 shrink-0">
                 {(() => {
@@ -568,22 +587,39 @@ function UsersSection() {
             </button>
 
             {roleOpen && (
-
-
               <>
                 <div className="fixed inset-0 z-40" onClick={() => setRoleOpen(false)} />
-                <div className="absolute top-full mt-1.5 right-0 z-50 w-56 bg-white border border-emerald-100 rounded-xl shadow-lg shadow-emerald-100/50 p-1.5 animate-[roleDrop_0.2s_ease-out]">
+                <div
+                  style={document.documentElement.classList.contains('dark') ? { backgroundColor: '#161618', borderColor: '#2a2a2e' } : undefined}
+                  className="absolute top-full mt-1.5 right-0 z-50 w-56 bg-white border border-emerald-100 rounded-xl shadow-lg shadow-emerald-100/50 p-1.5 animate-[roleDrop_0.2s_ease-out]"
+                >
                   {ROLES.map((r) => {
                     const active = role === r.name;
                     const RoleIcon = r.icon;
+                    const isDark = document.documentElement.classList.contains('dark');
                     return (
                       <button
                         key={r.name}
                         type="button"
                         onClick={() => { setRole(r.name); setDirty(true); setRoleOpen(false); }}
-                        className={`w-full flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-sm cursor-pointer transition-colors ${active ? "bg-emerald-50 text-emerald-700 font-semibold" : "text-gray-600 hover:bg-emerald-50/60 hover:text-emerald-600"}`}
+                        style={
+                          !active && document.documentElement.classList.contains('dark')
+                            ? { backgroundColor: 'transparent' }
+                            : undefined
+                        }
+                        onMouseEnter={(e) => {
+                          if (!active && document.documentElement.classList.contains('dark')) {
+                            e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.08)'
+                          }
+                        }}
+                        onMouseLeave={(e) => {
+                          if (!active && document.documentElement.classList.contains('dark')) {
+                            e.currentTarget.style.backgroundColor = 'transparent'
+                          }
+                        }}
+                        className={`w-full flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-sm cursor-pointer transition-colors ${active ? "bg-emerald-50 text-emerald-700 font-semibold" : "text-gray-600 hover:text-emerald-600"}`}
                       >
-                        <span className={`flex items-center justify-center w-7 h-7 rounded-lg shrink-0 ${active ? "bg-emerald-600 text-white" : "bg-gray-100 text-gray-400"}`}>
+                        <span className={`flex items-center justify-center w-7 h-5 rounded-lg shrink-0 ${active ? "bg-emerald-600 text-white" : "text-gray-400"}`}>
                           <RoleIcon size={14} />
                         </span>
                         <span className="flex-1 text-left">{r.name}</span>
@@ -608,12 +644,16 @@ function UsersSection() {
         </div>
       ) : (
         <>
-          <div className="flex items-center gap-2 bg-white border border-gray-200 rounded-lg px-3 py-2 mb-3">
+          <div
+            style={document.documentElement.classList.contains('dark') ? { backgroundColor: '#202024', borderColor: '#33333a' } : undefined}
+            className="module-search flex items-center gap-2 bg-white border border-gray-200 rounded-lg px-3 py-2 mb-3"
+          >
             <Search size={15} className="text-gray-400 shrink-0" />
             <input
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search module..."
+              style={document.documentElement.classList.contains('dark') ? { backgroundColor: 'transparent' } : undefined}
               className="w-full text-sm text-gray-700 placeholder-gray-400 focus:outline-none"
             />
           </div>
@@ -725,7 +765,8 @@ function UsersSection() {
           disabled={saving || saved}
           whileTap={(!saving && !saved) ? { scale: 0.97 } : {}}
           transition={{ type: "spring", stiffness: 400, damping: 25 }}
-          className={`relative flex w-48 h-11 items-center justify-center gap-2 rounded-lg text-sm font-semibold cursor-pointer overflow-hidden transition-colors shadow-sm disabled:cursor-not-allowed ${saved ? "bg-emerald-600 text-white shadow-emerald-200" : "bg-emerald-600 text-white hover:bg-emerald-700 shadow-emerald-200"}`}
+          style={{ boxShadow: 'none', backgroundColor: '#059669' }}
+          className="relative flex w-48 h-11 items-center justify-center gap-2 rounded-lg text-sm font-semibold cursor-pointer overflow-hidden transition-colors text-white disabled:cursor-not-allowed"
         >
           <AnimatePresence mode="wait">
             {saving && (
@@ -751,8 +792,9 @@ function UsersSection() {
                   initial={{ scale: 0, rotate: -90 }}
                   animate={{ scale: 1, rotate: 0 }}
                   transition={{ type: "spring", stiffness: 500, damping: 15, delay: 0.05 }}
-                  className="flex h-4 w-4 items-center justify-center rounded-full bg-white">
-                  <Check size={11} strokeWidth={4} className="text-emerald-600" />
+                  style={{ backgroundColor: '#ffffff' }}
+                  className="flex h-4 w-4 items-center justify-center rounded-full">
+                  <Check size={11} strokeWidth={4} style={{ color: '#059669' }} />
                 </motion.span>
                 Saved!
               </motion.span>

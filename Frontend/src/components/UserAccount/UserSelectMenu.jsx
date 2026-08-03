@@ -32,7 +32,7 @@ const UserSelectMenu = ({ setShowSetting }) => {
 
     const fullName = `${user.firstName || ""} ${user.lastName || ""}`.trim() || "Guest"
     return (
-        <div className="absolute top-4 right-4 sm:right-6 md:right-8 lg:right-10 xl:right-12 2xl:right-14 z-50">
+        <div className=" absolute top-4 right-4 sm:right-6 md:right-8 lg:right-10 xl:right-12 2xl:right-14 z-50">
             {user.image && (
                 <img src={`http://localhost:3000${user.image}`} alt="" style={{ display: 'none' }} />
             )}
@@ -49,8 +49,7 @@ const UserSelectMenu = ({ setShowSetting }) => {
                             initials
                         )}
                     </div>
-                    <span className="absolute bottom-0 right-0 w-2 h-2 bg-emerald-500 animate-pulse rounded-full ring-2 ring-white"></span>
-                </div>
+                    <span style={{ backgroundColor: '#10b981' }} className="absolute bottom-0 right-0 w-2 h-2 animate-pulse rounded-full ring-2 ring-white"></span>                </div>
 
                 <div className="hidden sm:flex flex-col leading-tight">
                     <span className="text-[13px] font-semibold text-slate-800">{fullName}</span>
@@ -88,23 +87,38 @@ const UserSelectMenu = ({ setShowSetting }) => {
                 </div>
 
                 <div className="p-1.5">
-                    <div onClick={() => { setShowProfile(true); setProfileOpen(false); }} className="flex items-center gap-2.5 px-3 py-2 rounded-xl cursor-pointer hover:bg-emerald-50 transition-colors duration-200 group">
+                    <div
+                        onClick={() => { setShowProfile(true); setProfileOpen(false); }}
+                        onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = document.documentElement.classList.contains('dark') ? 'rgba(255,255,255,0.06)' : 'rgba(16,185,129,0.10)' }}
+                        onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'transparent' }}
+                        className="flex items-center gap-2.5 px-3 py-2 rounded-xl cursor-pointer transition-colors duration-200 group"
+                    >
                         <User size={16} className="text-slate-500 group-hover:text-emerald-600" />
                         <span className="text-[12.5px] text-slate-600 group-hover:text-emerald-700 font-medium">My Profile</span>
                     </div>
 
-                    <div onClick={() => { setShowSetting(true) }} className="flex items-center gap-2.5 px-3 py-2 rounded-xl cursor-pointer hover:bg-emerald-50 transition-colors duration-200 group">
+                    <div
+                        onClick={() => { setShowSetting(true) }}
+                        onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = document.documentElement.classList.contains('dark') ? 'rgba(255,255,255,0.06)' : 'rgba(16,185,129,0.10)' }}
+                        onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'transparent' }}
+                        className="flex items-center gap-2.5 px-3 py-2 rounded-xl cursor-pointer transition-colors duration-200 group"
+                    >
                         <Settings size={16} className="text-slate-500 group-hover:text-emerald-600" />
                         <span className="text-[12.5px] text-slate-600 group-hover:text-emerald-700 font-medium">Settings</span>
                     </div>
                 </div>
 
                 <div className="p-1.5 border-t border-slate-100">
-                    <div onClick={() => {
-                        localStorage.removeItem('user')
-                        toast.success('You have Logged Out', { position: 'bottom-right', autoClose: 800 })
-                        setTimeout(() => (navigate('/login')), 800)
-                    }} className="flex items-center gap-2.5 px-3 py-2 rounded-xl cursor-pointer hover:bg-red-50 transition-colors duration-200 group">
+                    <div
+                        onClick={() => {
+                            localStorage.removeItem('user')
+                            toast.success('You have Logged Out', { position: 'bottom-right', autoClose: 800 })
+                            setTimeout(() => (navigate('/login')), 800)
+                        }}
+                        onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = document.documentElement.classList.contains('dark') ? 'rgba(239,68,68,0.12)' : 'rgba(239,68,68,0.08)' }}
+                        onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'transparent' }}
+                        className="flex items-center gap-2.5 px-3 py-2 rounded-xl cursor-pointer transition-colors duration-200 group"
+                    >
                         <LogOut size={16} className="text-red-400 group-hover:text-red-600" />
                         <span className="text-[12.5px] text-red-500 group-hover:text-red-700 font-medium">Logout</span>
                     </div>

@@ -391,3 +391,25 @@ html.dark aside nav button:not(.tab-active):hover {
 .dark button.bg-zinc-700 {
   background-color: #3f3f46 !important;
 }
+/* ===== DARK: module search box saaf single color ===== */
+html.dark aside ~ main .bg-white:has(> input[placeholder="Search module..."]),
+html.dark input[placeholder="Search module..."] {
+    background-color: #202024 !important;
+    border-color: #33333a !important;
+}
+html.dark .module-search {
+    background-color: #202024 !important;
+    border-color: #33333a !important;
+}
+html.dark .module-search input {
+    background-color: transparent !important;
+}
+html.dark .divide-gray-50 > * + * {
+    border-color: #232327 !important;
+}
+html.dark .user-list-divider > * + * {
+    border-top-color: #232327 !important;
+}
+html.dark .divide-gray-50 > * + * {
+    border-top-color: red !important;
+}

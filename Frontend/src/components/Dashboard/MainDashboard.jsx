@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Sun, Sunset, Moon } from "lucide-react";
 import Setting from '../Setting.jsx'
+import GlobarSearchBar from "./GlobarSearchBar.jsx";
 import UserSelectMenu from "../UserAccount/UserSelectMenu.jsx";
 import { BarChart, Bar, PieChart, Pie, Cell, Legend, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
 
@@ -235,33 +236,56 @@ import React from 'react'
 
 const MainDashboard = () => {
     const [showSetting, setShowSetting] = useState(false);
-    const user = JSON.parse(localStorage.getItem('user')) || {}   // 👈 yeh line honi chahiye
+    const user = JSON.parse(localStorage.getItem('user')) || {}  
 
     return (
-        <div className="p-4 md:p-5 bg-slate-50 h-screen" style={{ contain: 'layout paint' }}>
-            {
-                showSetting == true ? <Setting setShowSetting={setShowSetting} /> : <UserSelectMenu setShowSetting={setShowSetting} />
-            }
+        <div
+            className="p-4 md:p-5 bg-slate-50 h-screen"
+            style={{ contain: "layout paint" }}
+        >
+            {showSetting ? (
+                <Setting setShowSetting={setShowSetting} />
+            ) : (
+                <UserSelectMenu setShowSetting={setShowSetting} />
+            )}
 
-            <div className="flex items-center justify-between mb-4">
-                <div className="flex items-center gap-3">
+            <div className="flex items-start justify-between gap-6 mb-4">
 
-                    <div className="flex items-center gap-2.5">
-                        <div className={`p-2 rounded-full bg-amber-100 ${greetingColor}`}>
-                            <GreetingIcon size={22} className="animate-pulse" />
-                        </div>
-                        <div>
-                            <h1 className="text-xl font-semibold text-slate-800">
-                                {greetingText}, {user.firstName || "there"} 👋
-                            </h1>
-                            <p className="text-[12.5px] text-slate-500">
-                                Real-Time Insights. Real Growth
-                            </p>
+                <div className="shrink-0">
+                    <div className="flex items-center gap-3">
+                        <div className="flex items-center gap-2.5">
+                            <div className={`p-2 rounded-full bg-amber-100 ${greetingColor}`}>
+                                <GreetingIcon
+                                    size={22}
+                                    className="animate-pulse"
+                                />
+                            </div>
+
+                            <div>
+                                <h1 className="text-xl font-semibold text-slate-800">
+                                    {greetingText}, {user.firstName || "there"} 👋
+                                </h1>
+
+                                <p className="text-[12.5px] text-slate-500">
+                                    Real-Time Insights. Real Growth
+                                </p>
+                            </div>
                         </div>
                     </div>
                 </div>
+
+                <div className="flex-1 flex justify-center px-8">
+                    <GlobarSearchBar />
+                </div>
+
+                <div className="w-70 shrink-0"></div>
+
             </div>
 
+
+
+
+            {/* Cards */}
             <div className="mb-4">
                 <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-2.5">
                     {payBand.map((item, i) => (
@@ -333,10 +357,10 @@ const MainDashboard = () => {
                 </div>
 
             </div>
-            
+
         </div>
-        
-        
+
+
     )
 }
 
