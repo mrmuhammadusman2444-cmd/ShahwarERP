@@ -17,17 +17,14 @@ const Sidebar = () => {
   const [showSetting, setShowSetting] = useState(false)
   const [showHelp, setShowHelp] = useState(false)
   const [collapsed, setCollapsed] = useState(false)
-  const [sidebarColor, setSidebarColor] = useState(localStorage.getItem("sidebarColor") || "bg-slate-900")
-
+  const [sidebarColor, setSidebarColor] = useState(localStorage.getItem("sidebarColorHex") || "#0f172a")
   useEffect(() => {
     function handleColorChange() {
-      setSidebarColor(localStorage.getItem("sidebarColor") || "bg-slate-900")
+      setSidebarColor(localStorage.getItem("sidebarColorHex") || "#0f172a")
     }
     window.addEventListener("sidebar-color-changed", handleColorChange)
     return () => window.removeEventListener("sidebar-color-changed", handleColorChange)
   }, [])
-
-
 
   useEffect(() => {
     function handleClickOutside(e) {
@@ -42,8 +39,7 @@ const Sidebar = () => {
   return (
     <aside className="h-screen flex flex-row">
 
-      <nav onMouseEnter={() => setCollapsed(false)} onMouseLeave={() => setCollapsed(true)} className={`h-screen flex flex-col ${collapsed ? 'w-16' : 'w-67'} ${sidebarColor} border-r border-slate-100 shadow-sm transition-all duration-300`}>
-
+      <nav onMouseEnter={() => setCollapsed(false)} onMouseLeave={() => setCollapsed(true)} style={{ backgroundColor: sidebarColor }} className={`h-screen flex flex-col ${collapsed ? 'w-16' : 'w-67'} border-r border-slate-100 shadow-sm transition-all duration-300`}>
         <style>{`
     .sidebar-scroll::-webkit-scrollbar { width: 4px; }
     .sidebar-scroll::-webkit-scrollbar-track { background: transparent; }
@@ -80,10 +76,14 @@ const Sidebar = () => {
           <SideMenus collapsed={collapsed} style={{ overflowX: 'clip' }} />
         </div>
 
-        <div className="px-3 py-3 border-t border-slate-900 shrink-0">
-          <div className={!collapsed && `flex items-center gap-2.5 px-2.5 py-2 rounded-full   bg-slate-800 hover:bg-slate-900 cursor-pointer transition-all ${collapsed ? 'justify-center' : ''}`}>
-
-            <span className="w-8 h-8 rounded-full  bg-blue-100 flex items-center justify-center text-[10px] font-semibold text-blue-600 cursor-pointer shrink-0">SF</span>
+        <div className="px-3 py-3 border-t shrink-0" style={{ borderColor: 'rgba(255,255,255,0.08)' }}>
+          <div
+            style={!collapsed ? { backgroundColor: 'rgba(255,255,255,0.06)' } : undefined}
+            className={!collapsed ? `flex items-center gap-2.5 px-2.5 py-2 rounded-full cursor-pointer transition-all ${collapsed ? 'justify-center' : ''}` : ''}
+            onMouseEnter={(e) => { if (!collapsed) e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.10)' }}
+            onMouseLeave={(e) => { if (!collapsed) e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.06)' }}
+          >
+            <span className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-[10px] font-semibold text-blue-600 cursor-pointer shrink-0">SF</span>
 
             {!collapsed && (
               <>
@@ -98,31 +98,42 @@ const Sidebar = () => {
                   />
 
                   {menuOpen ? (
-                    <div className="absolute bottom-6 right-0 w-36 bg-slate-800 border border-slate-800 rounded-xl shadow-lg py-1.5 z-50">
-
-                      <button onClick={() => {
-                        navigate('/')
-                      }} className="w-full flex items-center cursor-pointer gap-2.5 px-3 py-2 text-[13px] text-slate-100 hover:bg-slate-700 transition-colors">
+                    <div
+                      style={{ backgroundColor: '#1e2530', borderColor: 'rgba(255,255,255,0.10)' }}
+                      className="absolute bottom-6 right-0 w-36 border rounded-xl shadow-lg py-1.5 z-50"
+                    >
+                      <button
+                        onClick={() => { navigate('/') }}
+                        onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.08)' }}
+                        onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'transparent' }}
+                        className="w-full flex items-center cursor-pointer gap-2.5 px-3 py-2 text-[13px] text-slate-100 transition-colors"
+                      >
                         <LogIn className="w-3.5 h-3.5 text-slate-100" />
                         Add Account
                       </button>
 
-                      <button onClick={() => {
-                        toast.success('You have Logged Out', { position: 'bottom-right', autoClose: 800 })
-                        setTimeout(() => (navigate('/login')), 800)
-                      }} className="w-full flex items-center cursor-pointer gap-2.5 px-3 py-2 text-[13px] text-slate-100 hover:bg-slate-700 transition-colors">
+                      <button
+                        onClick={() => {
+                          toast.success('You have Logged Out', { position: 'bottom-right', autoClose: 800 })
+                          setTimeout(() => (navigate('/login')), 800)
+                        }}
+                        onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.08)' }}
+                        onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'transparent' }}
+                        className="w-full flex items-center cursor-pointer gap-2.5 px-3 py-2 text-[13px] text-slate-100 transition-colors"
+                      >
                         <LogOut className="w-3.5 h-3.5 text-slate-100" />
                         Logout
                       </button>
 
-                      <div className="border-t border-slate-900 my-1" />
+                      <div className="my-1" style={{ borderTop: '1px solid rgba(255,255,255,0.08)' }} />
 
                       <div className="flex items-center justify-around px-2 py-1.5">
-
                         <div className="relative group/tip">
                           <button
                             onClick={() => { setShowSetting(true); setMenuOpen(false); }}
-                            className="w-8 h-8 flex items-center justify-center rounded-full cursor-pointer hover:bg-slate-600 transition-colors"
+                            onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.10)' }}
+                            onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'transparent' }}
+                            className="w-8 h-8 flex items-center justify-center rounded-full cursor-pointer transition-colors"
                           >
                             <Settings className="w-4 h-4 text-slate-100 transition-transform duration-500 group-hover/tip:rotate-360" />
                           </button>
@@ -133,11 +144,10 @@ const Sidebar = () => {
 
                         <div className="relative group/tip">
                           <button
-                            onClick={() => {
-                              setShowCopyright(true)
-                              setMenuOpen(false)
-                            }}
-                            className="w-8 h-8 flex items-center justify-center rounded-full cursor-pointer hover:bg-slate-600 transition-colors"
+                            onClick={() => { setShowCopyright(true); setMenuOpen(false) }}
+                            onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.10)' }}
+                            onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'transparent' }}
+                            className="w-8 h-8 flex items-center justify-center rounded-full cursor-pointer transition-colors"
                           >
                             <Copyright className="w-4 h-4 text-slate-100" />
                           </button>
@@ -147,8 +157,11 @@ const Sidebar = () => {
                         </div>
 
                         <div className="relative group/tip">
-                          <button onClick={() => { setShowHelp(true); setMenuOpen(false) }}
-                            className="w-8 h-8 flex items-center justify-center rounded-full cursor-pointer hover:bg-slate-600 transition-colors"
+                          <button
+                            onClick={() => { setShowHelp(true); setMenuOpen(false) }}
+                            onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.10)' }}
+                            onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'transparent' }}
+                            className="w-8 h-8 flex items-center justify-center rounded-full cursor-pointer transition-colors"
                           >
                             <HelpCircle className="w-4 h-4 text-slate-100" />
                           </button>
@@ -156,15 +169,12 @@ const Sidebar = () => {
                             Help & Support
                           </span>
                         </div>
-
                       </div>
-
                     </div>
                   ) : null}
                 </div>
               </>
             )}
-
           </div>
         </div>
 

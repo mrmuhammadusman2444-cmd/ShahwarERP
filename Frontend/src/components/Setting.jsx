@@ -1109,22 +1109,24 @@ function AppearanceSection() {
 }
 // Sidebar Color swatches — Appearance section me add karo
 function SidebarColorPicker() {
-  const [selected, setSelected] = useState(localStorage.getItem("sidebarColor") || "bg-slate-900")
+  const [selected, setSelected] = useState(localStorage.getItem("sidebarColorHex") || "#0f172a")
 
   const colors = [
-    { name: "Navy", class: "bg-slate-900", hex: "#0f172a" },
-    { name: "Emerald", class: "bg-emerald-950", hex: "#022c22" },
-    { name: "Black", class: "bg-neutral-950", hex: "#0a0a0a" },
-    { name: "Indigo", class: "bg-indigo-950", hex: "#1e1b4b" },
-    { name: "Blue", class: "bg-blue-950", hex: "#172554" },
-    { name: "Zinc", class: "bg-zinc-900", hex: "#18181b" },
+    { name: "Navy", hex: "#0f172a" },
+    { name: "Emerald", hex: "#022c22" },
+    { name: "Black", hex: "#0a0a0a" },
+    { name: "Indigo", hex: "#1e1b4b" },
+    { name: "Blue", hex: "#172554" },
+    { name: "Zinc", hex: "#18181b" },
   ]
 
-  function pick(colorClass) {
-    setSelected(colorClass)
-    localStorage.setItem("sidebarColor", colorClass)
-    window.dispatchEvent(new Event("sidebar-color-changed"))   // sidebar ko batao
+  function pick(hex) {
+    setSelected(hex)
+    localStorage.setItem("sidebarColorHex", hex)
+    window.dispatchEvent(new Event("sidebar-color-changed"))
   }
+
+  const isCustom = !colors.some((c) => c.hex === selected)
 
   return (
     <div>
@@ -1132,21 +1134,45 @@ function SidebarColorPicker() {
       <div className="flex flex-wrap gap-2.5">
         {colors.map((c) => (
           <button
-            key={c.class}
-            onClick={() => pick(c.class)}
+            key={c.hex}
+            onClick={() => pick(c.hex)}
             title={c.name}
-            className={`relative w-10 h-10 rounded-xl cursor-pointer transition-all hover:scale-110 ${selected === c.class ? "ring-2 ring-offset-2 ring-emerald-500" : "ring-1 ring-gray-200"}`}
+            className={`relative w-10 h-10 rounded-xl cursor-pointer transition-all hover:scale-110 ${selected === c.hex ? "ring-2 ring-offset-2 ring-emerald-500" : "ring-1 ring-gray-200"}`}
             style={{ backgroundColor: c.hex }}
           >
-            {selected === c.class && (
+            {selected === c.hex && (
               <span className="absolute inset-0 flex items-center justify-center">
                 <Check size={16} className="text-white" />
               </span>
             )}
           </button>
         ))}
+
+        {/* Custom color picker */}
+        <label
+          title="Custom color"
+          className={`relative w-10 h-10 rounded-xl cursor-pointer overflow-hidden transition-all hover:scale-110 ${isCustom ? "ring-2 ring-offset-2 ring-emerald-500" : "ring-1 ring-gray-200"}`}
+        >
+          <span
+            className="absolute inset-0"
+            style={{
+              background: isCustom ? selected : "conic-gradient(red, orange, yellow, lime, cyan, blue, magenta, red)"
+            }}
+          />
+          {isCustom && (
+            <span className="absolute inset-0 flex items-center justify-center">
+              <Check size={16} className="text-white" />
+            </span>
+          )}
+          <input
+            type="color"
+            value={isCustom ? selected : "#0f172a"}
+            onChange={(e) => pick(e.target.value)}
+            className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+          />
+        </label>
       </div>
-      <p className="text-xs text-gray-400 mt-2">Choose your sidebar background color</p>
+      <p className="text-xs text-gray-400 mt-2">Choose any sidebar background color</p>
     </div>
   )
 }

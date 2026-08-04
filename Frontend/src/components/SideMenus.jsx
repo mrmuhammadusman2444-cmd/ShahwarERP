@@ -160,16 +160,19 @@ const SideMenus = ({ collapsed }) => {
 
             <div className="px-2 pt-2.5 pb-2">
                 {!collapsed ? (
-                    <div className="flex items-center gap-2 h-10 rounded-xl px-1.5 border bg-slate-800 cursor-text">
-                        <Search className="text-slate-100 ml-2" size={18} />
-                        <input
-                            type="text"
-                            placeholder="Quick search..."
-                            value={searchQuery}
-                            onChange={(e) => setSearchQuery(e.target.value)}
-                            className="text-[12px] placeholder:text-slate-500 text-slate-100 flex-1 bg-transparent border-none focus:outline-none"
-                        />
-                    </div>
+                    <div
+    style={{ backgroundColor: 'rgba(255,255,255,0.06)', borderColor: 'rgba(255,255,255,0.10)' }}
+    className="sidebar-search flex items-center gap-2 h-10 rounded-xl px-1.5 border cursor-text"
+>
+    <Search className="text-slate-100 ml-2" size={18} />
+    <input
+        type="text"
+        placeholder="Quick search..."
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
+        className="text-[12px] placeholder:text-slate-400 text-slate-100 flex-1 border-none focus:outline-none"
+    />
+</div>
                 ) : (
                     <div onMouseEnter={setTip} className="relative group group/tooltip flex items-center justify-center h-10 w-10 rounded-full bg-slate-800 cursor-pointer hover:bg-slate-700 transition-colors">
                         <Search className="text-slate-100" size={18} />

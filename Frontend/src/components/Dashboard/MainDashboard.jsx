@@ -208,18 +208,32 @@ const PayBandCard = ({ item }) => {
     );
 };
 
-const ChartCard = ({ title, subtitle, children }) => (
-    <div className="bg-white border border-blue-100 rounded-xl shadow-sm p-4">
-        <div className="flex items-center gap-2 mb-3">
-            <div className="w-1 h-4 bg-linear-to-b from-blue-500 to-blue-700 rounded-full shrink-0" />
-            <div>
-                <h3 className="text-gray-700 text-xs font-bold">{title}</h3>
-                {subtitle && <p className="text-gray-400 text-xs">{subtitle}</p>}
+const ChartCard = ({ title, subtitle, children }) => {
+    const isDark = document.documentElement.classList.contains('dark');
+    return (
+        <div
+            className="chart-card border rounded-2xl p-4 transition-all duration-300 hover:-translate-y-0.5"
+            style={isDark ? {
+                background: 'linear-gradient(160deg, #1c1c22 0%, #131316 100%)',
+                borderColor: 'rgba(96,165,250,0.15)',
+                boxShadow: '0 8px 32px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.03), inset 0 1px 0 rgba(255,255,255,0.06)'
+            } : {
+                background: 'linear-gradient(145deg, #ffffff 0%, #f8faff 100%)',
+                borderColor: 'rgba(37,99,235,0.10)',
+                boxShadow: '0 4px 20px rgba(37,99,235,0.06), 0 1px 3px rgba(0,0,0,0.04)'
+            }}
+        >
+            <div className="flex items-center gap-2 mb-3">
+                <div className="w-1 h-4 bg-linear-to-b from-blue-500 to-blue-700 rounded-full shrink-0" />
+                <div>
+                    <h3 className={`text-xs font-bold ${isDark ? 'text-gray-100' : 'text-gray-700'}`}>{title}</h3>
+                    {subtitle && <p className="text-gray-400 text-xs">{subtitle}</p>}
+                </div>
             </div>
+            {children}
         </div>
-        {children}
-    </div>
-);
+    );
+};
 
 const renderPieLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent }) => {
     if (!percent) return null;
@@ -236,7 +250,7 @@ import React from 'react'
 
 const MainDashboard = () => {
     const [showSetting, setShowSetting] = useState(false);
-    const user = JSON.parse(localStorage.getItem('user')) || {}  
+    const user = JSON.parse(localStorage.getItem('user')) || {}
 
     return (
         <div

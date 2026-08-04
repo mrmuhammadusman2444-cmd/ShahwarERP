@@ -78,9 +78,9 @@ import FundTransferPage from './pages/Accounts/FundTransferPage.jsx'
 const App = () => {
 
   return (
-    <BrowserRouter>
 
-      <ToastContainer />
+    <BrowserRouter>
+      
 
       <Routes>
         //authentication
@@ -165,8 +165,8 @@ const App = () => {
         <Route path='/out/of/stock' element={<OutOfStockPage />} />
         <Route path='/assign/user/stock' element={<AssignUserToStockPage />} />
         //Accounts
-        <Route path='/supplier/payments' element={<SupplierPaymentsPage/>} />
-        <Route path='/fund/transfer' element={<FundTransferPage/>} />
+        <Route path='/supplier/payments' element={<SupplierPaymentsPage />} />
+        <Route path='/fund/transfer' element={<FundTransferPage />} />
 
 
 

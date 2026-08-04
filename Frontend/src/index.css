@@ -413,3 +413,18 @@ html.dark .user-list-divider > * + * {
 html.dark .divide-gray-50 > * + * {
     border-top-color: red !important;
 }
+/* ===== DARK: remove all button shadows ===== */
+html.dark button {
+    box-shadow: none !important;
+}
+/* sidebar search input — transparent taके container ka overlay dikhe */
+.sidebar-search input {
+    background-color: transparent !important;
+}
+.dark .sidebar-search input {
+    background-color: transparent !important;
+}
+html.dark button,
+html.dark [class*="shadow"] {
+    box-shadow: none !important;
+}
