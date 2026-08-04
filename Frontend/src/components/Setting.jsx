@@ -363,7 +363,8 @@ function Toggle({ on, onChange, size = "md" }) {
     <button
       type="button"
       onClick={onChange}
-      className={`relative rounded-full transition-colors duration-300 cursor-pointer shrink-0 ${on ? "bg-emerald-500" : "bg-gray-300"} ${isSm ? "w-9 h-5" : "w-11 h-6"}`}
+      style={{ backgroundColor: on ? "var(--accent)" : "#d1d5db" }}
+      className={`relative rounded-full transition-colors duration-300 cursor-pointer shrink-0 ${isSm ? "w-9 h-5" : "w-11 h-6"}`}
     >
       <span
         className={`absolute top-1/2 bg-white rounded-full shadow-sm transition-all duration-300 ${isSm ? "w-3.5 h-3.5" : "w-4.5 h-4.5"}`}
