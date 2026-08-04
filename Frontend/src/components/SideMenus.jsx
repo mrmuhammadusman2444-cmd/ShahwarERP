@@ -186,7 +186,7 @@ const SideMenus = ({ collapsed }) => {
             <div className="px-2 pb-2.5 ">
 
                 {menuMatches('Inbox', []) && (
-                    <div onMouseEnter={setTip} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer  border-transparent hover:bg-[var(--nav-active)] transition-all mb-px ${collapsed ? 'justify-start' : ''}`}>
+                    <div onMouseEnter={setTip} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer  border-transparent hover:bg-[var(--nav-active)] transition-all mb-px ${collapsed ? 'justify-start w-9 h-9 mx-auto' : ''}`}>
 
                         <svg width="23" height="23" viewBox="0 0 15 15" fill="#93c5fd" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" className="shrink-0 text-slate-600 -ml-0.1">
                             <g className="env-letter ">
@@ -215,7 +215,7 @@ const SideMenus = ({ collapsed }) => {
 
                 {menuMatches('Notifications', []) && (
 
-                    <div onMouseEnter={setTip} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer  border-transparent hover:bg-[var(--nav-active)] ransition-all ${collapsed ? 'justify-start' : ''}`}>
+                    <div onMouseEnter={setTip} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer  border-transparent hover:bg-[var(--nav-active)] ransition-all ${collapsed ? 'justify-start w-9 h-9 mx-auto' : ''}`}>
                         <Bell className="bell-icon text-slate-100 shrink-0" size={23} />
                         {!collapsed && <span className="text-[12.5px] text-slate-100 flex-1">Notifications</span>}
                         {!collapsed && <span className="text-[10.5px] font-semibold text-amber-700 bg-amber-100 rounded-full px-2 py-px">15+</span>}
@@ -250,25 +250,25 @@ const SideMenus = ({ collapsed }) => {
             <div className="px-2">
 
                 {can("dashboard", "view") && menuMatches('Dashboard', []) && (
-                    <div onClick={() => { navigate('/dashboard') }} onMouseEnter={setTip} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer overflow-hidden mb-px ${collapsed ? 'justify-start' : ''} ${isDashboard ? 'bg-[var(--nav-active)]' : 'hover:bg-[var(--nav-active)]'}`}>
-                        {isDashboard && !collapsed && (
-                            <span className="absolute left-0 top-1/2 -translate-y-1/2 w-0.75 h-4.5 bg-[var(--nav-strip)] rounded-r-full" />
-                        )}
-                        <LayoutGrid className="text-slate-100 shrink-0   group-hover:scale-110 group-hover:rotate-6 transition-transform duration-300" size={23} />
-                        {!collapsed && <span className="text-[12.5px] text-blue-100 font-medium">Dashboard</span>}
+    <div onClick={() => { navigate('/dashboard') }} onMouseEnter={setTip} className={`relative group group/tooltip flex items-center gap-2.5 rounded-lg px-2 cursor-pointer overflow-hidden mb-px ${collapsed ? 'justify-center w-9 h-9 mx-auto' : 'h-8.75'} ${isDashboard ? 'bg-[var(--nav-active)]' : 'hover:bg-[var(--nav-active)]'}`}>
+        {isDashboard && !collapsed && (
+            <span className="absolute left-0 top-1/2 -translate-y-1/2 w-0.75 h-4.5 bg-[var(--nav-strip)] rounded-r-full" />
+        )}
+        <LayoutGrid className="text-slate-100 shrink-0 group-hover:scale-110 group-hover:rotate-6 transition-transform duration-300" size={23} />
+        {!collapsed && <span className="text-[12.5px] text-blue-100 font-medium">Dashboard</span>}
 
-                        {collapsed && (
-                            <span style={{ top: 'var(--tooltip-y, 50%)', transform: 'translateY(-50%)' }} className="fixed left-16 ml-1 bg-emerald-500 text-white text-[11px] px-2 py-1 rounded-md whitespace-nowrap opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-200 pointer-events-none z-999">
-                                Dashboard
-                            </span>
-                        )}
-                    </div>
-                )}
+        {collapsed && (
+            <span style={{ top: 'var(--tooltip-y, 50%)', transform: 'translateY(-50%)' }} className="fixed left-16 ml-1 bg-emerald-500 text-white text-[11px] px-2 py-1 rounded-md whitespace-nowrap opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-200 pointer-events-none z-999">
+                Dashboard
+            </span>
+        )}
+    </div>
+)}
 
 
                 {can("analytics", "view") && menuMatches('Analytics', []) && (
 
-                    <div onClick={() => { navigate('/analytics') }} onMouseEnter={setTip} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer transition-all mb-px ${collapsed ? 'justify-start' : ''} ${isAnalytics ? 'bg-[var(--nav-active)]' : 'hover:bg-[var(--nav-active)]'}`}>
+                    <div onClick={() => { navigate('/analytics') }} onMouseEnter={setTip} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer transition-all mb-px ${collapsed ? 'justify-start w-9 h-9 mx-auto' : ''} ${isAnalytics ? 'bg-[var(--nav-active)]' : 'hover:bg-[var(--nav-active)]'}`}>
                         {isAnalytics && !collapsed && (
                             <span className="absolute left-0 top-1/2 -translate-y-1/2 w-0.75 h-4.5 bg-[var(--nav-strip)] rounded-r-full" />
                         )}
@@ -315,7 +315,7 @@ const SideMenus = ({ collapsed }) => {
                 )} */}
 
                 {(can("customers", "view") || canAnySub("customers")) && menuMatches('Customers', ['New Customers', 'Manage Customers', 'Manage Factory Customers', 'Customers Ledger', 'Customers Advance']) && (
-                    <div onMouseEnter={setTip} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer transition-all mb-px ${collapsed ? 'justify-start' : ''} ${isParentActive(['/newcustomer', '/manageCustomer', '/factoryCustomer', '/CustomerLedgerPage', '/CustomerAdvancePage']) ? 'bg-[var(--nav-active)]' : 'hover:bg-[var(--nav-active)]'}`}
+                    <div onMouseEnter={setTip} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer transition-all mb-px ${collapsed ? 'justify-start w-9 h-9 mx-auto' : ''} ${isParentActive(['/newcustomer', '/manageCustomer', '/factoryCustomer', '/CustomerLedgerPage', '/CustomerAdvancePage']) ? 'bg-[var(--nav-active)]' : 'hover:bg-[var(--nav-active)]'}`}
                         onClick={() => setCustomerOpen(!customerOpen)}
                     >
                         {isParentActive(['/newcustomer', '/manageCustomer', '/factoryCustomer', '/CustomerLedgerPage', '/CustomerAdvancePage']) && !collapsed && (
@@ -370,7 +370,7 @@ const SideMenus = ({ collapsed }) => {
                 )}
 
                 {can("orders", "view") && menuMatches('Orders', ['New Orders', 'Manage Orders', 'Orders Reports', 'Dispatch Orders']) && (
-                    <div onMouseEnter={setTip} onClick={() => setOrderOpen(!orderOpen)} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer transition-all mb-px ${collapsed ? 'justify-start' : ''} ${isParentActive(['/NewOrdersPage', '/ManageOrdersPage', '/OrderReportPage', '/DispatchOrderPage']) ? 'bg-[var(--nav-active)]' : 'hover:bg-[var(--nav-active)]'}`}>
+                    <div onMouseEnter={setTip} onClick={() => setOrderOpen(!orderOpen)} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer transition-all mb-px ${collapsed ? 'justify-start w-9 h-9 mx-auto' : ''} ${isParentActive(['/NewOrdersPage', '/ManageOrdersPage', '/OrderReportPage', '/DispatchOrderPage']) ? 'bg-[var(--nav-active)]' : 'hover:bg-[var(--nav-active)]'}`}>
                         {isParentActive(['/NewOrdersPage', '/ManageOrdersPage', '/OrderReportPage', '/DispatchOrderPage']) && !collapsed && (
                             <span className="absolute left-0 top-1/2 -translate-y-1/2 w-0.75 h-4.5 bg-[var(--nav-strip)] rounded-r-full" />
                         )}
@@ -421,7 +421,7 @@ const SideMenus = ({ collapsed }) => {
 
 
                 {(can("sales", "view") || canAnySub("sales")) && menuMatches('Sales', ['New Sales', 'Manage Sales']) && (
-                    <div onMouseEnter={setTip} onClick={() => setsaleOpen(!saleOpen)} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer transition-all mb-px ${collapsed ? 'justify-start' : ''} ${isParentActive(['/newSale', '/manageSale']) ? 'bg-[var(--nav-active)]' : 'hover:bg-[var(--nav-active)]'}`}>
+                    <div onMouseEnter={setTip} onClick={() => setsaleOpen(!saleOpen)} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer transition-all mb-px ${collapsed ? 'justify-start w-9 h-9 mx-auto' : ''} ${isParentActive(['/newSale', '/manageSale']) ? 'bg-[var(--nav-active)]' : 'hover:bg-[var(--nav-active)]'}`}>
                         {isParentActive(['/newSale', '/manageSale']) && !collapsed && (
                             <span className="absolute left-0 top-1/2 -translate-y-1/2 w-0.75 h-4.5 bg-[var(--nav-strip)] rounded-r-full" />
                         )}
@@ -461,7 +461,7 @@ const SideMenus = ({ collapsed }) => {
 
                 {can("approval", "view") && menuMatches('Approval', ['Invoice Approval', 'Purchase Approval', 'Customer Payment Approval', 'Supplier Payment Approval']) && (
 
-                    <div onMouseEnter={setTip} onClick={() => setapprovalOpen(!approvalOpen)} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer transition-all mb-px ${collapsed ? 'justify-start' : ''} ${isParentActive(['/invoiceapprovalpage', '/purchaseapprovalpage', '/customerpaymentpage', '/supplierpaymentpage']) ? 'bg-[var(--nav-active)]' : 'hover:bg-[var(--nav-active)]'}`}>
+                    <div onMouseEnter={setTip} onClick={() => setapprovalOpen(!approvalOpen)} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer transition-all mb-px ${collapsed ? 'justify-start w-9 h-9 mx-auto' : ''} ${isParentActive(['/invoiceapprovalpage', '/purchaseapprovalpage', '/customerpaymentpage', '/supplierpaymentpage']) ? 'bg-[var(--nav-active)]' : 'hover:bg-[var(--nav-active)]'}`}>
                         {isParentActive(['/invoiceapprovalpage', '/purchaseapprovalpage', '/customerpaymentpage', '/supplierpaymentpage']) && !collapsed && (
                             <span className="absolute left-0 top-1/2 -translate-y-1/2 w-0.75 h-4.5 bg-[var(--nav-strip)] rounded-r-full" />
                         )}
@@ -549,7 +549,7 @@ const SideMenus = ({ collapsed }) => {
 
                 {(can("products", "view") || canAnySub("products")) && menuMatches('Products', ['New Products', 'Manage Products', 'Category', 'Unit', 'Main Category', 'Scheme Products', 'Products Price List']) && (
 
-                    <div onMouseEnter={setTip} onClick={() => setproductOpen(!productOpen)} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer transition-all mb-px ${collapsed ? 'justify-start' : ''} ${isParentActive(['/newProduct', '/manageproductpage', '/productcategorypage', '/unitpage', '/maincategorypage', '/schemeproductspage']) ? 'bg-[var(--nav-active)]' : 'hover:bg-[var(--nav-active)]'}`}>
+                    <div onMouseEnter={setTip} onClick={() => setproductOpen(!productOpen)} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer transition-all mb-px ${collapsed ? 'justify-start w-9 h-9 mx-auto' : ''} ${isParentActive(['/newProduct', '/manageproductpage', '/productcategorypage', '/unitpage', '/maincategorypage', '/schemeproductspage']) ? 'bg-[var(--nav-active)]' : 'hover:bg-[var(--nav-active)]'}`}>
                         {isParentActive(['/newProduct', '/manageproductpage', '/productcategorypage', '/unitpage', '/maincategorypage', '/schemeproductspage']) && !collapsed && (
                             <span className="absolute left-0 top-1/2 -translate-y-1/2 w-0.75 h-4.5 bg-[var(--nav-strip)] rounded-r-full" />
                         )}
@@ -615,7 +615,7 @@ const SideMenus = ({ collapsed }) => {
 
                 {(can("suppliers", "view") || canAnySub("suppliers")) && menuMatches('Suppliers', ['Add New Suppliers', 'Manage Suppliers', 'Suppliers Ledger', 'Suppliers Advance']) && (
 
-                    <div onMouseEnter={setTip} onClick={() => setsupplierOpen(!supplierOpen)} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer transition-all mb-px ${collapsed ? 'justify-start' : ''} ${isParentActive(['/addSupplierPage', '/ManageSupplierPage', '/SupplierLedgerPage', '/SupplierAdvancePage']) ? 'bg-[var(--nav-active)]' : 'hover:bg-[var(--nav-active)]'}`}>
+                    <div onMouseEnter={setTip} onClick={() => setsupplierOpen(!supplierOpen)} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer transition-all mb-px ${collapsed ? 'justify-start w-9 h-9 mx-auto' : ''} ${isParentActive(['/addSupplierPage', '/ManageSupplierPage', '/SupplierLedgerPage', '/SupplierAdvancePage']) ? 'bg-[var(--nav-active)]' : 'hover:bg-[var(--nav-active)]'}`}>
                         {isParentActive(['/addSupplierPage', '/ManageSupplierPage', '/SupplierLedgerPage', '/SupplierAdvancePage']) && !collapsed && (
                             <span className="absolute left-0 top-1/2 -translate-y-1/2 w-0.75 h-4.5 bg-[var(--nav-strip)] rounded-r-full" />
                         )}
@@ -666,7 +666,7 @@ const SideMenus = ({ collapsed }) => {
 
                 {(can("purchase", "view") || canAnySub("purchase")) && menuMatches('Purchase', ['Add Purchase', 'Manage Purchase', 'Add Purchase Order', 'Manage Purchase Order']) && (
 
-                    <div onMouseEnter={setTip} onClick={() => setpurchaseOpen(!purchaseOpen)} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer transition-all mb-px ${collapsed ? 'justify-start' : ''} ${isParentActive(['/AddPurchasePage', '/ManagePurchasePage', '/AddPurchaseOrderPage', '/ManagePurchaseOrder']) ? 'bg-[var(--nav-active)]' : 'hover:bg-[var(--nav-active)]'}`}>
+                    <div onMouseEnter={setTip} onClick={() => setpurchaseOpen(!purchaseOpen)} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer transition-all mb-px ${collapsed ? 'justify-start w-9 h-9 mx-auto' : ''} ${isParentActive(['/AddPurchasePage', '/ManagePurchasePage', '/AddPurchaseOrderPage', '/ManagePurchaseOrder']) ? 'bg-[var(--nav-active)]' : 'hover:bg-[var(--nav-active)]'}`}>
                         {isParentActive(['/AddPurchasePage', '/ManagePurchasePage', '/AddPurchaseOrderPage', '/ManagePurchaseOrder']) && !collapsed && (
                             <span className="absolute left-0 top-1/2 -translate-y-1/2 w-0.75 h-4.5 bg-[var(--nav-strip)] rounded-r-full" />
                         )}
@@ -717,7 +717,7 @@ const SideMenus = ({ collapsed }) => {
 
                 {can("warehouseFinishProduct", "view") && menuMatches('Warehouse Finish Product', ['New Finish Product', 'Manage Finish Product', 'Finish Product Stock']) && (
 
-                    <div onMouseEnter={setTip} onClick={() => setwarehouseOpen(!warehouseOpen)} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer transition-all mb-px ${collapsed ? 'justify-start' : ''} ${isParentActive(['/NewFinishProductPage', '/ManageFinishProductPage', '/FinishProductStockPage']) ? 'bg-[var(--nav-active)]' : 'hover:bg-[var(--nav-active)]'}`}>
+                    <div onMouseEnter={setTip} onClick={() => setwarehouseOpen(!warehouseOpen)} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer transition-all mb-px ${collapsed ? 'justify-start w-9 h-9 mx-auto' : ''} ${isParentActive(['/NewFinishProductPage', '/ManageFinishProductPage', '/FinishProductStockPage']) ? 'bg-[var(--nav-active)]' : 'hover:bg-[var(--nav-active)]'}`}>
                         {isParentActive(['/NewFinishProductPage', '/ManageFinishProductPage', '/FinishProductStockPage']) && !collapsed && (
                             <span className="absolute left-0 top-1/2 -translate-y-1/2 w-0.75 h-4.5 bg-[var(--nav-strip)] rounded-r-full" />
                         )}
@@ -762,7 +762,7 @@ const SideMenus = ({ collapsed }) => {
                 )}
 
                 {can("stock", "view") && menuMatches('Stock', ['Finish Stock', 'Raw Material Stock', 'Reel Stock', 'Beverage Stock', 'Tea Stock', 'Out of Stock', 'Raw Packing Stock', ' Assign User to Stock']) && (
-                    <div onMouseEnter={setTip} onClick={() => setstockOpen(!stockOpen)} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer transition-all mb-px ${collapsed ? 'justify-start' : ''} ${isParentActive(['/finish/stock', '/raw/material/stock', '/reel/stock', '/Beverage/stock', '/tea/stock', '/out/of/stock', '/raw/packing/stock', '/assign/user/stock']) ? 'bg-[var(--nav-active)]' : 'hover:bg-[var(--nav-active)]'}`}>
+                    <div onMouseEnter={setTip} onClick={() => setstockOpen(!stockOpen)} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer transition-all mb-px ${collapsed ? 'justify-start w-9 h-9 mx-auto' : ''} ${isParentActive(['/finish/stock', '/raw/material/stock', '/reel/stock', '/Beverage/stock', '/tea/stock', '/out/of/stock', '/raw/packing/stock', '/assign/user/stock']) ? 'bg-[var(--nav-active)]' : 'hover:bg-[var(--nav-active)]'}`}>
                         {isParentActive(['/finish/stock', '/raw/material/stock', '/reel/stock', '/Beverage/stock', '/tea/stock', '/out/of/stock', '/raw/packing/stock', '/assign/user/stock']) && !collapsed && (
                             <span className="absolute left-0 top-1/2 -translate-y-1/2 w-0.75 h-4.5 bg-[var(--nav-strip)] rounded-r-full" />
                         )}
@@ -833,7 +833,7 @@ const SideMenus = ({ collapsed }) => {
                 )}
                 {can("warehouseWiseSale", "view") && menuMatches('Warehouse Wise Sale', ['New Stock', 'Manage Stock', 'New Sale', 'Manage Warehouse Sale', 'Warehouse Stock']) && (
 
-                    <div onMouseEnter={setTip} onClick={() => setwarehouseSaleOpen(!warehouseSaleOpen)} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer transition-all mb-px ${collapsed ? 'justify-start' : ''} ${isParentActive(['/PATH_HERE_1', '/PATH_HERE_2']) ? 'bg-[var(--nav-active)]' : 'hover:bg-[var(--nav-active)]'}`}>
+                    <div onMouseEnter={setTip} onClick={() => setwarehouseSaleOpen(!warehouseSaleOpen)} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer transition-all mb-px ${collapsed ? 'justify-start w-9 h-9 mx-auto' : ''} ${isParentActive(['/PATH_HERE_1', '/PATH_HERE_2']) ? 'bg-[var(--nav-active)]' : 'hover:bg-[var(--nav-active)]'}`}>
                         {isParentActive(['/PATH_HERE_1', '/PATH_HERE_2']) && !collapsed && (
                             <span className="absolute left-0 top-1/2 -translate-y-1/2 w-0.75 h-4.5 bg-[var(--nav-strip)] rounded-r-full" />
                         )}
@@ -888,7 +888,7 @@ const SideMenus = ({ collapsed }) => {
 
                 {can("schemeReport", "view") && menuMatches('Scheme Report', ['Scheme Report', 'Warehouse Report']) && (
 
-                    <div onMouseEnter={setTip} onClick={() => setschemeOpen(!schemeOpen)} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer transition-all mb-px ${collapsed ? 'justify-start' : ''} ${isParentActive(['/scheme/report', '/warehouse/scheme/report']) ? 'bg-[var(--nav-active)]' : 'hover:bg-[var(--nav-active)]'}`}>
+                    <div onMouseEnter={setTip} onClick={() => setschemeOpen(!schemeOpen)} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer transition-all mb-px ${collapsed ? 'justify-start w-9 h-9 mx-auto' : ''} ${isParentActive(['/scheme/report', '/warehouse/scheme/report']) ? 'bg-[var(--nav-active)]' : 'hover:bg-[var(--nav-active)]'}`}>
                         {isParentActive(['/scheme/report', '/warehouse/scheme/report']) && !collapsed && (
                             <span className="absolute left-0 top-1/2 -translate-y-1/2 w-0.75 h-4.5 bg-[var(--nav-strip)] rounded-r-full" />
                         )}
@@ -928,7 +928,7 @@ const SideMenus = ({ collapsed }) => {
 
                 {can("return", "view") && menuMatches('Return', ['Return', 'Manage Return']) && (
 
-                    <div onMouseEnter={setTip} onClick={() => setreturnOpen(!returnOpen)} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer hover:border-slate-600 transition-all mb-px ${collapsed ? 'justify-start' : ''} ${isParentActive(['/return', '/manage/return']) ? 'bg-[var(--nav-active)]' : 'hover:bg-[var(--nav-active)]'}`}>
+                    <div onMouseEnter={setTip} onClick={() => setreturnOpen(!returnOpen)} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer hover:border-slate-600 transition-all mb-px ${collapsed ? 'justify-start w-9 h-9 mx-auto' : ''} ${isParentActive(['/return', '/manage/return']) ? 'bg-[var(--nav-active)]' : 'hover:bg-[var(--nav-active)]'}`}>
                         {isParentActive(['/return', '/manage/return']) && !collapsed && (
                             <span className="absolute left-0 top-1/2 -translate-y-1/2 w-0.75 h-4.5 bg-[var(--nav-strip)] rounded-r-full" />
                         )}
@@ -970,7 +970,7 @@ const SideMenus = ({ collapsed }) => {
 
                 {can("distributorOrder", "view") && menuMatches('Distributor Order', ['Manage Hafiz Order']) && (
 
-                    <div onMouseEnter={setTip} onClick={() => setdistributorOpen(!distributorOpen)} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer hover:border-slate-600 transition-all mb-px ${collapsed ? 'justify-start' : ''} ${isParentActive(['/manage/distributor/order']) ? 'bg-[var(--nav-active)]' : 'hover:bg-[var(--nav-active)]'}`}>
+                    <div onMouseEnter={setTip} onClick={() => setdistributorOpen(!distributorOpen)} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer hover:border-slate-600 transition-all mb-px ${collapsed ? 'justify-start w-9 h-9 mx-auto' : ''} ${isParentActive(['/manage/distributor/order']) ? 'bg-[var(--nav-active)]' : 'hover:bg-[var(--nav-active)]'}`}>
                         {isParentActive(['/manage/distributor/order']) && !collapsed && (
                             <span className="absolute left-0 top-1/2 -translate-y-1/2 w-0.75 h-4.5 bg-[var(--nav-strip)] rounded-r-full" />
                         )}
@@ -1002,7 +1002,7 @@ const SideMenus = ({ collapsed }) => {
                     </div>
                 )}
                 {can("report", "view") && menuMatches('Report', ['Today customer Report', 'User Wise Reciept Report', 'Supplier Reciept', 'Sale Report', 'Sale Report (Product Wise)']) && (
-                    <div onMouseEnter={setTip} onClick={() => setreportOpen(!reportOpen)} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer hover:border-slate-600 transition-all mb-px ${collapsed ? 'justify-start' : ''} ${isParentActive(['/PATH_HERE_1', '/PATH_HERE_2', '/PATH_HERE_3', '/PATH_HERE_4', '/PATH_HERE_5']) ? 'bg-[var(--nav-active)]' : 'hover:bg-[var(--nav-active)]'}`}>
+                    <div onMouseEnter={setTip} onClick={() => setreportOpen(!reportOpen)} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer hover:border-slate-600 transition-all mb-px ${collapsed ? 'justify-start w-9 h-9 mx-auto' : ''} ${isParentActive(['/PATH_HERE_1', '/PATH_HERE_2', '/PATH_HERE_3', '/PATH_HERE_4', '/PATH_HERE_5']) ? 'bg-[var(--nav-active)]' : 'hover:bg-[var(--nav-active)]'}`}>
                         {isParentActive(['/PATH_HERE_1', '/PATH_HERE_2', '/PATH_HERE_3', '/PATH_HERE_4', '/PATH_HERE_5']) && !collapsed && (
                             <span className="absolute left-0 top-1/2 -translate-y-1/2 w-0.75 h-4.5 bg-[var(--nav-strip)] rounded-r-full" />
                         )}
@@ -1055,7 +1055,7 @@ const SideMenus = ({ collapsed }) => {
                 )}
 
                 {can("accounts", "view") && menuMatches('Accounts', ['Supplier Payment', 'Supplier Tally Ledger', 'Customer Tally Ledger', 'Customer Recieve', 'Assets Payment', ' Fund Transfer', 'Cash Adjustment', 'Reports']) && (
-                    <div onMouseEnter={setTip} onClick={() => setaccountOpen(!accountOpen)} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer hover:border-slate-600 transition-all mb-px ${collapsed ? 'justify-start' : ''} ${isParentActive(['/SupplierPaymentPage', '/SupplierLedgerPage', '/CustomerLedgerPage', '/CustomerPaymentPage', '/PATH_ASSETS_PAYMENT', '/PATH_CASH_ADJUSTMENT', '/PATH_REPORTS']) ? 'bg-[var(--nav-active)]' : 'hover:bg-[var(--nav-active)]'}`}>
+                    <div onMouseEnter={setTip} onClick={() => setaccountOpen(!accountOpen)} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer hover:border-slate-600 transition-all mb-px ${collapsed ? 'justify-start w-9 h-9 mx-auto' : ''} ${isParentActive(['/SupplierPaymentPage', '/SupplierLedgerPage', '/CustomerLedgerPage', '/CustomerPaymentPage', '/PATH_ASSETS_PAYMENT', '/PATH_CASH_ADJUSTMENT', '/PATH_REPORTS']) ? 'bg-[var(--nav-active)]' : 'hover:bg-[var(--nav-active)]'}`}>
                         {isParentActive(['/SupplierPaymentPage', '/SupplierLedgerPage', '/CustomerLedgerPage', '/CustomerPaymentPage', '/PATH_ASSETS_PAYMENT', '/PATH_CASH_ADJUSTMENT', '/PATH_REPORTS']) && !collapsed && (
                             <span className="absolute left-0 top-1/2 -translate-y-1/2 w-0.75 h-4.5 bg-[var(--nav-strip)] rounded-r-full" />
                         )}
@@ -1132,7 +1132,7 @@ const SideMenus = ({ collapsed }) => {
 
                 {can("bank", "view") && menuMatches('Bank', ['Add New', 'Add New Transaction', 'Manage Bank', 'Bank Ledger']) && (
 
-                    <div onMouseEnter={setTip} onClick={() => setbankOpen(!bankOpen)} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer transition-all mb-px ${collapsed ? 'justify-start' : ''} ${isParentActive(['/new/bank', '/add/new/transaction', '/manage/bank', '/bank/ledger']) ? 'bg-[var(--nav-active)]' : 'hover:bg-[var(--nav-active)]'}`}>
+                    <div onMouseEnter={setTip} onClick={() => setbankOpen(!bankOpen)} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer transition-all mb-px ${collapsed ? 'justify-start w-9 h-9 mx-auto' : ''} ${isParentActive(['/new/bank', '/add/new/transaction', '/manage/bank', '/bank/ledger']) ? 'bg-[var(--nav-active)]' : 'hover:bg-[var(--nav-active)]'}`}>
                         {isParentActive(['/new/bank', '/add/new/transaction', '/manage/bank', '/bank/ledger']) && !collapsed && (
                             <span className="absolute left-0 top-1/2 -translate-y-1/2 w-0.75 h-4.5 bg-[var(--nav-strip)] rounded-r-full" />
                         )}
@@ -1180,7 +1180,7 @@ const SideMenus = ({ collapsed }) => {
                 )}
 
                 {can("salary", "view") && menuMatches('Salary', ['Employee', 'Add Employee', 'Manage Employee', 'Manage Employee Salary', 'Attendence', 'Attendance', 'Attendance Report', 'Salary', 'Employee Salary', 'Ledger']) && (
-                    <div onMouseEnter={setTip} onClick={() => setsalaryOpen(!salaryOpen)} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer transition-all mb-px ${collapsed ? 'justify-start' : ''}
+                    <div onMouseEnter={setTip} onClick={() => setsalaryOpen(!salaryOpen)} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer transition-all mb-px ${collapsed ? 'justify-start w-9 h-9 mx-auto' : ''}
                      ${isParentActive(['/salary', '/attendence', '/attendence/report', '/add/employee', '/manage/employee', '/manage/employee/salary']) ? 'bg-[var(--nav-active)]' : 'hover:bg-[var(--nav-active)]'}`}>
                         {isParentActive(['/salary', '/attendence', '/attendence/report', '/add/employee', '/manage/employee', '/manage/employee/salary']) && !collapsed && (
                             <span className="absolute left-0 top-1/2 -translate-y-1/2 w-0.75 h-4.5 bg-[var(--nav-strip)] rounded-r-full" />
@@ -1296,7 +1296,7 @@ const SideMenus = ({ collapsed }) => {
                 )}
 
                 {can("assets", "view") && menuMatches('Assets', ['Add Assets', 'Manage Assets', 'Assets Ledger']) && (
-                    <div onMouseEnter={setTip} onClick={() => setassetsOpen(!assetsOpen)} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer transition-all mb-px ${collapsed ? 'justify-start' : ''} ${isParentActive(['/assets', '/manage/assets', '/assets/ledger']) ? 'bg-[var(--nav-active)]' : 'hover:bg-[var(--nav-active)]'}`}>
+                    <div onMouseEnter={setTip} onClick={() => setassetsOpen(!assetsOpen)} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer transition-all mb-px ${collapsed ? 'justify-start w-9 h-9 mx-auto' : ''} ${isParentActive(['/assets', '/manage/assets', '/assets/ledger']) ? 'bg-[var(--nav-active)]' : 'hover:bg-[var(--nav-active)]'}`}>
                         {isParentActive(['/assets', '/manage/assets', '/assets/ledger']) && !collapsed && (
                             <span className="absolute left-0 top-1/2 -translate-y-1/2 w-0.75 h-4.5 bg-[var(--nav-strip)] rounded-r-full" />
                         )}
