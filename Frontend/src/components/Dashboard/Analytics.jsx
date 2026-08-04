@@ -113,9 +113,9 @@ const Analytics = () => {
 
     const monthlySales = range === '3M' ? monthlySalesFull.slice(-3) : monthlySalesFull;
     return (
-        <div className="p-4 bg-slate-50 h-screen overflow-hidden flex flex-col" style={{ contain: 'layout paint' }}>
+        <div className="p-4 bg-slate-50 min-h-screen lg:h-screen overflow-y-auto lg:overflow-hidden flex flex-col" style={{ contain: 'layout paint' }}>
 
-            <div className="flex items-center justify-between mb-3 shrink-0">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-3 shrink-0 pl-12 md:pl-0">
                 <div className="flex items-center gap-2.5">
                     <div className="w-8 h-8 rounded-lg bg-emerald-600 flex items-center justify-center">
                         <TrendingUp className="w-4 h-4 text-white" />
@@ -139,7 +139,7 @@ const Analytics = () => {
                 </div>
             </div>
 
-            <div className="flex-1 grid grid-cols-4 grid-rows-2 gap-3 min-h-0">
+            <div className="analytics-grid flex-1 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 lg:grid-rows-2 gap-3 min-h-0">
 
                 <ChartCard
                     icon={TrendingUp}

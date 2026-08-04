@@ -2,6 +2,10 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
+@media (max-width: 1023px) {
+    .analytics-grid > * { min-height: 260px; }
+}
+
 @media print {
   body * {
     visibility: hidden;

@@ -71,8 +71,8 @@ const GlobalSearchBar = () => {
     useEffect(() => { setActiveIndex(0); }, [query]);
 
     return (
-        <div className="flex justify-center w-100 -mt-1 ml-30">
-            <div ref={boxRef} className="relative w-full max-w-2xl">
+<div className="flex justify-center w-full lg:w-100 lg:-mt-1 lg:ml-30">
+              <div ref={boxRef} className="relative w-full max-w-2xl">
                 <Search
                     size={20}
                     className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 z-10"

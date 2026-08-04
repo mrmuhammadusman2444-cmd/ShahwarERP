@@ -254,7 +254,7 @@ const MainDashboard = () => {
 
     return (
         <div
-            className="p-4 md:p-5 bg-slate-50 h-screen"
+            className="p-4 md:p-5 bg-slate-50 min-h-screen overflow-y-auto"
             style={{ contain: "layout paint" }}
         >
             {showSetting ? (
@@ -263,7 +263,7 @@ const MainDashboard = () => {
                 <UserSelectMenu setShowSetting={setShowSetting} />
             )}
 
-            <div className="flex items-start justify-between gap-6 mb-4">
+            <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-3 lg:gap-6 mb-4 pl-12 md:pl-0">
 
                 <div className="shrink-0">
                     <div className="flex items-center gap-3">
@@ -276,7 +276,7 @@ const MainDashboard = () => {
                             </div>
 
                             <div>
-                                <h1 className="text-xl font-semibold text-slate-800">
+                                <h1 className="text-sm sm:text-base md:text-xl font-semibold text-slate-800">
                                     {greetingText}, {user.firstName || "there"} 👋
                                 </h1>
 
@@ -288,11 +288,11 @@ const MainDashboard = () => {
                     </div>
                 </div>
 
-                <div className="flex-1 flex justify-center px-8">
+                <div className="flex-1 flex justify-center lg:px-8 w-full">
                     <GlobarSearchBar />
                 </div>
 
-                <div className="w-70 shrink-0"></div>
+                <div className="hidden lg:block w-70 shrink-0"></div>
 
             </div>
 
