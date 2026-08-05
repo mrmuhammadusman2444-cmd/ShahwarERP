@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { LineChart, Line, BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { TrendingUp, Package, Users, Award, RefreshCcw, Clock, Percent, Calendar } from 'lucide-react';
+import { can } from "../../utils/permissions.js";
 
 
 const monthlySalesFull = [
@@ -110,8 +111,20 @@ function CustomTooltip({ active, payload, label, formatter }) {
 
 const Analytics = () => {
     const [range, setRange] = useState('6M');
-
     const monthlySales = range === '3M' ? monthlySalesFull.slice(-3) : monthlySalesFull;
+
+    if (!can("analytics", "view")) {
+        return (
+            <div className="page-bg min-h-screen flex flex-col items-center justify-center text-center p-8">
+                <div className="w-16 h-16 rounded-2xl bg-red-100 flex items-center justify-center mb-4">
+                    <span className="text-3xl">🔒</span>
+                </div>
+                <h2 className="text-lg font-semibold text-gray-700">Access Denied</h2>
+                <p className="text-sm text-gray-500 mt-1">You don't have permission to view Analytics.</p>
+            </div>
+        )
+    }
+
     return (
         <div className="p-4 bg-slate-50 min-h-screen lg:h-screen overflow-y-auto lg:overflow-hidden flex flex-col" style={{ contain: 'layout paint' }}>
 

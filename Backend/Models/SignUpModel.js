@@ -35,6 +35,8 @@ const SignupSchema = new mongoose.Schema({
         type: String,
         default: ""
     },
+    resetOtp: { type: String, default: "" },
+    resetOtpExpiry: { type: Date, default: null },
 })
 
 const SignupModel = mongoose.model('Registration', SignupSchema)

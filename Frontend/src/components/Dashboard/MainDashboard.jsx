@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Sun, Sunset, Moon } from "lucide-react";
 import Setting from '../Setting.jsx'
+import {can} from "../../utils/permissions.js";
 import GlobarSearchBar from "./GlobarSearchBar.jsx";
 import UserSelectMenu from "../UserAccount/UserSelectMenu.jsx";
 import { BarChart, Bar, PieChart, Pie, Cell, Legend, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
@@ -251,6 +252,18 @@ import React from 'react'
 const MainDashboard = () => {
     const [showSetting, setShowSetting] = useState(false);
     const user = JSON.parse(localStorage.getItem('user')) || {}
+
+    if (!can("dashboard", "view")) {
+        return (
+            <div className="page-bg min-h-screen flex flex-col items-center justify-center text-center p-8">
+                <div className="w-16 h-16 rounded-2xl bg-red-100 flex items-center justify-center mb-4">
+                    <span className="text-3xl">🔒</span>
+                </div>
+                <h2 className="text-lg font-semibold text-gray-700">Access Denied</h2>
+                <p className="text-sm text-gray-500 mt-1">You don't have permission to view the Dashboard.</p>
+            </div>
+        )
+    }
 
     return (
         <div

@@ -1,7 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import axios from 'axios'
 
-// har request me token automatically bhejो
 axios.interceptors.request.use((config) => {
     const token = localStorage.getItem('token')
     if (token) {
@@ -9,6 +8,8 @@ axios.interceptors.request.use((config) => {
     }
     return config
 })
+const savedPattern = localStorage.getItem("bgPattern") || "none"
+document.body.setAttribute("data-pattern", savedPattern)
 import Registration from './pages/Registration.jsx'
 import Login from './pages/Login.jsx'
 import Sidebar from './components/Sidebar.jsx'

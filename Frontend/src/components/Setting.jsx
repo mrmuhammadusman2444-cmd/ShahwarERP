@@ -976,14 +976,13 @@ function AppearanceSection() {
   ];
   const BG_PATTERNS = [
     { id: "none", label: "None" },
-    { id: "doodles", label: "Doodles" },
-    { id: "food", label: "Food" },
-    { id: "nature", label: "Nature" },
-    { id: "shapes", label: "Shapes" },
-    { id: "hearts", label: "Hearts" },
-    { id: "symbols", label: "Symbols" },
+    { id: "fastfood", label: "Fast Food" },
+    { id: "sweets", label: "Sweets" },
+    { id: "drinks", label: "Drinks" },
+    { id: "fruits", label: "Fruits" },
+    { id: "breakfast", label: "Breakfast" },
+    { id: "food", label: "Mixed Food" },
   ];
-
   // theme apply + persist
   useEffect(() => {
     const root = document.documentElement;
@@ -1101,12 +1100,12 @@ function AppearanceSection() {
 
             const previews = {
               none: "none",
-              doodles: "url(\"data:image/svg+xml,%3Csvg width='90' height='90' viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%23000' stroke-opacity='0.3' stroke-width='2.5'%3E%3Ccircle cx='25' cy='25' r='9'/%3E%3Cpath d='M105 30c-3-4-9-3-9 2 0 4 9 9 9 9s9-5 9-9c0-5-6-6-9-2z'/%3E%3Cpath d='M110 60l-6 16h12z'/%3E%3Ccircle cx='62' cy='112' r='9'/%3E%3C/g%3E%3C/svg%3E\")",
-              food: "url(\"data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 160 160' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%23000' stroke-opacity='0.3' stroke-width='2.5'%3E%3Ccircle cx='105' cy='25' r='12'/%3E%3Cpath d='M60 55l6 18'/%3E%3Cpath d='M18 20h16l-2 14a6 6 0 01-12 0z'/%3E%3C/g%3E%3C/svg%3E\")",
-              nature: "url(\"data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 160 160' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%23000' stroke-opacity='0.3' stroke-width='2.5'%3E%3Cpath d='M20 30c0-12 14-12 14 0 0 8-7 12-7 12s-7-4-7-12z'/%3E%3Ccircle cx='62' cy='72' r='5'/%3E%3Cpath d='M105 18c-4 4-4 12 0 20 4-8 4-16 0-20z'/%3E%3C/g%3E%3C/svg%3E\")",
-              shapes: "url(\"data:image/svg+xml,%3Csvg width='75' height='75' viewBox='0 0 150 150' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%23000' stroke-opacity='0.3' stroke-width='2.5'%3E%3Crect x='18' y='18' width='18' height='18' rx='2'/%3E%3Ccircle cx='72' cy='27' r='10'/%3E%3Cpath d='M60 100l12 20h-24z'/%3E%3C/g%3E%3C/svg%3E\")",
-              hearts: "url(\"data:image/svg+xml,%3Csvg width='70' height='70' viewBox='0 0 140 140' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%23000' stroke-opacity='0.3' stroke-width='2.5'%3E%3Cpath d='M25 32c-4-6-13-4-13 3 0 5 13 12 13 12s13-7 13-12c0-7-9-9-13-3z'/%3E%3Cpath d='M72 15l3 7 7 1-5 5 1 7-6-3.5-6 3.5 1-7-5-5 7-1z'/%3E%3C/g%3E%3C/svg%3E\")",
-              symbols: "url(\"data:image/svg+xml,%3Csvg width='75' height='75' viewBox='0 0 150 150' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%23000' stroke-opacity='0.3' stroke-width='2.5'%3E%3Cpath d='M18 27h18m-6-6l6 6-6 6'/%3E%3Cpath d='M72 18v18m-9-9h18'/%3E%3Cpath d='M100 30q8-10 16 0t16 0'/%3E%3C/g%3E%3C/svg%3E\")",
+              fastfood: "url(\"data:image/svg+xml,%3Csvg width='110' height='110' viewBox='0 0 220 220' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%23000' stroke-opacity='0.35' stroke-width='2.5'%3E%3Cpath d='M40 40q9-6 18 0 M39 44h20 M40 48q9 4 18 0 M39 52h20q0 4-9 4t-9-4'/%3E%3Cpath d='M110 60l9 16-18 0z'/%3E%3C/g%3E%3C/svg%3E\")",
+              sweets: "url(\"data:image/svg+xml,%3Csvg width='110' height='110' viewBox='0 0 220 220' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%23000' stroke-opacity='0.35' stroke-width='2.5'%3E%3Cpath d='M50 50m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0 M50 50m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0'/%3E%3Cpath d='M110 90l4 14 4-14'/%3E%3C/g%3E%3C/svg%3E\")",
+              drinks: "url(\"data:image/svg+xml,%3Csvg width='110' height='110' viewBox='0 0 220 220' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%23000' stroke-opacity='0.35' stroke-width='2.5'%3E%3Cpath d='M50 50h13l-2 13a4 4 0 01-9 0z M63 52c4 0 4 6 0 6'/%3E%3C/g%3E%3C/svg%3E\")",
+              fruits: "url(\"data:image/svg+xml,%3Csvg width='110' height='110' viewBox='0 0 220 220' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%23000' stroke-opacity='0.35' stroke-width='2.5'%3E%3Cpath d='M60 60q-7-3-7 4t7 7q7 0 7-7t-7-4z M60 60v-4'/%3E%3Cpath d='M110 110m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0'/%3E%3C/g%3E%3C/svg%3E\")",
+              breakfast: "url(\"data:image/svg+xml,%3Csvg width='110' height='110' viewBox='0 0 220 220' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%23000' stroke-opacity='0.35' stroke-width='2.5'%3E%3Cpath d='M60 60q-7 0-7 6t7 6 7-3 7-8-7-4-7-4z M60 60m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0'/%3E%3C/g%3E%3C/svg%3E\")",
+              food: "url(\"data:image/svg+xml,%3Csvg width='110' height='110' viewBox='0 0 220 220' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%23000' stroke-opacity='0.35' stroke-width='2.5'%3E%3Cpath d='M40 40q9-6 18 0 M39 44h20 M39 52h20q0 4-9 4t-9-4'/%3E%3Cpath d='M110 60m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0'/%3E%3C/g%3E%3C/svg%3E\")",
             };
             return (
               <button

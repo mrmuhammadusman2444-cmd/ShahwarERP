@@ -3,6 +3,7 @@ import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { useState } from "react";
+import ResetPassword from '../components/ResetPassword/ResetPasswordPopup.jsx'
 import { motion, AnimatePresence } from "framer-motion";
 import Preloader from "../components/Preloader";
 import { BarChart2, LogIn, Loader2, AlertCircle, Package, ShieldCheck, Store, } from "lucide-react";
@@ -11,6 +12,7 @@ import { BarChart2, LogIn, Loader2, AlertCircle, Package, ShieldCheck, Store, } 
 const Login = () => {
   const [loading, setLoading] = useState(false)
   const [status, setStatus] = useState("idle")
+  const [showForgot, setShowForgot] = useState(false)
   const navigate = useNavigate()
 
   let [LoginForm, setLoginForm] = useState({
@@ -63,6 +65,8 @@ const Login = () => {
         {loading && <Preloader />}
       </AnimatePresence>
       <div className="min-h-screen bg-slate-100 flex items-center justify-center p-6">
+
+        {showForgot && <ResetPassword onClose={() => setShowForgot(false)} />}
         <div
           className="grid w-full max-w-4xl rounded-2xl overflow-hidden border border-slate-200"
           style={{ gridTemplateColumns: "1fr 1fr", minHeight: "600px" }}
@@ -155,7 +159,13 @@ const Login = () => {
             <div className="mb-6">
               <div className="flex items-center justify-between mb-1.5">
                 <label className="text-[12px] font-medium text-slate-500">Password</label>
-                <a href="#" className="text-[12px] text-emerald-500 font-medium">Forgot password?</a>
+                <button
+                  type="button"
+                  onClick={() => setShowForgot(true)}
+                  className="text-[12px] text-emerald-500 font-medium cursor-pointer hover:text-emerald-600"
+                >
+                  Forgot password?
+                </button>
               </div>
               <input
                 onChange={(e) => setLoginForm({ ...LoginForm, password: e.target.value })}
