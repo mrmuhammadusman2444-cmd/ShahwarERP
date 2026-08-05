@@ -50,7 +50,7 @@ const ManageCustomers = () => {
 
   const navigate = useNavigate()
   return (
-    <div className="min-h-screen bg-linear-to-br from-emerald-50 via-white to-emerald-50 p-4 md:p-6">
+    <div className=" min-h-screen bg-linear-to-br from-emerald-50 via-white to-emerald-50 p-4 md:p-6">
 
       {showEditPopup == true ? (
         <EditCustomerPopup

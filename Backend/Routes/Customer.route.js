@@ -1,5 +1,6 @@
 import express from 'express'
 import CustomerModel from '../Models/CustomerModels/CustomerModel.js'
+import { verifyToken, checkPermission } from '../Middleware/auth.js'
 import SaleModel from '../Models/Sale Models/SalesModel.js'
 import SupplierPaymentsModel from '../Models/Accounts/SupplierPaymentsModel.js'
 
@@ -27,7 +28,7 @@ router.get('/find', async function (req, res) {
     res.json(findCustomer)
 })
 
-router.post('/delete/customer', async (req, res) => {
+router.post('/delete/customer', verifyToken, checkPermission('customers', 'delete'), async (req, res) => {
     let deleteCustomer = await CustomerModel.findByIdAndDelete(req.body._id)
     res.json({ message: 'Customer deleted', data: deleteCustomer })
 })

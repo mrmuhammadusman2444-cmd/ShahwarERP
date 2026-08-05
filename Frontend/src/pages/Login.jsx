@@ -39,6 +39,7 @@ const Login = () => {
 
       if (res.data.success) {
         localStorage.setItem('user', JSON.stringify(res.data.user))
+        localStorage.setItem('token', res.data.token)
         setLoading(true)
         setTimeout(() => navigate('/Dashboard'), 2800)
       } else {

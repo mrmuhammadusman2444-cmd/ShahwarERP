@@ -254,7 +254,7 @@ const MainDashboard = () => {
 
     return (
         <div
-            className="p-4 md:p-5 bg-slate-50 min-h-screen overflow-y-auto"
+            className="page-bg p-4 md:p-5  min-h-screen overflow-y-auto"
             style={{ contain: "layout paint" }}
         >
             {showSetting ? (

@@ -1,4 +1,5 @@
 import express from 'express'
+import jwt from 'jsonwebtoken'
 import SignupModel from '../Models/SignUpModel.js'
 import multer from 'multer'
 import path from 'path'
@@ -52,6 +53,11 @@ router.post('/signin', async function (req, res) {
     res.json({
         success: true,
         message: 'Login Successful',
+        token: jwt.sign(
+            { id: FindLogin._id, role: FindLogin.role },
+            'shahwar_secret_key_123',   // secret — baad me .env me daalna
+            { expiresIn: '7d' }
+        ),
         user: {
             _id: FindLogin._id,
             firstName: FindLogin.firstName,
@@ -63,6 +69,7 @@ router.post('/signin', async function (req, res) {
         }
     })
 })
+
 router.get('/make/admin/:email', async function (req, res) {
     let updated = await SignupModel.findOneAndUpdate(
         { email: req.params.email },

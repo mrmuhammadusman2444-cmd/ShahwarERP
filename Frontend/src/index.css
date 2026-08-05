@@ -3,7 +3,9 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 @media (max-width: 1023px) {
-    .analytics-grid > * { min-height: 260px; }
+  .analytics-grid>* {
+    min-height: 260px;
+  }
 }
 
 @media print {
@@ -123,65 +125,124 @@ body {
     box-shadow: 0 0 0 8px rgba(16, 185, 129, 0);
   }
 }
+
 :root {
-  --nav-active: #065f46;  
-  --nav-strip:  #34d399;  
+  --nav-active: #065f46;
+  --nav-strip: #34d399;
 }
 
 /* ============ GLOBAL DARK THEME (all pages) ============ */
 
 /* Page = pure black */
-.dark body { background-color: #000000; }
-.dark .bg-gray-100, .dark .bg-slate-100,
-.dark .bg-gray-200, .dark .bg-slate-200,
-.dark .bg-gray-50  { background-color: #000000 !important; }
+.dark body {
+  background-color: #000000;
+}
+
+.dark .bg-gray-100,
+.dark .bg-slate-100,
+.dark .bg-gray-200,
+.dark .bg-slate-200,
+.dark .bg-gray-50 {
+  background-color: #000000 !important;
+}
 
 /* Cards / containers = grey (float above black) + subtle border & shadow */
-.dark .bg-white, .dark .bg-slate-50 {
+.dark .bg-white,
+.dark .bg-slate-50 {
   background-color: #161618 !important;
   border-color: #2a2a2e !important;
-  box-shadow: 0 1px 0 rgba(255,255,255,0.02), 0 8px 24px rgba(0,0,0,0.5) !important;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.02), 0 8px 24px rgba(0, 0, 0, 0.5) !important;
 }
 
 /* Text — slate-50 headings, muted greys for the rest */
-.dark .text-black, .dark .text-gray-900, .dark .text-gray-800,
-.dark .text-slate-900, .dark .text-slate-800 { color: #f8fafc !important; } /* slate-50 */
-.dark .text-gray-700, .dark .text-gray-600,
-.dark .text-slate-700, .dark .text-slate-600 { color: #a1a1aa !important; }
-.dark .text-gray-500, .dark .text-gray-400,
-.dark .text-slate-500, .dark .text-slate-400 { color: #71717a !important; }
+.dark .text-black,
+.dark .text-gray-900,
+.dark .text-gray-800,
+.dark .text-slate-900,
+.dark .text-slate-800 {
+  color: #f8fafc !important;
+}
+
+/* slate-50 */
+.dark .text-gray-700,
+.dark .text-gray-600,
+.dark .text-slate-700,
+.dark .text-slate-600 {
+  color: #a1a1aa !important;
+}
+
+.dark .text-gray-500,
+.dark .text-gray-400,
+.dark .text-slate-500,
+.dark .text-slate-400 {
+  color: #71717a !important;
+}
 
 /* Borders / dividers */
-.dark .border-gray-100, .dark .border-gray-200, .dark .border-gray-300,
-.dark .border-slate-100, .dark .border-slate-200, .dark .border-slate-300,
-.dark .divide-gray-200 > *, .dark .divide-slate-200 > * { border-color: #2a2a2e !important; }
+.dark .border-gray-100,
+.dark .border-gray-200,
+.dark .border-gray-300,
+.dark .border-slate-100,
+.dark .border-slate-200,
+.dark .border-slate-300,
+.dark .divide-gray-200>*,
+.dark .divide-slate-200>* {
+  border-color: #2a2a2e !important;
+}
 
 /* Inputs / selects / search = darker grey with border */
-.dark input, .dark select, .dark textarea {
+.dark input,
+.dark select,
+.dark textarea {
   background-color: #202024 !important;
   border-color: #33333a !important;
   color: #f8fafc !important;
 }
-.dark ::placeholder { color: #6b7280 !important; }
+
+.dark ::placeholder {
+  color: #6b7280 !important;
+}
+
 /* light framed toggles / segmented controls in dark */
 .dark .bg-white.rounded-full,
-.dark .bg-gray-100.rounded-full { background-color: #161618 !important; }
+.dark .bg-gray-100.rounded-full {
+  background-color: #161618 !important;
+}
 
 /* Light pills/chips (bg-*-50/100) -> soft translucent, colored text stays */
-.dark [class*="bg-emerald-50"], .dark [class*="bg-green-50"],
-.dark [class*="bg-blue-50"], .dark [class*="bg-red-50"],
-.dark [class*="bg-amber-50"], .dark [class*="bg-purple-50"] {
-  background-color: rgba(255,255,255,0.04) !important;
+.dark [class*="bg-emerald-50"],
+.dark [class*="bg-green-50"],
+.dark [class*="bg-blue-50"],
+.dark [class*="bg-red-50"],
+.dark [class*="bg-amber-50"],
+.dark [class*="bg-purple-50"] {
+  background-color: rgba(255, 255, 255, 0.04) !important;
 }
 
 /* Table rows — subtle hover + row divider */
-.dark tbody tr { border-color: #232327 !important; }
-.dark tbody tr:hover { background-color: #1c1c20 !important; }
+.dark tbody tr {
+  border-color: #232327 !important;
+}
+
+.dark tbody tr:hover {
+  background-color: #1c1c20 !important;
+}
 
 /* Nicer dark scrollbar */
-.dark ::-webkit-scrollbar { width: 10px; height: 10px; }
-.dark ::-webkit-scrollbar-thumb { background: #2f2f36; border-radius: 8px; }
-.dark ::-webkit-scrollbar-track { background: #0a0a0a; }
+.dark ::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: #2f2f36;
+  border-radius: 8px;
+}
+
+.dark ::-webkit-scrollbar-track {
+  background: #0a0a0a;
+}
+
 /* ===== DARK: emerald-tinted form surfaces (New Customer & all forms) ===== */
 
 /* Inputs / selects (bg-emerald-50) -> dark field */
@@ -193,21 +254,31 @@ body {
 }
 
 /* focus: pehle white flash karta tha -> ab dark rahega */
-.dark .focus\:bg-white:focus { background-color: #26262b !important; }
+.dark .focus\:bg-white:focus {
+  background-color: #26262b !important;
+}
 
 /* emerald static borders + dividers -> neutral dark (focus ka emerald ring bacha rehta hai) */
 .dark .border-emerald-50,
 .dark .border-emerald-100,
-.dark .border-emerald-200 { border-color: #2a2a2e !important; }
+.dark .border-emerald-200 {
+  border-color: #2a2a2e !important;
+}
 
 /* radio/label chips (bg-emerald-50) -> dark */
-.dark label[class*="bg-emerald-50"] { background-color: #202024 !important; }
-.dark .hover\:bg-emerald-50:hover { background-color: #26262b !important; }
+.dark label[class*="bg-emerald-50"] {
+  background-color: #202024 !important;
+}
+
+.dark .hover\:bg-emerald-50:hover {
+  background-color: #26262b !important;
+}
 
 /* decorative light-emerald avatar tile -> muted dark emerald */
 .dark [class*="from-emerald-100"] {
   background-image: linear-gradient(to bottom right, #0f2f24, #0a2019) !important;
 }
+
 /* ===== DARK: list pages (Manage Customers etc.) ===== */
 
 /* Page bg gradient (from-emerald-50 via-white ...) -> solid black */
@@ -217,33 +288,62 @@ body {
 }
 
 /* Colored soft chips / avatars / hovers (bg-*-100) -> translucent tint (text colour stays) */
-.dark [class*="bg-emerald-100"] { background-color: rgba(16,185,129,0.15) !important; }
-.dark [class*="bg-amber-100"]   { background-color: rgba(245,158,11,0.15) !important; }
-.dark [class*="bg-sky-100"]     { background-color: rgba(14,165,233,0.15) !important; }
-.dark [class*="bg-rose-100"]    { background-color: rgba(244,63,94,0.15) !important; }
-.dark [class*="bg-violet-100"]  { background-color: rgba(139,92,246,0.15) !important; }
-.dark [class*="bg-red-100"]     { background-color: rgba(239,68,68,0.15) !important; }
+.dark [class*="bg-emerald-100"] {
+  background-color: rgba(16, 185, 129, 0.15) !important;
+}
+
+.dark [class*="bg-amber-100"] {
+  background-color: rgba(245, 158, 11, 0.15) !important;
+}
+
+.dark [class*="bg-sky-100"] {
+  background-color: rgba(14, 165, 233, 0.15) !important;
+}
+
+.dark [class*="bg-rose-100"] {
+  background-color: rgba(244, 63, 94, 0.15) !important;
+}
+
+.dark [class*="bg-violet-100"] {
+  background-color: rgba(139, 92, 246, 0.15) !important;
+}
+
+.dark [class*="bg-red-100"] {
+  background-color: rgba(239, 68, 68, 0.15) !important;
+}
 
 /* very-dark colored text on light chips -> lighter (readable) */
-.dark .text-emerald-900 { color: #6ee7b7 !important; }
+.dark .text-emerald-900 {
+  color: #6ee7b7 !important;
+}
 
 /* soft chips (bg-*-50) not covered before */
-.dark [class*="bg-sky-50"], .dark [class*="bg-rose-50"], .dark [class*="bg-violet-50"] {
-  background-color: rgba(255,255,255,0.04) !important;
+.dark [class*="bg-sky-50"],
+.dark [class*="bg-rose-50"],
+.dark [class*="bg-violet-50"] {
+  background-color: rgba(255, 255, 255, 0.04) !important;
 }
 
 /* progress-bar track -> subtle grey (na ke pure black) */
-.dark .h-1\.5.bg-gray-100 { background-color: #2a2a2e !important; }
+.dark .h-1\.5.bg-gray-100 {
+  background-color: #2a2a2e !important;
+}
+
 /* ===== DARK: blue-tinted borders (Customer Advance etc.) ===== */
 .dark .border-blue-50,
 .dark .border-blue-100,
-.dark .border-blue-200 { border-color: #2a2a2e !important; }
+.dark .border-blue-200 {
+  border-color: #2a2a2e !important;
+}
+
 /* ===== DARK: ledger / detail pages ===== */
 
 /* slate borders incl. opacity variants (border-slate-200/70 etc.) */
 .dark [class*="border-slate-100"],
 .dark [class*="border-slate-200"],
-.dark [class*="border-slate-300"] { border-color: #2a2a2e !important; }
+.dark [class*="border-slate-300"] {
+  border-color: #2a2a2e !important;
+}
 
 /* light gradient strips (…to-white / from-emerald-50 / bg-slate-50) -> card grey */
 .dark [class*="to-white"],
@@ -254,94 +354,195 @@ body {
 }
 
 /* deep emerald text on tinted rows -> readable */
-.dark .text-emerald-900, .dark .text-emerald-800 { color: #6ee7b7 !important; }
-.dark .text-emerald-700 { color: #34d399 !important; }
+.dark .text-emerald-900,
+.dark .text-emerald-800 {
+  color: #6ee7b7 !important;
+}
+
+.dark .text-emerald-700 {
+  color: #34d399 !important;
+}
 
 /* small neutral icon tiles (bg-gray-50 chips) -> grey, not black hole */
-.dark [class*="bg-gray-50"].rounded-lg { background-color: #202024 !important; }
+.dark [class*="bg-gray-50"].rounded-lg {
+  background-color: #202024 !important;
+}
+
 /* =========================================================
    GLOBAL DARK THEME  — replace ALL previously added dark CSS
    Palette: page #000 · cards #161618 · inputs #202024 · text slate-50
    ========================================================= */
 
 /* Page = pure black */
-.dark body { background-color:#000000; }
-.dark [class*="bg-gray-100"], .dark [class*="bg-gray-200"],
-.dark [class*="bg-slate-100"], .dark [class*="bg-slate-200"] { background-color:#000000 !important; }
+.dark body {
+  background-color: #000000;
+}
+
+.dark [class*="bg-gray-100"],
+.dark [class*="bg-gray-200"],
+.dark [class*="bg-slate-100"],
+.dark [class*="bg-slate-200"] {
+  background-color: #000000 !important;
+}
 
 /* Cards / containers = grey  (buttons/links EXEMPT) */
 .dark .bg-white:not(button):not(a),
 .dark [class~="bg-slate-50"]:not(button) {
-  background-color:#161618 !important;
-  border-color:#2a2a2e !important;
-  box-shadow:0 1px 0 rgba(255,255,255,.02), 0 8px 24px rgba(0,0,0,.5) !important;
+  background-color: #161618 !important;
+  border-color: #2a2a2e !important;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, .02), 0 8px 24px rgba(0, 0, 0, .5) !important;
 }
 
 /* Text tiers — headings slate-50, rest muted */
-.dark [class*="text-black"], .dark [class*="text-gray-900"], .dark [class*="text-gray-800"],
-.dark [class*="text-slate-900"], .dark [class*="text-slate-800"] { color:#f8fafc !important; }
-.dark [class*="text-gray-700"], .dark [class*="text-gray-600"],
-.dark [class*="text-slate-700"], .dark [class*="text-slate-600"] { color:#a1a1aa !important; }
-.dark [class*="text-gray-500"], .dark [class*="text-gray-400"],
-.dark [class*="text-slate-500"], .dark [class*="text-slate-400"] { color:#71717a !important; }
+.dark [class*="text-black"],
+.dark [class*="text-gray-900"],
+.dark [class*="text-gray-800"],
+.dark [class*="text-slate-900"],
+.dark [class*="text-slate-800"] {
+  color: #f8fafc !important;
+}
+
+.dark [class*="text-gray-700"],
+.dark [class*="text-gray-600"],
+.dark [class*="text-slate-700"],
+.dark [class*="text-slate-600"] {
+  color: #a1a1aa !important;
+}
+
+.dark [class*="text-gray-500"],
+.dark [class*="text-gray-400"],
+.dark [class*="text-slate-500"],
+.dark [class*="text-slate-400"] {
+  color: #71717a !important;
+}
 
 /* Deep emerald text -> readable */
-.dark [class*="text-emerald-900"], .dark [class*="text-emerald-800"] { color:#6ee7b7 !important; }
-.dark [class*="text-emerald-700"] { color:#34d399 !important; }
+.dark [class*="text-emerald-900"],
+.dark [class*="text-emerald-800"] {
+  color: #6ee7b7 !important;
+}
+
+.dark [class*="text-emerald-700"] {
+  color: #34d399 !important;
+}
 
 /* Borders / dividers (incl. -50 whole-token, opacity variants, blue/slate/emerald) */
-.dark [class*="border-gray-100"], .dark [class*="border-gray-200"], .dark [class*="border-gray-300"],
-.dark [class*="border-slate-100"], .dark [class*="border-slate-200"], .dark [class*="border-slate-300"],
-.dark [class*="border-emerald-100"], .dark [class*="border-emerald-200"], .dark [class*="border-emerald-300"],
-.dark [class*="border-blue-100"], .dark [class*="border-blue-200"],
-.dark [class~="border-gray-50"], .dark [class~="border-slate-50"],
-.dark [class~="border-emerald-50"], .dark [class~="border-blue-50"] { border-color:#2a2a2e !important; }
+.dark [class*="border-gray-100"],
+.dark [class*="border-gray-200"],
+.dark [class*="border-gray-300"],
+.dark [class*="border-slate-100"],
+.dark [class*="border-slate-200"],
+.dark [class*="border-slate-300"],
+.dark [class*="border-emerald-100"],
+.dark [class*="border-emerald-200"],
+.dark [class*="border-emerald-300"],
+.dark [class*="border-blue-100"],
+.dark [class*="border-blue-200"],
+.dark [class~="border-gray-50"],
+.dark [class~="border-slate-50"],
+.dark [class~="border-emerald-50"],
+.dark [class~="border-blue-50"] {
+  border-color: #2a2a2e !important;
+}
 
 /* Inputs / selects / textarea = dark field */
-.dark input, .dark select, .dark textarea {
-  background-color:#202024 !important; border-color:#33333a !important; color:#f8fafc !important;
+.dark input,
+.dark select,
+.dark textarea {
+  background-color: #202024 !important;
+  border-color: #33333a !important;
+  color: #f8fafc !important;
 }
-.dark ::placeholder { color:#6b7280 !important; }
-.dark .focus\:bg-white:focus { background-color:#26262b !important; }
+
+.dark ::placeholder {
+  color: #6b7280 !important;
+}
+
+.dark .focus\:bg-white:focus {
+  background-color: #26262b !important;
+}
 
 /* Colored soft chips / pills / avatars (bg-*-100) -> translucent tint (buttons EXEMPT) */
-.dark [class*="bg-emerald-100"]:not(button) { background-color:rgba(16,185,129,.15) !important; }
-.dark [class*="bg-amber-100"]:not(button)   { background-color:rgba(245,158,11,.15) !important; }
-.dark [class*="bg-sky-100"]:not(button)     { background-color:rgba(14,165,233,.15) !important; }
-.dark [class*="bg-rose-100"]:not(button)    { background-color:rgba(244,63,94,.15) !important; }
-.dark [class*="bg-violet-100"]:not(button)  { background-color:rgba(139,92,246,.15) !important; }
-.dark [class*="bg-red-100"]:not(button)     { background-color:rgba(239,68,68,.15) !important; }
+.dark [class*="bg-emerald-100"]:not(button) {
+  background-color: rgba(16, 185, 129, .15) !important;
+}
+
+.dark [class*="bg-amber-100"]:not(button) {
+  background-color: rgba(245, 158, 11, .15) !important;
+}
+
+.dark [class*="bg-sky-100"]:not(button) {
+  background-color: rgba(14, 165, 233, .15) !important;
+}
+
+.dark [class*="bg-rose-100"]:not(button) {
+  background-color: rgba(244, 63, 94, .15) !important;
+}
+
+.dark [class*="bg-violet-100"]:not(button) {
+  background-color: rgba(139, 92, 246, .15) !important;
+}
+
+.dark [class*="bg-red-100"]:not(button) {
+  background-color: rgba(239, 68, 68, .15) !important;
+}
 
 /* -50 soft chips (whole-token only, so -500 & hover: variants are NOT touched) */
 .dark [class~="bg-emerald-50"]:not(button),
-.dark [class~="bg-sky-50"]:not(button), .dark [class~="bg-rose-50"]:not(button),
-.dark [class~="bg-violet-50"]:not(button), .dark [class~="bg-amber-50"]:not(button) {
-  background-color:rgba(255,255,255,.04) !important;
+.dark [class~="bg-sky-50"]:not(button),
+.dark [class~="bg-rose-50"]:not(button),
+.dark [class~="bg-violet-50"]:not(button),
+.dark [class~="bg-amber-50"]:not(button) {
+  background-color: rgba(255, 255, 255, .04) !important;
 }
 
 /* Light gradient strips (…to-white / from-emerald-50 tint) -> card grey */
-.dark [class*="via-white"], .dark [class*="to-white"],
-.dark [class~="from-emerald-50"], .dark [class*="from-emerald-50/"] {
-  background-image:none !important; background-color:#161618 !important;
+.dark [class*="via-white"],
+.dark [class*="to-white"],
+.dark [class~="from-emerald-50"],
+.dark [class*="from-emerald-50/"] {
+  background-image: none !important;
+  background-color: #161618 !important;
 }
 
 /* Decorative light-emerald avatar tile -> muted dark emerald */
 .dark [class*="from-emerald-100"] {
-  background-image:linear-gradient(to bottom right,#0f2f24,#0a2019) !important;
+  background-image: linear-gradient(to bottom right, #0f2f24, #0a2019) !important;
 }
 
 /* Small neutral icon tiles + progress-bar track -> subtle grey (not black hole) */
-.dark [class~="bg-gray-50"].rounded-lg { background-color:#202024 !important; }
-.dark .bg-gray-100.rounded-full { background-color:#2a2a2e !important; }
+.dark [class~="bg-gray-50"].rounded-lg {
+  background-color: #202024 !important;
+}
+
+.dark .bg-gray-100.rounded-full {
+  background-color: #2a2a2e !important;
+}
 
 /* Table rows */
-.dark tbody tr { border-color:#232327 !important; }
-.dark tbody tr:hover { background-color:#1c1c20 !important; }
+.dark tbody tr {
+  border-color: #232327 !important;
+}
+
+.dark tbody tr:hover {
+  background-color: #1c1c20 !important;
+}
 
 /* Dark scrollbar */
-.dark ::-webkit-scrollbar { width:10px; height:10px; }
-.dark ::-webkit-scrollbar-thumb { background:#2f2f36; border-radius:8px; }
-.dark ::-webkit-scrollbar-track { background:#0a0a0a; }
+.dark ::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: #2f2f36;
+  border-radius: 8px;
+}
+
+.dark ::-webkit-scrollbar-track {
+  background: #0a0a0a;
+}
+
 /* ============================================================
    DARK: buttons + gradient icon tiles keep ORIGINAL colors
    (paste at the VERY END — must be last so it wins)
@@ -356,32 +557,52 @@ body {
 }
 
 /* White / outline secondary buttons -> white hi rahein (dark na hon) */
-.dark button[class*="bg-white"] { background-color: #ffffff !important; }
+.dark button[class*="bg-white"] {
+  background-color: #ffffff !important;
+}
 
 /* Solid colored buttons -> apni asli color */
-.dark button[class*="bg-emerald-6"] { background-color: #059669 !important; }
-.dark button[class*="bg-green-6"]   { background-color: #16a34a !important; }
-.dark button[class*="bg-red-6"]     { background-color: #dc2626 !important; }
-.dark button[class*="bg-cyan-6"]    { background-color: #0891b2 !important; }
-.dark button[class*="bg-gray-7"]    { background-color: #374151 !important; }
+.dark button[class*="bg-emerald-6"] {
+  background-color: #059669 !important;
+}
+
+.dark button[class*="bg-green-6"] {
+  background-color: #16a34a !important;
+}
+
+.dark button[class*="bg-red-6"] {
+  background-color: #dc2626 !important;
+}
+
+.dark button[class*="bg-cyan-6"] {
+  background-color: #0891b2 !important;
+}
+
+.dark button[class*="bg-gray-7"] {
+  background-color: #374151 !important;
+}
+
 /* ===== DARK: Settings modal sidebar tabs (highest priority) ===== */
 .dark aside nav button:not(.tab-active),
 html.dark aside nav button:not(.tab-active) {
-    background: transparent !important;
-    background-color: transparent !important;
-    background-image: none !important;
-    box-shadow: none !important;
-    border-color: transparent !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  border-color: transparent !important;
 }
+
 .dark aside nav button:not(.tab-active):hover,
 html.dark aside nav button:not(.tab-active):hover {
-    background-color: rgba(255,255,255,0.08) !important;
-    color: #ffffff !important;
+  background-color: rgba(255, 255, 255, 0.08) !important;
+  color: #ffffff !important;
 }
+
 .dark aside nav button.tab-active {
-    background-color: rgba(255,255,255,0.10) !important;
-    color: #34d399 !important;
+  background-color: rgba(255, 255, 255, 0.10) !important;
+  color: #34d399 !important;
 }
+
 /* ERP Toggle */
 
 .dark button.bg-emerald-500 {
@@ -395,40 +616,110 @@ html.dark aside nav button:not(.tab-active):hover {
 .dark button.bg-zinc-700 {
   background-color: #3f3f46 !important;
 }
+
 /* ===== DARK: module search box saaf single color ===== */
-html.dark aside ~ main .bg-white:has(> input[placeholder="Search module..."]),
+html.dark aside~main .bg-white:has(> input[placeholder="Search module..."]),
 html.dark input[placeholder="Search module..."] {
-    background-color: #202024 !important;
-    border-color: #33333a !important;
+  background-color: #202024 !important;
+  border-color: #33333a !important;
 }
+
 html.dark .module-search {
-    background-color: #202024 !important;
-    border-color: #33333a !important;
+  background-color: #202024 !important;
+  border-color: #33333a !important;
 }
+
 html.dark .module-search input {
-    background-color: transparent !important;
+  background-color: transparent !important;
 }
-html.dark .divide-gray-50 > * + * {
-    border-color: #232327 !important;
+
+html.dark .divide-gray-50>*+* {
+  border-color: #232327 !important;
 }
-html.dark .user-list-divider > * + * {
-    border-top-color: #232327 !important;
+
+html.dark .user-list-divider>*+* {
+  border-top-color: #232327 !important;
 }
-html.dark .divide-gray-50 > * + * {
-    border-top-color: red !important;
+
+html.dark .divide-gray-50>*+* {
+  border-top-color: red !important;
 }
+
 /* ===== DARK: remove all button shadows ===== */
 html.dark button {
-    box-shadow: none !important;
+  box-shadow: none !important;
 }
+
 /* sidebar search input — transparent taके container ka overlay dikhe */
 .sidebar-search input {
-    background-color: transparent !important;
+  background-color: transparent !important;
 }
+
 .dark .sidebar-search input {
-    background-color: transparent !important;
+  background-color: transparent !important;
 }
+
 html.dark button,
 html.dark [class*="shadow"] {
-    box-shadow: none !important;
+  box-shadow: none !important;
+}
+
+
+/* ============================================================
+   6 DENSE IRREGULAR DOODLE PATTERNS (36 doodles/tile, light+dark)
+   index.css me purane pattern rules hata ke ye daalo
+   ============================================================ */
+
+/* ---------- doodles ---------- */
+body[data-pattern="doodles"] .page-bg {
+    background-image: url("data:image/svg+xml,%3Csvg width='200' height='200' viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%23000000' stroke-opacity='0.10' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 5l2 4 4 .5-3 3 .7 4-3.7-2-3.7 2 .7-4-3-3 4-.5z'/%3E%3Cpath d='M-6 40l7 7-7 7-7-7z'/%3E%3Cpath d='M-9 64m-5 0a5 5 0 1 0 10 0a5 5 0 1 0 -10 0'/%3E%3Cpath d='M-2 102l7 12h-14z'/%3E%3Cpath d='M-5 140c-5 0-5 7 0 7s3-5-1.5-5'/%3E%3Cpath d='M9 174m-5 0a5 5 0 1 0 10 0a5 5 0 1 0 -10 0'/%3E%3Cpath d='M35 3v9 M30.5 7.5h9'/%3E%3Cpath d='M35 24c-3-4-8-2-8 1.5 0 3 8 7 8 7s8-4 8-7c0-3.5-5-5.5-8-1.5z'/%3E%3Cpath d='M29 65h14l-2 12a5 5 0 01-10 0z M43 67c3 0 3 5 0 5'/%3E%3Cpath d='M29 109l2 4 4 .5-3 3 .7 4-3.7-2-3.7 2 .7-4-3-3 4-.5z'/%3E%3Cpath d='M44 138c-3 3-3 9 0 14 3-5 3-11 0-14z'/%3E%3Cpath d='M34 169c-3-4-8-2-8 1.5 0 3 8 7 8 7s8-4 8-7c0-3.5-5-5.5-8-1.5z'/%3E%3Cpath d='M71 -7l7 7-7 7-7-7z'/%3E%3Cpath d='M68 34l7 12h-14z'/%3E%3Cpath d='M72 60c-3-4-8-2-8 1.5 0 3 8 7 8 7s8-4 8-7c0-3.5-5-5.5-8-1.5z'/%3E%3Cpath d='M65 110q5-6 10 0t10 0'/%3E%3Cpath d='M58 137c-3 3-3 9 0 14 3-5 3-11 0-14z'/%3E%3Cpath d='M70 168q5-6 10 0t10 0'/%3E%3Cpath d='M97 -6l7 7-7 7-7-7z'/%3E%3Cpath d='M107 36l4 11 M109 36c2 3-1.5 5-2 2.5'/%3E%3Cpath d='M97 68c-3-4-8-2-8 1.5 0 3 8 7 8 7s8-4 8-7c0-3.5-5-5.5-8-1.5z'/%3E%3Cpath d='M99 105m-5 0a5 5 0 1 0 10 0a5 5 0 1 0 -10 0'/%3E%3Cpath d='M104 142c-3-4-8-2-8 1.5 0 3 8 7 8 7s8-4 8-7c0-3.5-5-5.5-8-1.5z'/%3E%3Cpath d='M93 177l7 7-7 7-7-7z'/%3E%3Cpath d='M140 10h14l-2 12a5 5 0 01-10 0z M154 12c3 0 3 5 0 5'/%3E%3Cpath d='M136 39m-5 0a5 5 0 1 0 10 0a5 5 0 1 0 -10 0'/%3E%3Cpath d='M135 73c-3-4-8-2-8 1.5 0 3 8 7 8 7s8-4 8-7c0-3.5-5-5.5-8-1.5z'/%3E%3Cpath d='M139 107m-5 0a5 5 0 1 0 10 0a5 5 0 1 0 -10 0'/%3E%3Cpath d='M141 141l7 12h-14z'/%3E%3Cpath d='M142 179h14l-2 12a5 5 0 01-10 0z M156 181c3 0 3 5 0 5'/%3E%3Cpath d='M165 4h14l-2 12a5 5 0 01-10 0z M179 6c3 0 3 5 0 5'/%3E%3Cpath d='M165 44m-5 0a5 5 0 1 0 10 0a5 5 0 1 0 -10 0'/%3E%3Cpath d='M170 62q5-6 10 0t10 0'/%3E%3Cpath d='M175 103l2 4 4 .5-3 3 .7 4-3.7-2-3.7 2 .7-4-3-3 4-.5z'/%3E%3Cpath d='M166 142c-5 0-5 7 0 7s3-5-1.5-5'/%3E%3Cpath d='M168 175l7 7-7 7-7-7z'/%3E%3C/g%3E%3C/svg%3E");
+    background-size: 200px 200px;
+}
+.dark body[data-pattern="doodles"] .page-bg {
+    background-image: url("data:image/svg+xml,%3Csvg width='200' height='200' viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%23ffffff' stroke-opacity='0.10' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 5l2 4 4 .5-3 3 .7 4-3.7-2-3.7 2 .7-4-3-3 4-.5z'/%3E%3Cpath d='M-6 40l7 7-7 7-7-7z'/%3E%3Cpath d='M-9 64m-5 0a5 5 0 1 0 10 0a5 5 0 1 0 -10 0'/%3E%3Cpath d='M-2 102l7 12h-14z'/%3E%3Cpath d='M-5 140c-5 0-5 7 0 7s3-5-1.5-5'/%3E%3Cpath d='M9 174m-5 0a5 5 0 1 0 10 0a5 5 0 1 0 -10 0'/%3E%3Cpath d='M35 3v9 M30.5 7.5h9'/%3E%3Cpath d='M35 24c-3-4-8-2-8 1.5 0 3 8 7 8 7s8-4 8-7c0-3.5-5-5.5-8-1.5z'/%3E%3Cpath d='M29 65h14l-2 12a5 5 0 01-10 0z M43 67c3 0 3 5 0 5'/%3E%3Cpath d='M29 109l2 4 4 .5-3 3 .7 4-3.7-2-3.7 2 .7-4-3-3 4-.5z'/%3E%3Cpath d='M44 138c-3 3-3 9 0 14 3-5 3-11 0-14z'/%3E%3Cpath d='M34 169c-3-4-8-2-8 1.5 0 3 8 7 8 7s8-4 8-7c0-3.5-5-5.5-8-1.5z'/%3E%3Cpath d='M71 -7l7 7-7 7-7-7z'/%3E%3Cpath d='M68 34l7 12h-14z'/%3E%3Cpath d='M72 60c-3-4-8-2-8 1.5 0 3 8 7 8 7s8-4 8-7c0-3.5-5-5.5-8-1.5z'/%3E%3Cpath d='M65 110q5-6 10 0t10 0'/%3E%3Cpath d='M58 137c-3 3-3 9 0 14 3-5 3-11 0-14z'/%3E%3Cpath d='M70 168q5-6 10 0t10 0'/%3E%3Cpath d='M97 -6l7 7-7 7-7-7z'/%3E%3Cpath d='M107 36l4 11 M109 36c2 3-1.5 5-2 2.5'/%3E%3Cpath d='M97 68c-3-4-8-2-8 1.5 0 3 8 7 8 7s8-4 8-7c0-3.5-5-5.5-8-1.5z'/%3E%3Cpath d='M99 105m-5 0a5 5 0 1 0 10 0a5 5 0 1 0 -10 0'/%3E%3Cpath d='M104 142c-3-4-8-2-8 1.5 0 3 8 7 8 7s8-4 8-7c0-3.5-5-5.5-8-1.5z'/%3E%3Cpath d='M93 177l7 7-7 7-7-7z'/%3E%3Cpath d='M140 10h14l-2 12a5 5 0 01-10 0z M154 12c3 0 3 5 0 5'/%3E%3Cpath d='M136 39m-5 0a5 5 0 1 0 10 0a5 5 0 1 0 -10 0'/%3E%3Cpath d='M135 73c-3-4-8-2-8 1.5 0 3 8 7 8 7s8-4 8-7c0-3.5-5-5.5-8-1.5z'/%3E%3Cpath d='M139 107m-5 0a5 5 0 1 0 10 0a5 5 0 1 0 -10 0'/%3E%3Cpath d='M141 141l7 12h-14z'/%3E%3Cpath d='M142 179h14l-2 12a5 5 0 01-10 0z M156 181c3 0 3 5 0 5'/%3E%3Cpath d='M165 4h14l-2 12a5 5 0 01-10 0z M179 6c3 0 3 5 0 5'/%3E%3Cpath d='M165 44m-5 0a5 5 0 1 0 10 0a5 5 0 1 0 -10 0'/%3E%3Cpath d='M170 62q5-6 10 0t10 0'/%3E%3Cpath d='M175 103l2 4 4 .5-3 3 .7 4-3.7-2-3.7 2 .7-4-3-3 4-.5z'/%3E%3Cpath d='M166 142c-5 0-5 7 0 7s3-5-1.5-5'/%3E%3Cpath d='M168 175l7 7-7 7-7-7z'/%3E%3C/g%3E%3C/svg%3E");
+}
+
+/* ---------- food ---------- */
+body[data-pattern="food"] .page-bg {
+    background-image: url("data:image/svg+xml,%3Csvg width='200' height='200' viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%23000000' stroke-opacity='0.10' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 -8c-3 3-3 9 0 14 3-5 3-11 0-14z'/%3E%3Cpath d='M6 40h14l-2 12a5 5 0 01-10 0z M20 42c3 0 3 5 0 5'/%3E%3Cpath d='M-4 64l4 11 M-2 64c2 3-1.5 5-2 2.5'/%3E%3Cpath d='M10 95m-5 0a5 5 0 1 0 10 0a5 5 0 1 0 -10 0'/%3E%3Cpath d='M10 139m-8 0a8 8 0 1 0 16 0a8 8 0 1 0 -16 0 M10 139m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0'/%3E%3Cpath d='M-2 163m-8 0a8 8 0 1 0 16 0a8 8 0 1 0 -16 0 M-2 163m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0'/%3E%3Cpath d='M25 0m-5 0a5 5 0 1 0 10 0a5 5 0 1 0 -10 0'/%3E%3Cpath d='M32 38m-5 0a5 5 0 1 0 10 0a5 5 0 1 0 -10 0'/%3E%3Cpath d='M24 67h14l-2 12a5 5 0 01-10 0z M38 69c3 0 3 5 0 5'/%3E%3Cpath d='M25 109m-8 0a8 8 0 1 0 16 0a8 8 0 1 0 -16 0 M25 109m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0'/%3E%3Cpath d='M26 128m-5 0a5 5 0 1 0 10 0a5 5 0 1 0 -10 0'/%3E%3Cpath d='M34 178m-5 0a5 5 0 1 0 10 0a5 5 0 1 0 -10 0'/%3E%3Cpath d='M65 -4h14l-2 12a5 5 0 01-10 0z M79 -2c3 0 3 5 0 5'/%3E%3Cpath d='M68 35v6m4-6v6M68 41c0 5 8 5 8 0M72 41v6'/%3E%3Cpath d='M64 72l4 11 M66 72c2 3-1.5 5-2 2.5'/%3E%3Cpath d='M68 110m-5 0a5 5 0 1 0 10 0a5 5 0 1 0 -10 0'/%3E%3Cpath d='M64 144h14l-2 12a5 5 0 01-10 0z M78 146c3 0 3 5 0 5'/%3E%3Cpath d='M70 179m-8 0a8 8 0 1 0 16 0a8 8 0 1 0 -16 0 M70 179m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0'/%3E%3Cpath d='M92 8v6m4-6v6M92 14c0 5 8 5 8 0M96 14v6'/%3E%3Cpath d='M94 44m-5 0a5 5 0 1 0 10 0a5 5 0 1 0 -10 0'/%3E%3Cpath d='M104 71c-3 3-3 9 0 14 3-5 3-11 0-14z'/%3E%3Cpath d='M97 98v6m4-6v6M97 104c0 5 8 5 8 0M101 104v6'/%3E%3Cpath d='M93 133l4 11 M95 133c2 3-1.5 5-2 2.5'/%3E%3Cpath d='M103 169v6m4-6v6M103 175c0 5 8 5 8 0M107 175v6'/%3E%3Cpath d='M133 -6m-5 0a5 5 0 1 0 10 0a5 5 0 1 0 -10 0'/%3E%3Cpath d='M132 33m-5 0a5 5 0 1 0 10 0a5 5 0 1 0 -10 0'/%3E%3Cpath d='M133 71h14l-2 12a5 5 0 01-10 0z M147 73c3 0 3 5 0 5'/%3E%3Cpath d='M128 111c-3 3-3 9 0 14 3-5 3-11 0-14z'/%3E%3Cpath d='M141 132l4 11 M143 132c2 3-1.5 5-2 2.5'/%3E%3Cpath d='M141 176h14l-2 12a5 5 0 01-10 0z M155 178c3 0 3 5 0 5'/%3E%3Cpath d='M172 -4l4 11 M174 -4c2 3-1.5 5-2 2.5'/%3E%3Cpath d='M162 39h14l-2 12a5 5 0 01-10 0z M176 41c3 0 3 5 0 5'/%3E%3Cpath d='M163 69m-5 0a5 5 0 1 0 10 0a5 5 0 1 0 -10 0'/%3E%3Cpath d='M178 109v6m4-6v6M178 115c0 5 8 5 8 0M182 115v6'/%3E%3Cpath d='M170 133l4 11 M172 133c2 3-1.5 5-2 2.5'/%3E%3Cpath d='M168 160c-4 4-4 10 0 14 4-4 4-10 0-14z'/%3E%3C/g%3E%3C/svg%3E");
+    background-size: 200px 200px;
+}
+.dark body[data-pattern="food"] .page-bg {
+    background-image: url("data:image/svg+xml,%3Csvg width='200' height='200' viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%23ffffff' stroke-opacity='0.10' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 -8c-3 3-3 9 0 14 3-5 3-11 0-14z'/%3E%3Cpath d='M6 40h14l-2 12a5 5 0 01-10 0z M20 42c3 0 3 5 0 5'/%3E%3Cpath d='M-4 64l4 11 M-2 64c2 3-1.5 5-2 2.5'/%3E%3Cpath d='M10 95m-5 0a5 5 0 1 0 10 0a5 5 0 1 0 -10 0'/%3E%3Cpath d='M10 139m-8 0a8 8 0 1 0 16 0a8 8 0 1 0 -16 0 M10 139m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0'/%3E%3Cpath d='M-2 163m-8 0a8 8 0 1 0 16 0a8 8 0 1 0 -16 0 M-2 163m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0'/%3E%3Cpath d='M25 0m-5 0a5 5 0 1 0 10 0a5 5 0 1 0 -10 0'/%3E%3Cpath d='M32 38m-5 0a5 5 0 1 0 10 0a5 5 0 1 0 -10 0'/%3E%3Cpath d='M24 67h14l-2 12a5 5 0 01-10 0z M38 69c3 0 3 5 0 5'/%3E%3Cpath d='M25 109m-8 0a8 8 0 1 0 16 0a8 8 0 1 0 -16 0 M25 109m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0'/%3E%3Cpath d='M26 128m-5 0a5 5 0 1 0 10 0a5 5 0 1 0 -10 0'/%3E%3Cpath d='M34 178m-5 0a5 5 0 1 0 10 0a5 5 0 1 0 -10 0'/%3E%3Cpath d='M65 -4h14l-2 12a5 5 0 01-10 0z M79 -2c3 0 3 5 0 5'/%3E%3Cpath d='M68 35v6m4-6v6M68 41c0 5 8 5 8 0M72 41v6'/%3E%3Cpath d='M64 72l4 11 M66 72c2 3-1.5 5-2 2.5'/%3E%3Cpath d='M68 110m-5 0a5 5 0 1 0 10 0a5 5 0 1 0 -10 0'/%3E%3Cpath d='M64 144h14l-2 12a5 5 0 01-10 0z M78 146c3 0 3 5 0 5'/%3E%3Cpath d='M70 179m-8 0a8 8 0 1 0 16 0a8 8 0 1 0 -16 0 M70 179m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0'/%3E%3Cpath d='M92 8v6m4-6v6M92 14c0 5 8 5 8 0M96 14v6'/%3E%3Cpath d='M94 44m-5 0a5 5 0 1 0 10 0a5 5 0 1 0 -10 0'/%3E%3Cpath d='M104 71c-3 3-3 9 0 14 3-5 3-11 0-14z'/%3E%3Cpath d='M97 98v6m4-6v6M97 104c0 5 8 5 8 0M101 104v6'/%3E%3Cpath d='M93 133l4 11 M95 133c2 3-1.5 5-2 2.5'/%3E%3Cpath d='M103 169v6m4-6v6M103 175c0 5 8 5 8 0M107 175v6'/%3E%3Cpath d='M133 -6m-5 0a5 5 0 1 0 10 0a5 5 0 1 0 -10 0'/%3E%3Cpath d='M132 33m-5 0a5 5 0 1 0 10 0a5 5 0 1 0 -10 0'/%3E%3Cpath d='M133 71h14l-2 12a5 5 0 01-10 0z M147 73c3 0 3 5 0 5'/%3E%3Cpath d='M128 111c-3 3-3 9 0 14 3-5 3-11 0-14z'/%3E%3Cpath d='M141 132l4 11 M143 132c2 3-1.5 5-2 2.5'/%3E%3Cpath d='M141 176h14l-2 12a5 5 0 01-10 0z M155 178c3 0 3 5 0 5'/%3E%3Cpath d='M172 -4l4 11 M174 -4c2 3-1.5 5-2 2.5'/%3E%3Cpath d='M162 39h14l-2 12a5 5 0 01-10 0z M176 41c3 0 3 5 0 5'/%3E%3Cpath d='M163 69m-5 0a5 5 0 1 0 10 0a5 5 0 1 0 -10 0'/%3E%3Cpath d='M178 109v6m4-6v6M178 115c0 5 8 5 8 0M182 115v6'/%3E%3Cpath d='M170 133l4 11 M172 133c2 3-1.5 5-2 2.5'/%3E%3Cpath d='M168 160c-4 4-4 10 0 14 4-4 4-10 0-14z'/%3E%3C/g%3E%3C/svg%3E");
+}
+
+/* ---------- nature ---------- */
+body[data-pattern="nature"] .page-bg {
+    background-image: url("data:image/svg+xml,%3Csvg width='200' height='200' viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%23000000' stroke-opacity='0.10' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M-10 10c-4 4-4 10 0 14 4-4 4-10 0-14z'/%3E%3Cpath d='M10 41m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0 M10 35v3m0 6v3m-6-6h3m6 0h3'/%3E%3Cpath d='M-8 68m-5 0a5 5 0 1 0 10 0a5 5 0 1 0 -10 0'/%3E%3Cpath d='M4 103m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0 M4 96v2m0 10v2m-7-7h2m10 0h2'/%3E%3Cpath d='M-5 134c-4 4-4 10 0 14 4-4 4-10 0-14z'/%3E%3Cpath d='M0 164m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0 M0 157v2m0 10v2m-7-7h2m10 0h2'/%3E%3Cpath d='M42 1m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0 M42 -6v2m0 10v2m-7-7h2m10 0h2'/%3E%3Cpath d='M40 33m-5 0a5 5 0 1 0 10 0a5 5 0 1 0 -10 0'/%3E%3Cpath d='M25 63m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0 M25 57v3m0 6v3m-6-6h3m6 0h3'/%3E%3Cpath d='M43 104m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0 M43 98v3m0 6v3m-6-6h3m6 0h3'/%3E%3Cpath d='M34 126c-4 4-4 10 0 14 4-4 4-10 0-14z'/%3E%3Cpath d='M44 165c-5 0-5 7 0 7s3-5-1.5-5'/%3E%3Cpath d='M75 4c-4 4-4 10 0 14 4-4 4-10 0-14z'/%3E%3Cpath d='M71 42m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0 M71 35v2m0 10v2m-7-7h2m10 0h2'/%3E%3Cpath d='M66 75c-3 3-3 9 0 14 3-5 3-11 0-14z'/%3E%3Cpath d='M64 105m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0 M64 99v3m0 6v3m-6-6h3m6 0h3'/%3E%3Cpath d='M74 141m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0 M74 135v3m0 6v3m-6-6h3m6 0h3'/%3E%3Cpath d='M61 174m-5 0a5 5 0 1 0 10 0a5 5 0 1 0 -10 0'/%3E%3Cpath d='M105 -6c-3 3-3 9 0 14 3-5 3-11 0-14z'/%3E%3Cpath d='M100 40c-4 4-4 10 0 14 4-4 4-10 0-14z'/%3E%3Cpath d='M105 73m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0 M105 67v3m0 6v3m-6-6h3m6 0h3'/%3E%3Cpath d='M96 111c-4 4-4 10 0 14 4-4 4-10 0-14z'/%3E%3Cpath d='M105 146m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0 M105 140v3m0 6v3m-6-6h3m6 0h3'/%3E%3Cpath d='M108 164m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0 M108 158v3m0 6v3m-6-6h3m6 0h3'/%3E%3Cpath d='M138 -7m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0 M138 -14v2m0 10v2m-7-7h2m10 0h2'/%3E%3Cpath d='M127 27m-5 0a5 5 0 1 0 10 0a5 5 0 1 0 -10 0'/%3E%3Cpath d='M131 68c-4 4-4 10 0 14 4-4 4-10 0-14z'/%3E%3Cpath d='M136 99c-5 0-5 7 0 7s3-5-1.5-5'/%3E%3Cpath d='M130 143c-3 3-3 9 0 14 3-5 3-11 0-14z'/%3E%3Cpath d='M127 171m-5 0a5 5 0 1 0 10 0a5 5 0 1 0 -10 0'/%3E%3Cpath d='M176 -5m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0 M176 -11v3m0 6v3m-6-6h3m6 0h3'/%3E%3Cpath d='M165 44m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0 M165 37v2m0 10v2m-7-7h2m10 0h2'/%3E%3Cpath d='M165 73m-5 0a5 5 0 1 0 10 0a5 5 0 1 0 -10 0'/%3E%3Cpath d='M161 99m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0 M161 92v2m0 10v2m-7-7h2m10 0h2'/%3E%3Cpath d='M180 140c-4 4-4 10 0 14 4-4 4-10 0-14z'/%3E%3Cpath d='M180 169m-5 0a5 5 0 1 0 10 0a5 5 0 1 0 -10 0'/%3E%3C/g%3E%3C/svg%3E");
+    background-size: 200px 200px;
+}
+.dark body[data-pattern="nature"] .page-bg {
+    background-image: url("data:image/svg+xml,%3Csvg width='200' height='200' viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%23ffffff' stroke-opacity='0.10' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M-10 10c-4 4-4 10 0 14 4-4 4-10 0-14z'/%3E%3Cpath d='M10 41m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0 M10 35v3m0 6v3m-6-6h3m6 0h3'/%3E%3Cpath d='M-8 68m-5 0a5 5 0 1 0 10 0a5 5 0 1 0 -10 0'/%3E%3Cpath d='M4 103m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0 M4 96v2m0 10v2m-7-7h2m10 0h2'/%3E%3Cpath d='M-5 134c-4 4-4 10 0 14 4-4 4-10 0-14z'/%3E%3Cpath d='M0 164m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0 M0 157v2m0 10v2m-7-7h2m10 0h2'/%3E%3Cpath d='M42 1m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0 M42 -6v2m0 10v2m-7-7h2m10 0h2'/%3E%3Cpath d='M40 33m-5 0a5 5 0 1 0 10 0a5 5 0 1 0 -10 0'/%3E%3Cpath d='M25 63m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0 M25 57v3m0 6v3m-6-6h3m6 0h3'/%3E%3Cpath d='M43 104m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0 M43 98v3m0 6v3m-6-6h3m6 0h3'/%3E%3Cpath d='M34 126c-4 4-4 10 0 14 4-4 4-10 0-14z'/%3E%3Cpath d='M44 165c-5 0-5 7 0 7s3-5-1.5-5'/%3E%3Cpath d='M75 4c-4 4-4 10 0 14 4-4 4-10 0-14z'/%3E%3Cpath d='M71 42m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0 M71 35v2m0 10v2m-7-7h2m10 0h2'/%3E%3Cpath d='M66 75c-3 3-3 9 0 14 3-5 3-11 0-14z'/%3E%3Cpath d='M64 105m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0 M64 99v3m0 6v3m-6-6h3m6 0h3'/%3E%3Cpath d='M74 141m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0 M74 135v3m0 6v3m-6-6h3m6 0h3'/%3E%3Cpath d='M61 174m-5 0a5 5 0 1 0 10 0a5 5 0 1 0 -10 0'/%3E%3Cpath d='M105 -6c-3 3-3 9 0 14 3-5 3-11 0-14z'/%3E%3Cpath d='M100 40c-4 4-4 10 0 14 4-4 4-10 0-14z'/%3E%3Cpath d='M105 73m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0 M105 67v3m0 6v3m-6-6h3m6 0h3'/%3E%3Cpath d='M96 111c-4 4-4 10 0 14 4-4 4-10 0-14z'/%3E%3Cpath d='M105 146m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0 M105 140v3m0 6v3m-6-6h3m6 0h3'/%3E%3Cpath d='M108 164m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0 M108 158v3m0 6v3m-6-6h3m6 0h3'/%3E%3Cpath d='M138 -7m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0 M138 -14v2m0 10v2m-7-7h2m10 0h2'/%3E%3Cpath d='M127 27m-5 0a5 5 0 1 0 10 0a5 5 0 1 0 -10 0'/%3E%3Cpath d='M131 68c-4 4-4 10 0 14 4-4 4-10 0-14z'/%3E%3Cpath d='M136 99c-5 0-5 7 0 7s3-5-1.5-5'/%3E%3Cpath d='M130 143c-3 3-3 9 0 14 3-5 3-11 0-14z'/%3E%3Cpath d='M127 171m-5 0a5 5 0 1 0 10 0a5 5 0 1 0 -10 0'/%3E%3Cpath d='M176 -5m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0 M176 -11v3m0 6v3m-6-6h3m6 0h3'/%3E%3Cpath d='M165 44m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0 M165 37v2m0 10v2m-7-7h2m10 0h2'/%3E%3Cpath d='M165 73m-5 0a5 5 0 1 0 10 0a5 5 0 1 0 -10 0'/%3E%3Cpath d='M161 99m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0 M161 92v2m0 10v2m-7-7h2m10 0h2'/%3E%3Cpath d='M180 140c-4 4-4 10 0 14 4-4 4-10 0-14z'/%3E%3Cpath d='M180 169m-5 0a5 5 0 1 0 10 0a5 5 0 1 0 -10 0'/%3E%3C/g%3E%3C/svg%3E");
+}
+
+/* ---------- shapes ---------- */
+body[data-pattern="shapes"] .page-bg {
+    background-image: url("data:image/svg+xml,%3Csvg width='200' height='200' viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%23000000' stroke-opacity='0.10' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M-2 1h12v12h-12z'/%3E%3Cpath d='M-4 34l2 4 4 .5-3 3 .7 4-3.7-2-3.7 2 .7-4-3-3 4-.5z'/%3E%3Cpath d='M6 62l7 12h-14z'/%3E%3Cpath d='M-4 92h12v12h-12z'/%3E%3Cpath d='M-5 140m-5 0a5 5 0 1 0 10 0a5 5 0 1 0 -10 0'/%3E%3Cpath d='M4 161l2 4 4 .5-3 3 .7 4-3.7-2-3.7 2 .7-4-3-3 4-.5z'/%3E%3Cpath d='M43 6l7 7-7 7-7-7z'/%3E%3Cpath d='M32 38l2 4 4 .5-3 3 .7 4-3.7-2-3.7 2 .7-4-3-3 4-.5z'/%3E%3Cpath d='M39 64l2 4 4 .5-3 3 .7 4-3.7-2-3.7 2 .7-4-3-3 4-.5z'/%3E%3Cpath d='M42 111l7 7-7 7-7-7z'/%3E%3Cpath d='M31 131m-5 0a5 5 0 1 0 10 0a5 5 0 1 0 -10 0'/%3E%3Cpath d='M35 172v9 M30.5 176.5h9'/%3E%3Cpath d='M75 -8l2 4 4 .5-3 3 .7 4-3.7-2-3.7 2 .7-4-3-3 4-.5z'/%3E%3Cpath d='M72 37v9 M67.5 41.5h9'/%3E%3Cpath d='M60 71l2 4 4 .5-3 3 .7 4-3.7-2-3.7 2 .7-4-3-3 4-.5z'/%3E%3Cpath d='M75 112l7 12h-14z'/%3E%3Cpath d='M76 128l7 7-7 7-7-7z'/%3E%3Cpath d='M69 176m-5 0a5 5 0 1 0 10 0a5 5 0 1 0 -10 0'/%3E%3Cpath d='M102 -5l7 12h-14z'/%3E%3Cpath d='M104 27l7 7-7 7-7-7z'/%3E%3Cpath d='M97 65m-5 0a5 5 0 1 0 10 0a5 5 0 1 0 -10 0'/%3E%3Cpath d='M96 102m-5 0a5 5 0 1 0 10 0a5 5 0 1 0 -10 0'/%3E%3Cpath d='M94 133v9 M89.5 137.5h9'/%3E%3Cpath d='M107 173h12v12h-12z'/%3E%3Cpath d='M126 4l2 4 4 .5-3 3 .7 4-3.7-2-3.7 2 .7-4-3-3 4-.5z'/%3E%3Cpath d='M142 42l7 7-7 7-7-7z'/%3E%3Cpath d='M143 59l7 12h-14z'/%3E%3Cpath d='M136 106v9 M131.5 110.5h9'/%3E%3Cpath d='M141 139v9 M136.5 143.5h9'/%3E%3Cpath d='M132 172h12v12h-12z'/%3E%3Cpath d='M172 -10l7 12h-14z'/%3E%3Cpath d='M170 36l7 7-7 7-7-7z'/%3E%3Cpath d='M163 61m-5 0a5 5 0 1 0 10 0a5 5 0 1 0 -10 0'/%3E%3Cpath d='M161 110l7 7-7 7-7-7z'/%3E%3Cpath d='M179 130l2 4 4 .5-3 3 .7 4-3.7-2-3.7 2 .7-4-3-3 4-.5z'/%3E%3Cpath d='M168 171h12v12h-12z'/%3E%3C/g%3E%3C/svg%3E");
+    background-size: 200px 200px;
+}
+.dark body[data-pattern="shapes"] .page-bg {
+    background-image: url("data:image/svg+xml,%3Csvg width='200' height='200' viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%23ffffff' stroke-opacity='0.10' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M-2 1h12v12h-12z'/%3E%3Cpath d='M-4 34l2 4 4 .5-3 3 .7 4-3.7-2-3.7 2 .7-4-3-3 4-.5z'/%3E%3Cpath d='M6 62l7 12h-14z'/%3E%3Cpath d='M-4 92h12v12h-12z'/%3E%3Cpath d='M-5 140m-5 0a5 5 0 1 0 10 0a5 5 0 1 0 -10 0'/%3E%3Cpath d='M4 161l2 4 4 .5-3 3 .7 4-3.7-2-3.7 2 .7-4-3-3 4-.5z'/%3E%3Cpath d='M43 6l7 7-7 7-7-7z'/%3E%3Cpath d='M32 38l2 4 4 .5-3 3 .7 4-3.7-2-3.7 2 .7-4-3-3 4-.5z'/%3E%3Cpath d='M39 64l2 4 4 .5-3 3 .7 4-3.7-2-3.7 2 .7-4-3-3 4-.5z'/%3E%3Cpath d='M42 111l7 7-7 7-7-7z'/%3E%3Cpath d='M31 131m-5 0a5 5 0 1 0 10 0a5 5 0 1 0 -10 0'/%3E%3Cpath d='M35 172v9 M30.5 176.5h9'/%3E%3Cpath d='M75 -8l2 4 4 .5-3 3 .7 4-3.7-2-3.7 2 .7-4-3-3 4-.5z'/%3E%3Cpath d='M72 37v9 M67.5 41.5h9'/%3E%3Cpath d='M60 71l2 4 4 .5-3 3 .7 4-3.7-2-3.7 2 .7-4-3-3 4-.5z'/%3E%3Cpath d='M75 112l7 12h-14z'/%3E%3Cpath d='M76 128l7 7-7 7-7-7z'/%3E%3Cpath d='M69 176m-5 0a5 5 0 1 0 10 0a5 5 0 1 0 -10 0'/%3E%3Cpath d='M102 -5l7 12h-14z'/%3E%3Cpath d='M104 27l7 7-7 7-7-7z'/%3E%3Cpath d='M97 65m-5 0a5 5 0 1 0 10 0a5 5 0 1 0 -10 0'/%3E%3Cpath d='M96 102m-5 0a5 5 0 1 0 10 0a5 5 0 1 0 -10 0'/%3E%3Cpath d='M94 133v9 M89.5 137.5h9'/%3E%3Cpath d='M107 173h12v12h-12z'/%3E%3Cpath d='M126 4l2 4 4 .5-3 3 .7 4-3.7-2-3.7 2 .7-4-3-3 4-.5z'/%3E%3Cpath d='M142 42l7 7-7 7-7-7z'/%3E%3Cpath d='M143 59l7 12h-14z'/%3E%3Cpath d='M136 106v9 M131.5 110.5h9'/%3E%3Cpath d='M141 139v9 M136.5 143.5h9'/%3E%3Cpath d='M132 172h12v12h-12z'/%3E%3Cpath d='M172 -10l7 12h-14z'/%3E%3Cpath d='M170 36l7 7-7 7-7-7z'/%3E%3Cpath d='M163 61m-5 0a5 5 0 1 0 10 0a5 5 0 1 0 -10 0'/%3E%3Cpath d='M161 110l7 7-7 7-7-7z'/%3E%3Cpath d='M179 130l2 4 4 .5-3 3 .7 4-3.7-2-3.7 2 .7-4-3-3 4-.5z'/%3E%3Cpath d='M168 171h12v12h-12z'/%3E%3C/g%3E%3C/svg%3E");
+}
+
+/* ---------- hearts ---------- */
+body[data-pattern="hearts"] .page-bg {
+    background-image: url("data:image/svg+xml,%3Csvg width='200' height='200' viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%23000000' stroke-opacity='0.10' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 2m-5 0a5 5 0 1 0 10 0a5 5 0 1 0 -10 0'/%3E%3Cpath d='M-1 33l2 4 4 .5-3 3 .7 4-3.7-2-3.7 2 .7-4-3-3 4-.5z'/%3E%3Cpath d='M8 71l2 4 4 .5-3 3 .7 4-3.7-2-3.7 2 .7-4-3-3 4-.5z'/%3E%3Cpath d='M-3 101m-5 0a5 5 0 1 0 10 0a5 5 0 1 0 -10 0'/%3E%3Cpath d='M-7 144m-5 0a5 5 0 1 0 10 0a5 5 0 1 0 -10 0'/%3E%3Cpath d='M-1 160c-3-4-8-2-8 1.5 0 3 8 7 8 7s8-4 8-7c0-3.5-5-5.5-8-1.5z'/%3E%3Cpath d='M30 1m-5 0a5 5 0 1 0 10 0a5 5 0 1 0 -10 0'/%3E%3Cpath d='M30 25c-3-4-8-2-8 1.5 0 3 8 7 8 7s8-4 8-7c0-3.5-5-5.5-8-1.5z'/%3E%3Cpath d='M27 63c-3-4-8-2-8 1.5 0 3 8 7 8 7s8-4 8-7c0-3.5-5-5.5-8-1.5z'/%3E%3Cpath d='M31 107l2 4 4 .5-3 3 .7 4-3.7-2-3.7 2 .7-4-3-3 4-.5z'/%3E%3Cpath d='M34 134c-3-4-8-2-8 1.5 0 3 8 7 8 7s8-4 8-7c0-3.5-5-5.5-8-1.5z'/%3E%3Cpath d='M44 173c-3-4-8-2-8 1.5 0 3 8 7 8 7s8-4 8-7c0-3.5-5-5.5-8-1.5z'/%3E%3Cpath d='M62 -8l2 4 4 .5-3 3 .7 4-3.7-2-3.7 2 .7-4-3-3 4-.5z'/%3E%3Cpath d='M67 32l2 4 4 .5-3 3 .7 4-3.7-2-3.7 2 .7-4-3-3 4-.5z'/%3E%3Cpath d='M64 73l2 4 4 .5-3 3 .7 4-3.7-2-3.7 2 .7-4-3-3 4-.5z'/%3E%3Cpath d='M60 95c-3-4-8-2-8 1.5 0 3 8 7 8 7s8-4 8-7c0-3.5-5-5.5-8-1.5z'/%3E%3Cpath d='M76 131l2 4 4 .5-3 3 .7 4-3.7-2-3.7 2 .7-4-3-3 4-.5z'/%3E%3Cpath d='M71 177c-3-4-8-2-8 1.5 0 3 8 7 8 7s8-4 8-7c0-3.5-5-5.5-8-1.5z'/%3E%3Cpath d='M101 5l2 4 4 .5-3 3 .7 4-3.7-2-3.7 2 .7-4-3-3 4-.5z'/%3E%3Cpath d='M96 35l2 4 4 .5-3 3 .7 4-3.7-2-3.7 2 .7-4-3-3 4-.5z'/%3E%3Cpath d='M96 74l2 4 4 .5-3 3 .7 4-3.7-2-3.7 2 .7-4-3-3 4-.5z'/%3E%3Cpath d='M97 104l2 4 4 .5-3 3 .7 4-3.7-2-3.7 2 .7-4-3-3 4-.5z'/%3E%3Cpath d='M104 135m-5 0a5 5 0 1 0 10 0a5 5 0 1 0 -10 0'/%3E%3Cpath d='M105 167m-5 0a5 5 0 1 0 10 0a5 5 0 1 0 -10 0'/%3E%3Cpath d='M129 -6c-3-4-8-2-8 1.5 0 3 8 7 8 7s8-4 8-7c0-3.5-5-5.5-8-1.5z'/%3E%3Cpath d='M145 25c-3-4-8-2-8 1.5 0 3 8 7 8 7s8-4 8-7c0-3.5-5-5.5-8-1.5z'/%3E%3Cpath d='M133 68l2 4 4 .5-3 3 .7 4-3.7-2-3.7 2 .7-4-3-3 4-.5z'/%3E%3Cpath d='M137 93c-3-4-8-2-8 1.5 0 3 8 7 8 7s8-4 8-7c0-3.5-5-5.5-8-1.5z'/%3E%3Cpath d='M134 142c-3-4-8-2-8 1.5 0 3 8 7 8 7s8-4 8-7c0-3.5-5-5.5-8-1.5z'/%3E%3Cpath d='M140 170c-3-4-8-2-8 1.5 0 3 8 7 8 7s8-4 8-7c0-3.5-5-5.5-8-1.5z'/%3E%3Cpath d='M164 -6l2 4 4 .5-3 3 .7 4-3.7-2-3.7 2 .7-4-3-3 4-.5z'/%3E%3Cpath d='M180 26c-3-4-8-2-8 1.5 0 3 8 7 8 7s8-4 8-7c0-3.5-5-5.5-8-1.5z'/%3E%3Cpath d='M166 67c-3-4-8-2-8 1.5 0 3 8 7 8 7s8-4 8-7c0-3.5-5-5.5-8-1.5z'/%3E%3Cpath d='M160 111l2 4 4 .5-3 3 .7 4-3.7-2-3.7 2 .7-4-3-3 4-.5z'/%3E%3Cpath d='M174 137l2 4 4 .5-3 3 .7 4-3.7-2-3.7 2 .7-4-3-3 4-.5z'/%3E%3Cpath d='M175 162m-5 0a5 5 0 1 0 10 0a5 5 0 1 0 -10 0'/%3E%3C/g%3E%3C/svg%3E");
+    background-size: 200px 200px;
+}
+.dark body[data-pattern="hearts"] .page-bg {
+    background-image: url("data:image/svg+xml,%3Csvg width='200' height='200' viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%23ffffff' stroke-opacity='0.10' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 2m-5 0a5 5 0 1 0 10 0a5 5 0 1 0 -10 0'/%3E%3Cpath d='M-1 33l2 4 4 .5-3 3 .7 4-3.7-2-3.7 2 .7-4-3-3 4-.5z'/%3E%3Cpath d='M8 71l2 4 4 .5-3 3 .7 4-3.7-2-3.7 2 .7-4-3-3 4-.5z'/%3E%3Cpath d='M-3 101m-5 0a5 5 0 1 0 10 0a5 5 0 1 0 -10 0'/%3E%3Cpath d='M-7 144m-5 0a5 5 0 1 0 10 0a5 5 0 1 0 -10 0'/%3E%3Cpath d='M-1 160c-3-4-8-2-8 1.5 0 3 8 7 8 7s8-4 8-7c0-3.5-5-5.5-8-1.5z'/%3E%3Cpath d='M30 1m-5 0a5 5 0 1 0 10 0a5 5 0 1 0 -10 0'/%3E%3Cpath d='M30 25c-3-4-8-2-8 1.5 0 3 8 7 8 7s8-4 8-7c0-3.5-5-5.5-8-1.5z'/%3E%3Cpath d='M27 63c-3-4-8-2-8 1.5 0 3 8 7 8 7s8-4 8-7c0-3.5-5-5.5-8-1.5z'/%3E%3Cpath d='M31 107l2 4 4 .5-3 3 .7 4-3.7-2-3.7 2 .7-4-3-3 4-.5z'/%3E%3Cpath d='M34 134c-3-4-8-2-8 1.5 0 3 8 7 8 7s8-4 8-7c0-3.5-5-5.5-8-1.5z'/%3E%3Cpath d='M44 173c-3-4-8-2-8 1.5 0 3 8 7 8 7s8-4 8-7c0-3.5-5-5.5-8-1.5z'/%3E%3Cpath d='M62 -8l2 4 4 .5-3 3 .7 4-3.7-2-3.7 2 .7-4-3-3 4-.5z'/%3E%3Cpath d='M67 32l2 4 4 .5-3 3 .7 4-3.7-2-3.7 2 .7-4-3-3 4-.5z'/%3E%3Cpath d='M64 73l2 4 4 .5-3 3 .7 4-3.7-2-3.7 2 .7-4-3-3 4-.5z'/%3E%3Cpath d='M60 95c-3-4-8-2-8 1.5 0 3 8 7 8 7s8-4 8-7c0-3.5-5-5.5-8-1.5z'/%3E%3Cpath d='M76 131l2 4 4 .5-3 3 .7 4-3.7-2-3.7 2 .7-4-3-3 4-.5z'/%3E%3Cpath d='M71 177c-3-4-8-2-8 1.5 0 3 8 7 8 7s8-4 8-7c0-3.5-5-5.5-8-1.5z'/%3E%3Cpath d='M101 5l2 4 4 .5-3 3 .7 4-3.7-2-3.7 2 .7-4-3-3 4-.5z'/%3E%3Cpath d='M96 35l2 4 4 .5-3 3 .7 4-3.7-2-3.7 2 .7-4-3-3 4-.5z'/%3E%3Cpath d='M96 74l2 4 4 .5-3 3 .7 4-3.7-2-3.7 2 .7-4-3-3 4-.5z'/%3E%3Cpath d='M97 104l2 4 4 .5-3 3 .7 4-3.7-2-3.7 2 .7-4-3-3 4-.5z'/%3E%3Cpath d='M104 135m-5 0a5 5 0 1 0 10 0a5 5 0 1 0 -10 0'/%3E%3Cpath d='M105 167m-5 0a5 5 0 1 0 10 0a5 5 0 1 0 -10 0'/%3E%3Cpath d='M129 -6c-3-4-8-2-8 1.5 0 3 8 7 8 7s8-4 8-7c0-3.5-5-5.5-8-1.5z'/%3E%3Cpath d='M145 25c-3-4-8-2-8 1.5 0 3 8 7 8 7s8-4 8-7c0-3.5-5-5.5-8-1.5z'/%3E%3Cpath d='M133 68l2 4 4 .5-3 3 .7 4-3.7-2-3.7 2 .7-4-3-3 4-.5z'/%3E%3Cpath d='M137 93c-3-4-8-2-8 1.5 0 3 8 7 8 7s8-4 8-7c0-3.5-5-5.5-8-1.5z'/%3E%3Cpath d='M134 142c-3-4-8-2-8 1.5 0 3 8 7 8 7s8-4 8-7c0-3.5-5-5.5-8-1.5z'/%3E%3Cpath d='M140 170c-3-4-8-2-8 1.5 0 3 8 7 8 7s8-4 8-7c0-3.5-5-5.5-8-1.5z'/%3E%3Cpath d='M164 -6l2 4 4 .5-3 3 .7 4-3.7-2-3.7 2 .7-4-3-3 4-.5z'/%3E%3Cpath d='M180 26c-3-4-8-2-8 1.5 0 3 8 7 8 7s8-4 8-7c0-3.5-5-5.5-8-1.5z'/%3E%3Cpath d='M166 67c-3-4-8-2-8 1.5 0 3 8 7 8 7s8-4 8-7c0-3.5-5-5.5-8-1.5z'/%3E%3Cpath d='M160 111l2 4 4 .5-3 3 .7 4-3.7-2-3.7 2 .7-4-3-3 4-.5z'/%3E%3Cpath d='M174 137l2 4 4 .5-3 3 .7 4-3.7-2-3.7 2 .7-4-3-3 4-.5z'/%3E%3Cpath d='M175 162m-5 0a5 5 0 1 0 10 0a5 5 0 1 0 -10 0'/%3E%3C/g%3E%3C/svg%3E");
+}
+
+/* ---------- symbols ---------- */
+body[data-pattern="symbols"] .page-bg {
+    background-image: url("data:image/svg+xml,%3Csvg width='200' height='200' viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%23000000' stroke-opacity='0.10' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M9 5v9 M4.5 9.5h9'/%3E%3Cpath d='M6 44q5-6 10 0t10 0'/%3E%3Cpath d='M-1 62h12m-4-4l4 4-4 4'/%3E%3Cpath d='M-5 101h12m-4-4l4 4-4 4'/%3E%3Cpath d='M-10 139h12m-4-4l4 4-4 4'/%3E%3Cpath d='M2 178h12m-4-4l4 4-4 4'/%3E%3Cpath d='M44 3v9 M39.5 7.5h9'/%3E%3Cpath d='M24 30q5-6 10 0t10 0'/%3E%3Cpath d='M25 70c-5 0-5 7 0 7s3-5-1.5-5'/%3E%3Cpath d='M30 110c-5 0-5 7 0 7s3-5-1.5-5'/%3E%3Cpath d='M38 142q5-6 10 0t10 0'/%3E%3Cpath d='M40 163q5-6 10 0t10 0'/%3E%3Cpath d='M78 -3v9 M73.5 1.5h9'/%3E%3Cpath d='M61 24q5-6 10 0t10 0'/%3E%3Cpath d='M76 64h12m-4-4l4 4-4 4'/%3E%3Cpath d='M67 98m-5 0a5 5 0 1 0 10 0a5 5 0 1 0 -10 0'/%3E%3Cpath d='M58 131l5-5 5 5 5-5 5 5'/%3E%3Cpath d='M62 167v9 M57.5 171.5h9'/%3E%3Cpath d='M112 -10l5-5 5 5 5-5 5 5'/%3E%3Cpath d='M102 31c-5 0-5 7 0 7s3-5-1.5-5'/%3E%3Cpath d='M112 66h12m-4-4l4 4-4 4'/%3E%3Cpath d='M93 96q5-6 10 0t10 0'/%3E%3Cpath d='M95 132q5-6 10 0t10 0'/%3E%3Cpath d='M94 175c-5 0-5 7 0 7s3-5-1.5-5'/%3E%3Cpath d='M141 10m-5 0a5 5 0 1 0 10 0a5 5 0 1 0 -10 0'/%3E%3Cpath d='M143 35m-5 0a5 5 0 1 0 10 0a5 5 0 1 0 -10 0'/%3E%3Cpath d='M126 76h12m-4-4l4 4-4 4'/%3E%3Cpath d='M128 103q5-6 10 0t10 0'/%3E%3Cpath d='M131 129l5-5 5 5 5-5 5 5'/%3E%3Cpath d='M139 166h12m-4-4l4 4-4 4'/%3E%3Cpath d='M170 -2m-5 0a5 5 0 1 0 10 0a5 5 0 1 0 -10 0'/%3E%3Cpath d='M167 40m-5 0a5 5 0 1 0 10 0a5 5 0 1 0 -10 0'/%3E%3Cpath d='M164 75m-5 0a5 5 0 1 0 10 0a5 5 0 1 0 -10 0'/%3E%3Cpath d='M161 92q5-6 10 0t10 0'/%3E%3Cpath d='M170 131c-5 0-5 7 0 7s3-5-1.5-5'/%3E%3Cpath d='M180 168q5-6 10 0t10 0'/%3E%3C/g%3E%3C/svg%3E");
+    background-size: 200px 200px;
+}
+.dark body[data-pattern="symbols"] .page-bg {
+    background-image: url("data:image/svg+xml,%3Csvg width='200' height='200' viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%23ffffff' stroke-opacity='0.10' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M9 5v9 M4.5 9.5h9'/%3E%3Cpath d='M6 44q5-6 10 0t10 0'/%3E%3Cpath d='M-1 62h12m-4-4l4 4-4 4'/%3E%3Cpath d='M-5 101h12m-4-4l4 4-4 4'/%3E%3Cpath d='M-10 139h12m-4-4l4 4-4 4'/%3E%3Cpath d='M2 178h12m-4-4l4 4-4 4'/%3E%3Cpath d='M44 3v9 M39.5 7.5h9'/%3E%3Cpath d='M24 30q5-6 10 0t10 0'/%3E%3Cpath d='M25 70c-5 0-5 7 0 7s3-5-1.5-5'/%3E%3Cpath d='M30 110c-5 0-5 7 0 7s3-5-1.5-5'/%3E%3Cpath d='M38 142q5-6 10 0t10 0'/%3E%3Cpath d='M40 163q5-6 10 0t10 0'/%3E%3Cpath d='M78 -3v9 M73.5 1.5h9'/%3E%3Cpath d='M61 24q5-6 10 0t10 0'/%3E%3Cpath d='M76 64h12m-4-4l4 4-4 4'/%3E%3Cpath d='M67 98m-5 0a5 5 0 1 0 10 0a5 5 0 1 0 -10 0'/%3E%3Cpath d='M58 131l5-5 5 5 5-5 5 5'/%3E%3Cpath d='M62 167v9 M57.5 171.5h9'/%3E%3Cpath d='M112 -10l5-5 5 5 5-5 5 5'/%3E%3Cpath d='M102 31c-5 0-5 7 0 7s3-5-1.5-5'/%3E%3Cpath d='M112 66h12m-4-4l4 4-4 4'/%3E%3Cpath d='M93 96q5-6 10 0t10 0'/%3E%3Cpath d='M95 132q5-6 10 0t10 0'/%3E%3Cpath d='M94 175c-5 0-5 7 0 7s3-5-1.5-5'/%3E%3Cpath d='M141 10m-5 0a5 5 0 1 0 10 0a5 5 0 1 0 -10 0'/%3E%3Cpath d='M143 35m-5 0a5 5 0 1 0 10 0a5 5 0 1 0 -10 0'/%3E%3Cpath d='M126 76h12m-4-4l4 4-4 4'/%3E%3Cpath d='M128 103q5-6 10 0t10 0'/%3E%3Cpath d='M131 129l5-5 5 5 5-5 5 5'/%3E%3Cpath d='M139 166h12m-4-4l4 4-4 4'/%3E%3Cpath d='M170 -2m-5 0a5 5 0 1 0 10 0a5 5 0 1 0 -10 0'/%3E%3Cpath d='M167 40m-5 0a5 5 0 1 0 10 0a5 5 0 1 0 -10 0'/%3E%3Cpath d='M164 75m-5 0a5 5 0 1 0 10 0a5 5 0 1 0 -10 0'/%3E%3Cpath d='M161 92q5-6 10 0t10 0'/%3E%3Cpath d='M170 131c-5 0-5 7 0 7s3-5-1.5-5'/%3E%3Cpath d='M180 168q5-6 10 0t10 0'/%3E%3C/g%3E%3C/svg%3E");
 }

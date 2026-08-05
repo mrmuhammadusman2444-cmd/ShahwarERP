@@ -10,7 +10,7 @@ const ManageCustomer = () => {
         <div className='flex'>
 
             <Sidebar />
-            <div className='flex-1'>
+            <div className='flex-1 '>
                 <ManageAllCustomer />
 
             </div>

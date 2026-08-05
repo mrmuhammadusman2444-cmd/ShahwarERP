@@ -967,12 +967,21 @@ function AppearanceSection() {
   const [accent, setAccent] = useState(
     () => localStorage.getItem("accent") || ACCENT_COLORS[0]
   );
-
+  const [pattern, setPattern] = useState(() => localStorage.getItem("bgPattern") || "none");
 
   const themes = [
     { id: "light", label: "Light", icon: Sun },
     { id: "dark", label: "Dark", icon: Moon },
     { id: "system", label: "System", icon: Monitor },
+  ];
+  const BG_PATTERNS = [
+    { id: "none", label: "None" },
+    { id: "doodles", label: "Doodles" },
+    { id: "food", label: "Food" },
+    { id: "nature", label: "Nature" },
+    { id: "shapes", label: "Shapes" },
+    { id: "hearts", label: "Hearts" },
+    { id: "symbols", label: "Symbols" },
   ];
 
   // theme apply + persist
@@ -993,7 +1002,12 @@ function AppearanceSection() {
     }
   }, [theme]);
 
-  // accent apply + persist (with auto-contrast)
+  useEffect(() => {
+    document.body.setAttribute("data-pattern", pattern);
+    localStorage.setItem("bgPattern", pattern);
+  }, [pattern]);
+
+
   useEffect(() => {
     const root = document.documentElement;
 
@@ -1078,6 +1092,43 @@ function AppearanceSection() {
             />
           </label>
         </div>
+
+      </Card>
+
+      <Card title="Background pattern">
+        <div className="flex gap-3 flex-wrap">
+          {BG_PATTERNS.map((p) => {
+
+            const previews = {
+              none: "none",
+              doodles: "url(\"data:image/svg+xml,%3Csvg width='90' height='90' viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%23000' stroke-opacity='0.3' stroke-width='2.5'%3E%3Ccircle cx='25' cy='25' r='9'/%3E%3Cpath d='M105 30c-3-4-9-3-9 2 0 4 9 9 9 9s9-5 9-9c0-5-6-6-9-2z'/%3E%3Cpath d='M110 60l-6 16h12z'/%3E%3Ccircle cx='62' cy='112' r='9'/%3E%3C/g%3E%3C/svg%3E\")",
+              food: "url(\"data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 160 160' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%23000' stroke-opacity='0.3' stroke-width='2.5'%3E%3Ccircle cx='105' cy='25' r='12'/%3E%3Cpath d='M60 55l6 18'/%3E%3Cpath d='M18 20h16l-2 14a6 6 0 01-12 0z'/%3E%3C/g%3E%3C/svg%3E\")",
+              nature: "url(\"data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 160 160' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%23000' stroke-opacity='0.3' stroke-width='2.5'%3E%3Cpath d='M20 30c0-12 14-12 14 0 0 8-7 12-7 12s-7-4-7-12z'/%3E%3Ccircle cx='62' cy='72' r='5'/%3E%3Cpath d='M105 18c-4 4-4 12 0 20 4-8 4-16 0-20z'/%3E%3C/g%3E%3C/svg%3E\")",
+              shapes: "url(\"data:image/svg+xml,%3Csvg width='75' height='75' viewBox='0 0 150 150' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%23000' stroke-opacity='0.3' stroke-width='2.5'%3E%3Crect x='18' y='18' width='18' height='18' rx='2'/%3E%3Ccircle cx='72' cy='27' r='10'/%3E%3Cpath d='M60 100l12 20h-24z'/%3E%3C/g%3E%3C/svg%3E\")",
+              hearts: "url(\"data:image/svg+xml,%3Csvg width='70' height='70' viewBox='0 0 140 140' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%23000' stroke-opacity='0.3' stroke-width='2.5'%3E%3Cpath d='M25 32c-4-6-13-4-13 3 0 5 13 12 13 12s13-7 13-12c0-7-9-9-13-3z'/%3E%3Cpath d='M72 15l3 7 7 1-5 5 1 7-6-3.5-6 3.5 1-7-5-5 7-1z'/%3E%3C/g%3E%3C/svg%3E\")",
+              symbols: "url(\"data:image/svg+xml,%3Csvg width='75' height='75' viewBox='0 0 150 150' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%23000' stroke-opacity='0.3' stroke-width='2.5'%3E%3Cpath d='M18 27h18m-6-6l6 6-6 6'/%3E%3Cpath d='M72 18v18m-9-9h18'/%3E%3Cpath d='M100 30q8-10 16 0t16 0'/%3E%3C/g%3E%3C/svg%3E\")",
+            };
+            return (
+              <button
+                key={p.id}
+                onClick={() => setPattern(p.id)}
+                title={p.label}
+                className={`relative w-14 h-14 rounded-lg cursor-pointer transition-all hover:scale-105 border-2 ${pattern === p.id ? "border-[var(--accent)]" : "border-gray-200"}`}
+                style={{
+                  backgroundColor: "#f8fafc",
+                  backgroundImage: previews[p.id],
+                }}
+              >
+                {pattern === p.id && (
+                  <span className="absolute inset-0 flex items-center justify-center">
+                    <Check size={16} className="text-[color:var(--accent)]" style={{ filter: "drop-shadow(0 0 2px white)" }} />
+                  </span>
+                )}
+              </button>
+            );
+          })}
+        </div>
+        <p className="text-xs text-gray-400 mt-2">Choose a background pattern</p>
       </Card>
 
       <Card title="Sidebar color">
@@ -1105,7 +1156,9 @@ function AppearanceSection() {
           Reset to default
         </button>
       </div>
+
     </div>
+
   );
 }
 // Sidebar Color swatches — Appearance section me add karo
