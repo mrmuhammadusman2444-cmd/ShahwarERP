@@ -54,7 +54,7 @@ export default function ManageSupplier() {
   }
 
   return (
-    <div className="p-4 bg-slate-50 min-h-screen">
+    <div className="p-4 bg-slate-50 min-h-screen overflow-x-hidden">
       {showUpdatePopup && updateSupplierData && (
         <SupplierUpdatePopup
           setShowUpdatePopup={setShowUpdatePopup}
@@ -62,8 +62,7 @@ export default function ManageSupplier() {
           handleFindSupplier={handleFindSupplier}
         />
       )}
-      <div className="flex items-center justify-between mb-3.5 flex-wrap gap-2.5">
-        <div className="flex items-center gap-2.5">
+<div className="flex items-center justify-between mb-3.5 flex-wrap gap-2.5 pl-12 md:pl-0">        <div className="flex items-center gap-2.5">
           <div className="w-8 h-8 rounded-lg bg-emerald-600 flex items-center justify-center shrink-0">
             <ClipboardList className="w-4 h-4 text-white" />
           </div>
@@ -167,7 +166,7 @@ export default function ManageSupplier() {
         </div>
 
         <div className="overflow-x-auto">
-          <table className="w-full text-left">
+          <table className="w-full min-w-[860px] text-left">
             <thead>
               <tr className="bg-emerald-500">
                 <th className="text-[13px] font-semibold text-slate-50 tracking-wide px-4 py-2.5 whitespace-nowrap">SL.</th>

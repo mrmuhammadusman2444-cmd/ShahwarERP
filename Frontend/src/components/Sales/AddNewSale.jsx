@@ -25,7 +25,7 @@ const NewSale = ({ setManageCustomer }) => {
     showRate: 'Distributor Rate',
     freightCharges: '',
     previousAmount: '',
-    
+
   })
 
   useEffect(() => {
@@ -181,7 +181,7 @@ const NewSale = ({ setManageCustomer }) => {
   const totalCartons = selectedItems.reduce((s, i) => s + (Number(i.carton) || 0), 0)
 
   return (
-    <div className="min-h-screen bg-linear-to-br from-emerald-50 via-white to-emerald-50 p-4 md:p-5">
+    <div className="min-h-screen overflow-x-hidden bg-linear-to-br from-emerald-50 via-white to-emerald-50 p-4 md:p-5">
 
       <div className="flex gap-1 mb-5 bg-white border border-emerald-100 shadow-sm p-1 rounded-xl w-fit">
         <button className="px-6 py-2 rounded-lg bg-linear-to-b from-emerald-500 to-emerald-700 cursor-pointer text-white text-sm font-semibold shadow-md shadow-emerald-200 transition-all">
@@ -256,7 +256,7 @@ const NewSale = ({ setManageCustomer }) => {
 
       <div className="flex flex-col xl:flex-row gap-4">
 
-        <div className=" xl:w-[50%] shrink-0 flex flex-col gap-3">
+        <div className="w-full xl:w-[50%] min-w-0 shrink-0 flex flex-col gap-3">
 
           <div className="bg-white border border-emerald-100 rounded-2xl shadow-sm p-3 flex gap-2">
             <input
@@ -282,103 +282,101 @@ const NewSale = ({ setManageCustomer }) => {
               Products — {visibleProducts.length} items
             </p>
 
-            <div className="grid grid-cols-4 gap-3 content-start overflow-y-auto pr-1 custom-scroll" style={{ height: "43vh" }}>
-              {visibleProducts.map((product) => {
+            <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 gap-3 content-start overflow-y-auto pr-1 custom-scroll" style={{ height: "43vh" }}>              {visibleProducts.map((product) => {
 
-                const inCart = selectedItems.find((item) => item._id === product._id)
-                const retail = Number(product.distributorPrice) || 0
+              const inCart = selectedItems.find((item) => item._id === product._id)
+              const retail = Number(product.distributorPrice) || 0
 
-                const tone = [
-                  "from-emerald-400 to-emerald-600",
-                  "from-sky-400 to-sky-600",
-                  "from-amber-400 to-amber-600",
-                  "from-violet-400 to-violet-600",
-                  "from-rose-400 to-rose-600",
-                ][(product.productName || "").length % 5]
+              const tone = [
+                "from-emerald-400 to-emerald-600",
+                "from-sky-400 to-sky-600",
+                "from-amber-400 to-amber-600",
+                "from-violet-400 to-violet-600",
+                "from-rose-400 to-rose-600",
+              ][(product.productName || "").length % 5]
 
-                return (
-                  <div
-                    key={product._id}
-                    onClick={() => handleAddItem(product)}
-                    className={`group relative h-36 flex flex-col items-center overflow-hidden rounded-2xl border cursor-pointer transition-all duration-200 hover:-translate-y-1 hover:shadow-lg ${inCart
-                      ? "border-emerald-400 bg-emerald-50/70 shadow-md shadow-emerald-100"
-                      : "border-emerald-100 bg-white hover:border-emerald-300 hover:shadow-emerald-100"
-                      }`}
-                  >
-                    <div className={` w-full shrink-0 bg-linear-to-r ${tone} opacity-80`} />
+              return (
+                <div
+                  key={product._id}
+                  onClick={() => handleAddItem(product)}
+                  className={`group relative h-36 flex flex-col items-center overflow-hidden rounded-2xl border cursor-pointer transition-all duration-200 hover:-translate-y-1 hover:shadow-lg ${inCart
+                    ? "border-emerald-400 bg-emerald-50/70 shadow-md shadow-emerald-100"
+                    : "border-emerald-100 bg-white hover:border-emerald-300 hover:shadow-emerald-100"
+                    }`}
+                >
+                  <div className={` w-full shrink-0 bg-linear-to-r ${tone} opacity-80`} />
 
-                    {inCart && (
-                      <div className="absolute right-2 top-3 z-20 flex h-5 min-w-5 items-center justify-center rounded-full bg-emerald-600 px-1 text-[10px] font-bold text-white shadow-sm ring-2 ring-white">
-                        {inCart.carton}
-                      </div>
-                    )}
+                  {inCart && (
+                    <div className="absolute right-2 top-3 z-20 flex h-5 min-w-5 items-center justify-center rounded-full bg-emerald-600 px-1 text-[10px] font-bold text-white shadow-sm ring-2 ring-white">
+                      {inCart.carton}
+                    </div>
+                  )}
 
-                    <div className="flex flex-1 flex-col items-center justify-center px-2 py-3">
-                      <div className={`mb-2 flex h-11 w-11 items-center justify-center rounded-2xl bg-linear-to-br ${tone} shadow-sm transition-transform duration-200 group-hover:scale-110`}>
-                        <ShoppingBag size={19} className="text-white" strokeWidth={2.2} />
-                      </div>
-
-                      <p className="text-gray-700 text-[11px] font-semibold leading-tight line-clamp-2 text-center group-hover:text-emerald-700 transition-colors min-h-7.5">
-                        {product.productName}
-                      </p>
-
-                      <p className="text-emerald-600 text-sm font-bold text-center mt-1">
-                        Rs. {retail.toLocaleString()}
-                      </p>
+                  <div className="flex flex-1 flex-col items-center justify-center px-2 py-3">
+                    <div className={`mb-2 flex h-11 w-11 items-center justify-center rounded-2xl bg-linear-to-br ${tone} shadow-sm transition-transform duration-200 group-hover:scale-110`}>
+                      <ShoppingBag size={19} className="text-white" strokeWidth={2.2} />
                     </div>
 
-                    <div className={`absolute inset-0 flex flex-col items-center justify-center gap-2 overflow-hidden text-white opacity-0 transition-opacity duration-300 group-hover:opacity-100 ${inCart
-                      ? "bg-linear-to-br from-emerald-600 via-teal-600 to-emerald-700"
-                      : "bg-linear-to-br from-emerald-500 via-emerald-600 to-emerald-700"
-                      }`}>
-                      <span className="absolute -inset-8 opacity-30 group-hover:animate-[spinSlow_4s_linear_infinite]"
-                        style={{ background: "conic-gradient(from 0deg, transparent, rgba(255,255,255,0.4), transparent 40%)" }} />
+                    <p className="text-gray-700 text-[11px] font-semibold leading-tight line-clamp-2 text-center group-hover:text-emerald-700 transition-colors min-h-7.5">
+                      {product.productName}
+                    </p>
 
-                      <span className="absolute inset-0 -translate-x-full -translate-y-full bg-linear-to-br from-white/50 via-transparent to-transparent transition-transform duration-500 group-hover:translate-x-0 group-hover:translate-y-0" />
-
-                      <span className="absolute left-3 top-4 h-1 w-1 rounded-full bg-white/70 opacity-0 group-hover:opacity-100 group-hover:animate-[floatUp_1.6s_ease-in_infinite]" />
-                      <span className="absolute right-4 top-6 h-1.5 w-1.5 rounded-full bg-white/50 opacity-0 group-hover:opacity-100 group-hover:animate-[floatUp_1.8s_ease-in_infinite_0.3s]" />
-                      <span className="absolute left-1/2 bottom-3 h-1 w-1 rounded-full bg-white/60 opacity-0 group-hover:opacity-100 group-hover:animate-[floatUp_1.4s_ease-in_infinite_0.6s]" />
-
-                      <span className="absolute -top-4 -right-4 h-16 w-16 rounded-full bg-white/10 blur-xl" />
-                      <span className="absolute -bottom-6 -left-4 h-16 w-16 rounded-full bg-white/10 blur-xl" />
-
-                      {inCart ? (
-                        <>
-                          <div className="relative flex h-12 w-12 scale-0 items-center justify-center transition-transform delay-100 duration-300 group-hover:scale-100">
-                            <span className="absolute inset-0 rounded-full bg-white/20 group-hover:animate-[pingRing_1.5s_ease-out_infinite]" />
-                            <span className="relative flex h-9 w-9 items-center justify-center rounded-full bg-white shadow-lg">
-                              <svg className="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={4} d="M5 13l4 4L19 7" />
-                              </svg>
-                            </span>
-                          </div>
-                          <div className="relative text-center">
-                            <p className="text-[11px] font-extrabold  tracking-[0.15em] drop-shadow">Added</p>
-                            <p className="text-[9px] text-white/70">In your sale</p>
-                          </div>
-                        </>
-                      ) : (
-                        <>
-                          <div className="relative flex h-12 w-12 scale-0 rotate-45 items-center justify-center rounded-2xl bg-white/15 ring-4 ring-white/10 backdrop-blur-sm transition-all delay-100 duration-300 group-hover:scale-100 group-hover:rotate-0">
-                            <svg className="w-6 h-6 drop-shadow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M12 4v16m8-8H4" />
-                            </svg>
-                          </div>
-                          <div className="relative text-center">
-                            <p className="text-[11px] font-extrabold uppercase tracking-[0.15em] drop-shadow">Add to Sale</p>
-                            <p className="text-[9px] text-white/70">Click to add</p>
-                          </div>
-                        </>
-                      )}
-                    </div>
+                    <p className="text-emerald-600 text-sm font-bold text-center mt-1">
+                      Rs. {retail.toLocaleString()}
+                    </p>
                   </div>
-                )
-              })}
+
+                  <div className={`absolute inset-0 flex flex-col items-center justify-center gap-2 overflow-hidden text-white opacity-0 transition-opacity duration-300 group-hover:opacity-100 ${inCart
+                    ? "bg-linear-to-br from-emerald-600 via-teal-600 to-emerald-700"
+                    : "bg-linear-to-br from-emerald-500 via-emerald-600 to-emerald-700"
+                    }`}>
+                    <span className="absolute -inset-8 opacity-30 group-hover:animate-[spinSlow_4s_linear_infinite]"
+                      style={{ background: "conic-gradient(from 0deg, transparent, rgba(255,255,255,0.4), transparent 40%)" }} />
+
+                    <span className="absolute inset-0 -translate-x-full -translate-y-full bg-linear-to-br from-white/50 via-transparent to-transparent transition-transform duration-500 group-hover:translate-x-0 group-hover:translate-y-0" />
+
+                    <span className="absolute left-3 top-4 h-1 w-1 rounded-full bg-white/70 opacity-0 group-hover:opacity-100 group-hover:animate-[floatUp_1.6s_ease-in_infinite]" />
+                    <span className="absolute right-4 top-6 h-1.5 w-1.5 rounded-full bg-white/50 opacity-0 group-hover:opacity-100 group-hover:animate-[floatUp_1.8s_ease-in_infinite_0.3s]" />
+                    <span className="absolute left-1/2 bottom-3 h-1 w-1 rounded-full bg-white/60 opacity-0 group-hover:opacity-100 group-hover:animate-[floatUp_1.4s_ease-in_infinite_0.6s]" />
+
+                    <span className="absolute -top-4 -right-4 h-16 w-16 rounded-full bg-white/10 blur-xl" />
+                    <span className="absolute -bottom-6 -left-4 h-16 w-16 rounded-full bg-white/10 blur-xl" />
+
+                    {inCart ? (
+                      <>
+                        <div className="relative flex h-12 w-12 scale-0 items-center justify-center transition-transform delay-100 duration-300 group-hover:scale-100">
+                          <span className="absolute inset-0 rounded-full bg-white/20 group-hover:animate-[pingRing_1.5s_ease-out_infinite]" />
+                          <span className="relative flex h-9 w-9 items-center justify-center rounded-full bg-white shadow-lg">
+                            <svg className="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={4} d="M5 13l4 4L19 7" />
+                            </svg>
+                          </span>
+                        </div>
+                        <div className="relative text-center">
+                          <p className="text-[11px] font-extrabold  tracking-[0.15em] drop-shadow">Added</p>
+                          <p className="text-[9px] text-white/70">In your sale</p>
+                        </div>
+                      </>
+                    ) : (
+                      <>
+                        <div className="relative flex h-12 w-12 scale-0 rotate-45 items-center justify-center rounded-2xl bg-white/15 ring-4 ring-white/10 backdrop-blur-sm transition-all delay-100 duration-300 group-hover:scale-100 group-hover:rotate-0">
+                          <svg className="w-6 h-6 drop-shadow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M12 4v16m8-8H4" />
+                          </svg>
+                        </div>
+                        <div className="relative text-center">
+                          <p className="text-[11px] font-extrabold uppercase tracking-[0.15em] drop-shadow">Add to Sale</p>
+                          <p className="text-[9px] text-white/70">Click to add</p>
+                        </div>
+                      </>
+                    )}
+                  </div>
+                </div>
+              )
+            })}
 
               {visibleProducts.length === 0 && (
-                <div className="col-span-4 flex flex-col items-center justify-center py-20 gap-2">
-                  <ShoppingBag size={40} className="text-emerald-100" />
+                <div className="col-span-2 sm:col-span-3 xl:col-span-4 flex flex-col items-center justify-center py-20 gap-2">                  <ShoppingBag size={40} className="text-emerald-100" />
                   <p className="text-gray-400 text-xs">{search ? `No match for "${search}"` : "Add some products"}</p>
                 </div>
               )}
@@ -414,8 +412,8 @@ const NewSale = ({ setManageCustomer }) => {
 
             </div>
 
-            <div className="overflow-y-auto custom-scroll flex-1" style={{ maxHeight: "44vh" }}>
-              <table className="w-full text-sm border-collapse" style={{ tableLayout: "fixed" }}>
+            <div className="overflow-auto custom-scroll flex-1" style={{ maxHeight: "44vh" }}>
+              <table className="w-full min-w-155 text-sm border-collapse" style={{ tableLayout: "fixed" }}>
                 <colgroup>
                   <col style={{ width: "26%" }} />
                   <col style={{ width: "16%" }} />

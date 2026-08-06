@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import {Users, Plus, Copy, FileText, Sheet, File, Printer, Search, ArrowUpDown, ChevronLeft, ChevronRight} from "lucide-react";
+import { Users, Plus, Copy, FileText, Sheet, File, Printer, Search, ArrowUpDown, ChevronLeft, ChevronRight } from "lucide-react";
 
 const ManageCustomers = () => {
   const navigate = useNavigate()
@@ -7,20 +7,20 @@ const ManageCustomers = () => {
     <div className="min-h-screen bg-linear-to-br from-blue-50 via-white to-blue-50 p-4 md:p-6">
 
 
-      <div className="flex items-center justify-between mb-6">
-        <div className="flex items-center gap-4">
+      <div className="flex items-center justify-between mb-6 gap-3 pl-12 md:pl-0">
+        <div className="flex items-center gap-4 min-w-0">
           <div className="w-10 h-10 rounded-2xl bg-linear-to-br from-emerald-600 to-emerald-700 flex items-center justify-center shadow-md shadow-blue-200">
             <Users className="w-6 h-6 text-white" />
           </div>
           <div>
-            <h1 className="text-gray-800 text-xl font-bold">Manage Factory Customers</h1>
+            <h1 className="text-gray-800 text-base md:text-xl font-bold">Manage Factory Customers</h1>
             <p className="text-gray-400 text-xs">Manage your Customers Concern To Factory</p>
           </div>
         </div>
 
-        <button onClick={() => { navigate('/newcustomer') }} className="flex items-center gap-2 bg-linear-to-r from-emerald-600 to-emerald-700 hover:from-emerald-500 hover:to-emerald-600 text-white  shadow-blue-200 shadow-md text-sm transition-all hover:-translate-y-0.5 active:translate-y-0 font-semibold px-4 py-2.5 rounded-xl shadow-md shadow-blue-200 transition-all cursor-pointer">
-          <Plus className="w-4 h-4" />
-          New Customer
+        <button onClick={() => { navigate('/newcustomer') }} className="flex items-center gap-2 shrink-0 bg-linear-to-r from-emerald-600 to-emerald-700 hover:from-emerald-500 hover:to-emerald-600 text-white shadow-blue-200 shadow-md text-sm transition-all hover:-translate-y-0.5 active:translate-y-0 font-semibold px-3 md:px-4 py-2.5 rounded-xl cursor-pointer">
+          <Plus className="w-4 h-4 shrink-0" />
+          <span className="hidden sm:inline">New Customer</span>
         </button>
 
       </div>
@@ -64,12 +64,12 @@ const ManageCustomers = () => {
           </div>
 
 
-          <div className="relative">
+          <div className="relative w-full sm:w-auto">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
             <input
               type="text"
               placeholder="Search..."
-              className="bg-blue-50 border border-blue-100 focus:border-blue-400 focus:bg-white rounded-xl pl-9 pr-4 py-2 text-sm text-gray-700 placeholder-gray-400 focus:outline-none transition-all w-52 cursor-text"
+              className="bg-blue-50 border border-blue-100 focus:border-blue-400 focus:bg-white rounded-xl pl-9 pr-4 py-2 text-sm text-gray-700 placeholder-gray-400 focus:outline-none transition-all w-full sm:w-52 cursor-text"
             />
           </div>
         </div>
@@ -85,7 +85,7 @@ const ManageCustomers = () => {
                     Customer Name <ArrowUpDown className="w-3.5 h-3.5" />
                   </button>
                 </th>
-                
+
                 <th className="text-left px-4 py-3 font-semibold text-xs  tracking-wide">Address</th>
                 <th className="text-left px-4 py-3 font-semibold text-xs  tracking-wide">Mobile No</th>
                 <th className="text-left px-4 py-3 font-semibold text-xs  tracking-wide">Balance</th>

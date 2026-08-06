@@ -2,11 +2,10 @@ import React from 'react'
 
 const RawMaterialStock = () => {
 return (
-    <div className="min-h-screen bg-linear-to-b from-slate-50 to-slate-100 p-4 font-sans sm:p-6 lg:p-8">
-      <div className="mx-auto max-w-7xl space-y-6">
+<div className="min-h-screen overflow-x-hidden bg-linear-to-b from-slate-50 to-slate-100 p-4 font-sans sm:p-6 lg:p-8">      <div className="mx-auto max-w-7xl space-y-6">
         <header className="overflow-hidden rounded-3xl border border-slate-200/80 bg-white shadow-sm shadow-slate-200/60">
           <div className="h-1.5 w-full bg-linear-to-r from-emerald-400 via-emerald-500 to-teal-500" />
-          <div className="flex flex-col gap-5 p-6 md:flex-row md:items-center md:justify-between">
+          <div className="flex flex-col gap-5 p-6 md:flex-row md:items-center md:justify-between pl-12 md:pl-6">
             <div className="flex items-center gap-4">
               <div className="grid h-14 w-14 place-items-center rounded-2xl bg-linear-to-br from-emerald-500 to-teal-600 text-white shadow-lg shadow-emerald-500/25">
                 <svg className="h-7 w-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">

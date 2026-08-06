@@ -8,7 +8,7 @@ const ManageOrder = () => {
   return (
     <div className="min-h-screen bg-linear-to-br from-blue-50 via-white to-blue-50 p-4 md:p-6">
 
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex items-center justify-between mb-6 pl-12 md:pl-0">
         <div className="flex items-center gap-4">
           <div className="w-12 h-12 rounded-2xl bg-linear-to-b from-emerald-500 to-emerald-700 flex items-center justify-center shadow-md shadow-blue-200">
             <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -16,8 +16,7 @@ const ManageOrder = () => {
             </svg>
           </div>
           <div>
-            <h1 className="text-gray-800 text-xl font-bold">Manage Orders</h1>
-            <p className="text-gray-400 text-xs">Manage your Orders</p>
+<h1 className="text-gray-800 text-base md:text-xl font-bold">Manage Orders</h1>            <p className="text-gray-400 text-xs">Manage your Orders</p>
           </div>
         </div>
 
@@ -25,7 +24,7 @@ const ManageOrder = () => {
 
 
       <div className="bg-white border border-blue-100 rounded-2xl shadow-sm p-4 mb-4">
-        <div className="flex flex-col sm:flex-row items-start sm:items-end gap-3">
+       <div className="flex flex-col sm:flex-row items-stretch sm:items-end gap-3 flex-wrap">
           <div>
             <label className="text-gray-500 text-xs font-semibold uppercase tracking-wide block mb-1.5">Start Date</label>
             <input type="date"
@@ -90,7 +89,7 @@ const ManageOrder = () => {
         </div>
 
         <div className="overflow-x-auto">
-          <table className="w-full h-97 text-sm border-collapse">
+          <table className="w-full min-w-205 h-97 text-sm border-collapse">
             <thead>
               <tr className="bg-linear-to-b from-emerald-500 to-emerald-700 text-white">
                 <th className="text-left text-xs font-semibold px-4 py-3 whitespace-nowrap">SL.</th>

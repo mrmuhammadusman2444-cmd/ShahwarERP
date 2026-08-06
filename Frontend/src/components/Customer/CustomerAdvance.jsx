@@ -2,7 +2,7 @@ const CustomerAdvance = () => {
   return (
     <div className="p-4 md:p-5">
 
-      <div className="flex items-center justify-between mb-4">
+      <div className="flex items-center justify-between mb-4 pl-12 md:pl-0">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-xl bg-linear-to-br from-emerald-600 to-emerald-700 flex items-center justify-center shadow-md shadow-blue-200">
             <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -21,8 +21,8 @@ const CustomerAdvance = () => {
 
         <div className="flex flex-col gap-4 max-w-2xl">
 
-          <div className="grid grid-cols-3 items-center gap-4">
-            <label className="text-gray-700 text-sm font-semibold text-right">
+          <div className="grid grid-cols-1 sm:grid-cols-3 items-center gap-2 sm:gap-4">
+            <label className="text-gray-700 text-sm font-semibold sm:text-right">
               Customer Name <span className="text-red-400">*</span>
             </label>
             <div className="col-span-2">
@@ -67,8 +67,8 @@ const CustomerAdvance = () => {
             </div>
           </div>
 
-          <div className="grid grid-cols-3 items-center gap-4">
-            <label className="text-gray-700 text-sm font-semibold text-right">Amount In Word:</label>
+          <div className="grid grid-cols-1 sm:grid-cols-3 items-center gap-2 sm:gap-4">
+            <label className="text-gray-700 text-sm font-semibold sm:text-right">Amount In Word:</label>
             <div className="col-span-2">
               <p className="text-gray-500 text-sm px-1 py-2 min-h-9 border-b border-blue-50">
                 —
@@ -76,17 +76,17 @@ const CustomerAdvance = () => {
             </div>
           </div>
 
-          <div className="grid grid-cols-3 items-start gap-4">
-            <label className="text-gray-700 text-sm font-semibold text-right pt-2.5">Details</label>
+          <div className="grid grid-cols-1 sm:grid-cols-3 items-start gap-2 sm:gap-4">
+            <label className="text-gray-700 text-sm font-semibold sm:text-right sm:pt-2.5">Details</label>
             <div className="col-span-2">
               <textarea rows={4} placeholder="Enter details..."
                 className="w-full bg-emerald-50 border border-emerald-100 focus:border-emerald-400 focus:bg-white rounded-xl px-3 py-2.5 text-gray-700 placeholder-gray-400 text-sm focus:outline-none transition-all resize-none" />
             </div>
           </div>
 
-          <div className="grid grid-cols-3 gap-4">
-            <div />
-            <div className="col-span-2">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-4">
+            <div className="hidden sm:block" />
+            <div className="sm:col-span-2">
               <button type="button"
                 className="px-8 py-2.5 bg-linear-to-r from-emerald-600 to-emerald-700 hover:from-emerald-500 hover:to-emerald-600 cursor-pointer text-white text-sm font-semibold rounded-xl shadow-md shadow-emerald-200 transition-all hover:-translate-y-0.5 active:translate-y-0">
                 Save

@@ -49,9 +49,8 @@ const AddNewProduct = () => {
   }
 
   return (
-    <div className="min-h-screen bg-linear-to-br from-blue-50 via-white to-blue-50 p-4 md:p-6">
-
-      <div className="flex items-center justify-between mb-6">
+    <div className="min-h-screen overflow-x-hidden bg-linear-to-br from-blue-50 via-white to-blue-50 p-4 md:p-6">
+      <div className="flex items-center justify-between mb-6 pl-12 md:pl-0">
         <div className="flex items-center gap-4">
           <div className="w-12 h-12 rounded-2xl bg-linear-to-br from-emerald-600 to-emerald-700 flex items-center justify-center shadow-md shadow-blue-200">
             <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -87,8 +86,7 @@ const AddNewProduct = () => {
         </div>
       </div>
 
-      <div className="bg-white border border-blue-100 h-153 rounded-2xl shadow-sm p-6">
-
+      <div className="bg-white border border-blue-100 rounded-2xl shadow-sm p-6">
         <div className="grid grid-cols-1 xl:grid-cols-2 gap-x-10 gap-y-6 mb-8 pb-8 border-b border-blue-50">
 
           <div>
@@ -96,7 +94,7 @@ const AddNewProduct = () => {
               <div className="w-1 h-5 bg-linear-to-b from-emerald-500 to-emerald-700 rounded-full" />
               <h2 className="text-gray-700 text-sm font-bold uppercase tracking-wide">Basic Information</h2>
             </div>
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
 
               <div className="col-span-2">
                 <label className="text-gray-500 text-xs font-semibold uppercase tracking-wide block mb-1.5">
@@ -178,7 +176,7 @@ const AddNewProduct = () => {
               <div className="w-1 h-5 bg-linear-to-b from-emerald-500 to-emerald-700 rounded-full" />
               <h2 className="text-gray-700 text-sm font-bold uppercase tracking-wide">Pricing</h2>
             </div>
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
 
               {[
                 { name: "costPrice", label: "Cost Price", required: true },
@@ -249,7 +247,7 @@ const AddNewProduct = () => {
             </div>
             <select onChange={(e) => {
               setNewProduct({ ...newProduct, productCategory: e.target.value })
-            }} className="w-82 bg-emerald-50 border border-emerald-100 focus:border-emerald-400 focus:bg-white rounded-xl px-3 py-2.5 text-gray-700 text-sm focus:outline-none transition-all appearance-none cursor-pointer">
+            }} className="w-full sm:w-82 bg-emerald-50 border border-emerald-100 focus:border-emerald-400 focus:bg-white rounded-xl px-3 py-2.5 text-gray-700 text-sm focus:outline-none transition-all appearance-none cursor-pointer">
               <option value="">Select category</option>
               <option>Recipe</option>
               <option>Juices</option>
@@ -262,8 +260,7 @@ const AddNewProduct = () => {
 
         <div className="flex flex-col xl:flex-row gap-6 items-end ">
 
-          <div className="relative w-72 h-28 -mt-7 rounded-xl border-2 border-dashed border-emerald-200 hover:border-emerald-400 bg-emerald-50/40 hover:bg-emerald-50 transition-all cursor-pointer flex flex-row items-center justify-center gap-4">
-            <input type="file" accept="image/*" className="absolute inset-0 opacity-0 cursor-pointer z-10" />
+          <div className="relative w-full xl:w-72 h-28 xl:-mt-7 rounded-xl border-2 border-dashed border-emerald-200 hover:border-emerald-400 bg-emerald-50/40 hover:bg-emerald-50 transition-all cursor-pointer flex flex-row items-center justify-center gap-4">            <input type="file" accept="image/*" className="absolute inset-0 opacity-0 cursor-pointer z-10" />
 
             <div className="w-11 h-11  rounded-xl bg-white border border-emerald-100 shadow-sm flex items-center justify-center group-hover:scale-105 transition-transform shrink-0">
               <svg className="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -290,8 +287,7 @@ const AddNewProduct = () => {
               disabled={status !== "idle"}
               whileTap={status === "idle" ? { scale: 0.97 } : {}}
               transition={{ type: "spring", stiffness: 400, damping: 25 }}
-              className={`relative flex w-44 items-center cursor-pointer gap-2 justify-center h-12 ml-165 px-4 py-2.5 text-white text-sm font-semibold rounded-xl shadow-md transition-all hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:hover:translate-y-0 overflow-hidden ${status === "error"
-                ? "bg-rose-600 shadow-rose-200"
+              className={`relative flex w-full xl:w-44 items-center cursor-pointer gap-2 justify-center h-12 xl:ml-auto px-4 py-2.5 text-white text-sm font-semibold rounded-xl shadow-md transition-all hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:hover:translate-y-0 overflow-hidden ${status === "error" ? "bg-rose-600 shadow-rose-200"
                 : "bg-linear-to-r from-emerald-600 to-emerald-700 hover:from-emerald-500 hover:to-emerald-600 shadow-emerald-200"
                 }`}
             >

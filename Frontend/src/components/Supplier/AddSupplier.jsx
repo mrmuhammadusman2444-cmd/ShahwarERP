@@ -31,7 +31,7 @@ const AddSupplier = () => {
   return (
     <div className="p-4 md:p-5">
 
-      <div className="flex items-center justify-between mb-4">
+      <div className="flex items-center justify-between mb-4 pl-12 md:pl-0">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-xl bg-linear-to-br from-emerald-600 to-emerald-700 flex items-center justify-center shadow-md shadow-emerald-200">
             <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -46,7 +46,7 @@ const AddSupplier = () => {
 
       </div>
 
-      <div className="flex flex-col xl:flex-row gap-4 items-start">
+      <div className="flex flex-col lg:flex-row gap-4 items-start">
 
         <div className="flex-1 min-w-0 bg-white border border-blue-100 rounded-2xl shadow-sm p-5 flex flex-col gap-5">
 
@@ -55,7 +55,7 @@ const AddSupplier = () => {
               <div className="w-1 h-4 bg-linear-to-b from-emerald-500 to-emerald-700 rounded-full" />
               <h2 className="text-gray-700 text-xs font-bold uppercase tracking-widest">Basic Information</h2>
             </div>
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
 
               <div className="col-span-2">
                 <label className="text-gray-500 text-xs font-semibold uppercase tracking-wide block mb-1">
@@ -106,15 +106,14 @@ const AddSupplier = () => {
             </div>
             <div className="grid grid-cols-2 gap-3">
 
-              <div className="col-span-2 sm:col-span-1">
+              <div className="col-span-2">
                 <label className="text-gray-500 text-xs font-semibold uppercase tracking-wide block mb-1">
                   Type Supplier Details <span className="text-red-400">*</span>
                 </label>
                 <textarea onChange={(e) => { setAddSupplier({ ...addSupplier, supplierDetails: e.target.value }) }}
 
                   placeholder="Type Supplier Details..."
-                  className="w-230 resize-none bg-emerald-50 border border-emerald-100 focus:border-emerald-400 focus:bg-white rounded-xl px-3 h-30 py-2 text-gray-700 placeholder-gray-400 text-sm focus:outline-none transition-all"
-                />
+                  className="w-full resize-none bg-emerald-50 border border-emerald-100 focus:border-emerald-400 focus:bg-white rounded-xl px-3 h-30 py-2 text-gray-700 placeholder-gray-400 text-sm focus:outline-none transition-all" />
               </div>
 
 
@@ -129,7 +128,7 @@ const AddSupplier = () => {
               <div className="w-1 h-4 bg-linear-to-b from-emerald-500 to-emerald-700 rounded-full" />
               <h2 className="text-gray-700 text-xs font-bold uppercase tracking-widest">Credits</h2>
             </div>
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
 
               <div>
                 <label className="text-gray-500 text-xs font-semibold uppercase tracking-wide block mb-1">Supplier Credits</label>
@@ -155,8 +154,7 @@ const AddSupplier = () => {
 
         </div>
 
-        <div className="w-full xl:w-52 shrink-0 flex flex-col gap-4 sticky top-4">
-
+<div className="w-full lg:w-52 shrink-0 flex flex-col gap-4 sticky top-4">
           <div className="bg-white border border-emerald-100 rounded-2xl shadow-sm p-4 flex flex-col items-center gap-3">
             <div className="w-20 h-20 rounded-2xl bg-linear-to-br from-emerald-100 to-emerald-200 flex items-center justify-center">
               <svg className="w-10 h-10 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">

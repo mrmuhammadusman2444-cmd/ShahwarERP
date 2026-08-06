@@ -20,7 +20,7 @@ const NewOrder = () => {
         </button>
       </div>
 
-      <div className="flex flex-col xl:flex-row gap-4">
+      <div className="flex flex-col xl:flex-row gap-4 pl-12 md:pl-0">
 
         <div className="w-full xl:w-[55%] shrink-0 flex flex-col gap-3">
 
@@ -43,7 +43,7 @@ const NewOrder = () => {
               Products — {products.length} items
             </p>
 
-            <div className="grid grid-cols-3 gap-3 overflow-y-auto flex-1 max-h-[62vh] pr-1 custom-scroll">
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 overflow-y-auto flex-1 max-h-[62vh] pr-1 custom-scroll">
               {products.map((p) => (
                 <div
                   key={p.id}
@@ -61,10 +61,9 @@ const NewOrder = () => {
               ))}
 
               {products.length === 0 && (
-                <div className="col-span-3 flex flex-col items-center justify-center py-20 gap-2">
-                  <svg className="w-10 h-10 text-emerald-100" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
-                  </svg>
+                <div className="col-span-2 sm:col-span-3 flex flex-col items-center justify-center py-20 gap-2">                  <svg className="w-10 h-10 text-emerald-100" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+                </svg>
                   <p className="text-gray-400 text-xs">Add some products</p>
                 </div>
               )}
@@ -87,7 +86,7 @@ const NewOrder = () => {
                 <p className="text-gray-400 text-xs">Fill in the information below</p>
               </div>
             </div>
-            <div className="grid grid-cols-3 gap-3 mb-4">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-4">
               <div>
                 <label className="text-gray-900 text-sm  tracking-wide block mb-1.5">Gate Pass No</label>
                 <input type="text" placeholder="Manual gate pass no..."
@@ -107,7 +106,7 @@ const NewOrder = () => {
               </div>
             </div>
 
-            <div className="grid grid-cols-3 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
               <div>
                 <label className="text-gray-900 text-sm  tracking-wide block mb-1.5">Show Rate</label>
                 <select className="w-full bg-emerald-50 border border-emerald-100 focus:border-emerald-400 focus:bg-white rounded-xl px-3 py-2.5 text-gray-700 text-sm focus:outline-none transition-all appearance-none cursor-pointer">
@@ -142,8 +141,8 @@ const NewOrder = () => {
               </span>
             </div>
 
-            <div className="overflow-y-auto custom-scroll" style={{ maxHeight: "260px" }}>
-              <table className="w-full text-sm border-collapse">
+            <div className="overflow-auto custom-scroll" style={{ maxHeight: "260px" }}>
+              <table className="w-full min-w-160 text-sm border-collapse">
                 <thead className="sticky top-0 z-10">
                   <tr className="bg-emerald-600 text-white">
                     <th className="text-left text-xs font-semibold px-3 py-2.5 whitespace-nowrap">Item Information <span className="text-red-300">*</span></th>

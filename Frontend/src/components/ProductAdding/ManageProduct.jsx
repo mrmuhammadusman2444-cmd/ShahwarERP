@@ -51,7 +51,7 @@ const ManageProduct = () => {
 
 
     return (
-        <div className="p-4 md:p-5">
+        <div className="p-4 md:p-5 overflow-x-hidden">
 
             {showDeletePopup == true ? <DeleteAlertPopup showDeletePopup={showDeletePopup} setShowDeletePopup={setShowDeletePopup} DeleteProduct={DeleteProduct} handleDeleteProduct={handleDeleteProduct} /> : null}
 
@@ -62,8 +62,8 @@ const ManageProduct = () => {
                     handleManageProdcut={handleManageProdcut}
                 />
             )}
-            <div className="flex items-center justify-between mb-4">
-                <div className="flex items-center gap-3">
+            <div className="flex items-center justify-between mb-4 gap-3 pl-12 md:pl-0">
+                <div className="flex items-center gap-3 min-w-0">
                     <div className="w-10 h-10 rounded-xl bg-linear-to-br from-emerald-600 to-emerald-700 flex items-center justify-center shadow-md shadow-emerald-200">
                         <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
@@ -91,7 +91,7 @@ const ManageProduct = () => {
                         <Plus size={13} strokeWidth={3} />
                     </motion.span>
 
-                    <span className="relative whitespace-nowrap">Add New Product</span>
+                    <span className="relative whitespace-nowrap hidden sm:inline">Add New Product</span>
                 </motion.button>
             </div>
 
@@ -168,7 +168,7 @@ const ManageProduct = () => {
                 </div>
 
                 <div className="max-h-117.5 overflow-y-auto overflow-x-auto">
-                    <table className="w-full text-sm align-top  ">
+                    <table className="w-full min-w-245 text-sm align-top  ">
                         <thead className="sticky top-0 z-10 ">
                             <tr className="bg-emerald-700">
                                 <th className="text-left text-gray-100 font-bold px-4 py-3 whitespace-nowrap text-xs uppercase tracking-wider">SL.</th>

@@ -2,7 +2,7 @@ const OrderReport = () => {
     return (
         <div className="p-4 md:p-5">
 
-            <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center justify-between mb-4 pl-12 md:pl-0">
                 <div className="flex items-center gap-3">
                     <div className="w-10 h-10 rounded-xl bg-linear-to-b from-emerald-500 to-emerald-700 flex items-center justify-center shadow-md shadow-emerald-200">
                         <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -82,7 +82,7 @@ const OrderReport = () => {
                 </div>
 
                 <div className="overflow-x-auto">
-                    <table className="w-full text-sm h-83">
+                    <table className="w-full min-w-160 text-sm h-83">
                         <thead>
                             <tr className="bg-linear-to-b from-emerald-500 to-emerald-700">
                                 <th className="text-left text-gray-100 font-bold px-4 py-2 whitespace-nowrap">SL.</th>

@@ -46,11 +46,10 @@ const ManageCustomers = () => {
 
 
 
-  console.log(manageCustomer)
 
   const navigate = useNavigate()
   return (
-    <div className=" min-h-screen bg-linear-to-br from-emerald-50 via-white to-emerald-50 p-4 md:p-6">
+    <div className="min-h-screen overflow-x-hidden bg-linear-to-br from-emerald-50 via-white to-emerald-50 p-4 md:p-6">
 
       {showEditPopup == true ? (
         <EditCustomerPopup
@@ -70,26 +69,26 @@ const ManageCustomers = () => {
         />
       )}
 
-      <div className="flex items-center justify-between mb-6">
-        <div className="flex items-center gap-4">
+      <div className="flex items-center justify-between mb-6 gap-3 pl-12 md:pl-0">
+        <div className="flex items-center gap-4 min-w-0">
           <div className="w-10 h-10 rounded-2xl bg-linear-to-br from-emerald-600 to-emerald-700 flex items-center justify-center shadow-md shadow-emerald-200">
             <Users className="w-6 h-6 text-white" />
           </div>
           <div>
-            <h1 className="text-gray-800 text-xl font-bold">Manage Customers</h1>
+            <h1 className="text-gray-800 text-base md:text-xl font-bold">Manage Customers</h1>
             <p className="text-gray-400 text-xs">Manage your Customers</p>
           </div>
         </div>
 
-        <button onClick={() => { navigate('/newcustomer') }} className="flex items-center gap-2 bg-linear-to-b from-emerald-500 to-emerald-700 hover:from-emerald-400 hover:to-emerald-600 text-white  shadow-emerald-200  text-sm transition-all hover:-translate-y-0.5 active:translate-y-0 font-semibold px-4 py-2.5 rounded-xl shadow-md stransition-all cursor-pointer">
-          <Plus className="w-4 h-4" />
-          New Customer
+        <button onClick={() => { navigate('/newcustomer') }} className="flex items-center gap-2 shrink-0 bg-linear-to-b from-emerald-500 to-emerald-700 hover:from-emerald-400 hover:to-emerald-600 text-white shadow-emerald-200 text-sm transition-all hover:-translate-y-0.5 active:translate-y-0 font-semibold px-3 md:px-4 py-2.5 rounded-xl shadow-md cursor-pointer">
+          <Plus className="w-4 h-4 shrink-0" />
+          <span className="hidden sm:inline">New Customer</span>
         </button>
 
       </div>
 
 
-      <div className="bg-white border border-emerald-100 rounded-2xl shadow-sm p-5">
+      <div className="bg-white border border-emerald-100 rounded-2xl shadow-sm p-5 overflow-hidden">
 
 
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
@@ -127,21 +126,20 @@ const ManageCustomers = () => {
           </div>
 
 
-          <div className="relative">
+          <div className="relative w-full sm:w-auto">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
             <input
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               type="text"
               placeholder="Search..."
-              className="bg-emerald-50 border border-emerald-100 focus:border-emerald-400 focus:bg-white rounded-xl pl-9 pr-4 py-2 text-sm text-gray-700 placeholder-gray-400 focus:outline-none transition-all w-52 cursor-text"
-            />
+              className="bg-emerald-50 border border-emerald-100 focus:border-emerald-400 focus:bg-white rounded-xl pl-9 pr-4 py-2 text-sm text-gray-700 placeholder-gray-400 focus:outline-none transition-all w-full sm:w-52 cursor-text" />
           </div>
         </div>
 
 
-        <div className="overflow-x-auto rounded-xl border border-emerald-100 h-115">
-          <table className="w-full text-sm">
+        <div className="hidden lg:block overflow-x-auto rounded-xl border border-emerald-100 h-115" style={{ WebkitOverflowScrolling: 'touch' }}>
+          <table className="w-full min-w-[800px] text-sm">
             <thead className="sticky top-0 z-10">
               <tr className="bg-linear-to-b from-emerald-500 to-emerald-700 text-white">
                 <th className="text-left px-4 py-3 font-semibold text-xs uppercase tracking-wide rounded-tl-xl w-12">SL</th>
@@ -272,7 +270,7 @@ const ManageCustomers = () => {
                     </td>
 
                     <td className="px-4 py-3">
-                      <div className="flex items-center justify-end gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                      <div className="flex items-center justify-end gap-1 opacity-100 lg:opacity-0 lg:group-hover:opacity-100 transition-opacity">
                         {can("customers", "view") && (
                           <button className="p-1.5 rounded-lg text-gray-400 hover:text-emerald-600 hover:bg-emerald-100 cursor-pointer transition-all">
                             <Eye size={16} />
@@ -303,8 +301,110 @@ const ManageCustomers = () => {
           </table>
         </div>
 
+        {/* Mobile card view */}
+        <div className="lg:hidden flex flex-col gap-3">
+          {filteredCustomers.length === 0 && (
+            <div className="py-16 text-center flex flex-col items-center gap-3">
+              <div className="w-14 h-14 rounded-2xl bg-emerald-50 flex items-center justify-center">
+                <Users className="w-7 h-7 text-emerald-300" />
+              </div>
+              <p className="text-gray-600 text-sm font-medium">No customers yet</p>
+              <p className="text-gray-400 text-xs">Add your first customer to see them here</p>
+            </div>
+          )}
+
+          {filteredCustomers.map((customer, index) => {
+            const limit = Number(customer.amountLimit) || 0
+            const used = Number(customer.customerCredits) || 0
+            const percent = limit > 0 ? Math.min((used / limit) * 100, 100) : 0
+            const barTone = percent >= 90 ? "bg-red-500" : percent >= 70 ? "bg-amber-500" : "bg-emerald-500"
+            const initials = (name = "") => name.trim().split(" ").slice(0, 2).map(w => w[0]).join("").toUpperCase()
+            const avatarTone = (name = "") => {
+              const tones = ["bg-emerald-100 text-emerald-700", "bg-amber-100 text-amber-700", "bg-sky-100 text-sky-700", "bg-rose-100 text-rose-700", "bg-violet-100 text-violet-700"]
+              return tones[name.length % tones.length]
+            }
+            const rateTone = {
+              distributor: "bg-emerald-50 text-emerald-700 ring-emerald-200",
+              dealer: "bg-amber-50 text-amber-700 ring-amber-200",
+              retail: "bg-sky-50 text-sky-700 ring-sky-200",
+            }
+            return (
+              <div key={customer._id} className="bg-white border border-emerald-100 rounded-2xl p-4 shadow-sm">
+                <div className="flex items-start gap-3">
+                  <div className={`w-11 h-11 shrink-0 rounded-xl flex items-center justify-center text-sm font-bold ${avatarTone(customer.customerName)}`}>
+                    {initials(customer.customerName) || "?"}
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <p className="text-gray-800 text-sm font-semibold truncate flex items-center gap-1.5">
+                      {customer.customerName}
+                      {customer.scheme === "yes" && <span title="Scheme active" className="w-1.5 h-1.5 rounded-full bg-emerald-500 shrink-0" />}
+                    </p>
+                    <p className="text-gray-400 text-xs truncate">{customer.email}</p>
+                    <p className="text-gray-500 text-xs mt-0.5 tabular-nums">{customer.phoneNo || "—"}</p>
+                  </div>
+                  <div className="flex items-center gap-1 shrink-0">
+                    {can("customers", "view") && (
+                      <button className="p-1.5 rounded-lg text-gray-400 hover:text-emerald-600 hover:bg-emerald-100 cursor-pointer transition-all">
+                        <Eye size={16} />
+                      </button>
+                    )}
+                    {can("customers", "update") && (
+                      <button onClick={() => { setEditData(customer), setShowEditPopup(true) }} className="p-1.5 rounded-lg text-gray-400 hover:text-emerald-600 hover:bg-emerald-100 cursor-pointer transition-all">
+                        <Pencil size={16} />
+                      </button>
+                    )}
+                    {can("customers", "delete") && (
+                      <button onClick={() => { setDeleteData(customer); setShowDeleteAlert(true) }} className="p-1.5 rounded-lg text-gray-400 hover:text-red-600 hover:bg-red-100 cursor-pointer transition-all">
+                        <Trash2 size={16} />
+                      </button>
+                    )}
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-3 mt-3 pt-3 border-t border-emerald-50">
+                  <div>
+                    <p className="text-gray-400 text-[10px] uppercase tracking-wide">Warehouse</p>
+                    {customer.wareHouse ? (
+                      <span className="text-emerald-900 text-xs bg-emerald-100 px-2 py-0.5 rounded-md inline-block mt-0.5">{customer.wareHouse}</span>
+                    ) : <span className="text-gray-300 text-xs">—</span>}
+                  </div>
+                  <div>
+                    <p className="text-gray-400 text-[10px] uppercase tracking-wide">Rate</p>
+                    {customer.CustomerProductRate ? (
+                      <span className={`text-xs font-semibold px-2 py-0.5 rounded-md ring-1 capitalize inline-block mt-0.5 ${rateTone[customer.CustomerProductRate] || "bg-gray-50 text-gray-600 ring-gray-200"}`}>
+                        {customer.CustomerProductRate}
+                      </span>
+                    ) : <span className="text-gray-300 text-xs">—</span>}
+                  </div>
+                  <div>
+                    <p className="text-gray-400 text-[10px] uppercase tracking-wide">Credit Used</p>
+                    {limit > 0 ? (
+                      <div className="flex flex-col gap-1 mt-1">
+                        <div className="flex items-center justify-between text-xs">
+                          <span className="text-gray-600 font-medium tabular-nums">Rs. {used.toLocaleString()}</span>
+                          <span className="text-gray-400 tabular-nums">/ {limit.toLocaleString()}</span>
+                        </div>
+                        <div className="h-1.5 w-full bg-gray-100 rounded-full overflow-hidden">
+                          <div className={`h-full rounded-full transition-all ${barTone}`} style={{ width: `${percent}%` }} />
+                        </div>
+                      </div>
+                    ) : <span className="text-gray-300 text-xs">No limit</span>}
+                  </div>
+                  <div>
+                    <p className="text-gray-400 text-[10px] uppercase tracking-wide">Balance</p>
+                    <span className={`text-sm font-bold tabular-nums ${Number(customer.PreviouseCreditsBalance) > 0 ? "text-red-600" : "text-gray-700"}`}>
+                      Rs. {Number(customer.PreviouseCreditsBalance || 0).toLocaleString()}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            )
+          })}
+        </div>
 
         <div className="flex flex-col sm:flex-row items-center justify-between gap-3 mt-4">
+
+
           <p className="text-gray-400 text-xs">
             Showing {manageCustomer.length === 0 ? 0 : 1} to {manageCustomer.length} of {manageCustomer.length} entries
           </p>

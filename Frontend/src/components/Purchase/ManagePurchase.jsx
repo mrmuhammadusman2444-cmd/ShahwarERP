@@ -196,9 +196,8 @@ const ManagePurchase = () => {
     }
 
     return (
-        <div className="min-h-screen bg-linear-to-br from-blue-50 via-white to-blue-50 p-4 md:p-6">
-
-            <div className="flex items-center justify-between mb-6">
+        <div className="min-h-screen overflow-x-hidden bg-linear-to-br from-blue-50 via-white to-blue-50 p-4 md:p-6">
+            <div className="flex items-center justify-between mb-6 pl-12 md:pl-0">
                 <div className="flex items-center gap-4">
                     <div className="w-12 h-12 rounded-2xl bg-linear-to-b from-emerald-500 to-emerald-700 flex items-center justify-center shadow-md shadow-blue-200">
                         <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -206,8 +205,7 @@ const ManagePurchase = () => {
                         </svg>
                     </div>
                     <div>
-                        <h1 className="text-gray-800 text-xl font-bold">Manage Purchases</h1>
-                        <p className="text-gray-400 text-xs">Manage your Purchase</p>
+                        <h1 className="text-gray-800 text-base md:text-xl font-bold">Manage Purchases</h1>                        <p className="text-gray-400 text-xs">Manage your Purchase</p>
                     </div>
                 </div>
 
@@ -215,7 +213,7 @@ const ManagePurchase = () => {
 
 
             <div className="bg-white border border-blue-100 rounded-2xl shadow-sm p-4 mb-4">
-                <div className="flex flex-col sm:flex-row items-start sm:items-end gap-3">
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-end gap-3 flex-wrap">
                     <div>
                         <label className="text-gray-500 text-xs font-semibold uppercase tracking-wide block mb-1.5">Start Date</label>
                         <input
@@ -284,7 +282,7 @@ const ManagePurchase = () => {
                 </div>
 
                 <div ref={scrollRef} className="max-h-[52vh] overflow-y-auto overflow-x-auto">
-                    <table className="w-full text-sm border-collapse">
+                    <table className="w-full min-w-220 text-sm border-collapse">
                         <thead className="sticky top-0 z-10">
                             <tr className="bg-linear-to-b from-emerald-500 to-emerald-700 text-white">
                                 <th className="text-left text-xs font-semibold px-4 py-3 whitespace-nowrap">SL.</th>
@@ -381,7 +379,7 @@ const ManagePurchase = () => {
                                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
                                                             </svg>
                                                         </button>
-                                                        
+
                                                         {can('purchase', 'edit') && (
                                                             <button onClick={() => navigate(`/editpurchase/${item._id}`)} className="w-7 h-7 rounded-lg bg-emerald-50 text-emerald-600 hover:bg-emerald-100 hover:text-emerald-700 flex items-center justify-center transition-all cursor-pointer" >
                                                                 <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

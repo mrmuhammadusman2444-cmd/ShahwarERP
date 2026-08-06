@@ -535,9 +535,8 @@ const ManageSale = () => {
 
 
   return (
-    <div className="min-h-screen bg-linear-to-br from--50 via-white to--50 p-4 md:p-6">
-
-      <div className="flex items-center justify-between mb-6">
+<div className="min-h-screen overflow-x-hidden bg-linear-to-br from--50 via-white to--50 p-4 md:p-6">
+      <div className="flex items-center justify-between mb-6 pl-12 md:pl-0">
         <div className="flex items-center gap-4">
           <div className="w-10 h-10 rounded-2xl bg-linear-to-b from-emerald-500 to-emerald-700 flex items-center justify-center shadow-md shadow--200">
             <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -545,8 +544,7 @@ const ManageSale = () => {
             </svg>
           </div>
           <div>
-            <h1 className="text-gray-800 text-xl font-bold">Manage Sale</h1>
-            <p className="text-gray-400 text-xs">Manage your Sale</p>
+<h1 className="text-gray-800 text-base md:text-xl font-bold">Manage Sale</h1>            <p className="text-gray-400 text-xs">Manage your Sale</p>
           </div>
         </div>
 
@@ -555,7 +553,7 @@ const ManageSale = () => {
 
 
       <div className="bg-white border border-emerald-100 rounded-2xl shadow-sm p-4 mb-4">
-        <div className="flex flex-col sm:flex-row items-start sm:items-end gap-3">
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-end gap-3 flex-wrap">
           <div>
             <label className="text-gray-500 text-xs font-semibold uppercase tracking-wide block mb-1.5">Start Date</label>
             <input value={startDate}
@@ -624,7 +622,7 @@ const ManageSale = () => {
         </div>
 
         <div className="overflow-x-auto h-97 ">
-          <table className="w-full text-sm border-collapse">
+          <table className="w-full min-w-[860px] text-sm border-collapse">
             <thead>
               <tr className="bg-linear-to-b from-emerald-500 to-emerald-700 text-white">
                 <th className="text-left text-xs font-semibold px-4 py-3 whitespace-nowrap">SL</th>
@@ -883,7 +881,7 @@ const ManageSale = () => {
               </button>
             </div>
 
-            <div className="overflow-y-auto flex-1 px-5 py-4">
+            <div className="overflow-auto flex-1 px-5 py-4">
 
               <div className="grid grid-cols-2 gap-3 mb-4 text-xs">
                 <p className="text-gray-500">Gate Pass No: <span className="text-gray-800 font-semibold">{viewSale.gatePass || "-"}</span></p>
@@ -892,7 +890,7 @@ const ManageSale = () => {
                 <p className="text-gray-500">Previous Amount: <span className="text-gray-800 font-semibold">Rs. {Number(viewSale.previousAmount || 0).toLocaleString()}</span></p>
               </div>
 
-              <table className="w-full text-sm border-collapse">
+             <table className="w-full min-w-120 text-sm border-collapse">
                 <thead>
                   <tr className="bg-gray-50 text-gray-500 text-xs">
                     <th className="text-left font-semibold px-3 py-2">Item Name</th>
