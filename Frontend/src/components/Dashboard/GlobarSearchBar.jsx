@@ -67,12 +67,11 @@ const GlobalSearchBar = () => {
         }
     }
 
-    // query badle to active index reset
     useEffect(() => { setActiveIndex(0); }, [query]);
 
     return (
-<div className="flex justify-center w-full lg:w-100 lg:-mt-1 lg:ml-30">
-              <div ref={boxRef} className="relative w-full max-w-2xl">
+        <div className="flex justify-center w-full">
+            <div ref={boxRef} className="relative w-full max-w-2xl">
                 <Search
                     size={20}
                     className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 z-10"
@@ -86,11 +85,9 @@ const GlobalSearchBar = () => {
                     onFocus={() => setOpen(true)}
                     onKeyDown={onKeyDown}
                     placeholder="Search anything..."
-                    className="w-full h-10 rounded-xl border border-slate-200 bg-white pl-12 pr-20 text-sm placeholder:text-slate-400 shadow-sm outline-none transition-all duration-200 focus:border-emerald-400 focus:ring-2 focus:ring-emerald-500/20"
-                />
+                    className="w-full h-9 sm:h-10 rounded-xl border border-slate-200 bg-white pl-10 sm:pl-12 pr-3 sm:pr-20 text-xs sm:text-sm placeholder:text-slate-400 shadow-sm outline-none transition-all duration-200 focus:border-emerald-400 focus:ring-2 focus:ring-emerald-500/20" />
 
-                <div className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-1 rounded-lg border border-slate-200 bg-slate-50 px-2.5 py-1 text-xs font-medium text-slate-500">
-                    <Command size={13} />
+                <div className="hidden sm:flex absolute right-3 top-1/2 -translate-y-1/2 items-center gap-1 rounded-lg border border-slate-200 bg-slate-50 px-2.5 py-1 text-xs font-medium text-slate-500">                    <Command size={13} />
                     K
                 </div>
 

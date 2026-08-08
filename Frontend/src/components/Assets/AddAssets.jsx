@@ -86,10 +86,8 @@ const AddAssets = () => {
 
               <select onChange={(e) => { setNewAsset({ ...newAsset, location: e.target.value }) }} className="w-full pl-10 bg-emerald-50 border border-emerald-100 focus:border-emerald-400 focus:bg-white rounded-xl px-3 py-2.5 text-gray-700 text-sm focus:outline-none transition-all appearance-none cursor-pointer">
                 <option value="">Select location</option>
-                <option value="">Hattar</option>
-                <option value="">Hafiz</option>
-
-
+                <option value="Hattar">Hattar</option>
+                <option value="Hafiz">Hafiz</option>
               </select>
             </div>
           </div>

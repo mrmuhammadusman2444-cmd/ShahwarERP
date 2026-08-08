@@ -22,6 +22,13 @@ const ManageAssets = () => {
     handleFetchAsset()
   }, []);
 
+  async function handleDeleteAsset(id) {
+
+    await axios.post(`http://localhost:3000/delete/asset/${id}`)
+    setFetchAssets((prev) => prev.filter((a) => a._id !== id))
+
+  }
+
   const columns = [
     {
       header: 'SL',
@@ -134,7 +141,7 @@ const ManageAssets = () => {
               </button>
             )}
             {can('assets', 'delete') && (
-              <button className="p-1.5 rounded-lg text-gray-400 hover:text-red-600 hover:bg-red-100 cursor-pointer transition-all hover:scale-110 active:scale-95">
+              <button onClick={() => handleDeleteAsset(asset._id)} className="p-1.5 rounded-lg text-gray-400 hover:text-red-600 hover:bg-red-100 cursor-pointer transition-all hover:scale-110 active:scale-95">
                 <Trash2 size={16} />
               </button>
             )}
@@ -191,15 +198,18 @@ const ManageAssets = () => {
 
 
           <div className="flex items-center gap-2 flex-wrap">
-            <div className="flex items-center gap-2">
-              <span className="text-gray-500 text-sm">Show</span>
-              <select className="bg-blue-50 border border-blue-100 rounded-lg px-2 py-1.5 text-gray-700 text-sm focus:outline-none focus:border-blue-400 cursor-pointer">
-                <option>10</option>
-                <option>25</option>
-                <option>50</option>
-                <option>100</option>
+            <div className="flex items-center gap-2 text-xs text-gray-500">
+              <span>Show</span>
+              <select
+                value={table.getState().pagination.pageSize}
+                onChange={(e) => table.setPageSize(Number(e.target.value))}
+                className="bg-blue-50 border border-blue-100 rounded-lg px-2 py-1.5 text-gray-600 text-xs focus:outline-none focus:border-emerald-400 cursor-pointer"
+              >
+                {[10, 25, 50, 100].map((size) => (
+                  <option key={size} value={size}>{size}</option>
+                ))}
               </select>
-              <span className="text-gray-500 text-sm">entries</span>
+              <span>entries</span>
             </div>
 
             <div className="flex items-center gap-1.5">
@@ -222,17 +232,6 @@ const ManageAssets = () => {
           </div>
 
 
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-            <input
-              type="text"
-              placeholder="Search..."
-              className="bg-emerald-50 border border-emerald-100 focus:border-emerald-400 focus:bg-white rounded-xl pl-9 pr-4 py-2 text-sm text-gray-700 placeholder-gray-400 focus:outline-none transition-all w-52 cursor-text"
-            />
-          </div>
-        </div>
-
-        <div className="flex items-center justify-between gap-3 mb-3 flex-wrap">
           <div className="flex items-center gap-2 bg-white border border-blue-100 rounded-xl px-3 py-2 focus-within:border-emerald-400 transition-all w-full sm:w-72">
             <svg className="w-4 h-4 text-emerald-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -244,20 +243,12 @@ const ManageAssets = () => {
               className="bg-transparent text-sm text-gray-700 placeholder-gray-400 focus:outline-none w-full"
             />
           </div>
+        </div>
 
-          <div className="flex items-center gap-2 text-xs text-gray-500">
-            <span>Show</span>
-            <select
-              value={table.getState().pagination.pageSize}
-              onChange={(e) => table.setPageSize(Number(e.target.value))}
-              className="bg-blue-50 border border-blue-100 rounded-lg px-2 py-1.5 text-gray-600 text-xs focus:outline-none focus:border-emerald-400 cursor-pointer"
-            >
-              {[10, 25, 50, 100].map((size) => (
-                <option key={size} value={size}>{size}</option>
-              ))}
-            </select>
-            <span>entries</span>
-          </div>
+        <div className="flex items-center justify-between gap-3 mb-3 flex-wrap">
+
+
+
         </div>
         <div className="overflow-auto rounded-xl border border-blue-100 h-115">
           <table className="w-full text-sm">
@@ -323,18 +314,18 @@ const ManageAssets = () => {
 
           <p className="text-xs text-gray-500">
             Showing{" "}
-            <span className="font-semibold text-gray-700">
+            <span className=" text-gray-500">
               {table.getState().pagination.pageIndex * table.getState().pagination.pageSize + 1}
             </span>{" "}
             to{" "}
-            <span className="font-semibold text-gray-700">
+            <span className=" text-gray-500">
               {Math.min(
                 (table.getState().pagination.pageIndex + 1) * table.getState().pagination.pageSize,
                 table.getFilteredRowModel().rows.length
               )}
             </span>{" "}
             of{" "}
-            <span className="font-semibold text-gray-700">{table.getFilteredRowModel().rows.length}</span>{" "}
+            <span className=" text-gray-500">{table.getFilteredRowModel().rows.length}</span>{" "}
             entries
           </p>
 
@@ -349,7 +340,6 @@ const ManageAssets = () => {
 
             {Array.from({ length: table.getPageCount() }, (_, i) => i).map((pageIndex) => {
               const current = table.getState().pagination.pageIndex
-              // sirf aas paas ke pages dikhao (bahut zyada na ho)
               if (
                 pageIndex === 0 ||
                 pageIndex === table.getPageCount() - 1 ||
@@ -368,7 +358,6 @@ const ManageAssets = () => {
                   </button>
                 )
               }
-              // gap (...) dikhao
               if (pageIndex === current - 2 || pageIndex === current + 2) {
                 return <span key={pageIndex} className="px-1 text-gray-400 text-xs">...</span>
               }

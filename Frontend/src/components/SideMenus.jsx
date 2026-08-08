@@ -1295,7 +1295,7 @@ const SideMenus = ({ collapsed }) => {
                     </div>
                 )}
 
-                {can("assets", "view") && menuMatches('Assets', ['Add Assets', 'Manage Assets', 'Assets Ledger']) && (
+                {(canSub("assets", "addAssets") || canSub("assets", "manageAssets") || canSub("assets", "assetsLedger")) && menuMatches('Assets', ['Add Assets', 'Manage Assets', 'Assets Ledger']) && (
                     <div onMouseEnter={setTip} onClick={() => setassetsOpen(!assetsOpen)} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer transition-all mb-px ${collapsed ? 'justify-start w-9 h-9 mx-auto' : ''} ${isParentActive(['/assets', '/manage/assets', '/assets/ledger']) ? 'bg-[var(--nav-active)]' : 'hover:bg-[var(--nav-active)]'}`}>
                         {isParentActive(['/assets', '/manage/assets', '/assets/ledger']) && !collapsed && (
                             <span className="absolute left-0 top-1/2 -translate-y-1/2 w-0.75 h-4.5 bg-[var(--nav-strip)] rounded-r-full" />
