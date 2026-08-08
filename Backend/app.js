@@ -10,6 +10,7 @@ import UnitRoute from './Routes/Unit.route.js'
 import PurchaseRoute from './Routes/Purchase.route.js'
 import SupplierRoute from './Routes/Supplier.route.js'
 import SupplierPaymentRoute from './Routes/SupplierPayment.route.js'
+import AssetRoute from './Routes/Asset.route.js'
 
 DbConnection()
 
@@ -27,6 +28,7 @@ app.use('/', UnitRoute)
 app.use('/', PurchaseRoute)
 app.use('/', SupplierRoute)
 app.use('/', SupplierPaymentRoute)
+app.use('/', AssetRoute)
 app.use('/uploads', express.static('uploads'))
 
 

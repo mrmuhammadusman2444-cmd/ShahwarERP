@@ -1,7 +1,26 @@
 import React from 'react'
+import axios from 'axios'
+import { useState, useEffect } from 'react';
 import { Building2, Shapes, MapPin, CalendarDays, DollarSign, Coins, Clock3, Calculator, FileText, } from "lucide-react";
 
 const AddAssets = () => {
+
+  const [newAsset, setNewAsset] = useState({
+    assetName: '',
+    assetType: '',
+    location: '',
+    purchaseDate: '',
+    cost: '',
+    residualValue: '',
+    usefulLife: '',
+    depreciationMethod: '',
+    description: '',
+  })
+  async function handleAddAsset() {
+    let res = await axios.post('http://localhost:3000/add/new/asset', newAsset)
+    console.log(res.data)
+
+  }
 
   return (
     <div className="p-4 md:p-5">
@@ -34,6 +53,7 @@ const AddAssets = () => {
             <div className="col-span-2 relative">
               <Building2 className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-emerald-500" />
               <input
+                onChange={(e) => { setNewAsset({ ...newAsset, assetName: e.target.value }) }}
                 type="text"
                 placeholder="Assets Name"
                 className="w-full pl-10 bg-emerald-50 border border-emerald-100 focus:border-emerald-400 focus:bg-white rounded-xl px-3 py-2.5 text-gray-700 placeholder-gray-400 text-sm focus:outline-none transition-all"
@@ -48,7 +68,7 @@ const AddAssets = () => {
             <div className="col-span-2 relative">
               <Shapes className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-emerald-500 pointer-events-none z-10" />
 
-              <select className="w-full pl-10 bg-emerald-50 border border-emerald-100 focus:border-emerald-400 focus:bg-white rounded-xl px-3 py-2.5 text-gray-700 text-sm focus:outline-none transition-all appearance-none cursor-pointer">
+              <select onChange={(e) => { setNewAsset({ ...newAsset, assetType: e.target.value }) }} className="w-full pl-10 bg-emerald-50 border border-emerald-100 focus:border-emerald-400 focus:bg-white rounded-xl px-3 py-2.5 text-gray-700 text-sm focus:outline-none transition-all appearance-none cursor-pointer">
                 <option value="">Select type</option>
                 <option value="fixed">Fixed</option>
                 <option value="current">Current</option>
@@ -64,8 +84,12 @@ const AddAssets = () => {
             <div className="col-span-2 relative">
               <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-emerald-500 pointer-events-none z-10" />
 
-              <select className="w-full pl-10 bg-emerald-50 border border-emerald-100 focus:border-emerald-400 focus:bg-white rounded-xl px-3 py-2.5 text-gray-700 text-sm focus:outline-none transition-all appearance-none cursor-pointer">
+              <select onChange={(e) => { setNewAsset({ ...newAsset, location: e.target.value }) }} className="w-full pl-10 bg-emerald-50 border border-emerald-100 focus:border-emerald-400 focus:bg-white rounded-xl px-3 py-2.5 text-gray-700 text-sm focus:outline-none transition-all appearance-none cursor-pointer">
                 <option value="">Select location</option>
+                <option value="">Hattar</option>
+                <option value="">Hafiz</option>
+
+
               </select>
             </div>
           </div>
@@ -77,7 +101,7 @@ const AddAssets = () => {
             <div className="col-span-2 relative">
               <CalendarDays className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-emerald-500 pointer-events-none z-10" />
 
-              <input
+              <input onChange={(e) => { setNewAsset({ ...newAsset, purchaseDate: e.target.value }) }}
                 type="date"
                 defaultValue="2026-07-08"
                 className="w-full pl-10 bg-emerald-50 border border-emerald-100 focus:border-emerald-400 focus:bg-white rounded-xl px-3 py-2.5 text-gray-700 text-sm focus:outline-none transition-all cursor-pointer"
@@ -92,7 +116,7 @@ const AddAssets = () => {
             <div className="col-span-2 relative">
               <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-emerald-500 pointer-events-none z-10" />
 
-              <input
+              <input onChange={(e) => { setNewAsset({ ...newAsset, cost: e.target.value }) }}
                 type="number"
                 placeholder="0.00"
                 className="w-full pl-10 bg-emerald-50 border border-emerald-100 focus:border-emerald-400 focus:bg-white rounded-xl px-3 py-2.5 text-gray-700 placeholder-gray-400 text-sm focus:outline-none transition-all"
@@ -107,7 +131,7 @@ const AddAssets = () => {
             <div className="col-span-2 relative">
               <Coins className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-emerald-500 pointer-events-none z-10" />
 
-              <input
+              <input onChange={(e) => { setNewAsset({ ...newAsset, residualValue: e.target.value }) }}
                 type="number"
                 placeholder="0.00"
                 className="w-full pl-10 bg-emerald-50 border border-emerald-100 focus:border-emerald-400 focus:bg-white rounded-xl px-3 py-2.5 text-gray-700 placeholder-gray-400 text-sm focus:outline-none transition-all"
@@ -122,7 +146,7 @@ const AddAssets = () => {
             <div className="col-span-2 relative">
               <Clock3 className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-emerald-500 pointer-events-none z-10" />
 
-              <input
+              <input onChange={(e) => { setNewAsset({ ...newAsset, usefulLife: e.target.value }) }}
                 type="number"
                 placeholder="Years"
                 className="w-full pl-10 bg-emerald-50 border border-emerald-100 focus:border-emerald-400 focus:bg-white rounded-xl px-3 py-2.5 text-gray-700 placeholder-gray-400 text-sm focus:outline-none transition-all"
@@ -137,7 +161,8 @@ const AddAssets = () => {
             <div className="col-span-2 relative">
               <Calculator className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-emerald-500 pointer-events-none z-10" />
 
-              <select className="w-full pl-10 bg-emerald-50 border border-emerald-100 focus:border-emerald-400 focus:bg-white rounded-xl px-3 py-2.5 text-gray-700 text-sm focus:outline-none transition-all appearance-none cursor-pointer">
+              <select onChange={(e) => { setNewAsset({ ...newAsset, depreciationMethod: e.target.value }) }}
+                className="w-full pl-10 bg-emerald-50 border border-emerald-100 focus:border-emerald-400 focus:bg-white rounded-xl px-3 py-2.5 text-gray-700 text-sm focus:outline-none transition-all appearance-none cursor-pointer">
                 <option value="">Select method</option>
                 <option value="none">None (e.g., Land)</option>
                 <option value="straight">Straight Line</option>
@@ -152,7 +177,7 @@ const AddAssets = () => {
             </label>
             <div className="col-span-2 relative">
               <FileText className="absolute left-3 top-3 w-4 h-4 text-emerald-500" />
-              <textarea
+              <textarea onChange={(e) => { setNewAsset({ ...newAsset, description: e.target.value }) }}
                 rows={3}
                 placeholder="Description"
                 className="w-full pl-10 bg-emerald-50 border border-emerald-100 focus:border-emerald-400 focus:bg-white rounded-xl px-3 py-2.5 text-gray-700 placeholder-gray-400 text-sm focus:outline-none transition-all resize-none"
@@ -163,7 +188,7 @@ const AddAssets = () => {
         </div>
 
         <div className="flex items-center justify-center mt-6 pt-4 border-t border-emerald-50">
-          <button
+          <button onClick={handleAddAsset}
             type="button"
             className="px-10 py-2.5 bg-linear-to-r from-emerald-600 to-emerald-700 hover:from-emerald-500 hover:to-emerald-600 text-white text-sm font-semibold rounded-xl shadow-md shadow-emerald-200 transition-all hover:-translate-y-0.5 active:translate-y-0 cursor-pointer"
           >

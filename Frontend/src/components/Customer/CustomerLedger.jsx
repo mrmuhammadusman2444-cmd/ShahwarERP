@@ -58,8 +58,8 @@ const CustomerLedger = () => {
             <td style="text-align:right">${Number(e.balance || 0).toLocaleString()}</td>
         </tr>
     `).join("")
-    let win = window.open("", "", "width=900,height=650")
-    win.document.write(`
+
+    let printHTML = `
         <html>
         <head>
             <title>Customer Ledger</title>
@@ -88,9 +88,16 @@ const CustomerLedger = () => {
             <p class="bal">Closing Balance: Rs. ${Number(closingBalance || 0).toLocaleString()}</p>
         </body>
         </html>
-    `)
-    win.document.close()
-    win.print()
+    `
+
+    if (window.electronAPI && window.electronAPI.printHTML) {
+      window.electronAPI.printHTML(printHTML)
+    } else {
+      let win = window.open("", "", "width=900,height=650")
+      win.document.write(printHTML)
+      win.document.close()
+      win.print()
+    }
   }
 
   const customer = {};
