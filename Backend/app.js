@@ -11,6 +11,9 @@ import PurchaseRoute from './Routes/Purchase.route.js'
 import SupplierRoute from './Routes/Supplier.route.js'
 import SupplierPaymentRoute from './Routes/SupplierPayment.route.js'
 import AssetRoute from './Routes/Asset.route.js'
+import BankRoute from './Routes/Bank.route.js'
+import EmployeeRoute from './Routes/Employee.route.js'
+import TaskRoute from './Routes/Task.route.js'
 
 DbConnection()
 
@@ -18,6 +21,7 @@ let app = express();
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
 
 app.use('/', authRoute)
 app.use('/', customerRoute)
@@ -29,6 +33,9 @@ app.use('/', PurchaseRoute)
 app.use('/', SupplierRoute)
 app.use('/', SupplierPaymentRoute)
 app.use('/', AssetRoute)
+app.use('/', BankRoute)
+app.use('/', EmployeeRoute)
+app.use('/', TaskRoute)
 app.use('/uploads', express.static('uploads'))
 
 

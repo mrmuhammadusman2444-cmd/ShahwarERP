@@ -1,8 +1,36 @@
 import React from 'react'
+import { useState, useEffect } from 'react';
+import axios from 'axios'
 import { Landmark, Home, ChevronRight, ListOrdered, ClipboardList, Building2, User, Hash, MapPin, ImagePlus, RotateCcw, Save } from 'lucide-react';
-import {useNavigate} from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+
+
 const NewBank = () => {
   const navigate = useNavigate();
+
+  const [addBank, setAddBank] = useState({
+    bankName: '',
+    accountName: '',
+    accountNumber: '',
+    branch: '',
+    signaturePicture: ''
+
+  })
+ function handleReset() {
+    setAddBank({
+        bankName: "",
+        accountName: "",
+        accountNumber: "",
+        branch: "",
+        signaturePicture: ""
+    })
+}
+  async function handleAddNewBank() {
+    let res = await axios.post('http://localhost:3000/add/new/bank', addBank)
+    console.log(res.data)
+
+  }
+
   return (
     <div className="p-4 bg-slate-50 min-h-screen">
 
@@ -18,16 +46,16 @@ const NewBank = () => {
         </div>
 
         <div className="flex items-center gap-1.5 text-[11.5px] text-slate-400">
-          
+
         </div>
       </div>
 
       <div className="flex items-center gap-2.5 flex-wrap mb-3.5">
-        <button onClick={()=>{navigate('/add/new/transaction')}} type="button" className="flex items-center gap-1.5 bg-linear-to-r from-teal-500 to-teal-600 hover:from-teal-400 hover:to-teal-500 text-white text-[12.5px] font-semibold rounded-lg px-4 py-2.5 shadow-sm shadow-teal-200 transition-all hover:-translate-y-0.5 cursor-pointer">
+        <button onClick={() => { navigate('/add/new/transaction') }} type="button" className="flex items-center gap-1.5 bg-linear-to-r from-teal-500 to-teal-600 hover:from-teal-400 hover:to-teal-500 text-white text-[12.5px] font-semibold rounded-lg px-4 py-2.5 shadow-sm shadow-teal-200 transition-all hover:-translate-y-0.5 cursor-pointer">
           <ListOrdered className="w-4 h-4" />
           Bank Transaction
         </button>
-        <button onClick={()=>{navigate('/manage/bank')}} type="button" className="flex items-center gap-1.5 bg-linear-to-r from-emerald-600 to-emerald-700 hover:from-emerald-500 hover:to-emerald-600 text-white text-[12.5px] font-semibold rounded-lg px-4 py-2.5 shadow-sm shadow-emerald-200 transition-all hover:-translate-y-0.5 cursor-pointer">
+        <button onClick={() => { navigate('/manage/bank') }} type="button" className="flex items-center gap-1.5 bg-linear-to-r from-emerald-600 to-emerald-700 hover:from-emerald-500 hover:to-emerald-600 text-white text-[12.5px] font-semibold rounded-lg px-4 py-2.5 shadow-sm shadow-emerald-200 transition-all hover:-translate-y-0.5 cursor-pointer">
           <ClipboardList className="w-4 h-4" />
           Manage Bank
         </button>
@@ -52,7 +80,8 @@ const NewBank = () => {
               </label>
               <div className="relative">
                 <Building2 className="w-3.5 h-3.5 text-emerald-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
-                <input type="text" placeholder="Bank Name" className="w-full text-[12.5px] text-slate-900 placeholder-slate-400 bg-emerald-50/50 border border-emerald-100 rounded-lg pl-9 pr-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-emerald-200 focus:border-emerald-400 transition-all" />
+                <input value={addBank.bankName} onChange={(e) => { setAddBank({ ...addBank, bankName: e.target.value }) }}
+                  type="text" placeholder="Bank Name" className="w-full text-[12.5px] text-slate-900 placeholder-slate-400 bg-emerald-50/50 border border-emerald-100 rounded-lg pl-9 pr-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-emerald-200 focus:border-emerald-400 transition-all" />
               </div>
             </div>
 
@@ -62,7 +91,7 @@ const NewBank = () => {
               </label>
               <div className="relative">
                 <User className="w-3.5 h-3.5 text-emerald-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
-                <input type="text" placeholder="A/C Name" className="w-full text-[12.5px] text-slate-900 placeholder-slate-400 bg-emerald-50/50 border border-emerald-100 rounded-lg pl-9 pr-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-emerald-200 focus:border-emerald-400 transition-all" />
+                <input value={addBank.accountName} onChange={(e) => { setAddBank({ ...addBank, accountName: e.target.value }) }} type="text" placeholder="A/C Name" className="w-full text-[12.5px] text-slate-900 placeholder-slate-400 bg-emerald-50/50 border border-emerald-100 rounded-lg pl-9 pr-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-emerald-200 focus:border-emerald-400 transition-all" />
               </div>
             </div>
 
@@ -72,7 +101,7 @@ const NewBank = () => {
               </label>
               <div className="relative">
                 <Hash className="w-3.5 h-3.5 text-emerald-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
-                <input type="text" placeholder="A/C Number" className="w-full text-[12.5px] text-slate-900 placeholder-slate-400 bg-emerald-50/50 border border-emerald-100 rounded-lg pl-9 pr-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-emerald-200 focus:border-emerald-400 transition-all" />
+                <input value={addBank.accountNumber} onChange={(e) => { setAddBank({ ...addBank, accountNumber: e.target.value }) }} type="text" placeholder="A/C Number" className="w-full text-[12.5px] text-slate-900 placeholder-slate-400 bg-emerald-50/50 border border-emerald-100 rounded-lg pl-9 pr-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-emerald-200 focus:border-emerald-400 transition-all" />
               </div>
             </div>
 
@@ -82,7 +111,7 @@ const NewBank = () => {
               </label>
               <div className="relative">
                 <MapPin className="w-3.5 h-3.5 text-emerald-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
-                <input type="text" placeholder="Branch" className="w-full text-[12.5px] text-slate-900 placeholder-slate-400 bg-emerald-50/50 border border-emerald-100 rounded-lg pl-9 pr-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-emerald-200 focus:border-emerald-400 transition-all" />
+                <input value={addBank.branch} onChange={(e) => { setAddBank({ ...addBank, branch: e.target.value }) }} type="text" placeholder="Branch" className="w-full text-[12.5px] text-slate-900 placeholder-slate-400 bg-emerald-50/50 border border-emerald-100 rounded-lg pl-9 pr-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-emerald-200 focus:border-emerald-400 transition-all" />
               </div>
             </div>
 
@@ -90,8 +119,8 @@ const NewBank = () => {
 
           <div>
             <label className="block text-[10.5px] font-bold text-slate-500 uppercase tracking-wide mb-1.5">Signature Picture</label>
-            <label htmlFor="signaturePicture" className="relative flex flex-col items-center justify-center gap-2 h-full min-h-[172px] rounded-xl border-2 border-dashed border-emerald-200 hover:border-emerald-400 bg-emerald-50/40 hover:bg-emerald-50 transition-all cursor-pointer">
-              <input id="signaturePicture" type="file" accept="image/*" className="absolute inset-0 opacity-0 cursor-pointer" />
+            <label htmlFor="signaturePicture" className="relative flex flex-col items-center justify-center gap-2 h-full min-h-43 rounded-xl border-2 border-dashed border-emerald-200 hover:border-emerald-400 bg-emerald-50/40 hover:bg-emerald-50 transition-all cursor-pointer">
+              <input value={addBank.signaturePicture} onChange={(e) => { setAddBank({ ...addBank, signaturePicture: e.target.value }) }} id="signaturePicture" type="file" accept="image/*" className="absolute inset-0 opacity-0 cursor-pointer" />
               <div className="w-11 h-11 rounded-xl bg-white border border-emerald-100 shadow-sm flex items-center justify-center">
                 <ImagePlus className="w-5 h-5 text-emerald-500" />
               </div>
@@ -105,11 +134,15 @@ const NewBank = () => {
         </div>
 
         <div className="flex items-center gap-2.5 mt-5 pt-4 border-t border-slate-100">
-          <button type="button" className="flex items-center gap-1.5 bg-linear-to-r from-emerald-400 to-emerald-500 hover:from-emerald-300 hover:to-emerald-400 text-white text-[12.5px] font-semibold rounded-lg px-5 py-2.5 shadow-sm shadow-emerald-200 transition-all hover:-translate-y-0.5 cursor-pointer">
+          <button
+            type="button"
+            className="flex items-center justify-center gap-2 px-6 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-600 text-sm font-semibold rounded-xl transition-all hover:-translate-y-0.5 active:translate-y-0 cursor-pointer"
+            onClick={handleReset}
+          >
             <RotateCcw className="w-3.5 h-3.5" />
             Reset
           </button>
-          <button type="button" className="flex items-center gap-1.5 bg-linear-to-r from-emerald-600 to-emerald-700 hover:from-emerald-500 hover:to-emerald-600 text-white text-[12.5px] font-semibold rounded-lg px-6 py-2.5 shadow-md shadow-emerald-200 transition-all hover:-translate-y-0.5 active:translate-y-0 cursor-pointer">
+          <button onClick={handleAddNewBank} type="button" className="flex items-center gap-1.5 bg-linear-to-r from-emerald-600 to-emerald-700 hover:from-emerald-500 hover:to-emerald-600 text-white text-[12.5px] font-semibold rounded-lg px-6 py-2.5 shadow-md shadow-emerald-200 transition-all hover:-translate-y-0.5 active:translate-y-0 cursor-pointer">
             <Save className="w-3.5 h-3.5" />
             Save
           </button>

@@ -2,11 +2,11 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import axios from 'axios'
 
 axios.interceptors.request.use((config) => {
-    const token = localStorage.getItem('token')
-    if (token) {
-        config.headers.Authorization = `Bearer ${token}`
-    }
-    return config
+  const token = localStorage.getItem('token')
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`
+  }
+  return config
 })
 const savedPattern = localStorage.getItem("bgPattern") || "none"
 document.body.setAttribute("data-pattern", savedPattern)
@@ -85,13 +85,17 @@ import Preloader from './components/Preloader.jsx'
 import SupplierPaymentsPage from './pages/Accounts/SupplierPaymentsPage.jsx'
 import FundTransferPage from './pages/Accounts/FundTransferPage.jsx'
 
+//Inbox
+import InboxPage from './pages/Inbox/InboxPage.jsx'
+
+
 
 const App = () => {
 
   return (
 
     <BrowserRouter>
-      
+
 
       <Routes>
         //authentication
@@ -178,6 +182,9 @@ const App = () => {
         //Accounts
         <Route path='/supplier/payments' element={<SupplierPaymentsPage />} />
         <Route path='/fund/transfer' element={<FundTransferPage />} />
+
+        //Inbox
+        <Route path='/inbox' element={<InboxPage />} />
 
 
 

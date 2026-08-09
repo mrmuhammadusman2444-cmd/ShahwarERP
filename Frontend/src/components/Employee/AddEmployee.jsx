@@ -1,7 +1,60 @@
 import React from 'react'
+import { useState, useEffect } from 'react'
+import axios from 'axios'
+
 
 const AddEmployee = () => {
- return (
+
+  const [Employee, setEmployee] = useState({
+    firstName: "",
+    lastName: "",
+    designation: "",
+    phone: "",
+    rateType: "",
+    hourRateSalary: "",
+    email: "",
+    bloodGroup: "",
+    addressLine1: "",
+    addressLine2: "",
+    picture: null,
+    country: "",
+    city: "",
+    zipCode: ""
+  });
+
+  function handleReset() {
+    setEmployee({
+      firstName: "",
+      lastName: "",
+      designation: "",
+      phone: "",
+      rateType: "",
+      hourRateSalary: "",
+      email: "",
+      bloodGroup: "",
+      addressLine1: "",
+      addressLine2: "",
+      picture: null,
+      country: "",
+      city: "",
+      zipCode: ""
+    })
+  }
+
+
+
+
+  async function handleAddEmployee() {
+    let res = await axios.post('http://localhost:3000/add/new/employee', Employee)
+    console.log(res.data)
+  }
+
+
+
+
+
+
+  return (
     <div className="p-4 md:p-5">
 
       <div className="flex items-center justify-between mb-4">
@@ -16,7 +69,7 @@ const AddEmployee = () => {
             <p className="text-gray-400 text-xs">Add Employee</p>
           </div>
         </div>
-       
+
       </div>
 
       <div className="bg-white border border-emerald-100 rounded-2xl shadow-sm p-6">
@@ -31,6 +84,8 @@ const AddEmployee = () => {
             </label>
             <div className="col-span-2">
               <input
+                value={Employee.firstName}
+                onChange={(e) => { setEmployee({ ...Employee, firstName: e.target.value }) }}
                 type="text"
                 placeholder="First Name"
                 className="w-full bg-emerald-50 border border-emerald-100 focus:border-emerald-400 focus:bg-white rounded-xl px-3 py-2.5 text-gray-700 placeholder-gray-400 text-sm focus:outline-none transition-all"
@@ -44,6 +99,8 @@ const AddEmployee = () => {
             </label>
             <div className="col-span-2">
               <input
+                value={Employee.lastName}
+                onChange={(e) => { setEmployee({ ...Employee, lastName: e.target.value }) }}
                 type="text"
                 placeholder="Last Name"
                 className="w-full bg-emerald-50 border border-emerald-100 focus:border-emerald-400 focus:bg-white rounded-xl px-3 py-2.5 text-gray-700 placeholder-gray-400 text-sm focus:outline-none transition-all"
@@ -56,8 +113,12 @@ const AddEmployee = () => {
               Designation <span className="text-red-400">*</span>
             </label>
             <div className="col-span-2">
-              <select className="w-full bg-emerald-50 border border-emerald-100 focus:border-emerald-400 focus:bg-white rounded-xl px-3 py-2.5 text-gray-700 text-sm focus:outline-none transition-all appearance-none cursor-pointer">
+              <select value={Employee.designation} onChange={(e) => { setEmployee({ ...Employee, designation: e.target.value }) }} className="w-full bg-emerald-50 border border-emerald-100 focus:border-emerald-400 focus:bg-white rounded-xl px-3 py-2.5 text-gray-700 text-sm focus:outline-none transition-all appearance-none cursor-pointer">
                 <option value="">Select option</option>
+                <option value="Stock Manager">Stock Manager</option>
+                <option value="Godam Manager">Godam Manager</option>
+                <option value="Raw Material Stock manage">Raw Material Stock manager</option>
+
               </select>
             </div>
           </div>
@@ -68,6 +129,8 @@ const AddEmployee = () => {
             </label>
             <div className="col-span-2">
               <input
+                value={Employee.phone}
+                onChange={(e) => { setEmployee({ ...Employee, phone: e.target.value }) }}
                 type="text"
                 placeholder="Phone"
                 className="w-full bg-emerald-50 border border-emerald-100 focus:border-emerald-400 focus:bg-white rounded-xl px-3 py-2.5 text-gray-700 placeholder-gray-400 text-sm focus:outline-none transition-all"
@@ -78,8 +141,10 @@ const AddEmployee = () => {
           <div className="grid grid-cols-3 items-center gap-4">
             <label className="text-gray-700 text-sm font-semibold text-right">Rate Type</label>
             <div className="col-span-2">
-              <select className="w-full bg-emerald-50 border border-emerald-100 focus:border-emerald-400 focus:bg-white rounded-xl px-3 py-2.5 text-gray-700 text-sm focus:outline-none transition-all appearance-none cursor-pointer">
+              <select value={Employee.rateType} onChange={(e) => { setEmployee({ ...Employee, rateType: e.target.value }) }} className="w-full bg-emerald-50 border border-emerald-100 focus:border-emerald-400 focus:bg-white rounded-xl px-3 py-2.5 text-gray-700 text-sm focus:outline-none transition-all appearance-none cursor-pointer">
                 <option value="">Select option</option>
+                <option value="Full Time">Full Time</option>
+
               </select>
             </div>
           </div>
@@ -88,6 +153,8 @@ const AddEmployee = () => {
             <label className="text-gray-700 text-sm font-semibold text-right">Houre Rate/Salary</label>
             <div className="col-span-2">
               <input
+                value={Employee.hourRateSalary}
+                onChange={(e) => { setEmployee({ ...Employee, hourRateSalary: e.target.value }) }}
                 type="text"
                 placeholder="Houre Rate/Salary"
                 className="w-full bg-emerald-50 border border-emerald-100 focus:border-emerald-400 focus:bg-white rounded-xl px-3 py-2.5 text-gray-700 placeholder-gray-400 text-sm focus:outline-none transition-all"
@@ -99,6 +166,8 @@ const AddEmployee = () => {
             <label className="text-gray-700 text-sm font-semibold text-right">Email</label>
             <div className="col-span-2">
               <input
+                value={Employee.email}
+                onChange={(e) => { setEmployee({ ...Employee, email: e.target.value }) }}
                 type="email"
                 placeholder="Email"
                 className="w-full bg-emerald-50 border border-emerald-100 focus:border-emerald-400 focus:bg-white rounded-xl px-3 py-2.5 text-gray-700 placeholder-gray-400 text-sm focus:outline-none transition-all"
@@ -110,6 +179,8 @@ const AddEmployee = () => {
             <label className="text-gray-700 text-sm font-semibold text-right">Blood Group</label>
             <div className="col-span-2">
               <input
+                value={Employee.bloodGroup}
+                onChange={(e) => { setEmployee({ ...Employee, bloodGroup: e.target.value }) }}
                 type="text"
                 placeholder="Blood Group"
                 className="w-full bg-emerald-50 border border-emerald-100 focus:border-emerald-400 focus:bg-white rounded-xl px-3 py-2.5 text-gray-700 placeholder-gray-400 text-sm focus:outline-none transition-all"
@@ -121,6 +192,8 @@ const AddEmployee = () => {
             <label className="text-gray-700 text-sm font-semibold text-right pt-2.5">Address Line 1</label>
             <div className="col-span-2">
               <textarea
+                value={Employee.addressLine1}
+                onChange={(e) => { setEmployee({ ...Employee, addressLine1: e.target.value }) }}
                 rows={3}
                 placeholder="Address Line 1"
                 className="w-full bg-emerald-50 border border-emerald-100 focus:border-emerald-400 focus:bg-white rounded-xl px-3 py-2.5 text-gray-700 placeholder-gray-400 text-sm focus:outline-none transition-all resize-none"
@@ -132,6 +205,8 @@ const AddEmployee = () => {
             <label className="text-gray-700 text-sm font-semibold text-right pt-2.5">Address Line 2</label>
             <div className="col-span-2">
               <textarea
+                value={Employee.addressLine2}
+                onChange={(e) => { setEmployee({ ...Employee, addressLine2: e.target.value }) }}
                 rows={3}
                 placeholder="Address Line 2"
                 className="w-full bg-emerald-50 border border-emerald-100 focus:border-emerald-400 focus:bg-white rounded-xl px-3 py-2.5 text-gray-700 placeholder-gray-400 text-sm focus:outline-none transition-all resize-none"
@@ -143,6 +218,8 @@ const AddEmployee = () => {
             <label className="text-gray-700 text-sm font-semibold text-right">Picture</label>
             <div className="col-span-2">
               <input
+                value={Employee.picture}
+                onChange={(e) => { setEmployee({ ...Employee, picture: e.target.value }) }}
                 type="file"
                 accept="image/*"
                 className="w-full bg-emerald-50 border border-emerald-100 focus:border-emerald-400 rounded-xl px-3 py-2 text-gray-700 text-sm focus:outline-none transition-all cursor-pointer file:mr-3 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-emerald-100 file:text-emerald-700 hover:file:bg-emerald-200"
@@ -153,8 +230,10 @@ const AddEmployee = () => {
           <div className="grid grid-cols-3 items-center gap-4">
             <label className="text-gray-700 text-sm font-semibold text-right">Country</label>
             <div className="col-span-2">
-              <select className="w-full bg-emerald-50 border border-emerald-100 focus:border-emerald-400 focus:bg-white rounded-xl px-3 py-2.5 text-gray-700 text-sm focus:outline-none transition-all appearance-none cursor-pointer">
+              <select value={Employee.country} onChange={(e) => { setEmployee({ ...Employee, country: e.target.value }) }} className="w-full bg-emerald-50 border border-emerald-100 focus:border-emerald-400 focus:bg-white rounded-xl px-3 py-2.5 text-gray-700 text-sm focus:outline-none transition-all appearance-none cursor-pointer">
                 <option value="">Select option</option>
+                <option value="Pakistan">Pakistan</option>
+
               </select>
             </div>
           </div>
@@ -163,6 +242,8 @@ const AddEmployee = () => {
             <label className="text-gray-700 text-sm font-semibold text-right">City</label>
             <div className="col-span-2">
               <input
+                value={Employee.city}
+                onChange={(e) => { setEmployee({ ...Employee, city: e.target.value }) }}
                 type="text"
                 placeholder="City"
                 className="w-full bg-emerald-50 border border-emerald-100 focus:border-emerald-400 focus:bg-white rounded-xl px-3 py-2.5 text-gray-700 placeholder-gray-400 text-sm focus:outline-none transition-all"
@@ -174,6 +255,8 @@ const AddEmployee = () => {
             <label className="text-gray-700 text-sm font-semibold text-right">Zip Code</label>
             <div className="col-span-2">
               <input
+                value={Employee.zipCode}
+                onChange={(e) => { setEmployee({ ...Employee, zipCode: e.target.value }) }}
                 type="text"
                 placeholder="Zip code"
                 className="w-full bg-emerald-50 border border-emerald-100 focus:border-emerald-400 focus:bg-white rounded-xl px-3 py-2.5 text-gray-700 placeholder-gray-400 text-sm focus:outline-none transition-all"
@@ -186,11 +269,12 @@ const AddEmployee = () => {
         <div className="flex items-center justify-end gap-3 mt-6 pt-4 border-t border-emerald-50">
           <button
             type="button"
-            className="px-6 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-600 text-sm font-semibold rounded-xl transition-all hover:-translate-y-0.5 active:translate-y-0 cursor-pointer"
-          >
+            onClick={handleReset}
+            className="px-6 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-600 text-sm font-semibold rounded-xl transition-all hover:-translate-y-0.5 active:translate-y-0 cursor-pointer">
             Reset
           </button>
           <button
+            onClick={handleAddEmployee}
             type="button"
             className="px-8 py-2.5 bg-linear-to-r from-emerald-600 to-emerald-700 hover:from-emerald-500 hover:to-emerald-600 text-white text-sm font-semibold rounded-xl shadow-md shadow-emerald-200 transition-all hover:-translate-y-0.5 active:translate-y-0 cursor-pointer"
           >

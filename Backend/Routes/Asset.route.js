@@ -34,5 +34,28 @@ router.post('/delete/asset/:id', async (req, res) => {
 
 })
 
+router.put('/update/asset/:id', async function (req, res) {
+    try {
+        let updatedAsset = await AssetModel.findByIdAndUpdate(
+            req.params.id,
+            {
+                assetName: req.body.assetName,
+                assetType: req.body.assetType,
+                location: req.body.location,
+                purchaseDate: req.body.purchaseDate,
+                cost: req.body.cost,
+                residualValue: req.body.residualValue,
+                usefulLife: req.body.usefulLife,
+                depreciationMethod: req.body.depreciationMethod,
+                description: req.body.description,
+            },
+            { new: true }
+        )
+        res.json(updatedAsset)
+    } catch (err) {
+        res.status(500).json({ message: "Update failed", error: err.message })
+    }
+})
+
 
 export default router

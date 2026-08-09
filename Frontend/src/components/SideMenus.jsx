@@ -161,18 +161,18 @@ const SideMenus = ({ collapsed }) => {
             <div className="px-2 pt-2.5 pb-2">
                 {!collapsed ? (
                     <div
-    style={{ backgroundColor: 'rgba(255,255,255,0.06)', borderColor: 'rgba(255,255,255,0.10)' }}
-    className="sidebar-search flex items-center gap-2 h-10 rounded-xl px-1.5 border cursor-text"
->
-    <Search className="text-slate-100 ml-2" size={18} />
-    <input
-        type="text"
-        placeholder="Quick search..."
-        value={searchQuery}
-        onChange={(e) => setSearchQuery(e.target.value)}
-        className="text-[12px] placeholder:text-slate-400 text-slate-100 flex-1 border-none focus:outline-none"
-    />
-</div>
+                        style={{ backgroundColor: 'rgba(255,255,255,0.06)', borderColor: 'rgba(255,255,255,0.10)' }}
+                        className="sidebar-search flex items-center gap-2 h-10 rounded-xl px-1.5 border cursor-text"
+                    >
+                        <Search className="text-slate-100 ml-2" size={18} />
+                        <input
+                            type="text"
+                            placeholder="Quick search..."
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
+                            className="text-[12px] placeholder:text-slate-400 text-slate-100 flex-1 border-none focus:outline-none"
+                        />
+                    </div>
                 ) : (
                     <div onMouseEnter={setTip} className="relative group group/tooltip flex items-center justify-center h-10 w-10 rounded-full bg-slate-800 cursor-pointer hover:bg-slate-700 transition-colors">
                         <Search className="text-slate-100" size={18} />
@@ -186,7 +186,7 @@ const SideMenus = ({ collapsed }) => {
             <div className="px-2 pb-2.5 ">
 
                 {menuMatches('Inbox', []) && (
-                    <div onMouseEnter={setTip} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer  border-transparent hover:bg-[var(--nav-active)] transition-all mb-px ${collapsed ? 'justify-start w-9 h-9 mx-auto' : ''}`}>
+                    <div onClick={()=>{navigate('/inbox')}} onMouseEnter={setTip} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer  border-transparent hover:bg-[var(--nav-active)] transition-all mb-px ${collapsed ? 'justify-start w-9 h-9 mx-auto' : ''}`}>
 
                         <svg width="23" height="23" viewBox="0 0 15 15" fill="#93c5fd" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" className="shrink-0 text-slate-600 -ml-0.1">
                             <g className="env-letter ">
@@ -250,20 +250,20 @@ const SideMenus = ({ collapsed }) => {
             <div className="px-2">
 
                 {can("dashboard", "view") && menuMatches('Dashboard', []) && (
-    <div onClick={() => { navigate('/dashboard') }} onMouseEnter={setTip} className={`relative group group/tooltip flex items-center gap-2.5 rounded-lg px-2 cursor-pointer overflow-hidden mb-px ${collapsed ? 'justify-center w-9 h-9 mx-auto' : 'h-8.75'} ${isDashboard ? 'bg-[var(--nav-active)]' : 'hover:bg-[var(--nav-active)]'}`}>
-        {isDashboard && !collapsed && (
-            <span className="absolute left-0 top-1/2 -translate-y-1/2 w-0.75 h-4.5 bg-[var(--nav-strip)] rounded-r-full" />
-        )}
-        <LayoutGrid className="text-slate-100 shrink-0 group-hover:scale-110 group-hover:rotate-6 transition-transform duration-300" size={23} />
-        {!collapsed && <span className="text-[12.5px] text-blue-100 font-medium">Dashboard</span>}
+                    <div onClick={() => { navigate('/dashboard') }} onMouseEnter={setTip} className={`relative group group/tooltip flex items-center gap-2.5 rounded-lg px-2 cursor-pointer overflow-hidden mb-px ${collapsed ? 'justify-center w-9 h-9 mx-auto' : 'h-8.75'} ${isDashboard ? 'bg-[var(--nav-active)]' : 'hover:bg-[var(--nav-active)]'}`}>
+                        {isDashboard && !collapsed && (
+                            <span className="absolute left-0 top-1/2 -translate-y-1/2 w-0.75 h-4.5 bg-[var(--nav-strip)] rounded-r-full" />
+                        )}
+                        <LayoutGrid className="text-slate-100 shrink-0 group-hover:scale-110 group-hover:rotate-6 transition-transform duration-300" size={23} />
+                        {!collapsed && <span className="text-[12.5px] text-blue-100 font-medium">Dashboard</span>}
 
-        {collapsed && (
-            <span style={{ top: 'var(--tooltip-y, 50%)', transform: 'translateY(-50%)' }} className="fixed left-16 ml-1 bg-emerald-500 text-white text-[11px] px-2 py-1 rounded-md whitespace-nowrap opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-200 pointer-events-none z-999">
-                Dashboard
-            </span>
-        )}
-    </div>
-)}
+                        {collapsed && (
+                            <span style={{ top: 'var(--tooltip-y, 50%)', transform: 'translateY(-50%)' }} className="fixed left-16 ml-1 bg-emerald-500 text-white text-[11px] px-2 py-1 rounded-md whitespace-nowrap opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-200 pointer-events-none z-999">
+                                Dashboard
+                            </span>
+                        )}
+                    </div>
+                )}
 
 
                 {can("analytics", "view") && menuMatches('Analytics', []) && (

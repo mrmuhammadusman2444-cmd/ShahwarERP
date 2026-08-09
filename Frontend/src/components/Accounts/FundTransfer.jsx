@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react'
+import BankDropDown from '../Bank/BankDropDown.jsx'
 import { ArrowRight, User, Wallet, Landmark, Warehouse, ChevronDown, Check, Repeat } from 'lucide-react'
 
 function DropdownField({ icon: Icon, label, placeholder, value, options, onSelect, tone = 'emerald' }) {
@@ -104,6 +105,8 @@ const TO_OPTIONS = [
 export default function FundTransfer() {
     const [fromType, setFromType] = useState('')
     const [toType, setToType] = useState('')
+    const [fromBank, setFromBank] = useState('')
+    const [toBank, setToBank] = useState('')
 
     return (
         <div className="min-h-screen bg-linear-to-br from-emerald-50 via-white to-emerald-50 p-4 md:p-6">
@@ -143,7 +146,12 @@ export default function FundTransfer() {
                                 <NestedPicker title="Select customer" placeholder="Search customer..." />
                             )}
                             {fromType === 'bank' && (
-                                <NestedPicker title="Select bank account" placeholder="Search bank..." />
+                                <div className="mt-2">
+                                    <BankDropDown
+                                        value={fromBank}
+                                        onChange={(bankName) => setFromBank(bankName)}
+                                    />
+                                </div>
                             )}
                         </div>
 
@@ -171,7 +179,9 @@ export default function FundTransfer() {
                                 <NestedPicker title="Select supplier" placeholder="Search supplier..." />
                             )}
                             {toType === 'bank' && (
-                                <NestedPicker title="Select bank account" placeholder="Search bank..." />
+                                <div className="mt-2">
+                                    <BankDropDown value={toBank} onChange={(bankName) => setToBank(bankName)} />
+                                </div>
                             )}
                         </div>
 

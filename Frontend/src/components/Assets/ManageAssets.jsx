@@ -3,6 +3,8 @@ import { useState, useEffect } from 'react'
 import axios from 'axios'
 import { can } from '../../Utils/Permissions.js'
 import { useNavigate } from 'react-router-dom';
+import AssetUpdatePopup from './AssetUpdatePopup.jsx';
+import AssetViewPopup from './AssetViewPopup.jsx';
 import { useReactTable, getCoreRowModel, getPaginationRowModel, getSortedRowModel, getFilteredRowModel, flexRender } from '@tanstack/react-table'
 import { Users, Eye, Pencil, Trash2, Plus, Copy, FileText, Sheet, File, Printer, Search, ArrowUpDown, ChevronLeft, ChevronRight } from "lucide-react";
 
@@ -11,14 +13,18 @@ const ManageAssets = () => {
   const [fetchAssets, setFetchAssets] = useState([])
   const [sorting, setSorting] = useState([])
   const [globalFilter, setGlobalFilter] = useState("")
+  const [showUpdatePopup, setShowUpdatePopup] = useState(false)
+  const [updateAsset, setUpdateAsset] = useState(null)
+  const [showViewPopup, setShowViewPopup] = useState(false)
+  const [viewAsset, setViewAsset] = useState(null)
+
+
+  async function handleFetchAsset() {
+    let res = await axios.get('http://localhost:3000/find/asset')
+    setFetchAssets(res.data)
+  }
 
   useEffect(() => {
-
-    async function handleFetchAsset() {
-      let res = await axios.get('http://localhost:3000/find/asset')
-      setFetchAssets(res.data)
-    }
-
     handleFetchAsset()
   }, []);
 
@@ -28,6 +34,7 @@ const ManageAssets = () => {
     setFetchAssets((prev) => prev.filter((a) => a._id !== id))
 
   }
+
 
   const columns = [
     {
@@ -131,12 +138,16 @@ const ManageAssets = () => {
         return (
           <div className="flex items-center gap-1">
             {can('assets', 'view') && (
-              <button className="p-1.5 rounded-lg text-gray-400 hover:text-emerald-600 hover:bg-emerald-100 cursor-pointer transition-all hover:scale-110 active:scale-95">
+              <button
+                onClick={() => { setViewAsset(asset); setShowViewPopup(true) }}
+                className="p-1.5 rounded-lg text-gray-400 hover:text-emerald-600 hover:bg-emerald-100 cursor-pointer transition-all hover:scale-110 active:scale-95">
                 <Eye size={16} />
               </button>
             )}
             {can('assets', 'update') && (
-              <button className="p-1.5 rounded-lg text-gray-400 hover:text-blue-600 hover:bg-blue-100 cursor-pointer transition-all hover:scale-110 active:scale-95">
+              <button
+                onClick={() => { setUpdateAsset(asset); setShowUpdatePopup(true) }}
+                className="p-1.5 rounded-lg text-gray-400 hover:text-blue-600 hover:bg-blue-100 cursor-pointer transition-all hover:scale-110 active:scale-95">
                 <Pencil size={16} />
               </button>
             )}
@@ -170,7 +181,19 @@ const ManageAssets = () => {
 
   return (
     <div className="min-h-screen bg-linear-to-br from-blue-50 via-white to-blue-50 p-4 md:p-6">
-
+      {showUpdatePopup && updateAsset && (
+        <AssetUpdatePopup
+          setShowUpdatePopup={setShowUpdatePopup}
+          updateData={updateAsset}
+          handleFetchAsset={handleFetchAsset}
+        />
+      )}
+      {showViewPopup && viewAsset && (
+    <AssetViewPopup
+        setShowViewPopup={setShowViewPopup}
+        viewData={viewAsset}
+    />
+)}
 
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-4">
