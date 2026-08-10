@@ -145,15 +145,12 @@ router.post('/forgot-password', async function (req, res) {
         return res.json({ success: false, message: 'No account with this email' })
     }
 
-    // 6-digit OTP banao
     let otp = Math.floor(100000 + Math.random() * 900000).toString()
 
-    // OTP + expiry (10 min) save karo
     user.resetOtp = otp
     user.resetOtpExpiry = new Date(Date.now() + 10 * 60 * 1000)   // 10 minute
     await user.save()
 
-    // email bhejो
     try {
         await transporter.sendMail({
             from: 'atifbaanday@gmail.com',
@@ -174,7 +171,6 @@ router.post('/forgot-password', async function (req, res) {
         res.json({ success: false, message: 'Failed to send email' })
     }
 })
-// Step 2: OTP verify + naya password set
 router.post('/reset-password', async function (req, res) {
     let { email, otp, newPassword } = req.body
 
@@ -183,17 +179,14 @@ router.post('/reset-password', async function (req, res) {
         return res.json({ success: false, message: 'No account with this email' })
     }
 
-    // OTP check
     if (!user.resetOtp || user.resetOtp !== otp) {
         return res.json({ success: false, message: 'Invalid OTP' })
     }
 
-    // expiry check
     if (!user.resetOtpExpiry || user.resetOtpExpiry < new Date()) {
         return res.json({ success: false, message: 'OTP expired. Please request a new one.' })
     }
 
-    // naya password set + OTP clear
     user.password = newPassword
     user.confirmPassword = newPassword
     user.resetOtp = ""
@@ -202,26 +195,33 @@ router.post('/reset-password', async function (req, res) {
 
     res.json({ success: true, message: 'Password reset successful' })
 })
-// user update (admin doosre user ko update kare — image ke saath)
 router.put('/update/user/:id', upload.single('image'), async function (req, res) {
     try {
+        console.log("USER UPDATE - id:", req.params.id)
+        console.log("USER UPDATE - body:", req.body)      // ← kya aa raha
+
         let updateFields = {
             firstName: req.body.firstName,
             lastName: req.body.lastName,
             email: req.body.email,
             phoneNo: req.body.phoneNo,
+            designation: req.body.designation,
+            rateType: req.body.rateType,
+            hourRateSalary: req.body.hourRateSalary,
+            bloodGroup: req.body.bloodGroup,
+            addressLine1: req.body.addressLine1,
+            addressLine2: req.body.addressLine2,
+            city: req.body.city,
+            zipCode: req.body.zipCode,
         }
         if (req.file) {
             updateFields.image = '/uploads/' + req.file.filename
         }
-        let updated = await SignupModel.findByIdAndUpdate(
-            req.params.id,
-            updateFields,
-            { new: true }
-        ).select('-password -confirmPassword')
-        if (!updated) return res.status(404).json({ message: "User not found" })
+        let updated = await SignupModel.findByIdAndUpdate(req.params.id, updateFields, { new: true })
+        console.log("USER UPDATE - result:", updated)      // ← update hua?
         res.json(updated)
     } catch (err) {
+        console.log("USER UPDATE ERROR:", err.message)
         res.status(500).json({ message: "User update failed", error: err.message })
     }
 })

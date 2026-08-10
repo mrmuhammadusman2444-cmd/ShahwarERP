@@ -27,48 +27,46 @@ const EmployeeUpdatePopup = ({ setShowUpdatePopup, updateData, handleFetchAllEmp
 
 
     async function handleUpdate() {
-        setStatus("saving")
-        try {
-            const formData = new FormData()
-            formData.append("firstName", employee.firstName)
-            formData.append("lastName", employee.lastName)
-            formData.append("designation", employee.designation)
-            formData.append("phone", employee.phone)
-            formData.append("rateType", employee.rateType)
-            formData.append("hourRateSalary", employee.hourRateSalary)
-            formData.append("email", employee.email)
-            formData.append("bloodGroup", employee.bloodGroup)
-            formData.append("addressLine1", employee.addressLine1)
-            formData.append("addressLine2", employee.addressLine2)
-            formData.append("city", employee.city)
-            formData.append("zipCode", employee.zipCode)
+    setStatus("saving")
+    try {
+        const formData = new FormData()
+        formData.append("firstName", employee.firstName)
+        formData.append("lastName", employee.lastName)
+        formData.append("email", employee.email)
+        formData.append("phone", employee.phone)
+        formData.append("phoneNo", employee.phone)          // user ke liye phoneNo
+        formData.append("designation", employee.designation)
+        formData.append("rateType", employee.rateType)
+        formData.append("hourRateSalary", employee.hourRateSalary)
+        formData.append("bloodGroup", employee.bloodGroup)
+        formData.append("addressLine1", employee.addressLine1)
+        formData.append("addressLine2", employee.addressLine2)
+        formData.append("city", employee.city)
+        formData.append("zipCode", employee.zipCode)
 
-            if (employee.picture && typeof employee.picture !== "string") {
-                formData.append(updateData.isUser ? "image" : "picture", employee.picture)
-            }
-
-            console.log("UPDATING:", updateData._id, "isUser:", updateData.isUser)
-
-            if (updateData.isUser) {
-                // USER — PUT route
-                await axios.put(`http://localhost:3000/update/user/${updateData._id}`, formData, {
-                    headers: { "Content-Type": "multipart/form-data" }
-                })
-            } else {
-                // EMPLOYEE — POST route
-                await axios.post(`http://localhost:3000/update/employee/${updateData._id}`, formData, {
-                    headers: { "Content-Type": "multipart/form-data" }
-                })
-            }
-
-            setStatus("saved")
-            if (handleFetchAllEmployee) handleFetchAllEmployee()
-            setTimeout(() => setShowUpdatePopup(false), 800)
-        } catch (err) {
-            console.log("UPDATE FAILED:", err.response?.data || err.message)
-            setStatus("idle")
+        // image — user "image", employee "picture"
+        if (employee.picture && typeof employee.picture !== "string") {
+            formData.append(updateData.isUser ? "image" : "picture", employee.picture)
         }
+
+        if (updateData.isUser) {
+            await axios.put(`http://localhost:3000/update/user/${updateData._id}`, formData, {
+                headers: { "Content-Type": "multipart/form-data" }
+            })
+        } else {
+            await axios.post(`http://localhost:3000/update/employee/${updateData._id}`, formData, {
+                headers: { "Content-Type": "multipart/form-data" }
+            })
+        }
+
+        setStatus("saved")
+        if (handleFetchAllEmployee) await handleFetchAllEmployee()
+        setTimeout(() => setShowUpdatePopup(false), 800)
+    } catch (err) {
+        console.log("UPDATE FAILED:", err.response?.data || err.message)
+        setStatus("idle")
     }
+}
 
     const field = (label, key, type = "text", placeholder = "") => (
         <div>

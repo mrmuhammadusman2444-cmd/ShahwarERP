@@ -77,9 +77,10 @@ const AttendenceReport = () => {
 
         <div className="flex items-center justify-between px-4 py-3 border-b border-slate-100">
           <p className="text-[13px] font-bold text-slate-900">Attendance Report</p>
-          <button type="button" className="flex items-center gap-1.5 bg-amber-500 hover:bg-amber-600 text-white text-[12px] font-semibold rounded-lg px-3.5 py-1.5 shadow-sm shadow-amber-200 transition-all hover:-translate-y-0.5 cursor-pointer">
-            <Printer className="w-3.5 h-3.5" />
-            Print
+          <button type="button" className="group relative flex items-center gap-2 bg-linear-to-r from-emerald-600 to-emerald-700 hover:from-emerald-500 hover:to-emerald-600 text-white text-[12px] font-semibold rounded-lg px-4 py-2 shadow-md shadow-emerald-200/60 hover:shadow-lg hover:shadow-emerald-300/50 hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200 cursor-pointer overflow-hidden">
+            <span className="absolute inset-0 bg-white/20 translate-x-[-100%] group-hover:translate-x-fulltransition-transform duration-700 skew-x-12" />
+            <Printer className="w-3.5 h-3.5 relative z-10" />
+            <span className="relative z-10">Print</span>
           </button>
         </div>
 
