@@ -1,30 +1,65 @@
 import React from 'react'
 import axios from 'axios';
 import { useState, useEffect } from 'react';
+import { can } from '../../Utils/Permissions.js'
+import EmployeeUpdatePopup from './EmployeeUpdatePopup.jsx'
+import EmployeeViewModal from './EmployeeViewModal.jsx'
 import { Users, Copy, FileText, FileSpreadsheet, FileBarChart, Printer, Search, Eye, Pencil, Trash2, Phone } from 'lucide-react';
-import {
-  useReactTable,
-  getCoreRowModel,
-  getPaginationRowModel,
-  getSortedRowModel,
-  getFilteredRowModel,
-  flexRender,
-} from '@tanstack/react-table'
+import { useReactTable, getCoreRowModel, getPaginationRowModel, getSortedRowModel, getFilteredRowModel, flexRender, } from '@tanstack/react-table'
 
 const ManageEmployee = () => {
 
   const [fetchEmployee, setFetchEmployee] = useState([])
   const [sorting, setSorting] = useState([])
   const [globalFilter, setGlobalFilter] = useState("")
+  const [showUpdatePopup, setShowUpdatePopup] = useState(false)
+  const [updateEmployee, setUpdateEmployee] = useState(null)
+  const [showViewPopup, setShowViewPopup] = useState(false)
+  const [viewEmployee, setViewEmployee] = useState(null)
+
 
   async function handleFetchAllEmployee() {
-    let res = await axios.get('http://localhost:3000/find/employee')
-    setFetchEmployee(res.data)
+    try {
+      let empRes = await axios.get('http://localhost:3000/find/employee')
+      let userRes = await axios.get('http://localhost:3000/all/users')
+
+      const users = userRes.data
+        .filter((u) => u.role !== "Admin")
+        .map((u) => ({
+          _id: u._id,
+          firstName: u.firstName,
+          lastName: u.lastName,
+          designation: u.role || "System User",
+          phone: u.phone || "",
+          email: u.email,
+          picture: u.image || "",
+          isUser: true,
+        }))
+
+      setFetchEmployee([...users, ...empRes.data])
+    } catch (err) {
+      console.log("LOAD FAILED:", err.response?.data || err.message)
+    }
   }
 
   useEffect(() => {
     handleFetchAllEmployee()
   }, [])
+
+  async function handleDeleteEmployee(item) {
+    if (!window.confirm("Are you sure you want to delete this?")) return
+
+    try {
+      if (item.isUser) {
+        await axios.delete(`http://localhost:3000/delete/user/${item._id}`)
+      } else {
+        await axios.delete(`http://localhost:3000/delete/employee/${item._id}`)
+      }
+      handleFetchAllEmployee()
+    } catch (err) {
+      console.log("DELETE FAILED:", err.response?.data || err.message)
+    }
+  }
 
   const columns = [
     {
@@ -56,7 +91,7 @@ const ManageEmployee = () => {
         return (
           <div className="flex items-center gap-3">
             {emp.picture ? (
-              <img src={emp.picture} alt={name} className="w-9 h-9 shrink-0 rounded-xl object-cover shadow-sm" />
+              <img src={`http://localhost:3000${emp.picture}`} alt={name} className="w-9 h-9 shrink-0 rounded-xl object-cover shadow-sm" />
             ) : (
               <div className={`w-9 h-9 shrink-0 rounded-xl bg-linear-to-br ${tone} flex items-center justify-center text-white text-sm font-bold shadow-sm`}>
                 {initial}
@@ -125,15 +160,29 @@ const ManageEmployee = () => {
         const emp = info.row.original
         return (
           <div className="flex items-center gap-1">
-            <button className="p-1.5 rounded-lg text-gray-400 hover:text-emerald-600 hover:bg-emerald-100 cursor-pointer transition-all hover:scale-110 active:scale-95">
-              <Eye size={16} />
-            </button>
-            <button className="p-1.5 rounded-lg text-gray-400 hover:text-blue-600 hover:bg-blue-100 cursor-pointer transition-all hover:scale-110 active:scale-95">
-              <Pencil size={16} />
-            </button>
-            <button className="p-1.5 rounded-lg text-gray-400 hover:text-red-600 hover:bg-red-100 cursor-pointer transition-all hover:scale-110 active:scale-95">
-              <Trash2 size={16} />
-            </button>
+
+            {can('salary', 'view') && (
+              <button
+                onClick={() => { setViewEmployee(emp); setShowViewPopup(true) }}
+                className="p-1.5 rounded-lg text-gray-400 hover:text-emerald-600 hover:bg-emerald-100 cursor-pointer transition-all hover:scale-110 active:scale-95">
+                <Eye size={16} />
+              </button>
+            )}
+
+            {can('salary', 'update') && (
+              <button
+                onClick={() => { setUpdateEmployee(emp); setShowUpdatePopup(true) }}
+                className="p-1.5 rounded-lg text-gray-400 hover:text-blue-600 hover:bg-blue-100 cursor-pointer transition-all hover:scale-110 active:scale-95">
+                <Pencil size={16} />
+              </button>
+            )}
+
+            {can('salary', 'delete') && (
+              <button onClick={() => handleDeleteEmployee(emp)} className="p-1.5 rounded-lg text-gray-400 hover:text-red-600 hover:bg-red-100 cursor-pointer transition-all hover:scale-110 active:scale-95">
+                <Trash2 size={16} />
+              </button>
+            )}
+
           </div>
         )
       },
@@ -160,6 +209,9 @@ const ManageEmployee = () => {
 
   return (
     <div className="p-4 md:p-5 overflow-x-hidden">
+
+      {showUpdatePopup && updateEmployee && (<EmployeeUpdatePopup setShowUpdatePopup={setShowUpdatePopup} updateData={updateEmployee} handleFetchAllEmployee={handleFetchAllEmployee} />)}
+      {showViewPopup && viewEmployee && (<EmployeeViewModal setShowViewPopup={setShowViewPopup} viewData={viewEmployee} />)}
 
       <div className="flex items-center justify-between mb-4 pl-12 md:pl-0">
         <div className="flex items-center gap-3">

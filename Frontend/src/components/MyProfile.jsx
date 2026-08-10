@@ -3,7 +3,6 @@ import axios from 'axios'
 import Cropper from 'react-easy-crop'
 import { X, Camera, Trash2, User, Mail, Phone, Save, Loader2, Check, ZoomIn } from 'lucide-react'
 
-// ---- helper: cropped area se ek cropped image (blob) banata hai ----
 function getCroppedImg(imageSrc, cropPixels) {
     return new Promise((resolve, reject) => {
         const image = new Image()

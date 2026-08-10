@@ -8,8 +8,8 @@ import nodemailer from 'nodemailer'
 const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-        user: 'atifbaanday@gmail.com',        
-        pass: 'ycuusvoovpnfjmlr'             
+        user: 'atifbaanday@gmail.com',
+        pass: 'ycuusvoovpnfjmlr'
     }
 })
 
@@ -136,7 +136,7 @@ router.post('/profile/image/remove/:id', async function (req, res) {
     ).select('-password -confirmPassword')
     res.json(updated)
 })
-// Step 1: user email daale, OTP bhejो
+
 router.post('/forgot-password', async function (req, res) {
     let { email } = req.body
 
@@ -201,6 +201,39 @@ router.post('/reset-password', async function (req, res) {
     await user.save()
 
     res.json({ success: true, message: 'Password reset successful' })
+})
+// user update (admin doosre user ko update kare — image ke saath)
+router.put('/update/user/:id', upload.single('image'), async function (req, res) {
+    try {
+        let updateFields = {
+            firstName: req.body.firstName,
+            lastName: req.body.lastName,
+            email: req.body.email,
+            phoneNo: req.body.phoneNo,
+        }
+        if (req.file) {
+            updateFields.image = '/uploads/' + req.file.filename
+        }
+        let updated = await SignupModel.findByIdAndUpdate(
+            req.params.id,
+            updateFields,
+            { new: true }
+        ).select('-password -confirmPassword')
+        if (!updated) return res.status(404).json({ message: "User not found" })
+        res.json(updated)
+    } catch (err) {
+        res.status(500).json({ message: "User update failed", error: err.message })
+    }
+})
+
+// user delete
+router.delete('/delete/user/:id', async function (req, res) {
+    try {
+        await SignupModel.findByIdAndDelete(req.params.id)
+        res.json({ message: "User deleted" })
+    } catch (err) {
+        res.status(500).json({ message: "Delete failed", error: err.message })
+    }
 })
 
 export default router

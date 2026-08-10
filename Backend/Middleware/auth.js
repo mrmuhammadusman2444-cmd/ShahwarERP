@@ -1,7 +1,6 @@
 import jwt from 'jsonwebtoken'
 import SignupModel from '../Models/SignUpModel.js'
 
-// 1. Token verify karo — user logged in hai?
 export function verifyToken(req, res, next) {
     const authHeader = req.headers.authorization
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
@@ -9,8 +8,7 @@ export function verifyToken(req, res, next) {
     }
     const token = authHeader.split(' ')[1]
     try {
-        const decoded = jwt.verify(token, 'shahwar_secret_key_123')   // wahi secret jo signin me
-        req.userId = decoded.id
+        const decoded = jwt.verify(token, 'shahwar_secret_key_123')
         req.userRole = decoded.role
         next()
     } catch (err) {
@@ -18,11 +16,10 @@ export function verifyToken(req, res, next) {
     }
 }
 
-// 2. Permission check karo — user ke paas ye action allowed hai?
 export function checkPermission(module, action) {
     return async function (req, res, next) {
         try {
-            // Admin ko sab allowed
+
             if (req.userRole === 'Admin') return next()
 
             const user = await SignupModel.findById(req.userId)

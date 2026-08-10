@@ -1,10 +1,12 @@
 import React from 'react'
 import { useState, useEffect } from 'react'
 import axios from 'axios'
+import ImageCropModal from './ImageCropModal.jsx'
 
 
 const AddEmployee = () => {
-
+  const [cropImage, setCropImage] = useState(null)
+  const [showCrop, setShowCrop] = useState(false)
   const [Employee, setEmployee] = useState({
     firstName: "",
     lastName: "",
@@ -45,8 +47,31 @@ const AddEmployee = () => {
 
 
   async function handleAddEmployee() {
-    let res = await axios.post('http://localhost:3000/add/new/employee', Employee)
-    console.log(res.data)
+    try {
+      const formData = new FormData()
+      formData.append("firstName", Employee.firstName)
+      formData.append("lastName", Employee.lastName)
+      formData.append("designation", Employee.designation)
+      formData.append("phone", Employee.phone)
+      formData.append("rateType", Employee.rateType)
+      formData.append("hourRateSalary", Employee.hourRateSalary)
+      formData.append("email", Employee.email)
+      formData.append("bloodGroup", Employee.bloodGroup)
+      formData.append("addressLine1", Employee.addressLine1)
+      formData.append("addressLine2", Employee.addressLine2)
+      formData.append("city", Employee.city)
+      formData.append("zipCode", Employee.zipCode)
+      if (Employee.picture) {
+        formData.append("picture", Employee.picture)
+      }
+
+      let res = await axios.post('http://localhost:3000/add/new/employee', formData, {
+        headers: { "Content-Type": "multipart/form-data" }
+      })
+      console.log("SAVED:", res.data)
+    } catch (err) {
+      console.log("SAVE FAILED:", err.response?.data || err.message)
+    }
   }
 
 
@@ -214,16 +239,49 @@ const AddEmployee = () => {
             </div>
           </div>
 
-          <div className="grid grid-cols-3 items-center gap-4">
-            <label className="text-gray-700 text-sm font-semibold text-right">Picture</label>
+          <div className="grid grid-cols-3 items-start gap-4">
+            <label className="text-gray-700 text-sm font-semibold text-right pt-2">Picture</label>
             <div className="col-span-2">
-              <input
-                value={Employee.picture}
-                onChange={(e) => { setEmployee({ ...Employee, picture: e.target.value }) }}
-                type="file"
-                accept="image/*"
-                className="w-full bg-emerald-50 border border-emerald-100 focus:border-emerald-400 rounded-xl px-3 py-2 text-gray-700 text-sm focus:outline-none transition-all cursor-pointer file:mr-3 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-emerald-100 file:text-emerald-700 hover:file:bg-emerald-200"
-              />
+              <div className="flex items-center gap-4">
+
+                <div className="w-20 h-20 rounded-2xl border-2 border-dashed border-emerald-200 bg-emerald-50/50 flex items-center justify-center overflow-hidden shrink-0">
+                  {Employee.picture ? (
+                    <img
+                      src={typeof Employee.picture === "string" ? `http://localhost:3000${Employee.picture}` : URL.createObjectURL(Employee.picture)}
+                      alt="preview"
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <svg className="w-8 h-8 text-emerald-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg>
+                  )}
+                </div>
+
+                <div className="flex-1">
+                  <label className="cursor-pointer inline-flex items-center gap-2 bg-linear-to-r from-emerald-600 to-emerald-700 hover:from-emerald-500 hover:to-emerald-600 text-white text-xs font-semibold rounded-lg px-4 py-2 shadow-sm shadow-emerald-200 transition-all hover:-translate-y-0.5">
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                    </svg>
+                    Upload Photo
+                    <input
+                      onChange={(e) => {
+                        const file = e.target.files[0]
+                        if (file) {
+                          setCropImage(URL.createObjectURL(file))
+                          setShowCrop(true)
+                        }
+                        e.target.value = ""
+                      }}
+                      type="file"
+                      accept="image/*"
+                      className="hidden"
+                    />
+                  </label>
+                  <p className="text-[11px] text-gray-400 mt-1.5">PNG, JPG up to 5MB</p>
+                </div>
+
+              </div>
             </div>
           </div>
 
@@ -283,7 +341,19 @@ const AddEmployee = () => {
         </div>
 
       </div>
+      {showCrop && cropImage && (
+        <ImageCropModal
+          imageSrc={cropImage}
+          onCancel={() => { setShowCrop(false); setCropImage(null) }}
+          onCropDone={(croppedFile) => {
+            setEmployee({ ...Employee, picture: croppedFile })
+            setShowCrop(false)
+            setCropImage(null)
+          }}
+        />
+      )}
     </div>
+
   );
 }
 
