@@ -12,21 +12,20 @@ const Attendence = () => {
 
     async function loadEmployees() {
         try {
-            // dono fetch
             let empRes = await axios.get('http://localhost:3000/find/employee')
             let userRes = await axios.get('http://localhost:3000/all/users')
 
-            // users ko employee format me dhaalो (image → picture)
-            const users = userRes.data.map((u) => ({
-                _id: u._id,
-                firstName: u.firstName,
-                lastName: u.lastName,
-                designation: u.role || "System User",   // user ka role
-                phone: u.phone || "",
-                picture: u.image || "",                  // user ki image → picture
-            }))
+            const users = userRes.data
+                .filter((u) => u.role !== "Admin")
+                .map((u) => ({
+                    _id: u._id,
+                    firstName: u.firstName,
+                    lastName: u.lastName,
+                    designation: u.role || "System User",  
+                    phone: u.phoneNo || "",
+                    picture: u.image || "",                 
+                }))
 
-            // dono jodо
             setEmployees([...users, ...empRes.data])
         } catch (err) {
             console.log("LOAD FAILED:", err.response?.data || err.message)
@@ -123,6 +122,16 @@ const Attendence = () => {
                         <p className="text-[11px] text-slate-400 leading-tight">Mark daily attendance for workers</p>
                     </div>
                 </div>
+                {employees.length > 0 && (
+                    <div className="flex ml-300 fixed">
+                        <button onClick={handleSave} disabled={status !== "idle"}
+                            className={`flex items-center gap-1.5 text-white text-[13px] font-semibold rounded-xl px-7 py-3 shadow-md transition-all cursor-pointer disabled:cursor-not-allowed ${status === "saved" ? "bg-emerald-500 shadow-emerald-200" : "bg-linear-to-r from-emerald-600 to-emerald-700 hover:from-emerald-500 hover:to-emerald-600 shadow-emerald-200 hover:-translate-y-0.5"}`}>
+                            {status === "idle" && (<><Save className="w-4 h-4" /> Save Attendance</>)}
+                            {status === "saving" && (<><Loader2 className="w-4 h-4 animate-spin" /> Saving...</>)}
+                            {status === "saved" && (<><Check className="w-4 h-4" strokeWidth={3} /> Saved!</>)}
+                        </button>
+                    </div>
+                )}
             </div>
 
             {/* date + stats */}
@@ -168,6 +177,7 @@ const Attendence = () => {
                     <p className="text-slate-600 text-sm font-medium">No employees found</p>
                 </div>
             ) : (
+                <div className="max-h-[calc(100vh-200px)] overflow-y-auto pr-1">
                 <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 items-start">
                     {employees.map((emp) => {
                         const empId = emp._id
@@ -285,19 +295,11 @@ const Attendence = () => {
                         )
                     })}
                 </div>
+                </div>
             )}
 
             {/* save */}
-            {employees.length > 0 && (
-                <div className="flex items-center justify-end mt-5">
-                    <button onClick={handleSave} disabled={status !== "idle"}
-                        className={`flex items-center gap-1.5 text-white text-[13px] font-semibold rounded-xl px-7 py-3 shadow-md transition-all cursor-pointer disabled:cursor-not-allowed ${status === "saved" ? "bg-emerald-500 shadow-emerald-200" : "bg-linear-to-r from-emerald-600 to-emerald-700 hover:from-emerald-500 hover:to-emerald-600 shadow-emerald-200 hover:-translate-y-0.5"}`}>
-                        {status === "idle" && (<><Save className="w-4 h-4" /> Save Attendance</>)}
-                        {status === "saving" && (<><Loader2 className="w-4 h-4 animate-spin" /> Saving...</>)}
-                        {status === "saved" && (<><Check className="w-4 h-4" strokeWidth={3} /> Saved!</>)}
-                    </button>
-                </div>
-            )}
+
 
         </div>
     )
