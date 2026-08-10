@@ -1,0 +1,210 @@
+import React from "react";
+import axios from 'axios'
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+
+
+
+
+const AddSupplier = () => {
+  const navigate = useNavigate()
+  const [addSupplier, setAddSupplier] = useState({
+    supplierName: '',
+    email: '',
+    phoneNo: '',
+    address: '',
+    supplierDetails: '',
+    supplierCredits: '',
+    previouseCreditsBalance: ''
+  })
+
+  async function handleSupplier() {
+    let res = await axios.post('http://localhost:3000/new/supplier', addSupplier)
+    console.log(res.data)
+  }
+
+  async function handleFindSupplier() {
+    let res = await axios.get('http://localhost:3000/find/supplier')
+    console.log(res.data)
+
+  }
+  return (
+    <div className="p-4 md:p-5">
+
+      <div className="flex items-center justify-between mb-4 pl-12 md:pl-0">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-xl bg-linear-to-br from-emerald-600 to-emerald-700 flex items-center justify-center shadow-md shadow-emerald-200">
+            <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+            </svg>
+          </div>
+          <div>
+            <h1 className="text-gray-800 text-lg font-bold">Add New Supplier</h1>
+            <p className="text-gray-400 text-xs">Fill in the Supplier details below</p>
+          </div>
+        </div>
+
+      </div>
+
+      <div className="flex flex-col lg:flex-row gap-4 items-start">
+
+        <div className="flex-1 min-w-0 bg-white border border-blue-100 rounded-2xl shadow-sm p-5 flex flex-col gap-5">
+
+          <div>
+            <div className="flex items-center gap-2 mb-3">
+              <div className="w-1 h-4 bg-linear-to-b from-emerald-500 to-emerald-700 rounded-full" />
+              <h2 className="text-gray-700 text-xs font-bold uppercase tracking-widest">Basic Information</h2>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+
+              <div className="col-span-2">
+                <label className="text-gray-500 text-xs font-semibold uppercase tracking-wide block mb-1">
+                  Supplier Name <span className="text-red-400">*</span>
+                </label>
+                <input onChange={(e) => { setAddSupplier({ ...addSupplier, supplierName: e.target.value }) }}
+                  type="text" placeholder="Enter customer name..."
+                  className="w-full bg-emerald-50 border border-emerald-100 focus:border-emerald-400 focus:bg-white rounded-xl px-3 py-2 text-gray-700 placeholder-gray-400 text-sm focus:outline-none transition-all" />
+              </div>
+
+              <div>
+                <label className="text-gray-500 text-xs font-semibold uppercase tracking-wide block mb-1">
+                  Email <span className="text-red-400">*</span>
+                </label>
+                <input onChange={(e) => { setAddSupplier({ ...addSupplier, email: e.target.value }) }}
+                  type="email" placeholder="supplier@email.com"
+                  className="w-full bg-emerald-50 border border-emerald-100 focus:border-emerald-400 focus:bg-white rounded-xl px-3 py-2 text-gray-700 placeholder-gray-400 text-sm focus:outline-none transition-all" />
+              </div>
+
+              <div>
+                <label className="text-gray-500 text-xs font-semibold uppercase tracking-wide block mb-1">
+                  Phone No <span className="text-red-400">*</span>
+                </label>
+                <input onChange={(e) => { setAddSupplier({ ...addSupplier, phoneNo: e.target.value }) }}
+                  type="tel" placeholder="03xx-xxxxxxx"
+                  className="w-full bg-emerald-50 border border-emerald-100 focus:border-emerald-400 focus:bg-white rounded-xl px-3 py-2 text-gray-700 placeholder-gray-400 text-sm focus:outline-none transition-all" />
+              </div>
+              <div>
+                <label className="text-gray-500 text-xs font-semibold uppercase tracking-wide block mb-1">
+                  Address <span className="text-red-400">*</span>
+                </label>
+                <input onChange={(e) => { setAddSupplier({ ...addSupplier, address: e.target.value }) }}
+                  type="tel" placeholder="03xx-xxxxxxx"
+                  className="w-full bg-emerald-50 border border-emerald-100 focus:border-emerald-400 focus:bg-white rounded-xl px-3 py-2 text-gray-700 placeholder-gray-400 text-sm focus:outline-none transition-all" />
+              </div>
+
+
+
+            </div>
+          </div>
+
+          <div className="border-t border-emerald-50" />
+
+          <div>
+            <div className="flex items-center gap-2 mb-3">
+              <div className="w-1 h-4 bg-linear-to-b from-emerald-500 to-emerald-700 rounded-full" />
+              <h2 className="text-gray-700 text-xs font-bold uppercase tracking-widest">Supplier Details</h2>
+            </div>
+            <div className="grid grid-cols-2 gap-3">
+
+              <div className="col-span-2">
+                <label className="text-gray-500 text-xs font-semibold uppercase tracking-wide block mb-1">
+                  Type Supplier Details <span className="text-red-400">*</span>
+                </label>
+                <textarea onChange={(e) => { setAddSupplier({ ...addSupplier, supplierDetails: e.target.value }) }}
+
+                  placeholder="Type Supplier Details..."
+                  className="w-full resize-none bg-emerald-50 border border-emerald-100 focus:border-emerald-400 focus:bg-white rounded-xl px-3 h-30 py-2 text-gray-700 placeholder-gray-400 text-sm focus:outline-none transition-all" />
+              </div>
+
+
+
+            </div>
+          </div>
+
+          <div className="border-t border-emerald-50" />
+
+          <div>
+            <div className="flex items-center gap-2 mb-3">
+              <div className="w-1 h-4 bg-linear-to-b from-emerald-500 to-emerald-700 rounded-full" />
+              <h2 className="text-gray-700 text-xs font-bold uppercase tracking-widest">Credits</h2>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+
+              <div>
+                <label className="text-gray-500 text-xs font-semibold uppercase tracking-wide block mb-1">Supplier Credits</label>
+                <div className="relative">
+                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs font-semibold">Rs.</span>
+                  <input onChange={(e) => { setAddSupplier({ ...addSupplier, supplierCredits: e.target.value }) }}
+                    type="number" placeholder="0.00"
+                    className="w-full bg-emerald-50 border border-emerald-100 focus:border-emerald-400 focus:bg-white rounded-xl pl-9 pr-3 py-2 text-gray-700 placeholder-gray-400 text-sm focus:outline-none transition-all" />
+                </div>
+              </div>
+
+              <div>
+                <label className="text-gray-500 text-xs font-semibold uppercase tracking-wide block mb-1">Previous Credits Balance</label>
+                <div className="relative">
+                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs font-semibold">Rs.</span>
+                  <input onChange={(e) => { setAddSupplier({ ...addSupplier, previousCreditsBalance: e.target.value }) }} type="number" placeholder="0.00"
+                    className="w-full bg-emerald-50 border border-emerald-100 focus:border-emerald-400 focus:bg-white rounded-xl pl-9 pr-3 py-2 text-gray-700 placeholder-gray-400 text-sm focus:outline-none transition-all" />
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+
+<div className="w-full lg:w-52 shrink-0 flex flex-col gap-4 sticky top-4">
+          <div className="bg-white border border-emerald-100 rounded-2xl shadow-sm p-4 flex flex-col items-center gap-3">
+            <div className="w-20 h-20 rounded-2xl bg-linear-to-br from-emerald-100 to-emerald-200 flex items-center justify-center">
+              <svg className="w-10 h-10 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+              </svg>
+            </div>
+            <div className="text-center">
+              <p className="text-gray-700 text-sm font-semibold">New Supplier</p>
+              <p className="text-gray-400 text-xs mt-0.5">Fill in details on the left</p>
+            </div>
+
+            <div className="w-full border-t border-emerald-50 pt-3 flex flex-col gap-2">
+              {[
+                { label: "Phone No", value: "Not set" },
+                { label: "Email", value: "Not set" },
+                { label: "Address", value: "Not set" },
+              ].map((item) => (
+                <div key={item.label} className="flex items-center justify-between">
+                  <span className="text-gray-400 text-xs">{item.label}</span>
+                  <span className="text-gray-500 text-xs font-medium">{item.value}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="bg-white border border-blue-100 rounded-2xl shadow-sm p-4 flex flex-col gap-2.5">
+            <p className="text-gray-400 text-xs flex items-center gap-1">
+              <span className="text-red-400 font-bold">*</span> Required fields must be filled
+            </p>
+            <button onClick={() => { handleFindSupplier(); handleSupplier(); }} type="button"
+              className="w-full py-2.5 bg-linear-to-r from-emerald-600 to-emerald-700 hover:from-emerald-500 hover:to-emerald-600 cursor-pointer text-white text-sm font-semibold rounded-xl shadow-md shadow-emerald-200 transition-all hover:-translate-y-0.5 active:translate-y-0">
+              Save Supplier
+            </button>
+
+
+            <button onClick={() => { navigate('/managesupplierpage') }} type="button"
+              className="w-full py-2 bg-white border border-emerald-200 hover:bg-emerald-50 text-emerald-600 text-sm cursor-pointer font-semibold rounded-xl transition-all">
+              Manage Supplier
+            </button>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+  );
+}
+
+export default AddSupplier
+
+
+
