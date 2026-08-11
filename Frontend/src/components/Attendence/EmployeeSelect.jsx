@@ -22,8 +22,18 @@ const EmployeeSelect = ({ value, onChange, employees = [], placeholder = "Select
 
     useEffect(() => {
         if (open && ref.current) {
-            const rect = ref.current.getBoundingClientRect();
-            setDropdownPos({ top: rect.bottom + 4, left: rect.left, width: rect.width });
+            const updatePos = () => {
+                const rect = ref.current.getBoundingClientRect();
+                setDropdownPos({ top: rect.bottom + 4, left: rect.left, width: rect.width });
+            };
+            updatePos();
+            // scroll/resize pe bhi update
+            window.addEventListener('scroll', updatePos, true);
+            window.addEventListener('resize', updatePos);
+            return () => {
+                window.removeEventListener('scroll', updatePos, true);
+                window.removeEventListener('resize', updatePos);
+            };
         }
     }, [open]);
 

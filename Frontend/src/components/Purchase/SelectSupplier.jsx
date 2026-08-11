@@ -73,13 +73,7 @@ const SelectSupplier = ({ value, onChange }) => {
             </button>
 
             {open && (
-                <div
-                    className="fixed z-99999 w-64 bg-white border border-emerald-100 rounded-xl shadow-xl shadow-emerald-100/50 overflow-hidden"
-                    style={{
-                        top: dropdownPos.top + 'px',
-                        left: dropdownPos.left + 'px',
-                    }}
-                >
+                <div className="absolute left-0 right-0 top-full mt-1 z-999] bg-white border border-slate-200 rounded-xl shadow-xl overflow-hidden">
 
                     <div className="p-2 border-b border-emerald-50">
                         <div className="flex items-center gap-2 bg-emerald-50 border border-emerald-100 rounded-xl px-3 py-2 focus-within:border-emerald-400 transition-all">

@@ -20,7 +20,7 @@ const EmployeeSchema = new mongoose.Schema({
     },
     rateType: {
         type: String,
-        enum: ["Full Time", "Part Time", "Hourly", "Salary", ""],
+        enum: [ "Hourly", "Salary", "" ],
         default: ""
     },
     hourRateSalary:

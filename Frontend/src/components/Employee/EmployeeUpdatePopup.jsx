@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import axios from 'axios'
 import ImageCropModal from './ImageCropModal.jsx'
+import SelectRateType from '../../components/Employee/SelectRateType.jsx'
 import { X, User, Save, Loader2, Check } from 'lucide-react'
 
 const EmployeeUpdatePopup = ({ setShowUpdatePopup, updateData, handleFetchAllEmployee }) => {
@@ -27,46 +28,45 @@ const EmployeeUpdatePopup = ({ setShowUpdatePopup, updateData, handleFetchAllEmp
 
 
     async function handleUpdate() {
-    setStatus("saving")
-    try {
-        const formData = new FormData()
-        formData.append("firstName", employee.firstName)
-        formData.append("lastName", employee.lastName)
-        formData.append("email", employee.email)
-        formData.append("phone", employee.phone)
-        formData.append("phoneNo", employee.phone)          // user ke liye phoneNo
-        formData.append("designation", employee.designation)
-        formData.append("rateType", employee.rateType)
-        formData.append("hourRateSalary", employee.hourRateSalary)
-        formData.append("bloodGroup", employee.bloodGroup)
-        formData.append("addressLine1", employee.addressLine1)
-        formData.append("addressLine2", employee.addressLine2)
-        formData.append("city", employee.city)
-        formData.append("zipCode", employee.zipCode)
+        setStatus("saving")
+        try {
+            const formData = new FormData()
+            formData.append("firstName", employee.firstName)
+            formData.append("lastName", employee.lastName)
+            formData.append("email", employee.email)
+            formData.append("phone", employee.phone)
+            formData.append("phoneNo", employee.phone)
+            formData.append("designation", employee.designation)
+            formData.append("rateType", employee.rateType)
+            formData.append("hourRateSalary", employee.hourRateSalary)
+            formData.append("bloodGroup", employee.bloodGroup)
+            formData.append("addressLine1", employee.addressLine1)
+            formData.append("addressLine2", employee.addressLine2)
+            formData.append("city", employee.city)
+            formData.append("zipCode", employee.zipCode)
 
-        // image — user "image", employee "picture"
-        if (employee.picture && typeof employee.picture !== "string") {
-            formData.append(updateData.isUser ? "image" : "picture", employee.picture)
+            if (employee.picture && typeof employee.picture !== "string") {
+                formData.append(updateData.isUser ? "image" : "picture", employee.picture)
+            }
+
+            if (updateData.isUser) {
+                await axios.put(`http://localhost:3000/update/user/${updateData._id}`, formData, {
+                    headers: { "Content-Type": "multipart/form-data" }
+                })
+            } else {
+                await axios.post(`http://localhost:3000/update/employee/${updateData._id}`, formData, {
+                    headers: { "Content-Type": "multipart/form-data" }
+                })
+            }
+
+            setStatus("saved")
+            if (handleFetchAllEmployee) await handleFetchAllEmployee()
+            setTimeout(() => setShowUpdatePopup(false), 800)
+        } catch (err) {
+            console.log("UPDATE FAILED:", err.response?.data || err.message)
+            setStatus("idle")
         }
-
-        if (updateData.isUser) {
-            await axios.put(`http://localhost:3000/update/user/${updateData._id}`, formData, {
-                headers: { "Content-Type": "multipart/form-data" }
-            })
-        } else {
-            await axios.post(`http://localhost:3000/update/employee/${updateData._id}`, formData, {
-                headers: { "Content-Type": "multipart/form-data" }
-            })
-        }
-
-        setStatus("saved")
-        if (handleFetchAllEmployee) await handleFetchAllEmployee()
-        setTimeout(() => setShowUpdatePopup(false), 800)
-    } catch (err) {
-        console.log("UPDATE FAILED:", err.response?.data || err.message)
-        setStatus("idle")
     }
-}
 
     const field = (label, key, type = "text", placeholder = "") => (
         <div>
@@ -120,14 +120,10 @@ const EmployeeUpdatePopup = ({ setShowUpdatePopup, updateData, handleFetchAllEmp
 
                         <div>
                             <label className="text-gray-500 text-[11px] font-bold uppercase tracking-wide block mb-1.5">Rate Type</label>
-                            <select
+                            <SelectRateType
                                 value={employee.rateType}
-                                onChange={(e) => setEmployee({ ...employee, rateType: e.target.value })}
-                                className="w-full bg-emerald-50 border border-emerald-100 focus:border-emerald-400 focus:bg-white rounded-xl px-3 py-2.5 text-gray-700 text-sm focus:outline-none transition-all appearance-none cursor-pointer"
-                            >
-                                <option value="">Select option</option>
-                                <option value="Full Time">Full Time</option>
-                            </select>
+                                onChange={(val) => setEmployee({ ...employee, rateType: val })}
+                            />
                         </div>
 
                         <div>

@@ -1,6 +1,7 @@
 import React from 'react'
 import { useState, useEffect } from 'react'
 import axios from 'axios'
+import SelectRateType from './SelectRateType.jsx'
 import ImageCropModal from './ImageCropModal.jsx'
 
 
@@ -138,15 +139,13 @@ const AddEmployee = () => {
               Designation <span className="text-red-400">*</span>
             </label>
             <div className="col-span-2">
-              <select value={Employee.designation} onChange={(e) => { setEmployee({ ...Employee, designation: e.target.value }) }} className="w-full bg-emerald-50 border border-emerald-100 focus:border-emerald-400 focus:bg-white rounded-xl px-3 py-2.5 text-gray-700 text-sm focus:outline-none transition-all appearance-none cursor-pointer">
-                <option value="">Select option</option>
-                <option value="Stock Manager">Stock Manager</option>
-                <option value="Recipe Expert">Recipe Expert</option>
-                <option value="Machanical Expert">Machanical Expert</option>
-                <option value="Godam Manager">Godam Manager</option>
-                <option value="Raw Material Stock manage">Raw Material Stock manager</option>
-
-              </select>
+              <input
+                value={Employee.designation}
+                onChange={(e) => { setEmployee({ ...Employee, designation: e.target.value }) }}
+                type="text"
+                placeholder="Designation"
+                className="w-full bg-emerald-50 border border-emerald-100 focus:border-emerald-400 focus:bg-white rounded-xl px-3 py-2.5 text-gray-700 placeholder-gray-400 text-sm focus:outline-none transition-all"
+              />
             </div>
           </div>
 
@@ -168,11 +167,7 @@ const AddEmployee = () => {
           <div className="grid grid-cols-3 items-center gap-4">
             <label className="text-gray-700 text-sm font-semibold text-right">Rate Type</label>
             <div className="col-span-2">
-              <select value={Employee.rateType} onChange={(e) => { setEmployee({ ...Employee, rateType: e.target.value }) }} className="w-full bg-emerald-50 border border-emerald-100 focus:border-emerald-400 focus:bg-white rounded-xl px-3 py-2.5 text-gray-700 text-sm focus:outline-none transition-all appearance-none cursor-pointer">
-                <option value="">Select option</option>
-                <option value="Full Time">Full Time</option>
-
-              </select>
+              <SelectRateType value={Employee.rateType} onChange={(val) => setEmployee({ ...Employee, rateType: val })} />
             </div>
           </div>
 

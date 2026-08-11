@@ -12,7 +12,7 @@ const SignupSchema = new mongoose.Schema({
         type: String
     },
     phoneNo: {
-        type: Number
+        type: String
     },
     password: {
         type: String
