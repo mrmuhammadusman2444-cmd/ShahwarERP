@@ -123,7 +123,7 @@ const Attendence = () => {
                     </div>
                 </div>
                 {employees.length > 0 && (
-                    <div className="flex ml-300 fixed">
+                    <div className="flex justify-end -mt-2">
                         <button onClick={handleSave} disabled={status !== "idle"}
                             className={`flex items-center gap-1.5 text-white text-[13px] font-semibold rounded-xl px-7 py-3 shadow-md transition-all cursor-pointer disabled:cursor-not-allowed ${status === "saved" ? "bg-emerald-500 shadow-emerald-200" : "bg-linear-to-r from-emerald-600 to-emerald-700 hover:from-emerald-500 hover:to-emerald-600 shadow-emerald-200 hover:-translate-y-0.5"}`}>
                             {status === "idle" && (<><Save className="w-4 h-4" /> Save Attendance</>)}

@@ -141,6 +141,8 @@ const AddEmployee = () => {
               <select value={Employee.designation} onChange={(e) => { setEmployee({ ...Employee, designation: e.target.value }) }} className="w-full bg-emerald-50 border border-emerald-100 focus:border-emerald-400 focus:bg-white rounded-xl px-3 py-2.5 text-gray-700 text-sm focus:outline-none transition-all appearance-none cursor-pointer">
                 <option value="">Select option</option>
                 <option value="Stock Manager">Stock Manager</option>
+                <option value="Recipe Expert">Recipe Expert</option>
+                <option value="Machanical Expert">Machanical Expert</option>
                 <option value="Godam Manager">Godam Manager</option>
                 <option value="Raw Material Stock manage">Raw Material Stock manager</option>
 
