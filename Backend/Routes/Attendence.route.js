@@ -38,4 +38,18 @@ router.get('/find/attendance/:date', async function (req, res) {
     }
 })
 
+router.get('/attendance/report', async function (req, res) {
+    try {
+        const { from, to } = req.query
+        let filter = {}
+        if (from && to) {
+            filter.date = { $gte: from, $lte: to }   
+        }
+        let records = await AttendanceModel.find(filter).sort({ date: 1 })
+        res.json(records)
+    } catch (err) {
+        res.status(500).json({ message: "Fetch failed", error: err.message })
+    }
+})
+
 export default router
