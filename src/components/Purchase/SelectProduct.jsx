@@ -18,11 +18,22 @@ const SelectProducts = ({ value, onChange }) => {
 
     useEffect(() => {
         if (open && ref.current) {
-            const rect = ref.current.getBoundingClientRect();
-            setDropdownPos({
-                top: rect.bottom + 4,
-                left: rect.left,
-            });
+            const updatePos = () => {
+                if (!ref.current) return;
+                const rect = ref.current.getBoundingClientRect();
+                setDropdownPos({
+                    top: rect.bottom + 4,
+                    left: rect.left,
+                    width: rect.width,
+                });
+            };
+            updatePos();
+            window.addEventListener('scroll', updatePos, true);
+            window.addEventListener('resize', updatePos);
+            return () => {
+                window.removeEventListener('scroll', updatePos, true);
+                window.removeEventListener('resize', updatePos);
+            };
         }
     }, [open]);
 
@@ -73,7 +84,7 @@ const SelectProducts = ({ value, onChange }) => {
             {/* ── Dropdown — fixed position, sab ke upar ── */}
             {open && (
                 <div
-                    className="fixed z-[99999] w-64 bg-white border border-emerald-100 rounded-xl shadow-xl shadow-emerald-100/50 overflow-hidden"
+                    className="fixed z-99999 w-64 bg-white border border-emerald-100 rounded-xl shadow-xl shadow-emerald-100/50 overflow-hidden"
                     style={{
                         top: dropdownPos.top + 'px',
                         left: dropdownPos.left + 'px',

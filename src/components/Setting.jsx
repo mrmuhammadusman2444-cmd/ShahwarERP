@@ -351,7 +351,6 @@ const ROLES = [
   { name: "Accountant", icon: Calculator },
   { name: "Cash & Expense", icon: Wallet },
   { name: "Raw Material", icon: Package },
-  { name: "Employee Attendance", icon: CalendarCheck },
   { name: "Stock Manager", icon: Boxes },
 ];
 const ACTIONS = ["view", "create", "update", "delete"];

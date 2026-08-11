@@ -186,7 +186,7 @@ const SideMenus = ({ collapsed }) => {
             <div className="px-2 pb-2.5 ">
 
                 {menuMatches('Inbox', []) && (
-                    <div onClick={()=>{navigate('/inbox')}} onMouseEnter={setTip} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer  border-transparent hover:bg-[var(--nav-active)] transition-all mb-px ${collapsed ? 'justify-start w-9 h-9 mx-auto' : ''}`}>
+                    <div onClick={() => { navigate('/inbox') }} onMouseEnter={setTip} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer  border-transparent hover:bg-[var(--nav-active)] transition-all mb-px ${collapsed ? 'justify-start w-9 h-9 mx-auto' : ''}`}>
 
                         <svg width="23" height="23" viewBox="0 0 15 15" fill="#93c5fd" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" className="shrink-0 text-slate-600 -ml-0.1">
                             <g className="env-letter ">
@@ -1181,7 +1181,7 @@ const SideMenus = ({ collapsed }) => {
 
                 {can("salary", "view") && menuMatches('Salary', ['Employee', 'Add Employee', 'Manage Employee', 'Manage Employee Salary', 'Attendence', 'Attendance', 'Attendance Report', 'Salary', 'Employee Salary', 'Ledger']) && (
                     <div onMouseEnter={setTip} onClick={() => setsalaryOpen(!salaryOpen)} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer transition-all mb-px ${collapsed ? 'justify-start w-9 h-9 mx-auto' : ''}
-                     ${isParentActive(['/salary', '/attendence', '/attendence/report', '/add/employee', '/manage/employee', '/manage/employee/salary']) ? 'bg-[var(--nav-active)]' : 'hover:bg-[var(--nav-active)]'}`}>
+     ${isParentActive(['/salary', '/attendence', '/attendence/report', '/add/employee', '/manage/employee', '/manage/employee/salary']) ? 'bg-[var(--nav-active)]' : 'hover:bg-[var(--nav-active)]'}`}>
                         {isParentActive(['/salary', '/attendence', '/attendence/report', '/add/employee', '/manage/employee', '/manage/employee/salary']) && !collapsed && (
                             <span className="absolute left-0 top-1/2 -translate-y-1/2 w-0.75 h-4.5 bg-[var(--nav-strip)] rounded-r-full" />
                         )}
@@ -1205,7 +1205,7 @@ const SideMenus = ({ collapsed }) => {
                         }}
                         className="ml-7 border-l border-slate-700 pl-3 flex flex-col gap-0.5 overflow-hidden"
                     >
-                        {canSub("salary", "employee") && subMatches('Employee') && (
+                        {(canSub("salary", "addEmployee") || canSub("salary", "manageEmployee") || canSub("salary", "manageEmployeeSalary")) && subMatches('Employee') && (
                             <div onClick={() => setemployeeOpen(!employeeOpen)} className="flex items-center justify-between text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                                 <span>Employee</span>
                                 <ChevronDown className={`w-3 h-3 transition-transform duration-300 ${employeeOpen ? 'rotate-180' : ''}`} />
@@ -1239,7 +1239,7 @@ const SideMenus = ({ collapsed }) => {
                             </div>
                         )}
 
-                        {canSub("salary", "attendance") && subMatches('Attendence') && (
+                        {(canSub("salary", "attendance") || canSub("salary", "attendanceReport")) && subMatches('Attendence') && (
                             <div onClick={() => setattendanceOpen(!attendanceOpen)} className="flex items-center justify-between text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                                 <span>Attendence</span>
                                 <ChevronDown className={`w-3 h-3 transition-transform duration-300 ${attendanceOpen ? 'rotate-180' : ''}`} />
@@ -1268,7 +1268,7 @@ const SideMenus = ({ collapsed }) => {
                             </div>
                         )}
 
-                        {canSub("salary", "salary") && subMatches('Salary') && (
+                        {canSub("salary", "employeeSalary") && subMatches('Salary') && (
                             <div onClick={() => setsalaryDetailOpen(!salaryDetailOpen)} className="flex items-center justify-between text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                                 <span>Salary</span>
                                 <ChevronDown className={`w-3 h-3 transition-transform duration-300 ${salaryDetailOpen ? 'rotate-180' : ''}`} />
@@ -1289,7 +1289,6 @@ const SideMenus = ({ collapsed }) => {
                                         Employee Salary Ledger
                                     </div>
                                 )}
-
                             </div>
                         )}
                     </div>
