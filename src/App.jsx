@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import ManageHolidays from './components/Employee/ManageHoliday.jsx'
 import axios from 'axios'
 
 axios.interceptors.request.use((config) => {
@@ -165,6 +166,7 @@ const App = () => {
         <Route path='/add/employee' element={<AddEmployeePage />} />
         <Route path='/manage/employee' element={<ManageEmployeePage />} />
         <Route path='/manage/employee/salary' element={<ManageEmployeeSalaryPage />} />
+        <Route path="/manage/holidays" element={<ManageHolidays />} />
 
          //Assets
         <Route path='/assets' element={<AddAssetPage />} />
