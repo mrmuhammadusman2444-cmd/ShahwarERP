@@ -54,7 +54,6 @@ const ManageEmployee = () => {
   }, [])
 
   async function handleDeleteEmployee(item) {
-    if (!window.confirm("Are you sure you want to delete this?")) return
 
     try {
       if (item.isUser) {
@@ -278,7 +277,7 @@ const ManageEmployee = () => {
         </div>
 
         <div className="overflow-auto max-h-[60vh]">
-          <table className="w-full min-w-[880px] text-sm">
+          <table className="w-full min-w-220 text-sm">
             <thead className="sticky top-0 z-10">
               {table.getHeaderGroups().map((headerGroup) => (
                 <tr key={headerGroup.id} className="bg-linear-to-r from-emerald-600 to-emerald-700 border-b border-emerald-100">

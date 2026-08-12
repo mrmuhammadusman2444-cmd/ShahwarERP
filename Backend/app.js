@@ -15,6 +15,7 @@ import BankRoute from './Routes/Bank.route.js'
 import EmployeeRoute from './Routes/Employee.route.js'
 import TaskRoute from './Routes/Task.route.js'
 import AttendenceRoute from './Routes/Attendence.route.js'
+import HolidayRoute from './Routes/Holiday.route.js'
 
 DbConnection()
 
@@ -38,6 +39,7 @@ app.use('/', BankRoute)
 app.use('/', EmployeeRoute)
 app.use('/', TaskRoute)
 app.use('/', AttendenceRoute)
+app.use('/', HolidayRoute)
 app.use('/uploads', express.static('uploads'))
 
 
