@@ -1289,6 +1289,12 @@ const SideMenus = ({ collapsed }) => {
                                         Employee Salary Ledger
                                     </div>
                                 )}
+                                
+                                {canSub("salary", "employeeAdvanceSalary") && subMatches('Employee Advance Salary') && (
+                                    <div onClick={() => { navigate('/employee/advance/salary') }} className="text-[11.5px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                                        Employee Advance Salary
+                                    </div>
+                                )}
                             </div>
                         )}
                     </div>

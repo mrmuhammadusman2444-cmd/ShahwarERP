@@ -5,6 +5,14 @@ import { useNavigate } from 'react-router-dom';
 import BankUpdatePopup from './BankUpdatePopup.jsx'
 import { can } from '../../Utils/Permissions.js'
 import BankViewPopup from './BankViewPopup.jsx'
+import hblLogo from '../../assets/BankLogos/HBL.svg'
+import ublLogo from '../../assets/BankLogos/UBL.svg'
+import mcbLogo from '../../assets/BankLogos/MCB.png'
+import faisalLogo from '../../assets/BankLogos/Faisal.png'
+import ablLogo from '../../assets/BankLogos/ABL.png'
+import npbLogo from '../../assets/BankLogos/nbp.jpg'
+import alfalahLogo from '../../assets/BankLogos/alfalah.svg'
+import meezanLogo from '../../assets/BankLogos/meezan.svg'
 import { useReactTable, getCoreRowModel, getPaginationRowModel, getSortedRowModel, getFilteredRowModel, flexRender, } from '@tanstack/react-table'
 import { Landmark, Plus, ListOrdered, Copy, FileText, FileSpreadsheet, FileBarChart, Printer, Search, Eye, Pencil, Trash2 } from 'lucide-react';
 
@@ -54,6 +62,7 @@ const ManageBank = () => {
       cell: (info) => {
         const bank = info.row.original
         const name = bank.bankName || ""
+        const logo = getBankLogo(name)
         const tones = [
           "from-emerald-400 to-emerald-600",
           "from-sky-400 to-sky-600",
@@ -63,9 +72,24 @@ const ManageBank = () => {
         ]
         const tone = tones[name.length % tones.length]
         const initial = (name || "?").trim().charAt(0).toUpperCase()
+
         return (
           <div className="flex items-center gap-3">
-            <div className={`w-9 h-9 shrink-0 rounded-xl bg-linear-to-br ${tone} flex items-center justify-center text-white text-sm font-bold shadow-sm`}>
+            {logo ? (
+              <img
+                src={logo}
+                alt={name}
+                className="w-9 h-9 shrink-0 rounded-xl object-contain border border-slate-100 bg-white p-1 shadow-sm"
+                onError={(e) => {
+                  e.target.style.display = 'none'
+                  e.target.nextSibling.style.display = 'flex'
+                }}
+              />
+            ) : null}
+            <div
+              className={`w-9 h-9 shrink-0 rounded-xl bg-linear-to-br ${tone} items-center justify-center text-white text-sm font-bold shadow-sm`}
+              style={{ display: logo ? 'none' : 'flex' }}
+            >
               {initial}
             </div>
             <div className="min-w-0">
@@ -76,6 +100,8 @@ const ManageBank = () => {
         )
       },
     },
+
+
     {
       header: 'A/C Name',
       accessorKey: 'accountName',
@@ -154,6 +180,24 @@ const ManageBank = () => {
     },
   ]
 
+  const bankLogos = {
+    "HBL": hblLogo,
+    "UBL": ublLogo,
+    "Faisal": faisalLogo,
+    "ABL": ablLogo,
+    "MCB": mcbLogo,
+    "nbp": npbLogo,
+    "alfalah": alfalahLogo,
+    "meezan": meezanLogo,
+  }
+
+  const getBankLogo = (name) => {
+    if (!name) return null
+    const key = Object.keys(bankLogos).find(k =>
+      name.toLowerCase().includes(k.toLowerCase())
+    )
+    return key ? bankLogos[key] : null
+  }
   const table = useReactTable({
     data: fetchBank,
     columns: columns,
@@ -258,7 +302,7 @@ const ManageBank = () => {
         </div>
 
         <div className="overflow-auto max-h-[60vh]">
-          <table className="w-full min-w-[820px] text-left">
+          <table className="w-full min-w-205 text-left">
             <thead className="sticky top-0 z-10">
               {table.getHeaderGroups().map((headerGroup) => (
                 <tr key={headerGroup.id} className="bg-linear-to-br from-emerald-600 to-emerald-700">

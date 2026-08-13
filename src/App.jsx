@@ -61,6 +61,7 @@ import ManageBankPage from './pages/Bank/ManageBankPage.jsx'
 import BankLedgerPage from './pages/Bank/BankLedgerPage.jsx'
 //Salary
 import SalaryPage from './pages/Salary/SalaryPage.jsx'
+import EmployeeAdvanceSalaryPage from './pages/Salary/EmployeeAdvanceSalaryPage.jsx'
 //Attendence
 import AttendencePage from './pages/Attendence/AttendencePage.jsx'
 import AttendenceReportPage from './pages/Attendence/AttendenceReportPage.jsx'
@@ -159,6 +160,7 @@ const App = () => {
         <Route path='/bank/ledger' element={<BankLedgerPage />} />
         //Salary
         <Route path='/salary' element={<SalaryPage />} />
+        <Route path='/employee/advance/salary' element={<EmployeeAdvanceSalaryPage />} />
         //Attendence
         <Route path='/attendence' element={<AttendencePage />} />
         <Route path='/attendence/report' element={<AttendenceReportPage />} />
