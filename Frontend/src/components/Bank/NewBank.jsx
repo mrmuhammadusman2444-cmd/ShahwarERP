@@ -1,8 +1,18 @@
 import React from 'react'
-import { useState, useEffect } from 'react';
 import axios from 'axios'
-import { Landmark, Home, ChevronRight, ListOrdered, ClipboardList, Building2, User, Hash, MapPin, ImagePlus, RotateCcw, Save } from 'lucide-react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import hblLogo from '../../assets/BankLogos/HBL.svg'
+import ublLogo from '../../assets/BankLogos/UBL.svg'
+import mcbLogo from '../../assets/BankLogos/MCB.png'
+import faisalLogo from '../../assets/BankLogos/Faisal.png'
+import ablLogo from '../../assets/BankLogos/ABL.png'
+import npbLogo from '../../assets/BankLogos/nbp.jpg'
+import alfalahLogo from '../../assets/BankLogos/alfalah.svg'
+import meezanLogo from '../../assets/BankLogos/meezan.svg'
+
+import { Landmark, Home, ChevronRight, ListOrdered, ClipboardList, Building2, User, Hash, MapPin, ImagePlus, RotateCcw, Save } from 'lucide-react';
+
 
 
 const NewBank = () => {
@@ -16,15 +26,42 @@ const NewBank = () => {
     signaturePicture: ''
 
   })
- function handleReset() {
+
+  const bankLogos = {
+    "HBL": hblLogo,
+    "UBL": ublLogo,
+    "Faisal": faisalLogo,
+    "ABL": ablLogo,
+    "MCB": mcbLogo,
+    "nbp": npbLogo,
+    "alfalah": alfalahLogo,
+    "meezan": meezanLogo,
+
+
+
+
+
+
+  }
+
+  const getBankLogo = (name) => {
+    if (!name) return null
+    const key = Object.keys(bankLogos).find(k =>
+      name.toLowerCase().includes(k.toLowerCase())
+    )
+    return key ? bankLogos[key] : null
+  }
+
+
+  function handleReset() {
     setAddBank({
-        bankName: "",
-        accountName: "",
-        accountNumber: "",
-        branch: "",
-        signaturePicture: ""
+      bankName: "",
+      accountName: "",
+      accountNumber: "",
+      branch: "",
+      signaturePicture: ""
     })
-}
+  }
   async function handleAddNewBank() {
     let res = await axios.post('http://localhost:3000/add/new/bank', addBank)
     console.log(res.data)
@@ -79,10 +116,27 @@ const NewBank = () => {
                 Bank Name <span className="text-red-500">*</span>
               </label>
               <div className="relative">
-                <Building2 className="w-3.5 h-3.5 text-emerald-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
-                <input value={addBank.bankName} onChange={(e) => { setAddBank({ ...addBank, bankName: e.target.value }) }}
-                  type="text" placeholder="Bank Name" className="w-full text-[12.5px] text-slate-900 placeholder-slate-400 bg-emerald-50/50 border border-emerald-100 rounded-lg pl-9 pr-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-emerald-200 focus:border-emerald-400 transition-all" />
+                {getBankLogo(addBank.bankName) ? (
+                  <img
+                    src={getBankLogo(addBank.bankName)}
+                    alt={addBank.bankName}
+                    className="absolute left-2.5 top-1/2 -translate-y-1/2 h-5 w-5 object-contain pointer-events-none"
+                    onError={(e) => e.target.style.display = 'none'}
+                  />
+                ) : (
+                  <Building2 className="w-3.5 h-3.5 text-emerald-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+                )}
+                <input
+                  value={addBank.bankName}
+                  onChange={(e) => setAddBank({ ...addBank, bankName: e.target.value })}
+                  type="text"
+                  placeholder="Bank Name"
+                  className="w-full text-[12.5px] text-slate-900 placeholder-slate-400 bg-emerald-50/50 border border-emerald-100 rounded-lg pl-9 pr-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-emerald-200 focus:border-emerald-400 transition-all"
+                />
               </div>
+
+
+
             </div>
 
             <div>
