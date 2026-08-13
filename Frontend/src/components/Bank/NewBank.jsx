@@ -10,6 +10,8 @@ import ablLogo from '../../assets/BankLogos/ABL.png'
 import npbLogo from '../../assets/BankLogos/nbp.jpg'
 import alfalahLogo from '../../assets/BankLogos/alfalah.svg'
 import meezanLogo from '../../assets/BankLogos/meezan.svg'
+import bankAlhabibLogo from '../../assets/BankLogos/Bank-Al-Habib.png'
+
 
 import { Landmark, Home, ChevronRight, ListOrdered, ClipboardList, Building2, User, Hash, MapPin, ImagePlus, RotateCcw, Save } from 'lucide-react';
 
@@ -36,6 +38,8 @@ const NewBank = () => {
     "nbp": npbLogo,
     "alfalah": alfalahLogo,
     "meezan": meezanLogo,
+    "Bank-Al-Habib": bankAlhabibLogo
+
 
 
 
