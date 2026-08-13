@@ -76,8 +76,23 @@ const EmployeeSelect = ({ value, onChange, employees = [], placeholder = "Select
     useEffect(() => {
         async function fetchEmployees() {
             try {
-                const res = await axios.get('http://localhost:3000/find/employee')
-                setAllEmployees(res.data)
+                const empRes = await axios.get('http://localhost:3000/find/employee')
+                const userRes = await axios.get('http://localhost:3000/all/users')
+                const users = userRes.data
+                    .filter((u) => u.role !== "Admin")
+                    .map((u) => ({
+                        _id: u._id,
+                        firstName: u.firstName,
+                        lastName: u.lastName,
+                        designation: u.designation || u.role || "System User",
+                    }))
+                const emps = empRes.data.map((e) => ({
+                    _id: e._id,
+                    firstName: e.firstName,
+                    lastName: e.lastName,
+                    designation: e.designation || "",
+                }))
+                setAllEmployees([...users, ...emps])
             } catch (err) {
                 console.log(err)
             }
@@ -134,10 +149,7 @@ const EmployeeSelect = ({ value, onChange, employees = [], placeholder = "Select
 
             {/* ── Dropdown ── */}
             {open && (
-                <div
-                    className="fixed z-[99999] bg-white border border-slate-200 rounded-xl shadow-xl overflow-hidden"
-                    style={{ top: dropdownPos.top + 'px', left: dropdownPos.left + 'px', width: dropdownPos.width + 'px', minWidth: '220px' }}
-                >
+                <div className="absolute left-0 right-0 top-full mt-1.5 z-[9999] bg-white border border-slate-200 rounded-xl shadow-xl overflow-hidden">
                     {/* Search */}
                     <div className="p-2 border-b border-slate-100">
                         <div className="flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-lg px-2.5 py-1.5 focus-within:border-emerald-400 focus-within:ring-2 focus-within:ring-emerald-100 transition-all">
