@@ -19,7 +19,7 @@ router.post('/save/attendance', async function (req, res) {
                     overtime: rec.overtime,
                     markedBy: markedBy,
                 },
-                { upsert: true, new: true }
+                { upsert: true, returnDocument: 'after' }
             )
         }
 
@@ -43,7 +43,7 @@ router.get('/attendance/report', async function (req, res) {
         const { from, to } = req.query
         let filter = {}
         if (from && to) {
-            filter.date = { $gte: from, $lte: to }   
+            filter.date = { $gte: from, $lte: to }
         }
         let records = await AttendanceModel.find(filter).sort({ date: 1 })
         res.json(records)
