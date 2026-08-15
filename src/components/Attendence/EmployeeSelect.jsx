@@ -78,6 +78,7 @@ const EmployeeSelect = ({ value, onChange, employees = [], placeholder = "Select
             try {
                 const empRes = await axios.get('http://localhost:3000/find/employee')
                 const userRes = await axios.get('http://localhost:3000/all/users')
+                console.log("USERS RAW:", userRes.data)
                 const users = userRes.data
                     .filter((u) => u.role !== "Admin")
                     .map((u) => ({
@@ -86,6 +87,7 @@ const EmployeeSelect = ({ value, onChange, employees = [], placeholder = "Select
                         lastName: u.lastName,
                         designation: u.designation || u.role || "System User",
                     }))
+                       console.log("USERS MAPPED:", users)   // ← add
                 const emps = empRes.data.map((e) => ({
                     _id: e._id,
                     firstName: e.firstName,
@@ -106,7 +108,7 @@ const EmployeeSelect = ({ value, onChange, employees = [], placeholder = "Select
             <button
                 type="button"
                 onClick={() => setOpen(o => !o)}
-                className={`flex items-center justify-between gap-2 w-full cursor-pointer bg-white border rounded-xl px-3 py-2.5 text-slate-700 text-[12px] focus:outline-none transition-all shadow-sm
+                className={`flex items-center justify-between gap-2 w-full cursor-pointer bg-emerald-50 border rounded-xl px-3 py-2.5 text-slate-700 text-[12px] focus:outline-none transition-all shadow-sm
                     ${open ? 'border-emerald-400 ring-2 ring-emerald-100' : 'border-slate-200 hover:border-emerald-300'}`}
             >
                 <div className="flex items-center gap-2.5 min-w-0">
@@ -126,7 +128,7 @@ const EmployeeSelect = ({ value, onChange, employees = [], placeholder = "Select
                         </>
                     ) : (
                         <>
-                            <div className="w-6 h-6 rounded-lg bg-slate-100 flex items-center justify-center shrink-0">
+                            <div className="w-6 h-6 rounded-lg bg-emerald-100 flex items-center justify-center shrink-0">
                                 <User className="w-3.5 h-3.5 text-emerald-400" />
                             </div>
                             <span className="text-slate-400 text-[12px]">{placeholder}</span>
@@ -138,7 +140,7 @@ const EmployeeSelect = ({ value, onChange, employees = [], placeholder = "Select
                     {selected && (
                         <div
                             onClick={(e) => { e.stopPropagation(); onChange?.(""); }}
-                            className="w-4 h-4 rounded-full bg-slate-100 hover:bg-rose-100 flex items-center justify-center transition-colors cursor-pointer"
+                            className="w-4 h-4 rounded-full bg-emerald-100 hover:bg-rose-100 flex items-center justify-center transition-colors cursor-pointer"
                         >
                             <X className="w-2.5 h-2.5 text-slate-400 hover:text-rose-500" />
                         </div>
@@ -149,7 +151,7 @@ const EmployeeSelect = ({ value, onChange, employees = [], placeholder = "Select
 
             {/* ── Dropdown ── */}
             {open && (
-                <div className="absolute left-0 right-0 top-full mt-1.5 z-[9999] bg-white border border-slate-200 rounded-xl shadow-xl overflow-hidden">
+                <div className="absolute left-0 right-0 top-full mt-1.5 z-9999 bg-white border border-slate-200 rounded-xl shadow-xl overflow-hidden">
                     {/* Search */}
                     <div className="p-2 border-b border-slate-100">
                         <div className="flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-lg px-2.5 py-1.5 focus-within:border-emerald-400 focus-within:ring-2 focus-within:ring-emerald-100 transition-all">
