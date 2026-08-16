@@ -8,7 +8,33 @@ import { motion } from "framer-motion";
 import { can } from '../../Utils/Permissions.js'
 import DeleteAlertPopup from './DeleteAlertPopup.jsx'
 import ProdcutUpdatePopup from './ProdcutUpdatePopup.jsx';
+import {
+    useReactTable,
+    getCoreRowModel,
+    getPaginationRowModel,
+    getSortedRowModel,
+    getFilteredRowModel,
+    flexRender,
+} from '@tanstack/react-table'
 
+function SortIcon({ column }) {
+    if (!column.getCanSort()) return null
+    const sortState = column.getIsSorted()
+    return (
+        <button
+            onClick={column.getToggleSortingHandler()}
+            className="inline-flex items-center cursor-pointer ml-1 align-middle"
+        >
+            {sortState === "asc" ? (
+                <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 15l7-7 7 7" /></svg>
+            ) : sortState === "desc" ? (
+                <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 9l-7 7-7-7" /></svg>
+            ) : (
+                <svg className="w-3 h-3 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 9l4-4 4 4m0 6l-4 4-4-4" /></svg>
+            )}
+        </button>
+    )
+}
 
 const ManageProduct = () => {
     const [manageProduct, setManageProduct] = useState([])
@@ -19,6 +45,9 @@ const ManageProduct = () => {
     const [search, setSearch] = useState("")
     const [showProductPopup, setShowProductPopup] = useState(false)
     const [updateProduct, setUpdateProduct] = useState(null)
+
+    // ── TanStack table state ──
+    const [sorting, setSorting] = useState([])
 
     const navigate = useNavigate()
     async function handleManageProdcut() {
@@ -40,11 +69,93 @@ const ManageProduct = () => {
 
     }
 
-    const filtered = manageProduct.filter((p) =>
-        `${p.productName} ${p.model} ${p.mainCategory} ${p.saleRawCategory}`
-            .toLowerCase()
-            .includes(search.toLowerCase())
+    const filtered = React.useMemo(() =>
+        manageProduct.filter((p) =>
+            `${p.productName} ${p.model} ${p.mainCategory} ${p.saleRawCategory}`
+                .toLowerCase()
+                .includes(search.toLowerCase())
+        ),
+        [manageProduct, search]
     )
+
+    const columns = React.useMemo(() => [
+        {
+            id: 'sl',
+            header: 'SL.',
+            enableSorting: false,
+        },
+        {
+            id: 'product',
+            accessorKey: 'productName',
+            header: 'Product',
+            enableSorting: true,
+        },
+        {
+            id: 'model',
+            accessorKey: 'model',
+            header: 'Model',
+            enableSorting: true,
+        },
+        {
+            id: 'category',
+            accessorKey: 'mainCategory',
+            header: 'Category',
+            enableSorting: true,
+        },
+        {
+            id: 'priceLadder',
+            header: 'Price Ladder',
+            enableSorting: false,
+        },
+        {
+            id: 'retailMargin',
+            accessorFn: (row) => Number(row.distributorPrice) || 0,
+            header: 'Retail / Margin',
+            enableSorting: true,
+        },
+        {
+            id: 'scheme',
+            accessorFn: (row) => Number(row.unitSchemePoint) || 0,
+            header: 'Scheme',
+            enableSorting: true,
+        },
+        {
+            id: 'stock',
+            accessorFn: (row) => Number(row.storeLimit) || 0,
+            header: 'Stock',
+            enableSorting: true,
+        },
+        {
+            id: 'action',
+            header: 'Action',
+            enableSorting: false,
+        },
+    ], [])
+
+    const table = useReactTable({
+        data: filtered,
+        columns,
+        state: { sorting },
+        onSortingChange: setSorting,
+        getCoreRowModel: getCoreRowModel(),
+        getSortedRowModel: getSortedRowModel(),
+        getFilteredRowModel: getFilteredRowModel(),
+        getPaginationRowModel: getPaginationRowModel(),
+        initialState: { pagination: { pageSize: entries } },
+    })
+
+    // entries buttons ke click par TanStack ki pageSize bhi sync rahe
+    useEffect(() => {
+        table.setPageSize(entries)
+    }, [entries])
+
+    const sortedRows = table.getRowModel().rows
+    const totalFiltered = table.getFilteredRowModel().rows.length
+    const pageIndex = table.getState().pagination.pageIndex
+    const pageSize = table.getState().pagination.pageSize
+    const showingFrom = totalFiltered === 0 ? 0 : pageIndex * pageSize + 1
+    const showingTo = Math.min((pageIndex + 1) * pageSize, totalFiltered)
+
 
 
 
@@ -171,20 +282,27 @@ const ManageProduct = () => {
                     <table className="w-full min-w-245 text-sm align-top  ">
                         <thead className="sticky top-0 z-10 ">
                             <tr className="bg-emerald-700">
-                                <th className="text-left text-gray-100 font-bold px-4 py-3 whitespace-nowrap text-xs uppercase tracking-wider">SL.</th>
-                                <th className="text-left text-gray-100 font-bold px-4 py-3 text-xs uppercase tracking-wider">Product</th>
-                                <th className="text-left text-gray-100 font-bold px-4 py-3 whitespace-nowrap text-xs uppercase tracking-wider">Model</th>
-                                <th className="text-left text-gray-100 font-bold px-4 py-3 whitespace-nowrap text-xs uppercase tracking-wider">Category</th>
-                                <th className="text-left text-gray-100 font-bold px-4 py-3 whitespace-nowrap text-xs uppercase tracking-wider">Price Ladder</th>
-                                <th className="text-right text-gray-100 font-bold px-4 py-3 whitespace-nowrap text-xs uppercase tracking-wider">Retail / Margin</th>
-                                <th className="text-center text-gray-100 font-bold px-4 py-3 whitespace-nowrap text-xs uppercase tracking-wider">Scheme</th>
-                                <th className="text-left text-gray-100 font-bold px-4 py-3 whitespace-nowrap text-xs uppercase tracking-wider">Stock</th>
-                                <th className="text-right text-gray-100 font-bold px-4 py-3 whitespace-nowrap text-xs uppercase tracking-wider">Action</th>
+                                {table.getHeaderGroups()[0].headers.map((header) => {
+                                    const alignClass =
+                                        header.column.id === 'retailMargin' ? 'text-right' :
+                                            header.column.id === 'action' ? 'text-right' :
+                                                header.column.id === 'scheme' ? 'text-center' :
+                                                    'text-left'
+                                    return (
+                                        <th
+                                            key={header.id}
+                                            className={`${alignClass} text-gray-100 font-bold px-4 py-3 whitespace-nowrap text-xs uppercase tracking-wider select-none`}
+                                        >
+                                            {flexRender(header.column.columnDef.header, header.getContext())}
+                                            <SortIcon column={header.column} />
+                                        </th>
+                                    )
+                                })}
                             </tr>
                         </thead>
                         <tbody>
 
-                            {filtered.length === 0 && (
+                            {sortedRows.length === 0 && (
                                 <tr>
                                     <td colSpan={9} className="text-center py-24  ">
                                         <div className="flex flex-col items-center gap-3 ">
@@ -198,7 +316,8 @@ const ManageProduct = () => {
                                 </tr>
                             )}
 
-                            {filtered.map((product, index) => {
+                            {sortedRows.map((row, index) => {
+                                const product = row.original
 
                                 const cost = Number(product.costPrice) || 0
                                 const distributor = Number(product.distributorPrice) || 0
@@ -426,13 +545,21 @@ const ManageProduct = () => {
 
                 <div className="flex flex-wrap items-center justify-between gap-3 px-4 py-3 border-t border-emerald-50">
                     <p className="text-gray-400 text-xs">
-                        Showing {filtered.length === 0 ? 0 : 1} to {filtered.length} of {filtered.length} entries
+                        Showing {showingFrom} to {showingTo} of {totalFiltered} entries
                     </p>
                     <div className="flex items-center gap-1">
-                        <button type="button" className="px-3 py-1.5 bg-emerald-50 hover:bg-emerald-100 text-gray-500 text-xs font-semibold rounded-lg transition-all cursor-pointer border border-emerald-100">
+                        <button
+                            type="button"
+                            onClick={() => table.previousPage()}
+                            disabled={!table.getCanPreviousPage()}
+                            className="px-3 py-1.5 bg-emerald-50 hover:bg-emerald-100 text-gray-500 text-xs font-semibold rounded-lg transition-all cursor-pointer border border-emerald-100 disabled:opacity-40 disabled:cursor-not-allowed">
                             Previous
                         </button>
-                        <button type="button" className="px-3 py-1.5 bg-emerald-50 hover:bg-emerald-100 text-gray-500 text-xs font-semibold rounded-lg transition-all cursor-pointer border border-emerald-100">
+                        <button
+                            type="button"
+                            onClick={() => table.nextPage()}
+                            disabled={!table.getCanNextPage()}
+                            className="px-3 py-1.5 bg-emerald-50 hover:bg-emerald-100 text-gray-500 text-xs font-semibold rounded-lg transition-all cursor-pointer border border-emerald-100 disabled:opacity-40 disabled:cursor-not-allowed">
                             Next
                         </button>
                     </div>

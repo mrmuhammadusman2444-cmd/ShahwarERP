@@ -254,7 +254,7 @@ const ProdcutUpdatePopup = ({ setShowProductPopup, updateData, handleManageProdc
                                     <div className="relative">
                                         <Wallet size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 transition-colors group-focus-within:text-gray-600" />
                                         <input
-                                            value={product.costPrice}
+                                            value={product.costPrice ?? ""}
                                             onChange={(e) => setProduct({ ...product, costPrice: e.target.value })}
                                             type="number"
                                             placeholder="0.00"
@@ -271,7 +271,7 @@ const ProdcutUpdatePopup = ({ setShowProductPopup, updateData, handleManageProdc
                                     <div className="relative">
                                         <Truck size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-sky-400 transition-colors group-focus-within:text-sky-600" />
                                         <input
-                                            value={product.distributorPrice}
+                                            value={product.distributorPrice ?? ""}
                                             onChange={(e) => setProduct({ ...product, distributorPrice: e.target.value })}
                                             type="number"
                                             placeholder="0.00"
@@ -288,7 +288,7 @@ const ProdcutUpdatePopup = ({ setShowProductPopup, updateData, handleManageProdc
                                     <div className="relative">
                                         <Store size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-emerald-500 transition-colors group-focus-within:text-emerald-700" />
                                         <input
-                                            value={product.retailPrice}
+                                            value={product.retailPrice ?? ""}
                                             onChange={(e) => setProduct({ ...product, retailPrice: e.target.value })}
                                             type="number"
                                             placeholder="0.00"
@@ -303,7 +303,7 @@ const ProdcutUpdatePopup = ({ setShowProductPopup, updateData, handleManageProdc
                                     <div className="relative">
                                         <Building2 size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-amber-400 transition-colors group-focus-within:text-amber-600" />
                                         <input
-                                            value={product.wholesaleRate}
+                                            value={product.wholesaleRate ?? ""}
                                             onChange={(e) => setProduct({ ...product, wholesaleRate: e.target.value })}
                                             type="number"
                                             placeholder="0.00"
@@ -318,7 +318,7 @@ const ProdcutUpdatePopup = ({ setShowProductPopup, updateData, handleManageProdc
                                     <div className="relative">
                                         <Smartphone size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-violet-400 transition-colors group-focus-within:text-violet-600" />
                                         <input
-                                            value={product.codOnlinePrice}
+                                            value={product.codOnlinePrice ?? ""}
                                             onChange={(e) => setProduct({ ...product, codOnlinePrice: e.target.value })}
                                             type="number"
                                             placeholder="0.00"
@@ -333,7 +333,7 @@ const ProdcutUpdatePopup = ({ setShowProductPopup, updateData, handleManageProdc
                                     <div className="relative">
                                         <Sparkles size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-emerald-400 transition-colors group-focus-within:text-emerald-600" />
                                         <input
-                                            value={product.unitSchemePoint}
+                                            value={product.unitSchemePoint ?? ""}
                                             onChange={(e) => setProduct({ ...product, unitSchemePoint: e.target.value })}
                                             type="number"
                                             placeholder="0"
@@ -347,7 +347,7 @@ const ProdcutUpdatePopup = ({ setShowProductPopup, updateData, handleManageProdc
                                     <div className="relative">
                                         <Warehouse size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-emerald-400 transition-colors group-focus-within:text-emerald-600" />
                                         <input
-                                            value={product.storeLimit}
+                                            value={product.storeLimit ?? ""}
                                             onChange={(e) => setProduct({ ...product, storeLimit: e.target.value })}
                                             type="number"
                                             placeholder="0"
@@ -362,7 +362,7 @@ const ProdcutUpdatePopup = ({ setShowProductPopup, updateData, handleManageProdc
                                     <div className="relative">
                                         <Warehouse size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-emerald-400 transition-colors group-focus-within:text-emerald-600" />
                                         <input
-                                            value={product.Dozen}
+                                            value={product.Dozen ?? ""}
                                             onChange={(e) => setProduct({ ...product, Dozen: e.target.value })}
                                             type="number"
                                             placeholder="0"
