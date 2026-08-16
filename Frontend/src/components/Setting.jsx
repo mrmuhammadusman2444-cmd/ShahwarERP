@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { motion, AnimatePresence } from "framer-motion";
-import { Building2, Loader2, Search, ShieldCheck, ChevronDown, Users, Coins, Package, Receipt, Bell, Palette, Sun, Moon, Monitor, Download, Database, FileSpreadsheet, HardDriveDownload, Check, X, Crown, Calculator, Wallet, CalendarCheck, Boxes } from "lucide-react";
+import { Building2, Loader2,ClipboardList, Search, ShieldCheck, ChevronDown, Users, Coins, Package, Receipt, Bell, Palette, Sun, Moon, Monitor, Download, Database, FileSpreadsheet, HardDriveDownload, Check, X, Crown, Calculator, Wallet, CalendarCheck, Boxes } from "lucide-react";
 
 
 const NAV_ITEMS = [
@@ -352,6 +352,8 @@ const ROLES = [
   { name: "Cash & Expense", icon: Wallet },
   { name: "Raw Material", icon: Package },
   { name: "Stock Manager", icon: Boxes },
+  { name: "Sale Coordinator", icon: ClipboardList },
+
 ];
 const ACTIONS = ["view", "create", "update", "delete"];
 

@@ -13,6 +13,7 @@ import ablLogo from '../../assets/BankLogos/ABL.png'
 import npbLogo from '../../assets/BankLogos/nbp.jpg'
 import alfalahLogo from '../../assets/BankLogos/alfalah.svg'
 import meezanLogo from '../../assets/BankLogos/meezan.svg'
+import AlhabibLogo from '../../assets/BankLogos/Al Habib.png'
 import { useReactTable, getCoreRowModel, getPaginationRowModel, getSortedRowModel, getFilteredRowModel, flexRender, } from '@tanstack/react-table'
 import { Landmark, Plus, ListOrdered, Copy, FileText, FileSpreadsheet, FileBarChart, Printer, Search, Eye, Pencil, Trash2 } from 'lucide-react';
 
@@ -189,6 +190,7 @@ const ManageBank = () => {
     "nbp": npbLogo,
     "alfalah": alfalahLogo,
     "meezan": meezanLogo,
+    "Al Habib": AlhabibLogo, 
   }
 
   const getBankLogo = (name) => {
