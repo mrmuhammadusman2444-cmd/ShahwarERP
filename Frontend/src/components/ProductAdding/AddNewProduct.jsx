@@ -27,7 +27,8 @@ const AddNewProduct = () => {
     codOnlinePrice: '',
     unitSchemePoint: '',
     storeLimit: '',
-    Dozen: ''
+    Dozen: '',
+    picture: null
   })
 
   async function handleNewProduct() {
@@ -36,7 +37,30 @@ const AddNewProduct = () => {
     const minDelay = new Promise(r => setTimeout(r, 700))
 
     try {
-      await axios.post('http://localhost:3000/add/new/product', newProduct)
+      const formData = new FormData()
+      formData.append("productName", newProduct.productName)
+      formData.append("cartonSize", newProduct.cartonSize)
+      formData.append("weight", newProduct.weight)
+      formData.append("weightUnit", newProduct.weightUnit)
+      formData.append("model", newProduct.model)
+      formData.append("mainCategory", newProduct.mainCategory)
+      formData.append("saleRawCategory", newProduct.saleRawCategory)
+      formData.append("productCategory", newProduct.productCategory)
+      formData.append("costPrice", newProduct.costPrice)
+      formData.append("distributorPrice", newProduct.distributorPrice)
+      formData.append("retailPrice", newProduct.retailPrice)
+      formData.append("wholesaleRate", newProduct.wholesaleRate)
+      formData.append("codOnlinePrice", newProduct.codOnlinePrice)
+      formData.append("unitSchemePoint", newProduct.unitSchemePoint)
+      formData.append("storeLimit", newProduct.storeLimit)
+      formData.append("Dozen", newProduct.Dozen)
+      if (newProduct.picture) {
+        formData.append("picture", newProduct.picture)
+      }
+
+      await axios.post('http://localhost:3000/add/new/product', formData, {
+        headers: { "Content-Type": "multipart/form-data" }
+      })
       await minDelay
       setStatus("saved")
       setTimeout(() => setStatus("idle"), 2000)
@@ -227,6 +251,7 @@ const AddNewProduct = () => {
               <div>
                 <label className="text-gray-500 text-xs font-semibold uppercase tracking-wide block mb-1.5">Dozen</label>
                 <input
+                  value={newProduct.Dozen}
                   onChange={(e) => {
                     setNewProduct({ ...newProduct, Dozen: e.target.value })
                   }}
@@ -260,17 +285,36 @@ const AddNewProduct = () => {
 
         <div className="flex flex-col xl:flex-row gap-6 items-end ">
 
-          <div className="relative w-full xl:w-72 h-28 xl:-mt-7 rounded-xl border-2 border-dashed border-emerald-200 hover:border-emerald-400 bg-emerald-50/40 hover:bg-emerald-50 transition-all cursor-pointer flex flex-row items-center justify-center gap-4">            <input type="file" accept="image/*" className="absolute inset-0 opacity-0 cursor-pointer z-10" />
+          <div className="relative w-full xl:w-72 h-28 xl:-mt-7 rounded-xl border-2 border-dashed border-emerald-200 hover:border-emerald-400 bg-emerald-50/40 hover:bg-emerald-50 transition-all cursor-pointer flex flex-row items-center justify-center gap-4 overflow-hidden">
+            <input
+              onChange={(e) => {
+                const file = e.target.files[0]
+                if (file) {
+                  setNewProduct({ ...newProduct, picture: file })
+                }
+              }}
+              type="file" accept="image/*" className="absolute inset-0 opacity-0 cursor-pointer z-10" />
 
-            <div className="w-11 h-11  rounded-xl bg-white border border-emerald-100 shadow-sm flex items-center justify-center group-hover:scale-105 transition-transform shrink-0">
-              <svg className="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-              </svg>
-            </div>
-            <div>
-              <p className="text-gray-600 text-sm font-semibold">Click to upload image</p>
-              <p className="text-gray-400 text-xs mt-0.5">PNG, JPG — max 5MB</p>
-            </div>
+            {newProduct.picture ? (
+              <img
+                src={URL.createObjectURL(newProduct.picture)}
+                alt="preview"
+                className="w-full h-full object-cover"
+              />
+            ) : (
+              <>
+                <div className="w-11 h-11  rounded-xl bg-white border border-emerald-100 shadow-sm flex items-center justify-center group-hover:scale-105 transition-transform shrink-0">
+                  <svg className="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                  </svg>
+                </div>
+                <div>
+                  <p className="text-gray-600 text-sm font-semibold">Click to upload image</p>
+                  <p className="text-gray-400 text-xs mt-0.5">PNG, JPG — max 5MB</p>
+                </div>
+              </>
+            )}
+
             <div className="absolute bottom-2 right-2 w-7 h-7 bg-linear-to-br from-emerald-600 to-emerald-700 rounded-lg flex items-center justify-center shadow-md z-20">
               <svg className="w-3.5 h-3.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />

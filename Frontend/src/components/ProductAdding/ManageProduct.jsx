@@ -366,9 +366,13 @@ const ManageProduct = () => {
 
                                             <td className="px-4 py-3">
                                                 <div className="flex items-center gap-3">
-                                                    <div className={`w-10 h-10 shrink-0 rounded-xl bg-linear-to-br ${tileTone} flex items-center justify-center text-white text-sm font-bold shadow-sm`}>
-                                                        {initial}
-                                                    </div>
+                                                    {product.picture ? (
+                                                        <img src={`http://localhost:3000${product.picture}`} alt={product.productName} className="w-10 h-10 shrink-0 rounded-xl object-cover shadow-sm" />
+                                                    ) : (
+                                                        <div className={`w-10 h-10 shrink-0 rounded-xl bg-linear-to-br ${tileTone} flex items-center justify-center text-white text-sm font-bold shadow-sm`}>
+                                                            {initial}
+                                                        </div>
+                                                    )}
                                                     <div className="min-w-0">
                                                         <p className="text-gray-800 text-sm font-semibold truncate flex items-center gap-2">
                                                             {product.productName}

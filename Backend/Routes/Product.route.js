@@ -1,11 +1,24 @@
 import express from 'express'
+import multer from 'multer'
+import path from 'path'
 import AddProductModel from '../Models/Products/AddProductModel.js'
 
 const router = express.Router()
 
-router.post('/add/new/product', async (req, res) => {
-    try {
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, 'uploads/')
+    },
+    filename: function (req, file, cb) {
+        let ext = path.extname(file.originalname)
+        let unique = Date.now() + '-' + Math.round(Math.random() * 1e9)
+        cb(null, 'product-' + unique + ext)
+    }
+})
+const upload = multer({ storage: storage })
 
+router.post('/add/new/product', upload.single('picture'), async (req, res) => {
+    try {
         let data = req.body;
 
         const lastProduct = await AddProductModel
@@ -38,7 +51,8 @@ router.post('/add/new/product', async (req, res) => {
             wholesaleRate: data.wholesaleRate,
             codOnlinePrice: data.codOnlinePrice,
             unitSchemePoint: data.unitSchemePoint,
-            storeLimit: data.storeLimit
+            storeLimit: data.storeLimit,
+            picture: req.file ? '/uploads/' + req.file.filename : ""
         };
 
         const CreationProduct = await AddProductModel.create(AddProductObject);
@@ -55,8 +69,6 @@ router.post('/add/new/product', async (req, res) => {
             message: error.message
         });
     }
-    console.log("Request Body:", data);
-    console.log("Generated Code:", productCode);
 });
 
 router.get('/find/product', async function (req, res) {
@@ -73,13 +85,21 @@ router.post('/delete/product', async (req, res) => {
     res.json({ success: true, data: deleted })
 })
 
-router.post('/update/product/:id', async function (req, res) {
-    let updateProduct = await AddProductModel.findByIdAndUpdate(
-        req.params.id,
-        req.body,
-        { new: true }
-    )
-    res.json(updateProduct)
+router.post('/update/product/:id', upload.single('picture'), async function (req, res) {
+    try {
+        let updateFields = { ...req.body }
+        if (req.file) {
+            updateFields.picture = '/uploads/' + req.file.filename
+        }
+        let updateProduct = await AddProductModel.findByIdAndUpdate(
+            req.params.id,
+            updateFields,
+            { new: true }
+        )
+        res.json(updateProduct)
+    } catch (err) {
+        res.status(500).json({ success: false, message: err.message })
+    }
 })
 
 export default router

@@ -22,10 +22,17 @@ const AddProductSchema = new mongoose.Schema({
         type: String,
         unique: true,
         required: true
-    }
+    },
+
+    picture: {
+        type: String,
+        default: ""
+    },
 
 }, {
     timestamps: true
+
+
 });
 
 const AddProductModel = mongoose.model('Products', AddProductSchema)
