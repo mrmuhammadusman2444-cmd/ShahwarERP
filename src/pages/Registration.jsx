@@ -123,9 +123,9 @@ const Registration = () => {
           <div className="mt-8 p-4 rounded-xl" style={{ background: "rgba(255,255,255,0.07)", border: "1px solid rgba(255,255,255,0.14)" }}>
             <div className="flex items-center gap-2.5 mb-2.5">
               <div className="w-7 h-7 rounded-full bg-emerald-100 flex items-center justify-center text-[10px] font-bold text-emerald-800 shrink-0">
-                HF
+                SF
               </div>
-              <span className="text-white text-[13px] font-medium">Hafiz Foods</span>
+              <span className="text-white text-[13px] font-medium">Shahwar Foods</span>
               <span className="ml-auto text-[11px] text-emerald-400 font-medium">Est. 1960</span>
             </div>
             <p className="text-emerald-300 text-[12px] leading-relaxed">
