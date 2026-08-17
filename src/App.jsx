@@ -85,7 +85,7 @@ import AssignUserToStockPage from './pages/Stock/AssignUserToStockPage.jsx'
 import Preloader from './components/Preloader.jsx'
 //Accounts
 import SupplierPaymentsPage from './pages/Accounts/SupplierPaymentsPage.jsx'
-import FundTransferPage from './pages/Accounts/FundTransferPage.jsx'
+import TransactionPage from './pages/Accounts/TransactionPage.jsx'
 
 //Inbox
 import InboxPage from './pages/Inbox/InboxPage.jsx'
@@ -93,6 +93,8 @@ import InboxPage from './pages/Inbox/InboxPage.jsx'
 //Cash & Bank
 import CashPage from './pages/Cash&BankBook/CashPage.jsx'
 import BankPage from './pages/Cash&BankBook/BankPage.jsx'
+//hooks
+import GlobalShortcuts from './components/GlobalShortcuts.jsx'
 
 
 const App = () => {
@@ -101,6 +103,7 @@ const App = () => {
 
     <BrowserRouter>
 
+      <GlobalShortcuts />
 
       <Routes>
         //authentication
@@ -188,7 +191,7 @@ const App = () => {
         <Route path='/assign/user/stock' element={<AssignUserToStockPage />} />
         //Accounts
         <Route path='/supplier/payments' element={<SupplierPaymentsPage />} />
-        <Route path='/fund/transfer' element={<FundTransferPage />} />
+        <Route path='/make/transaction' element={<TransactionPage />} />
 
         //Inbox
         <Route path='/inbox' element={<InboxPage />} />

@@ -1087,10 +1087,10 @@ const SideMenus = ({ collapsed }) => {
                                 Supplier Payment
                             </div>
                         )}
-                        {canSub("accounts", "fundTransfer") && subMatches('Fund Transfer', 'Accounts') && (
+                        {canSub("accounts", "transaction") && subMatches('Fund Transfer', 'Accounts') && (
 
-                            <div onClick={() => { navigate('/fund/transfer') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
-                                Fund Transfer
+                            <div onClick={() => { navigate('/make/transaction') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                                Make a Transaction
                             </div>
                         )}
                         {canSub("accounts", "supplierTallyLedger") && subMatches('Supplier Tally Ledger', 'Accounts') && (

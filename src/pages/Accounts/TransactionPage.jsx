@@ -1,13 +1,13 @@
 import React from 'react'
 import Sidebar from '../../components/Sidebar.jsx'
-import FundTransfer from '../../components/Accounts/FundTransfer.jsx'
+import Transaction from '../../components/Accounts/Transaction.jsx'
 const FundTransferPage = () => {
   return (
    <div className='flex'>
 
       <Sidebar />
       <div className='flex-1'>
-     <FundTransfer/>
+     <Transaction/>
       </div>
     </div>
   )

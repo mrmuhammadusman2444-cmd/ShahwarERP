@@ -1,12 +1,42 @@
-import { Landmark, Search, BookOpen, Building2, CalendarDays, TrendingUp, TrendingDown, Wallet } from 'lucide-react'
+import React from 'react'
+import axios from 'axios'
+import { Landmark, Search, BookOpen, Building2, X, ChevronDown, CalendarDays, TrendingUp, TrendingDown, Wallet } from 'lucide-react'
 import { useReactTable, getCoreRowModel, getSortedRowModel, getFilteredRowModel, getPaginationRowModel, flexRender } from '@tanstack/react-table'
-import { useState, useMemo } from 'react'
+import { useState, useEffect, useRef, useMemo } from 'react'
 
 const BankBook = () => {
 
     const [sorting, setSorting] = useState([])
     const [globalFilter, setGlobalFilter] = useState('')
     const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 10 })
+    const [banks, setBanks] = useState([])
+    const [bankName, setBankName] = useState("")
+    const [bankOpen, setBankOpen] = useState(false)
+    const bankRef = useRef(null)
+
+    useEffect(() => {
+        async function fetchBanks() {
+            try {
+                const res = await axios.get('http://localhost:3000/find/bank')
+                setBanks(res.data)
+            } catch (err) {
+                console.log(err)
+            }
+        }
+        fetchBanks()
+    }, [])
+
+    useEffect(() => {
+        function handleClickOutside(e) {
+            if (bankRef.current && !bankRef.current.contains(e.target)) {
+                setBankOpen(false)
+            }
+        }
+        document.addEventListener("mousedown", handleClickOutside)
+        return () => document.removeEventListener("mousedown", handleClickOutside)
+    }, [])
+
+    const selectedBank = banks.find((b) => b.bankName === bankName)
 
     const columns = useMemo(() => [
         { accessorKey: 'sl', header: 'SL.', size: 60 },
@@ -52,14 +82,67 @@ const BankBook = () => {
             <div className="bg-white border border-emerald-100 rounded-2xl shadow-sm p-5 mb-4">
                 <div className="flex flex-wrap items-end gap-4">
 
-                    <div className="flex flex-col gap-1.5 flex-1 min-w-48">
+                    <div className="flex flex-col gap-1.5 flex-1 min-w-48" ref={bankRef}>
                         <label className="text-gray-700 text-xs font-semibold flex items-center gap-1.5">
                             <Building2 className="w-3.5 h-3.5 text-emerald-500" />
                             Bank Name
                         </label>
-                        <select className="w-full bg-emerald-50 border border-emerald-100 focus:border-emerald-400 focus:bg-white rounded-xl px-3 py-2.5 text-gray-500 text-sm focus:outline-none transition-all appearance-none cursor-pointer">
-                            <option value="">Select option</option>
-                        </select>
+                        <div className="relative">
+                            <button
+                                type="button"
+                                onClick={() => setBankOpen((o) => !o)}
+                                className={`flex items-center justify-between gap-2 w-full cursor-pointer bg-emerald-50 border rounded-xl px-3 py-2.5 text-sm transition-all ${bankOpen ? "border-emerald-400 bg-white ring-2 ring-emerald-100" : "border-emerald-100 hover:border-emerald-300"}`}
+                            >
+                                <div className="flex items-center gap-2.5 min-w-0">
+                                    {selectedBank ? (
+                                        <>
+                                            <div className="w-6 h-6 rounded-lg bg-emerald-100 flex items-center justify-center shrink-0">
+                                                <Building2 className="w-3.5 h-3.5 text-emerald-600" />
+                                            </div>
+                                            <span className="text-gray-700 text-sm font-semibold truncate">{selectedBank.bankName}</span>
+                                        </>
+                                    ) : (
+                                        <span className="text-gray-500 text-sm">Select option</span>
+                                    )}
+                                </div>
+                                <div className="flex items-center gap-1 shrink-0">
+                                    {selectedBank && (
+                                        <div
+                                            onClick={(e) => { e.stopPropagation(); setBankName("") }}
+                                            className="w-4 h-4 rounded-full bg-emerald-100 hover:bg-rose-100 flex items-center justify-center transition-colors cursor-pointer"
+                                        >
+                                            <X className="w-2.5 h-2.5 text-emerald-400 hover:text-rose-500" />
+                                        </div>
+                                    )}
+                                    <ChevronDown className={`w-4 h-4 text-emerald-500 transition-transform duration-200 ${bankOpen ? "rotate-180" : ""}`} />
+                                </div>
+                            </button>
+
+                            {bankOpen && (
+                                <div className="absolute left-0 right-0 top-full mt-1.5 z-50 bg-white border border-slate-200 rounded-xl shadow-lg overflow-hidden py-1 max-h-56 overflow-y-auto">
+                                    {banks.length === 0 ? (
+                                        <p className="text-center text-slate-400 text-xs py-4">No banks found</p>
+                                    ) : (
+                                        banks.map((b) => {
+                                            const isActive = b.bankName === bankName
+                                            return (
+                                                <button
+                                                    key={b._id}
+                                                    type="button"
+                                                    onClick={() => { setBankName(b.bankName); setBankOpen(false) }}
+                                                    className={`w-full flex items-center gap-2.5 px-3 py-2 text-left cursor-pointer transition-colors ${isActive ? "bg-emerald-50" : "hover:bg-slate-50"}`}
+                                                >
+                                                    <div className="w-7 h-7 rounded-lg bg-emerald-50 flex items-center justify-center shrink-0">
+                                                        <Building2 className={`w-3.5 h-3.5 ${isActive ? "text-emerald-600" : "text-slate-500"}`} />
+                                                    </div>
+                                                    <span className={`text-sm font-medium ${isActive ? "text-emerald-700" : "text-slate-700"}`}>{b.bankName}</span>
+                                                </button>
+                                            )
+                                        })
+                                    )}
+                                </div>
+                            )}
+                        </div>
                     </div>
 
                     <div className="flex flex-col gap-1.5">
@@ -87,11 +170,6 @@ const BankBook = () => {
             </div>
 
             <div className="bg-white border border-emerald-100 rounded-2xl shadow-sm overflow-hidden">
-
-
-
-
-
                 <div className="flex items-center justify-between px-4 py-3 border-b border-emerald-50 flex-wrap gap-3">
                     <div className="flex items-center gap-2">
                         <span className="text-gray-500 text-xs">Show</span>

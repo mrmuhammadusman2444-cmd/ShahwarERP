@@ -1,6 +1,6 @@
-import { BookOpen, CalendarDays, TrendingUp, TrendingDown, Wallet, Search, Coins } from 'lucide-react'
+import { BookOpen, CalendarDays, TrendingUp, Coins, ChevronDown, Wallet, TrendingDown, Search, X } from 'lucide-react'
 import { useReactTable, getCoreRowModel, getSortedRowModel, getFilteredRowModel, getPaginationRowModel, flexRender } from '@tanstack/react-table'
-import { useState, useMemo } from 'react'
+import { useState, useRef, useEffect, useMemo } from 'react'
 
 const CashBook = () => {
 
@@ -32,6 +32,30 @@ const CashBook = () => {
     getFilteredRowModel: getFilteredRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
   })
+
+
+  const [cashType, setCashType] = useState("")
+  const [cashTypeOpen, setCashTypeOpen] = useState(false)
+  const cashTypeRef = useRef(null)
+
+  useEffect(() => {
+    function handleClickOutside(e) {
+      if (cashTypeRef.current && !cashTypeRef.current.contains(e.target)) {
+        setCashTypeOpen(false)
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside)
+    return () => document.removeEventListener("mousedown", handleClickOutside)
+  }, [])
+
+  const cashTypeOptions = [
+    { value: "salary", label: "Salary", icon: Wallet },
+    { value: "expense", label: "Expense", icon: TrendingDown },
+    { value: "income", label: "Income", icon: TrendingUp },
+  ]
+  const selectedCashType = cashTypeOptions.find((o) => o.value === cashType)
+
+
 
   return (
     <div className="p-4 md:p-5">
@@ -68,17 +92,63 @@ const CashBook = () => {
             <input type="date" defaultValue="2026-08-17" className="bg-emerald-50 border border-emerald-100 focus:border-emerald-400 focus:bg-white rounded-xl px-3 py-2.5 text-gray-700 text-sm focus:outline-none transition-all cursor-pointer w-40" />
           </div>
 
-          <div className="flex flex-col gap-1.5 flex-1 min-w-40">
+          <div className="flex flex-col gap-1.5 flex-1 min-w-40" ref={cashTypeRef}>
             <label className="text-gray-700 text-xs font-semibold flex items-center gap-1.5">
               <Coins className="w-3.5 h-3.5 text-emerald-500" />
               Cash
             </label>
-            <select className="w-full bg-emerald-50 border border-emerald-100 focus:border-emerald-400 focus:bg-white rounded-xl px-3 py-2.5 text-gray-500 text-sm focus:outline-none transition-all appearance-none cursor-pointer">
-              <option value="">Select option</option>
-              <option value="salary">Salary</option>
-              <option value="expense">Expense</option>
-              <option value="income">INCOME</option>
-            </select>
+            <div className="relative">
+              <button
+                type="button"
+                onClick={() => setCashTypeOpen((o) => !o)}
+                className={`flex items-center justify-between gap-2 w-full cursor-pointer bg-emerald-50 border rounded-xl px-3 py-2.5 text-sm transition-all ${cashTypeOpen ? "border-emerald-400 bg-white ring-2 ring-emerald-100" : "border-emerald-100 hover:border-emerald-300"}`}
+              >
+                <div className="flex items-center gap-2.5 min-w-0">
+                  {selectedCashType ? (
+                    <>
+                      <div className="w-6 h-6 rounded-lg bg-emerald-100 flex items-center justify-center shrink-0">
+                        <selectedCashType.icon className="w-3.5 h-3.5 text-emerald-600" />
+                      </div>
+                      <span className="text-gray-700 text-sm font-semibold truncate">{selectedCashType.label}</span>
+                    </>
+                  ) : (
+                    <span className="text-gray-500 text-sm">Select option</span>
+                  )}
+                </div>
+                <div className="flex items-center gap-1 shrink-0">
+                  {selectedCashType && (
+                    <div
+                      onClick={(e) => { e.stopPropagation(); setCashType("") }}
+                      className="w-4 h-4 rounded-full bg-emerald-100 hover:bg-rose-100 flex items-center justify-center transition-colors cursor-pointer"
+                    >
+                      <X className="w-2.5 h-2.5 text-emerald-400 hover:text-rose-500" />
+                    </div>
+                  )}
+                  <ChevronDown className={`w-4 h-4 text-emerald-500 transition-transform duration-200 ${cashTypeOpen ? "rotate-180" : ""}`} />
+                </div>
+              </button>
+
+              {cashTypeOpen && (
+                <div className="absolute left-0 right-0 top-full mt-1.5 z-50 bg-white border border-slate-200 rounded-xl shadow-lg overflow-hidden py-1">
+                  {cashTypeOptions.map((opt) => {
+                    const isActive = opt.value === cashType
+                    return (
+                      <button
+                        key={opt.value}
+                        type="button"
+                        onClick={() => { setCashType(opt.value); setCashTypeOpen(false) }}
+                        className={`w-full flex items-center gap-2.5 px-3 py-2 text-left cursor-pointer transition-colors ${isActive ? "bg-emerald-50" : "hover:bg-slate-50"}`}
+                      >
+                        <div className="w-7 h-7 rounded-lg bg-emerald-50 flex items-center justify-center shrink-0">
+                          <opt.icon className={`w-3.5 h-3.5 ${isActive ? "text-emerald-600" : "text-slate-500"}`} />
+                        </div>
+                        <span className={`text-sm font-medium ${isActive ? "text-emerald-700" : "text-slate-700"}`}>{opt.label}</span>
+                      </button>
+                    )
+                  })}
+                </div>
+              )}
+            </div>
           </div>
 
           <button type="button" className="flex items-center gap-2 px-6 py-2.5 bg-linear-to-r from-emerald-600 to-emerald-700 hover:from-emerald-500 hover:to-emerald-600 text-white text-sm font-semibold rounded-xl shadow-md shadow-emerald-200 transition-all hover:-translate-y-0.5 active:translate-y-0 cursor-pointer whitespace-nowrap">
