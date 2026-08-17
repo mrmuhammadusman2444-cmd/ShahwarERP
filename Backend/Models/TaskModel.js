@@ -3,8 +3,8 @@ import mongoose from "mongoose";
 const TaskSchema = new mongoose.Schema({
     title: { type: String, required: true },
     description: { type: String },
-    assignedTo: { type: String },      // user email ya name (jise kaam diya)
-    assignedBy: { type: String },      // admin email ya name (jisne diya)
+    assignedTo: { type: String },      
+    assignedBy: { type: String },      
     dueDate: { type: Date },
     priority: {
         type: String,

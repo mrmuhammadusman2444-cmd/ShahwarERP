@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { motion, AnimatePresence } from "framer-motion";
-import { Building2, Loader2,ClipboardList, Search, ShieldCheck, ChevronDown, Users, Coins, Package, Receipt, Bell, Palette, Sun, Moon, Monitor, Download, Database, FileSpreadsheet, HardDriveDownload, Check, X, Crown, Calculator, Wallet, CalendarCheck, Boxes } from "lucide-react";
+import { Building2, Loader2, ClipboardList, Search, ShieldCheck, ChevronDown, Users, Coins, Package, Receipt, Bell, Palette, Sun, Moon, Monitor, Download, Database, FileSpreadsheet, HardDriveDownload, Check, X, Crown, Calculator, Wallet, CalendarCheck, Boxes } from "lucide-react";
 
 
 const NAV_ITEMS = [
@@ -327,6 +327,14 @@ const MODULES = [
       { key: "bankLedger", label: "Bank Ledger" },
     ]
   },
+
+  {
+    key: "cashBank", label: "Cash & Bank Book", subs: [
+      { key: "cashBook", label: "Cash Book" },
+      { key: "bankBook", label: "Bank Book" },
+    ]
+  },
+
   {
     key: "salary", label: "Salary", subs: [
       { key: "addEmployee", label: "Add Employee" },

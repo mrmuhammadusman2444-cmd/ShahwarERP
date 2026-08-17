@@ -90,6 +90,9 @@ import FundTransferPage from './pages/Accounts/FundTransferPage.jsx'
 //Inbox
 import InboxPage from './pages/Inbox/InboxPage.jsx'
 
+//Cash & Bank
+import CashPage from './pages/Cash&BankBook/CashPage.jsx'
+import BankPage from './pages/Cash&BankBook/BankPage.jsx'
 
 
 const App = () => {
@@ -189,6 +192,11 @@ const App = () => {
 
         //Inbox
         <Route path='/inbox' element={<InboxPage />} />
+        //CashBook
+        <Route path='/cash/book' element={<CashPage />} />
+        <Route path='/Bank/book' element={<BankPage />} />
+
+
 
 
 

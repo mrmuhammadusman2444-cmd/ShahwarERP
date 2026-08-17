@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios'
 import { useNavigate, useLocation } from 'react-router-dom';
 import { can, canSub, canAnySub } from '../Utils/Permissions.js'
-import { Search, Inbox, Bell, LayoutDashboard, Wallet, HandCoins, BriefcaseBusiness, ClipboardList, Landmark, Gift, ChartNoAxesCombined, Repeat2, Flag, BarChart2, LayoutGrid, Package, FileText, Users, Truck, ChevronDown, BadgeDollarSign, Handshake, PackageOpen, ShoppingCart, PackageCheck, Blocks } from "lucide-react";
+import { Search, Inbox, Bell, LayoutDashboard, Wallet, BookOpen, HandCoins, BriefcaseBusiness, ClipboardList, Landmark, Gift, ChartNoAxesCombined, Repeat2, Flag, BarChart2, LayoutGrid, Package, FileText, Users, Truck, ChevronDown, BadgeDollarSign, Handshake, PackageOpen, ShoppingCart, PackageCheck, Blocks } from "lucide-react";
 
 const SideMenus = ({ collapsed }) => {
     const [customerOpen, setCustomerOpen] = useState(false)
@@ -29,6 +29,7 @@ const SideMenus = ({ collapsed }) => {
     const [employeeOpen, setemployeeOpen] = useState(false)
     const [attendanceOpen, setattendanceOpen] = useState(false)
     const [salaryDetailOpen, setsalaryDetailOpen] = useState(false)
+    const [cashBankOpen, setcashBankOpen] = useState(false)
     const [searchQuery, setSearchQuery] = useState('')
     const [pendingPurchase, setPendingPurchase] = useState(0)
     const [pendingInvoiceCount, setPendingInvoiceCount] = useState(0)
@@ -1130,6 +1131,46 @@ const SideMenus = ({ collapsed }) => {
                     </div>
                 )}
 
+
+                {can("cashBank", "view") && menuMatches('Cash & Bank Book', ['Cash Book', 'Bank Book']) && (
+                    <div onMouseEnter={setTip} onClick={() => setcashBankOpen(!cashBankOpen)} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer transition-all mb-px ${collapsed ? 'justify-start w-9 h-9 mx-auto' : ''} ${isParentActive(['/cash-book', '/bank-book']) ? 'bg-[var(--nav-active)]' : 'hover:bg-[var(--nav-active)]'}`}>
+                        {isParentActive(['/cash/book', '/bank/book']) && !collapsed && (
+                            <span className="absolute left-0 top-1/2 -translate-y-1/2 w-0.75 h-4.5 bg-[var(--nav-strip)] rounded-r-full" />
+                        )}
+                        <BookOpen className="text-slate-100 shrink-0" size={23} />
+                        {!collapsed && <span className="text-[12.5px] text-slate-100 flex-1">Cash & Bank Book</span>}
+                        {!collapsed && <ChevronDown className={`text-slate-100 w-3.5 h-3.5 transition-transform duration-300 ${cashBankOpen ? 'rotate-180' : ''}`} />}
+                        {collapsed && (
+                            <span style={{ top: 'var(--tooltip-y, 50%)', transform: 'translateY(-50%)' }} className="fixed left-16 ml-1 bg-emerald-500 text-white text-[11px] px-2 py-1 rounded-md whitespace-nowrap opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-200 pointer-events-none z-999">
+                                Cash & Bank Book
+                            </span>
+                        )}
+                    </div>
+                )}
+
+                {!collapsed && (
+                    <div
+                        style={{
+                            maxHeight: (cashBankOpen || isSearching) ? '200px' : '0px',
+                            opacity: (cashBankOpen || isSearching) ? 1 : 0,
+                            transform: (cashBankOpen || isSearching) ? 'translateY(0px)' : 'translateY(-8px)',
+                            transition: 'max-height 0.5s cubic-bezier(0.16,1,0.3,1), opacity 0.4s cubic-bezier(0.16,1,0.3,1), transform 0.4s cubic-bezier(0.16,1,0.3,1)'
+                        }}
+                        className="ml-7 border-l border-slate-700 pl-3 flex flex-col gap-0.5 overflow-hidden"
+                    >
+                        {canSub("cashBank", "cashBook") && subMatches('Cash Book') && (
+                            <div onClick={() => { navigate('/cash/book') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                                Cash Book
+                            </div>
+                        )}
+                        {canSub("cashBank", "bankBook") && subMatches('Bank Book') && (
+                            <div onClick={() => { navigate('/bank/book') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                                Bank Book
+                            </div>
+                        )}
+                    </div>
+                )}
+
                 {can("bank", "view") && menuMatches('Bank', ['Add New', 'Add New Transaction', 'Manage Bank', 'Bank Ledger']) && (
 
                     <div onMouseEnter={setTip} onClick={() => setbankOpen(!bankOpen)} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer transition-all mb-px ${collapsed ? 'justify-start w-9 h-9 mx-auto' : ''} ${isParentActive(['/new/bank', '/add/new/transaction', '/manage/bank', '/bank/ledger']) ? 'bg-[var(--nav-active)]' : 'hover:bg-[var(--nav-active)]'}`}>
@@ -1289,7 +1330,7 @@ const SideMenus = ({ collapsed }) => {
                                         Employee Salary Ledger
                                     </div>
                                 )}
-                                
+
                                 {canSub("salary", "employeeAdvanceSalary") && subMatches('Employee Advance Salary') && (
                                     <div onClick={() => { navigate('/employee/advance/salary') }} className="text-[11.5px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                                         Employee Advance Salary
