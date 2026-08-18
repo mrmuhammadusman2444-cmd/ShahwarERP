@@ -151,7 +151,7 @@ const ManageCustomers = () => {
 
 
         <div className="hidden lg:block overflow-x-auto rounded-xl border border-emerald-100 h-115" style={{ WebkitOverflowScrolling: 'touch' }}>
-          <table className="w-full min-w-[800px] text-sm">
+          <table className="w-full min-w-200 text-sm">
             <thead className="sticky top-0 z-10">
               <tr className="bg-linear-to-b from-emerald-500 to-emerald-700 text-white">
                 <th className="text-left px-4 py-3 font-semibold text-xs uppercase tracking-wide rounded-tl-xl w-12">SL</th>
