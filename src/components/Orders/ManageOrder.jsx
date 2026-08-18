@@ -1,8 +1,11 @@
 import React from 'react'
+import { useState, useEffect } from 'react';
+import { motion } from 'framer-motion'
 import { useNavigate } from 'react-router-dom';
 
 const ManageOrder = () => {
   const navigate = useNavigate()
+  const [entries, setEntries] = useState(10)
   const Orders = [];
 
   return (
@@ -16,7 +19,7 @@ const ManageOrder = () => {
             </svg>
           </div>
           <div>
-<h1 className="text-gray-800 text-base md:text-xl font-bold">Manage Orders</h1>            <p className="text-gray-400 text-xs">Manage your Orders</p>
+            <h1 className="text-gray-800 text-base md:text-xl font-bold">Manage Orders</h1>            <p className="text-gray-400 text-xs">Manage your Orders</p>
           </div>
         </div>
 
@@ -24,7 +27,7 @@ const ManageOrder = () => {
 
 
       <div className="bg-white border border-blue-100 rounded-2xl shadow-sm p-4 mb-4">
-       <div className="flex flex-col sm:flex-row items-stretch sm:items-end gap-3 flex-wrap">
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-end gap-3 flex-wrap">
           <div>
             <label className="text-gray-500 text-xs font-semibold uppercase tracking-wide block mb-1.5">Start Date</label>
             <input type="date"
@@ -52,15 +55,25 @@ const ManageOrder = () => {
         <div className="px-5 py-3 border-b border-blue-50 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
 
           <div className="flex items-center gap-3 flex-wrap">
-            <div className="flex items-center gap-2 text-xs text-gray-500">
-              <span>Show</span>
-              <select className="bg-blue-50 border border-blue-100 rounded-lg px-2 py-1.5 text-gray-600 text-xs focus:outline-none focus:border-blue-400 transition-all">
-                <option>10</option>
-                <option>25</option>
-                <option>50</option>
-                <option>100</option>
-              </select>
-              <span>entries</span>
+            <div className="flex items-center gap-1 bg-emerald-50 border border-emerald-100 rounded-xl p-1">
+              {[10, 25, 50, 100].map((num) => {
+                const active = entries === num
+                return (
+                  <button
+                    key={num}
+                    onClick={() => setEntries(num)}
+                    className={`relative px-3 py-1.5 rounded-lg text-xs font-bold transition-colors cursor-pointer ${active ? "text-white" : "text-gray-500 hover:text-emerald-700"}`}>
+                    {active && (
+                      <motion.span
+                        layoutId="entriesPillOrders"
+                        transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                        className="absolute inset-0 rounded-lg bg-linear-to-b from-emerald-500 to-emerald-600 shadow-sm shadow-emerald-200"
+                      />
+                    )}
+                    <span className="relative">{num}</span>
+                  </button>
+                )
+              })}
             </div>
 
             <div className="flex items-center gap-1.5 ">
@@ -123,7 +136,7 @@ const ManageOrder = () => {
                   </td>
                 </tr>
               ) : (
-                Orders.map((sale, idx) => (
+                Orders.slice(0, entries).map((sale, idx) => (
                   <tr key={sale.id} className={`hover:bg-blue-50/40 transition-colors ${idx % 2 === 0 ? "bg-white" : "bg-gray-50/30"}`}>
                     <td className="px-4 py-3 text-gray-400 text-xs">{idx + 1}</td>
                     <td className="px-4 py-3 text-blue-600 text-xs font-medium">{sale.invoiceNo}</td>

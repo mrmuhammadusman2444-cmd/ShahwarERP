@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion"
 import { useEffect, useState } from "react";
 import axios from 'axios'
 import DeleteAlertPopup from "./DeleteAlertPopup";
@@ -14,6 +15,7 @@ const ManageCustomers = () => {
   const [showEditPopup, setShowEditPopup] = useState(false)
   const [showDeleteAlert, setShowDeleteAlert] = useState(false)
   const [deleteData, setDeleteData] = useState(null)
+  const [entries, setEntries] = useState(10)
 
 
 
@@ -95,15 +97,25 @@ const ManageCustomers = () => {
 
 
           <div className="flex items-center gap-2 flex-wrap">
-            <div className="flex items-center gap-2">
-              <span className="text-gray-500 text-sm">Show</span>
-              <select className="bg-emerald-50 border border-emerald-100 rounded-lg px-2 py-1.5 text-gray-700 text-sm focus:outline-none focus:border-emerald-400 cursor-pointer">
-                <option>10</option>
-                <option>25</option>
-                <option>50</option>
-                <option>100</option>
-              </select>
-              <span className="text-gray-500 text-sm">entries</span>
+            <div className="flex items-center gap-1 bg-emerald-50 border border-emerald-100 rounded-xl p-1">
+              {[10, 25, 50, 100].map((num) => {
+                const active = entries === num
+                return (
+                  <button
+                    key={num}
+                    onClick={() => setEntries(num)}
+                    className={`relative px-3 py-1.5 rounded-lg text-xs font-bold transition-colors cursor-pointer ${active ? "text-white" : "text-gray-500 hover:text-emerald-700"}`}>
+                    {active && (
+                      <motion.span
+                        layoutId="entriesPill"
+                        transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                        className="absolute inset-0 rounded-lg bg-linear-to-b from-emerald-500 to-emerald-600 shadow-sm shadow-emerald-200"
+                      />
+                    )}
+                    <span className="relative">{num}</span>
+                  </button>
+                )
+              })}
             </div>
 
             <div className="flex items-center gap-1.5">
@@ -172,7 +184,7 @@ const ManageCustomers = () => {
                 </tr>
               )}
 
-              {filteredCustomers.map((customer, index) => {
+              {filteredCustomers.slice(0, entries).map((customer, index) => {
 
                 const limit = Number(customer.amountLimit) || 0
                 const used = Number(customer.customerCredits) || 0
