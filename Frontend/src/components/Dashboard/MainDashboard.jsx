@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Sun, Sunset, Moon } from "lucide-react";
 import Setting from '../Setting.jsx'
-import {can} from "../../utils/permissions.js";
+import { can } from "../../utils/permissions.js";
 import GlobarSearchBar from "./GlobarSearchBar.jsx";
 import UserSelectMenu from "../UserAccount/UserSelectMenu.jsx";
 import { BarChart, Bar, PieChart, Pie, Cell, Legend, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
@@ -267,7 +267,7 @@ const MainDashboard = () => {
 
     return (
         <div
-            className="page-bg p-4 md:p-5  min-h-screen overflow-y-auto"
+            className="page-bg p-4 md:p-5 min-h-screen overflow-y-auto overflow-x-hidden"
             style={{ contain: "layout paint" }}
         >
             {showSetting ? (

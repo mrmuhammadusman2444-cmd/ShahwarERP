@@ -17,6 +17,7 @@ import TaskRoute from './Routes/Task.route.js'
 import AttendenceRoute from './Routes/Attendence.route.js'
 import HolidayRoute from './Routes/Holiday.route.js'
 import SalaryAdvanceRoute from './Routes/SalaryAdvance.route.js'
+import CompanySettingRoute from './Routes/CompanySetting.route.js'
 
 DbConnection()
 
@@ -42,6 +43,8 @@ app.use('/', TaskRoute)
 app.use('/', AttendenceRoute)
 app.use('/', HolidayRoute)
 app.use('/', SalaryAdvanceRoute)
+app.use('/', CompanySettingRoute)
+
 app.use('/uploads', express.static('uploads'))
 
 

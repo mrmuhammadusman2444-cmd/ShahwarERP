@@ -71,14 +71,25 @@ function Select({ children, ...props }) {
   );
 }
 
-function Checkbox({ label, defaultChecked }) {
-  const [checked, setChecked] = useState(defaultChecked ?? false);
+function Checkbox({ label, defaultChecked, checked, onChange }) {
+  const [internalChecked, setInternalChecked] = useState(defaultChecked ?? false);
+  const isControlled = checked !== undefined;
+  const value = isControlled ? checked : internalChecked;
+
+  function handleChange(e) {
+    if (isControlled) {
+      onChange?.(e);
+    } else {
+      setInternalChecked(e.target.checked);
+    }
+  }
+
   return (
     <label className="flex items-center gap-2 text-sm text-gray-700 cursor-pointer select-none">
       <input
         type="checkbox"
-        checked={checked}
-        onChange={() => setChecked(!checked)}
+        checked={value}
+        onChange={handleChange}
         className="w-4 h-4 accent-emerald-600 cursor-pointer"
       />
       {label}
@@ -122,6 +133,44 @@ function SaveButton() {
 
 
 function GeneralSection() {
+  const [settings, setSettings] = useState({
+    companyName: "",
+    businessType: "Food & Beverages",
+    phone: "",
+    email: "",
+    address: "",
+    currency: "PKR",
+    dateFormat: "DD/MM/YYYY",
+    language: "English",
+    timeZone: "Asia/Karachi (UTC+5)",
+  })
+  const [status, setStatus] = useState("idle")
+
+  async function loadSettings() {
+    try {
+      let res = await axios.get('http://localhost:3000/company-settings')
+      setSettings(res.data)
+    } catch (err) {
+      console.log("LOAD FAILED:", err.response?.data || err.message)
+    }
+  }
+
+  useEffect(() => {
+    loadSettings()
+  }, [])
+
+  async function handleSave() {
+    setStatus("saving")
+    try {
+      await axios.post('http://localhost:3000/update/company-settings', settings)
+      setStatus("saved")
+      setTimeout(() => setStatus("idle"), 2000)
+    } catch (err) {
+      console.log("SAVE FAILED:", err.response?.data || err.message)
+      setStatus("idle")
+    }
+  }
+
   return (
     <div>
       <h2 className="text-lg font-medium text-gray-900 mb-1">General settings</h2>
@@ -130,25 +179,41 @@ function GeneralSection() {
       <Card title="Company information">
         <div className="grid grid-cols-2 gap-3">
           <Field label="Company name">
-            <Input type="text" defaultValue="Hafiz Foods Pvt. Ltd." />
+            <Input
+              type="text"
+              value={settings.companyName}
+              onChange={(e) => setSettings({ ...settings, companyName: e.target.value })}
+            />
           </Field>
           <Field label="Business type">
-            <Select>
+            <Select
+              value={settings.businessType}
+              onChange={(e) => setSettings({ ...settings, businessType: e.target.value })}
+            >
               <option>Food & Beverages</option>
               <option>Manufacturing</option>
               <option>Distribution</option>
             </Select>
           </Field>
           <Field label="Phone">
-            <Input type="text" defaultValue="+92 300 0000000" />
+            <Input
+              type="text"
+              value={settings.phone}
+              onChange={(e) => setSettings({ ...settings, phone: e.target.value })}
+            />
           </Field>
           <Field label="Email">
-            <Input type="email" defaultValue="info@hafizfoods.pk" />
+            <Input
+              type="email"
+              value={settings.email}
+              onChange={(e) => setSettings({ ...settings, email: e.target.value })}
+            />
           </Field>
           <div className="col-span-2">
             <Field label="Address">
               <textarea
-                defaultValue="Lahore, Punjab, Pakistan"
+                value={settings.address}
+                onChange={(e) => setSettings({ ...settings, address: e.target.value })}
                 rows={2}
                 className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm text-gray-800 resize-y focus:outline-none focus:ring-2 focus:ring-emerald-500"
               />
@@ -160,27 +225,39 @@ function GeneralSection() {
       <Card title="Regional settings">
         <div className="grid grid-cols-2 gap-3">
           <Field label="Currency">
-            <Select>
-              <option>PKR — Pakistani Rupee</option>
-              <option>USD — US Dollar</option>
-              <option>AED — UAE Dirham</option>
+            <Select
+              value={settings.currency}
+              onChange={(e) => setSettings({ ...settings, currency: e.target.value })}
+            >
+              <option value="PKR">PKR — Pakistani Rupee</option>
+              <option value="USD">USD — US Dollar</option>
+              <option value="AED">AED — UAE Dirham</option>
             </Select>
           </Field>
           <Field label="Date format">
-            <Select>
+            <Select
+              value={settings.dateFormat}
+              onChange={(e) => setSettings({ ...settings, dateFormat: e.target.value })}
+            >
               <option>DD/MM/YYYY</option>
               <option>MM/DD/YYYY</option>
               <option>YYYY-MM-DD</option>
             </Select>
           </Field>
           <Field label="Language">
-            <Select>
+            <Select
+              value={settings.language}
+              onChange={(e) => setSettings({ ...settings, language: e.target.value })}
+            >
               <option>English</option>
               <option>Urdu</option>
             </Select>
           </Field>
           <Field label="Time zone">
-            <Select>
+            <Select
+              value={settings.timeZone}
+              onChange={(e) => setSettings({ ...settings, timeZone: e.target.value })}
+            >
               <option>Asia/Karachi (UTC+5)</option>
               <option>Asia/Dubai (UTC+4)</option>
             </Select>
@@ -188,7 +265,15 @@ function GeneralSection() {
         </div>
       </Card>
 
-      <SaveButton />
+      <button
+        onClick={handleSave}
+        disabled={status !== "idle"}
+        className={`flex items-center gap-2 px-6 py-2.5 text-white text-sm font-semibold rounded-xl shadow-md transition-all hover:-translate-y-0.5 active:translate-y-0 cursor-pointer disabled:cursor-not-allowed ${status === "saved" ? "bg-emerald-500 shadow-emerald-200" : "bg-linear-to-r from-emerald-600 to-emerald-700 hover:from-emerald-500 hover:to-emerald-600 shadow-emerald-200"}`}
+      >
+        {status === "idle" && "Save Changes"}
+        {status === "saving" && (<><Loader2 className="w-4 h-4 animate-spin" /> Saving...</>)}
+        {status === "saved" && (<><Check className="w-4 h-4" strokeWidth={3} /> Saved!</>)}
+      </button>
     </div>
   );
 }
@@ -977,6 +1062,14 @@ function AppearanceSection() {
     () => localStorage.getItem("accent") || ACCENT_COLORS[0]
   );
   const [pattern, setPattern] = useState(() => localStorage.getItem("bgPattern") || "none");
+  const [sidebarPinned, setSidebarPinned] = useState(
+    () => localStorage.getItem("sidebarPinned") === "true"
+  );
+
+  useEffect(() => {
+    localStorage.setItem("sidebarPinned", sidebarPinned);
+    window.dispatchEvent(new Event("sidebar-pin-changed"));
+  }, [sidebarPinned]);
 
   const themes = [
     { id: "light", label: "Light", icon: Sun },
@@ -992,7 +1085,7 @@ function AppearanceSection() {
     { id: "breakfast", label: "Breakfast" },
     { id: "food", label: "Mixed Food" },
   ];
-  // theme apply + persist
+
   useEffect(() => {
     const root = document.documentElement;
     const applyResolved = (mode) => {
@@ -1048,7 +1141,7 @@ function AppearanceSection() {
               key={id}
               onClick={() => setTheme(id)}
               className={`flex flex-col items-center cursor-pointer gap-2 px-6 py-3 rounded-lg border transition-all ${theme === id
-                ? "border-[var(--accent)] border-2 text-[color:var(--accent)]"
+                ? "border-(--accent) border-2 text-(--accent)"
                 : "border-gray-200 text-gray-500 hover:border-gray-300"
                 }`}
             >
@@ -1121,7 +1214,7 @@ function AppearanceSection() {
                 key={p.id}
                 onClick={() => setPattern(p.id)}
                 title={p.label}
-                className={`relative w-14 h-14 rounded-lg cursor-pointer transition-all hover:scale-105 border-2 ${pattern === p.id ? "border-[var(--accent)]" : "border-gray-200"}`}
+                className={`relative w-14 h-14 rounded-lg cursor-pointer transition-all hover:scale-105 border-2 ${pattern === p.id ? "border-(--accent)" : "border-gray-200"}`}
                 style={{
                   backgroundColor: "#f8fafc",
                   backgroundImage: previews[p.id],
@@ -1129,7 +1222,7 @@ function AppearanceSection() {
               >
                 {pattern === p.id && (
                   <span className="absolute inset-0 flex items-center justify-center">
-                    <Check size={16} className="text-[color:var(--accent)]" style={{ filter: "drop-shadow(0 0 2px white)" }} />
+                    <Check size={16} className="text-(--accent)" style={{ filter: "drop-shadow(0 0 2px white)" }} />
                   </span>
                 )}
               </button>
@@ -1145,9 +1238,34 @@ function AppearanceSection() {
 
       <Card title="Layout preferences">
         <div className="flex flex-col gap-3">
-          <Checkbox label="Compact sidebar" defaultChecked />
-          <Checkbox label="Show breadcrumbs" />
-          <Checkbox label="Sticky header" defaultChecked />
+          <button
+            type="button"
+            onClick={() => setSidebarPinned(!sidebarPinned)}
+            className="w-full flex items-center justify-between gap-3 cursor-pointer group"
+          >
+            <div className="flex items-center gap-2.5">
+              <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 transition-colors ${sidebarPinned ? "bg-emerald-100" : "bg-gray-100"}`}>
+                <svg
+                  className={`w-4 h-4 transition-colors ${sidebarPinned ? "text-emerald-600" : "text-gray-400"}`}
+                  fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 19l-7-7 7-7m8 14V5" />
+                </svg>
+              </div>
+              <div className="text-left">
+                <p className="text-sm text-gray-700 font-medium">Pin sidebar expanded</p>
+                <p className="text-xs text-gray-400">Keep sidebar open, ignore hover</p>
+              </div>
+            </div>
+
+            <span
+              className={`relative inline-flex h-6 w-11 shrink-0 items-center rounded-full transition-colors duration-200 ${sidebarPinned ? "bg-emerald-600" : "bg-gray-200"}`}
+            >
+              <span
+                className={`inline-block h-4.5 w-4.5 transform rounded-full bg-white shadow-md transition-transform duration-200 ${sidebarPinned ? "translate-x-6" : "translate-x-1"}`}
+              />
+            </span>
+          </button>
         </div>
       </Card>
 
@@ -1156,10 +1274,10 @@ function AppearanceSection() {
         <button
           onClick={() => {
             setTheme("light");
-            setAccent(ACCENT_COLORS[0]); // default emerald
-            setSidebarColor("bg-slate-900"); // default navy
+            setAccent(ACCENT_COLORS[0]);
+            setSidebarColor("bg-slate-900");
           }}
-          className="text-xs text-gray-500 hover:text-[color:var(--accent)] underline cursor-pointer"
+          className="text-xs text-gray-500 hover:text-(--accent) underline cursor-pointer"
         >
           Reset to default
         </button>
@@ -1169,7 +1287,7 @@ function AppearanceSection() {
 
   );
 }
-// Sidebar Color swatches — Appearance section me add karo
+
 function SidebarColorPicker() {
   const [selected, setSelected] = useState(localStorage.getItem("sidebarColorHex") || "#0f172a")
 

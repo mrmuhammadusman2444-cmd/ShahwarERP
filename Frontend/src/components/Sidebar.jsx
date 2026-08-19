@@ -19,6 +19,8 @@ const Sidebar = () => {
   const [collapsed, setCollapsed] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
   const [sidebarColor, setSidebarColor] = useState(localStorage.getItem("sidebarColorHex") || "#0f172a")
+  const [sidebarPinned, setSidebarPinned] = useState(localStorage.getItem("sidebarPinned") === "true")
+
 
   useEffect(() => {
     function handleColorChange() {
@@ -27,6 +29,18 @@ const Sidebar = () => {
     window.addEventListener("sidebar-color-changed", handleColorChange)
     return () => window.removeEventListener("sidebar-color-changed", handleColorChange)
   }, [])
+
+  useEffect(() => {
+    function handlePinChange() {
+      setSidebarPinned(localStorage.getItem("sidebarPinned") === "true")
+    }
+    window.addEventListener("sidebar-pin-changed", handlePinChange)
+    return () => window.removeEventListener("sidebar-pin-changed", handlePinChange)
+  }, [])
+
+  useEffect(() => {
+    if (sidebarPinned) setCollapsed(false)
+  }, [sidebarPinned])
 
   useEffect(() => {
     function handleClickOutside(e) {
@@ -59,8 +73,8 @@ const Sidebar = () => {
 
       <aside className="h-screen flex flex-row">
         <nav
-          onMouseEnter={() => { if (window.innerWidth >= 768) setCollapsed(false) }}
-          onMouseLeave={() => { if (window.innerWidth >= 768) setCollapsed(true) }}
+          onMouseEnter={() => { if (!sidebarPinned && window.innerWidth >= 768) setCollapsed(false) }}
+          onMouseLeave={() => { if (!sidebarPinned && window.innerWidth >= 768) setCollapsed(true) }}
           style={{ backgroundColor: sidebarColor }}
           className={`h-screen flex flex-col border-r border-slate-100 shadow-sm transition-all duration-300 fixed md:relative z-50 w-67 ${collapsed ? 'md:w-16' : 'md:w-67'} ${mobileOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}`}
         >
