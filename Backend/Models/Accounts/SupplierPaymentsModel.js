@@ -9,6 +9,7 @@ const SupplierPaymentSchema = new mongoose.Schema({
         default: "Cash Payment"
     },
     fromCustomer: { type: String },
+    bankName: { type: String, default: "" },
     voucherNo: { type: String },
     remark: { type: String },
     amountInWords: { type: String },

@@ -73,8 +73,7 @@ const SelectSupplier = ({ value, onChange }) => {
             </button>
 
             {open && (
-                <div className="absolute left-0 right-0 top-full mt-1 z-999 bg-white border border-slate-200 rounded-xl shadow-xl overflow-hidden">
-
+                <div className="absolute left-0 right-0 top-full mt-1 z-[9999] bg-white border border-slate-200 rounded-xl shadow-xl overflow-hidden">
                     <div className="p-2 border-b border-emerald-50">
                         <div className="flex items-center gap-2 bg-emerald-50 border border-emerald-100 rounded-xl px-3 py-2 focus-within:border-emerald-400 transition-all">
                             <svg className="w-3.5 h-3.5 text-emerald-300 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">

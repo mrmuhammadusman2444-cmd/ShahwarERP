@@ -8,6 +8,7 @@ const router = express.Router()
 
 router.post('/newCustomer', async function (req, res) {
     let data = req.body
+    console.log(data)
     let AddCustomerObject = {
         customerName: data.customerName,
         email: data.email,
@@ -97,4 +98,40 @@ router.get('/customer/ledger/:customerName', async function (req, res) {
         closingBalance: runningBalance,
     })
 })
+
+router.post('/add/fund-transfer', async function (req, res) {
+    try {
+        let data = req.body
+
+        // voucher number auto-generate (FT0001, FT0002...)
+        let lastVoucher = await SupplierPaymentsModel
+            .findOne({ voucherNo: { $regex: /^FT/ } })
+            .sort({ createdAt: -1 })
+
+        let voucherNo = "FT0001"
+        if (lastVoucher && lastVoucher.voucherNo) {
+            let lastNumber = parseInt(lastVoucher.voucherNo.replace("FT", ""))
+            voucherNo = `FT${String(lastNumber + 1).padStart(4, "0")}`
+        }
+
+        let transferObject = {
+            date: data.date,
+            fromCustomer: data.fromCustomer || "",
+            bankName: data.bankName || "",
+            totalAmount: data.amount,
+            voucherNo: voucherNo,
+            remark: data.details || "",
+            status: "pending",
+        }
+
+        let created = await SupplierPaymentsModel.create(transferObject)
+        res.json({ success: true, data: created })
+    } catch (err) {
+        console.log("FUND TRANSFER ERROR:", err)
+        res.status(500).json({ success: false, message: err.message })
+    }
+})
+
+
+
 export default router
