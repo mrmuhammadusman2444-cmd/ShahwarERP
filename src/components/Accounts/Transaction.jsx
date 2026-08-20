@@ -2,12 +2,11 @@ import React, { useState, useRef, useEffect } from 'react'
 import BankDropDown from '../Bank/BankDropDown.jsx'
 import SelectSupplier from '../Purchase/SelectProduct.jsx'
 import axios from 'axios'
-import { ArrowRight, User, Wallet, Landmark, Warehouse, ChevronDown, Check, Repeat } from 'lucide-react'
+import { ArrowLeftRight, User, Wallet, Landmark, Warehouse, ChevronDown, Check, Repeat, ShieldCheck, Calendar, X, Search } from 'lucide-react'
 
-function DropdownField({ icon: Icon, label, placeholder, value, options, onSelect, tone = 'emerald' }) {
+function DropdownField({ icon: Icon, label, placeholder, value, options, onSelect }) {
     const [open, setOpen] = useState(false)
     const ref = useRef(null)
-
 
     useEffect(() => {
         function onClick(e) {
@@ -17,30 +16,27 @@ function DropdownField({ icon: Icon, label, placeholder, value, options, onSelec
         return () => document.removeEventListener('mousedown', onClick)
     }, [])
 
-
     const selected = options.find((o) => o.value === value)
 
     return (
         <div ref={ref} className="relative">
-            <label className="mb-1.5 block text-[11px] font-bold uppercase tracking-widest text-emerald-700/70">
-                {label}
-            </label>
             <button
                 type="button"
                 onClick={() => setOpen((o) => !o)}
-                className={`group flex w-full cursor-pointer items-center gap-3 rounded-2xl border-2 bg-white px-4 py-3.5 text-left shadow-sm transition-all duration-200 ${open ? 'border-emerald-500 shadow-emerald-100' : 'border-emerald-100 hover:border-emerald-300'
+                className={`flex w-full cursor-pointer flex-col items-start gap-2 rounded-2xl border bg-white px-4 py-3.5 text-left transition-all duration-200 ${open ? 'border-emerald-400 ring-4 ring-emerald-50' : 'border-slate-200 hover:border-emerald-300'
                     }`}
             >
-                <span className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-xl transition-colors ${selected ? 'bg-emerald-600 text-white' : 'bg-emerald-50 text-emerald-400'
-                    }`}>
-                    {selected ? <selected.icon size={17} /> : <Icon size={17} />}
-                </span>
-                <span className="min-w-0 flex-1">
-                    <span className={`block truncate text-[15px] font-semibold ${selected ? 'text-slate-800' : 'text-slate-400'}`}>
+                <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400">{label} account</span>
+                <span className="flex w-full items-center gap-2.5">
+                    <span className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full transition-colors ${selected ? 'bg-linear-to-br from-emerald-600 to-emerald-800 text-white' : 'bg-slate-100 text-slate-400'
+                        }`}>
+                        {selected ? <selected.icon size={16} /> : <Icon size={16} />}
+                    </span>
+                    <span className={`min-w-0 flex-1 truncate text-[15px] font-bold ${selected ? 'text-slate-800' : 'text-slate-400 font-medium'}`}>
                         {selected ? selected.label : placeholder}
                     </span>
+                    <ChevronDown size={16} className={`shrink-0 text-slate-400 transition-transform duration-300 ${open ? 'rotate-180' : ''}`} />
                 </span>
-                <ChevronDown size={17} className={`shrink-0 text-emerald-400 transition-transform duration-300 ${open ? 'rotate-180' : ''}`} />
             </button>
 
             <div
@@ -58,7 +54,7 @@ function DropdownField({ icon: Icon, label, placeholder, value, options, onSelec
                                 className={`flex items-center gap-3 rounded-xl px-3 py-2.5 text-left text-sm font-medium transition-colors cursor-pointer ${isActive ? 'bg-emerald-50 text-emerald-800' : 'text-slate-600 hover:bg-emerald-50/60'
                                     }`}
                             >
-                                <span className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-lg ${isActive ? 'bg-emerald-600 text-white' : 'bg-slate-100 text-slate-400'}`}>
+                                <span className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-lg ${isActive ? 'bg-linear-to-br from-emerald-600 to-emerald-800 text-white' : 'bg-slate-100 text-slate-400'}`}>
                                     <opt.icon size={14} />
                                 </span>
                                 {opt.label}
@@ -100,8 +96,8 @@ function NestedPicker({ title, placeholder, value, onSelect, type = 'customer' }
     const selected = items.find((c) => c[nameKey] === value)
 
     return (
-        <div className="mt-3 animate-[slideDown_0.25s_ease-out] rounded-2xl border border-dashed border-emerald-300 bg-emerald-50/50 p-4">
-            <p className="mb-2 text-[11px] font-bold uppercase tracking-widest text-emerald-700">{title}</p>
+        <div className="mt-2 animate-[slideDown_0.2s_ease-out] rounded-2xl border border-dashed border-emerald-300 bg-emerald-50/50 p-3">
+            <p className="mb-2 text-[10px] font-bold uppercase tracking-widest text-emerald-700">{title}</p>
 
             {selected ? (
                 <div className="flex items-center justify-between gap-2 rounded-xl border border-emerald-200 bg-white px-3 py-2.5">
@@ -116,17 +112,13 @@ function NestedPicker({ title, placeholder, value, onSelect, type = 'customer' }
                         onClick={() => onSelect?.("")}
                         className="text-slate-400 hover:text-rose-500 cursor-pointer shrink-0"
                     >
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M6 18L18 6M6 6l12 12" />
-                        </svg>
+                        <X className="w-4 h-4" />
                     </button>
                 </div>
             ) : (
                 <>
                     <div className="flex items-center gap-2 rounded-xl border border-emerald-200 bg-white px-3 py-2.5">
-                        <svg className="h-4 w-4 shrink-0 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                        </svg>
+                        <Search className="h-4 w-4 shrink-0 text-emerald-400" />
                         <input
                             value={query}
                             onChange={(e) => setQuery(e.target.value)}
@@ -135,7 +127,7 @@ function NestedPicker({ title, placeholder, value, onSelect, type = 'customer' }
                         />
                     </div>
 
-                    <div className="mt-2 max-h-48 overflow-y-auto rounded-xl border border-emerald-100 bg-white">
+                    <div className="mt-2 max-h-40 overflow-y-auto rounded-xl border border-emerald-100 bg-white">
                         {filtered.length === 0 ? (
                             <p className="text-center text-slate-400 text-xs py-4">No {type} found</p>
                         ) : (
@@ -211,11 +203,19 @@ export default function FundTransfer() {
         }
     }
 
+    const fromSummary = fromType === 'customer' ? (fromCustomer || 'Customer')
+        : fromType === 'bank' ? (fromBank || 'Bank')
+            : fromType === 'cash' ? 'Cash'
+                : fromType === 'warehouse' ? 'Warehouse'
+                    : '—'
 
-
+    const toSummary = toType === 'supplier' ? (toSupplier || 'Supplier')
+        : toType === 'bank' ? (toBank || 'Bank')
+            : toType === 'cash' ? 'Cash'
+                : '—'
 
     return (
-        <div className="min-h-screen bg-linear-to-br from-emerald-50 via-white to-emerald-50 p-4 md:p-6">
+        <div className="min-h-screen bg-linear-to-br from-emerald-50 via-white to-emerald-50 p-4 md:p-6 flex flex-col items-center">
             <style>{`
         @keyframes slideDown {
           from { opacity: 0; transform: translateY(-8px); }
@@ -223,22 +223,21 @@ export default function FundTransfer() {
         }
       `}</style>
 
-            <div className="mx-auto max-w-3xl">
+            <div className="w-full max-w-5xl">
 
                 <div className="mb-6 flex items-center gap-4">
-                    <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-linear-to-br from-emerald-600 to-emerald-700 shadow-md shadow-emerald-200">
+                    <div className="flex h-14 w-14 items-center justify-center rounded-full bg-linear-to-br from-emerald-600 to-emerald-800 shadow-lg shadow-emerald-300/40 ring-4 ring-white">
                         <Repeat className="h-6 w-6 text-white" />
                     </div>
                     <div>
-                        <h1 className="text-xl font-bold text-slate-800">New Transaction</h1>
-                        <p className="text-xs text-slate-400">Move funds between accounts</p>
+                        <h1 className="text-2xl font-bold text-slate-800 leading-tight">Transaction</h1>
+                        <p className="text-[11px] font-medium uppercase tracking-wide text-slate-400">Make Transaction To Ledger Accordingly</p>
                     </div>
                 </div>
 
-                <div className="relative rounded-3xl border border-emerald-100 bg-white p-5 shadow-sm md:p-7">
+                <div className="rounded-3xl border border-slate-200/70 bg-white p-5 shadow-xl shadow-slate-200/50 md:p-6">
 
-                    <div className="grid grid-cols-1 items-start gap-6 md:grid-cols-[1fr_auto_1fr]">
-
+                    <div className="relative grid grid-cols-1 gap-3 md:grid-cols-[1fr_1fr]">
                         <div>
                             <DropdownField
                                 icon={Wallet}
@@ -248,7 +247,6 @@ export default function FundTransfer() {
                                 options={FROM_OPTIONS}
                                 onSelect={setFromType}
                             />
-
                             {fromType === 'customer' && (
                                 <NestedPicker
                                     title="Select customer"
@@ -258,26 +256,11 @@ export default function FundTransfer() {
                                     onSelect={setFromCustomer}
                                 />
                             )}
-
                             {fromType === 'bank' && (
                                 <div className="mt-2">
-                                    <BankDropDown
-                                        value={fromBank}
-                                        onChange={(bankName) => setFromBank(bankName)}
-                                    />
+                                    <BankDropDown value={fromBank} onChange={(bankName) => setFromBank(bankName)} />
                                 </div>
                             )}
-                        </div>
-
-                        <div className="hidden h-full items-center justify-center pt-8 md:flex">
-                            <span className="flex h-10 w-10 items-center justify-center rounded-full bg-emerald-600 shadow-md shadow-emerald-200">
-                                <ArrowRight className="h-5 w-5 text-white" />
-                            </span>
-                        </div>
-                        <div className="flex justify-center md:hidden">
-                            <span className="flex h-9 w-9 rotate-90 items-center justify-center rounded-full bg-emerald-600 shadow-md shadow-emerald-200">
-                                <ArrowRight className="h-4 w-4 text-white" />
-                            </span>
                         </div>
 
                         <div>
@@ -305,48 +288,101 @@ export default function FundTransfer() {
                             )}
                         </div>
 
+                        <div className="pointer-events-none absolute left-1/2 top-6.5 hidden -translate-x-1/2 md:flex">
+                            <span className="pointer-events-auto flex h-9 w-9 items-center justify-center rounded-full border-4 border-white bg-slate-100 text-slate-500 shadow-md">
+                                <ArrowLeftRight size={15} />
+                            </span>
+                        </div>
                     </div>
 
-                    <div className="mt-8 grid grid-cols-1 gap-4 border-t border-emerald-50 pt-6 sm:grid-cols-2">
+                    <div className="mt-5 grid grid-cols-1 gap-4 md:grid-cols-[1.3fr_1fr]">
                         <div>
-                            <label className="mb-1.5 block text-[11px] font-bold uppercase tracking-widest text-emerald-700/70">Amount</label>
-                            <div className="relative">
-                                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-sm font-bold text-emerald-400">Rs.</span>
+                            <label className="mb-1.5 block text-[11px] font-bold uppercase tracking-widest text-slate-500">Amount</label>
+                            <div className="flex items-center gap-2 rounded-2xl border-2 border-emerald-100 bg-emerald-50/30 px-4 py-3 transition-all focus-within:border-emerald-400 focus-within:bg-white focus-within:ring-4 focus-within:ring-emerald-50">
+                                <span className="text-2xl font-bold text-slate-700">Rs.</span>
                                 <input
-                                    type="number"
+                                    
                                     value={amount}
                                     onChange={(e) => setAmount(e.target.value)}
-                                    placeholder="0.00"
-                                    className="w-full rounded-2xl border-2 border-emerald-100 bg-emerald-50/40 py-3.5 pl-12 pr-4 text-sm font-semibold text-slate-800 placeholder-slate-300 transition-all focus:border-emerald-500 focus:bg-white focus:outline-none"
+                                    placeholder="0"
+                                    className="w-full bg-transparent text-2xl font-bold text-slate-800 placeholder-slate-300 focus:outline-none"
                                 />
                             </div>
                         </div>
+
                         <div>
-                            <label className="mb-1.5 block text-[11px] font-bold uppercase tracking-widest text-emerald-700/70">Date</label>
+                            <label className="mb-1.5 flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-widest text-slate-500">
+                                <Calendar size={12} />
+                                Date
+                            </label>
                             <input
                                 type="date"
                                 value={date}
                                 onChange={(e) => setDate(e.target.value)}
-                                className="w-full rounded-2xl border-2 border-emerald-100 bg-emerald-50/40 px-4 py-3.5 text-sm font-medium text-slate-700 transition-all focus:border-emerald-500 focus:bg-white focus:outline-none"
+                                className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3.5 text-sm font-medium text-slate-700 h-13.5 transition-all focus:border-emerald-400 focus:ring-4 focus:ring-emerald-50 focus:outline-none"
                             />
                         </div>
+                    </div>
+
+                    <div className="mt-4">
+                        <label className="mb-1.5 block text-[11px] font-bold uppercase tracking-widest text-slate-500">Notes / Description</label>
                         <textarea
                             value={details}
                             onChange={(e) => setDetails(e.target.value)}
-                            placeholder="Details..."
-                            rows={4}
-                            className="border border-emerald-300 placeholder:text-sm placeholder:text-gray-300 rounded-lg w-177 resize-none px-3 py-2 text-sm outline-none  focus:ring-emerald-400 focus:border-emerald-400 transition-colors"
+                            placeholder="Add reference or secure note..."
+                            rows={2}
+                            className="w-full resize-none rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-700 placeholder-slate-400 transition-all focus:border-emerald-400 focus:ring-4 focus:ring-emerald-50 focus:outline-none"
                         />
                     </div>
 
-                    <button
-                        type="button"
-                        onClick={handleSaveTransaction}
-                        disabled={status === 'saving'}
-                        className="mt-6 w-full cursor-pointer rounded-2xl bg-linear-to-r from-emerald-600 to-emerald-700 py-3.5 text-sm font-bold text-white shadow-md shadow-emerald-200 transition-all hover:-translate-y-0.5 hover:from-emerald-500 hover:to-emerald-600 active:translate-y-0 disabled:opacity-60"
-                    >
-                        {status === 'saving' ? 'Saving...' : status === 'saved' ? 'Saved!' : 'Save Transaction'}
-                    </button>
+                    <div className="mt-5 flex flex-col gap-4 border-t border-slate-100 pt-5 sm:flex-row sm:items-center sm:justify-between">
+                        <div>
+                            <p className="mb-2 text-[10px] font-bold uppercase tracking-widest text-slate-400">Review summary</p>
+                            <div className="flex flex-wrap items-center gap-x-6 gap-y-1.5">
+                                <div>
+                                    <p className="text-[10px] font-semibold uppercase tracking-wide text-slate-400">From</p>
+                                    <p className="text-sm font-bold text-slate-700 truncate max-w-32">{fromSummary}</p>
+                                </div>
+                                <div>
+                                    <p className="text-[10px] font-semibold uppercase tracking-wide text-slate-400">To</p>
+                                    <p className="text-sm font-bold text-slate-700 truncate max-w-32">{toSummary}</p>
+                                </div>
+                                <div>
+                                    <p className="text-[10px] font-semibold uppercase tracking-wide text-slate-400">Amount</p>
+                                    <p className="text-sm font-bold text-emerald-700">Rs. {amount ? Number(amount).toLocaleString() : '0'}</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button
+                            type="button"
+                            onClick={handleSaveTransaction}
+                            disabled={status === 'saving'}
+                            className="group relative flex shrink-0 cursor-pointer items-center justify-center gap-2 overflow-hidden rounded-2xl bg-linear-to-r from-emerald-700 to-emerald-800 px-6 py-3.5 text-sm font-bold text-white shadow-lg shadow-emerald-900/20 transition-all hover:-translate-y-0.5 hover:shadow-xl disabled:cursor-not-allowed disabled:opacity-70"
+                        >
+                            <span className="absolute inset-0 -translate-x-full bg-linear-to-r from-transparent via-white/15 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
+                            {status === 'saving' ? (
+                                <>
+                                    <svg className="h-4 w-4 animate-spin" fill="none" viewBox="0 0 24 24">
+                                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                                    </svg>
+                                    Saving...
+                                </>
+                            ) : status === 'saved' ? (
+                                <>
+                                    <Check size={16} strokeWidth={3} />
+                                    Saved!
+                                </>
+                            ) : (
+                                <>
+                                    <ShieldCheck size={16} />
+                                    Confirm Transfer
+                                </>
+                            )}
+                        </button>
+                    </div>
+
                 </div>
             </div>
         </div>
