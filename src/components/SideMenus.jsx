@@ -79,34 +79,8 @@ const SideMenus = ({ collapsed }) => {
 
         return () => window.removeEventListener("approval-changed", countPendingPurchase)
     }, [])
-    useEffect(() => {
-        async function countPendingPayment() {
-            try {
-                let res = await axios.get('http://localhost:3000/find/supplier/payment')
-                let count = res.data.filter(p => p.status !== "approved" && p.status !== "rejected").length
-                setPendingPaymentCount(count)
-            } catch (err) {
-                console.log("COUNT PAYMENT FAILED:", err.response?.data || err.message)
-            }
-        }
-        countPendingPayment()
-        window.addEventListener("approval-changed", countPendingPayment)
-        return () => window.removeEventListener("approval-changed", countPendingPayment)
-    }, [])
 
-    useEffect(() => {
-        async function countPendingInvoice() {
-            try {
-                let res = await axios.get('http://localhost:3000/all/pending/invoices')
-                setPendingInvoiceCount(res.data.length)
-            } catch (err) {
-                console.log("COUNT INVOICE FAILED:", err.message)
-            }
-        }
-        countPendingInvoice()
-        window.addEventListener("approval-changed", countPendingInvoice)
-        return () => window.removeEventListener("approval-changed", countPendingInvoice)
-    }, [])
+
 
     useEffect(() => {
         async function countPendingPayment() {
@@ -122,6 +96,9 @@ const SideMenus = ({ collapsed }) => {
         window.addEventListener("approval-changed", countPendingPayment)
         return () => window.removeEventListener("approval-changed", countPendingPayment)
     }, [])
+
+
+
     const isSearching = searchQuery.trim().length > 0
 
     const menuMatches = (parentLabel, subLabels) => {

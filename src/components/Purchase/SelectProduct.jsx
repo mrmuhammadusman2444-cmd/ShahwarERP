@@ -67,7 +67,13 @@ const SelectProducts = ({ value, onChange }) => {
             {/* ── Trigger Button ── */}
             <button
                 type="button"
-                onClick={() => setOpen((o) => !o)}
+                onClick={() => {
+                    if (!open && ref.current) {
+                        const rect = ref.current.getBoundingClientRect();
+                        setDropdownPos({ top: rect.bottom + 4, left: rect.left, width: rect.width });
+                    }
+                    setOpen((o) => !o);
+                }}
                 className="flex items-center justify-between gap-2 w-full cursor-pointer bg-emerald-50 border border-emerald-100 hover:border-emerald-300 rounded-lg px-3 py-1.5 text-slate-700 text-[12px] focus:outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 transition-all"
             >
                 <div className="flex items-center gap-2 min-w-0">

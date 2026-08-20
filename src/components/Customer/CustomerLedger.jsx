@@ -4,6 +4,7 @@ import axios from 'axios'
 import SelectCustomer from '../Sales/SelectCustomers.jsx'
 import jsPDF from "jspdf"
 import autoTable from "jspdf-autotable"
+import { useReactTable, getCoreRowModel, getSortedRowModel, getFilteredRowModel, getPaginationRowModel, flexRender } from '@tanstack/react-table'
 
 const CustomerLedger = () => {
   const [fromDate, setFromDate] = useState("")
@@ -13,6 +14,31 @@ const CustomerLedger = () => {
   const [selectedCustomer, setSelectedCustomer] = useState("")
   const [closingBalance, setClosingBalance] = useState(0)
   const [openingBalance, setOpeningBalance] = useState(0)
+  const [sorting, setSorting] = useState([])
+  const [globalFilter, setGlobalFilter] = useState("")
+
+  const columns = [
+    { header: 'Date', accessorKey: 'date' },
+    { header: 'Description', accessorKey: 'description' },
+    { header: 'Invoice ID', accessorKey: 'invoiceId' },
+    { header: 'Deposit ID', accessorKey: 'depositId' },
+    { header: 'Debit', accessorKey: 'debit' },
+    { header: 'Credit', accessorKey: 'credit' },
+    { header: 'Balance', accessorKey: 'balance' },
+  ]
+
+  const table = useReactTable({
+    data: filteredEntries,
+    columns,
+    state: { sorting, globalFilter },
+    onSortingChange: setSorting,
+    onGlobalFilterChange: setGlobalFilter,
+    getCoreRowModel: getCoreRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    initialState: { pagination: { pageSize: 5 } },
+  })
 
   function handleSearch() {
     if (!fromDate && !toDate) {
@@ -267,12 +293,20 @@ const CustomerLedger = () => {
               {new Date().toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" })}
             </span>
           </div>
-          <div className="flex items-center gap-2 bg-white border border-emerald-100 rounded-full pl-3 pr-1.5 py-1 shadow-sm">
-            <span className="text-gray-700 text-[10px] font-bold tracking-wide">Balance</span>
-            <span className="bg-emerald-600 text-white text-xs font-bold tabular-nums rounded-full px-3 py-1">
-              <span className="text-emerald-100 text-[9px] font-normal mr-0.5">Rs.</span>
-              {Number(closingBalance || 0).toLocaleString()}
-            </span>
+          <div className="flex items-center gap-2 flex-wrap">
+            <div className="flex items-center gap-1.5 border border-slate-200 rounded-full px-3 py-1.5 bg-emerald-50/60 focus-within:border-emerald-400 transition-all">
+              <svg className="w-3.5 h-3.5 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
+              <input value={globalFilter} onChange={(e) => setGlobalFilter(e.target.value)} placeholder="Search table..." className="text-[12px] bg-transparent border-none focus:outline-none w-28" />
+            </div>
+            <div className="flex items-center gap-2 bg-white border border-emerald-100 rounded-full pl-3 pr-1.5 py-1 shadow-sm">
+              <span className="text-gray-700 text-[10px] font-bold tracking-wide">Balance</span>
+              <span className="bg-emerald-600 text-white text-xs font-bold tabular-nums rounded-full px-3 py-1">
+                <span className="text-emerald-100 text-[9px] font-normal mr-0.5">Rs.</span>
+                {Number(closingBalance || 0).toLocaleString()}
+              </span>
+            </div>
           </div>
         </div>
 
@@ -280,15 +314,30 @@ const CustomerLedger = () => {
         <div className="overflow-auto max-h-[60vh]">
           <table className="w-full text-sm border-collapse">
             <thead>
-              <tr className="bg-linear-to-b from-emerald-500 to-emerald-700 text-white sticky top-0 z-10">
-                <th className="text-left text-[12px] font-semibold tracking-wider px-2 sm:px-4 py-3 whitespace-nowrap">Date</th>
-                <th className="text-left text-[12px] font-semibold tracking-wider px-2 sm:px-4 py-3">Description</th>
-                <th className="text-left text-[12px] font-semibold tracking-wider px-2 sm:px-4 py-3 whitespace-nowrap">Invoice ID</th>
-                <th className="text-left text-[12px] font-semibold tracking-wider px-2 sm:px-4 py-3 whitespace-nowrap hidden md:table-cell"> Deposit ID</th>
-                <th className="text-right text-[12px] font-semibold tracking-wider px-2 sm:px-4 py-3 whitespace-nowrap">Debit</th>
-                <th className="text-right text-[12px] font-semibold tracking-wider px-2 sm:px-4 py-3 whitespace-nowrap">Credit</th>
-                <th className="text-right text-[12px] font-semibold tracking-wider px-2 sm:px-4 py-3 whitespace-nowrap">Balance</th>
-              </tr>
+              {table.getHeaderGroups().map((headerGroup) => (
+                <tr key={headerGroup.id} className="bg-linear-to-b from-emerald-500 to-emerald-700 text-white sticky top-0 z-10">
+                  {headerGroup.headers.map((header) => {
+                    const alignRight = ['debit', 'credit', 'balance'].includes(header.column.id)
+                    const hiddenCell = header.column.id === 'depositId' ? 'hidden md:table-cell' : ''
+                    return (
+                      <th key={header.id} className={`${alignRight ? 'text-right' : 'text-left'} text-[12px] font-semibold tracking-wider px-2 sm:px-4 py-3 whitespace-nowrap ${hiddenCell}`}>
+                        <button onClick={header.column.getToggleSortingHandler()} className={`flex items-center gap-1 cursor-pointer hover:opacity-80 transition-opacity select-none ${alignRight ? 'ml-auto' : ''}`}>
+                          {flexRender(header.column.columnDef.header, header.getContext())}
+                          <span className="text-emerald-100">
+                            {header.column.getIsSorted() === "asc" ? (
+                              <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 15l7-7 7 7" /></svg>
+                            ) : header.column.getIsSorted() === "desc" ? (
+                              <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 9l-7 7-7-7" /></svg>
+                            ) : (
+                              <svg className="w-3 h-3 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 9l4-4 4 4m0 6l-4 4-4-4" /></svg>
+                            )}
+                          </span>
+                        </button>
+                      </th>
+                    )
+                  })}
+                </tr>
+              ))}
             </thead>
 
             <tbody>
@@ -307,7 +356,7 @@ const CustomerLedger = () => {
                 </td>
               </tr>
 
-              {filteredEntries.length === 0 ? (
+              {table.getRowModel().rows.length === 0 ? (
                 <tr className="h-84">
                   <td colSpan={7} className="text-center py-14">
                     <div className="flex flex-col items-center gap-2">
@@ -327,92 +376,96 @@ const CustomerLedger = () => {
                     ...filteredEntries.map(e => Math.max(Number(e.debit) || 0, Number(e.credit) || 0)),
                     1
                   )
-                  return filteredEntries.map((entry, idx) => (
-                    <tr key={idx} className="group relative border-b border-gray-50 hover:bg-emerald-50/50 transition-colors">
+                  return table.getRowModel().rows.map((row) => {
+                    const entry = row.original
+                    const idx = row.index
+                    return (
+                      <tr key={idx} className="group relative border-b border-gray-50 hover:bg-emerald-50/50 transition-colors">
 
-                      <td className="px-2 sm:px-4 py-3.5 text-left whitespace-nowrap relative">
-                        <span className="absolute left-0 top-1/2 -translate-y-1/2 h-6 w-0.5 rounded-r bg-emerald-500 opacity-0 group-hover:opacity-100 transition-opacity" />
-                        <span className="inline-flex items-center gap-1 sm:gap-2">
-                          <span className="hidden sm:flex items-center justify-center w-7 h-7 rounded-lg bg-gray-50 text-gray-400 group-hover:bg-emerald-50 group-hover:text-emerald-500 transition-colors shrink-0">
-                            <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+                        <td className="px-2 sm:px-4 py-3.5 text-left whitespace-nowrap relative">
+                          <span className="absolute left-0 top-1/2 -translate-y-1/2 h-6 w-0.5 rounded-r bg-emerald-500 opacity-0 group-hover:opacity-100 transition-opacity" />
+                          <span className="inline-flex items-center gap-1 sm:gap-2">
+                            <span className="hidden sm:flex items-center justify-center w-7 h-7 rounded-lg bg-gray-50 text-gray-400 group-hover:bg-emerald-50 group-hover:text-emerald-500 transition-colors shrink-0">
+                              <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+                            </span>
+                            <span className="text-gray-700 text-xs font-medium tabular-nums">
+                              {entry.date ? new Date(entry.date).toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" }) : "—"}
+                            </span>
                           </span>
-                          <span className="text-gray-700 text-xs font-medium tabular-nums">
-                            {entry.date ? new Date(entry.date).toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" }) : "—"}
-                          </span>
-                        </span>
-                      </td>
+                        </td>
 
-                      <td className="px-2 sm:px-4 py-3.5 text-left">
-                        {entry.invoiceId ? (
-                          <button onClick={() => handleDownloadInvoice(entry.invoiceId)}
-                            className="inline-flex items-center gap-1.5 text-gray-700 hover:text-emerald-600 text-xs font-medium cursor-pointer group/desc transition-colors" title="Download invoice">
-                            <svg className="w-3.5 h-3.5 text-gray-300 group-hover/desc:text-emerald-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-                            </svg>
-                            <span className="group-hover/desc:underline">
+                        <td className="px-2 sm:px-4 py-3.5 text-left">
+                          {entry.invoiceId ? (
+                            <button onClick={() => handleDownloadInvoice(entry.invoiceId)}
+                              className="inline-flex items-center gap-1.5 text-gray-700 hover:text-emerald-600 text-xs font-medium cursor-pointer group/desc transition-colors" title="Download invoice">
+                              <svg className="w-3.5 h-3.5 text-gray-300 group-hover/desc:text-emerald-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                              </svg>
+                              <span className="group-hover/desc:underline">
+                                {Array.isArray(entry.description) ? entry.description.map((line, i) => <p key={i}>{line}</p>) : entry.description}
+                              </span>
+                            </button>
+                          ) : (
+                            <span className="text-gray-700 text-xs font-medium">
                               {Array.isArray(entry.description) ? entry.description.map((line, i) => <p key={i}>{line}</p>) : entry.description}
                             </span>
-                          </button>
-                        ) : (
-                          <span className="text-gray-700 text-xs font-medium">
-                            {Array.isArray(entry.description) ? entry.description.map((line, i) => <p key={i}>{line}</p>) : entry.description}
-                          </span>
-                        )}
-                      </td>
+                          )}
+                        </td>
 
-                      <td className="px-2 sm:px-4 py-3.5 text-left whitespace-nowrap">
-                        {entry.invoiceId ? (
-                          <span className="inline-flex items-center px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-700 text-[11px] font-semibold ring-1 ring-emerald-100 font-mono">
-                            {entry.invoiceId}
-                          </span>
-                        ) : (
-                          <span className="text-gray-300 text-xs">—</span>
-                        )}
-                      </td>
-
-                      <td className="px-2 sm:px-4 py-3.5 text-left text-gray-400 text-[11px] font-mono whitespace-nowrap hidden md:table-cell">
-                        {entry.depositId || "—"}
-                      </td>
-
-                      <td className="px-2 sm:px-4 py-3.5 text-right whitespace-nowrap">
-                        {entry.debit ? (
-                          <div className="inline-flex flex-col items-end gap-1">
-                            <span className="inline-flex items-center gap-1 text-rose-600 text-xs font-semibold tabular-nums">
-                              <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M7 11l5 5 5-5" /></svg>
-                              {Number(entry.debit).toLocaleString()}
+                        <td className="px-2 sm:px-4 py-3.5 text-left whitespace-nowrap">
+                          {entry.invoiceId ? (
+                            <span className="inline-flex items-center px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-700 text-[11px] font-semibold ring-1 ring-emerald-100 font-mono">
+                              {entry.invoiceId}
                             </span>
-                            <span className="block h-1 rounded-full bg-linear-to-r from-rose-200 to-rose-400" style={{ width: `${Math.max((Number(entry.debit) / maxAmount) * 48, 4)}px` }} />
-                          </div>
-                        ) : (
-                          <span className="text-gray-300 text-xs">—</span>
-                        )}
-                      </td>
+                          ) : (
+                            <span className="text-gray-300 text-xs">—</span>
+                          )}
+                        </td>
 
-                      <td className="px-2 sm:px-4 py-3.5 text-right whitespace-nowrap">
-                        {entry.credit ? (
-                          <div className="inline-flex flex-col items-end gap-1">
-                            <span className="inline-flex items-center gap-1 text-emerald-600 text-xs font-semibold tabular-nums">
-                              <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M17 13l-5-5-5 5" /></svg>
-                              {Number(entry.credit).toLocaleString()}
+                        <td className="px-2 sm:px-4 py-3.5 text-left text-gray-400 text-[11px] font-mono whitespace-nowrap hidden md:table-cell">
+                          {entry.depositId || "—"}
+                        </td>
+
+                        <td className="px-2 sm:px-4 py-3.5 text-right whitespace-nowrap">
+                          {entry.debit ? (
+                            <div className="inline-flex flex-col items-end gap-1">
+                              <span className="inline-flex items-center gap-1 text-rose-600 text-xs font-semibold tabular-nums">
+                                <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M7 11l5 5 5-5" /></svg>
+                                {Number(entry.debit).toLocaleString()}
+                              </span>
+                              <span className="block h-1 rounded-full bg-linear-to-r from-rose-200 to-rose-400" style={{ width: `${Math.max((Number(entry.debit) / maxAmount) * 48, 4)}px` }} />
+                            </div>
+                          ) : (
+                            <span className="text-gray-300 text-xs">—</span>
+                          )}
+                        </td>
+
+                        <td className="px-2 sm:px-4 py-3.5 text-right whitespace-nowrap">
+                          {entry.credit ? (
+                            <div className="inline-flex flex-col items-end gap-1">
+                              <span className="inline-flex items-center gap-1 text-emerald-600 text-xs font-semibold tabular-nums">
+                                <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M17 13l-5-5-5 5" /></svg>
+                                {Number(entry.credit).toLocaleString()}
+                              </span>
+                              <span className="block h-1 rounded-full bg-linear-to-r from-emerald-200 to-emerald-400" style={{ width: `${Math.max((Number(entry.credit) / maxAmount) * 48, 4)}px` }} />
+                            </div>
+                          ) : (
+                            <span className="text-gray-300 text-xs">—</span>
+                          )}
+                        </td>
+
+                        <td className="px-2 sm:px-4 py-3.5 text-right whitespace-nowrap">
+                          <span className="inline-flex items-center justify-end gap-1.5">
+                            <span className="text-gray-900 text-xs font-bold tabular-nums">
+                              <span className="text-gray-400 text-[10px] font-normal mr-0.5">Rs.</span>
+                              {Number(entry.balance || 0).toLocaleString()}
                             </span>
-                            <span className="block h-1 rounded-full bg-linear-to-r from-emerald-200 to-emerald-400" style={{ width: `${Math.max((Number(entry.credit) / maxAmount) * 48, 4)}px` }} />
-                          </div>
-                        ) : (
-                          <span className="text-gray-300 text-xs">—</span>
-                        )}
-                      </td>
-
-                      <td className="px-2 sm:px-4 py-3.5 text-right whitespace-nowrap">
-                        <span className="inline-flex items-center justify-end gap-1.5">
-                          <span className="text-gray-900 text-xs font-bold tabular-nums">
-                            <span className="text-gray-400 text-[10px] font-normal mr-0.5">Rs.</span>
-                            {Number(entry.balance || 0).toLocaleString()}
                           </span>
-                        </span>
-                      </td>
+                        </td>
 
-                    </tr>
-                  ))
+                      </tr>
+                    )
+                  })
                 })()
               )}
             </tbody>
@@ -428,6 +481,32 @@ const CustomerLedger = () => {
             Final Balance: <span className="text-emerald-700">Rs. {closingBalance.toLocaleString()}</span>
           </p>
         </div>
+
+        {table.getRowModel().rows.length > 0 && (
+          <div className="flex items-center justify-between px-3 sm:px-5 py-3 border-t border-slate-100 text-[11.5px] text-slate-400 flex-wrap gap-2.5">
+            <span>
+              Showing <span className="font-semibold text-slate-600">{table.getState().pagination.pageIndex * table.getState().pagination.pageSize + 1}</span>
+              {" "}to <span className="font-semibold text-slate-600">{Math.min((table.getState().pagination.pageIndex + 1) * table.getState().pagination.pageSize, table.getFilteredRowModel().rows.length)}</span>
+              {" "}of <span className="font-semibold text-slate-600">{table.getFilteredRowModel().rows.length}</span> entries
+            </span>
+            <div className="flex items-center gap-1.5">
+              <button type="button" onClick={() => table.previousPage()} disabled={!table.getCanPreviousPage()} className="border border-slate-200 rounded-md px-2.5 py-1 hover:bg-slate-50 transition-colors cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed">Previous</button>
+              {Array.from({ length: table.getPageCount() }, (_, i) => i).map((pageIndex) => {
+                const current = table.getState().pagination.pageIndex
+                if (pageIndex === 0 || pageIndex === table.getPageCount() - 1 || (pageIndex >= current - 1 && pageIndex <= current + 1)) {
+                  return (
+                    <button key={pageIndex} type="button" onClick={() => table.setPageIndex(pageIndex)} className={`w-7 h-7 rounded-md text-xs font-semibold transition-all cursor-pointer ${current === pageIndex ? "bg-emerald-600 text-white" : "border border-slate-200 text-slate-500 hover:bg-slate-50"}`}>{pageIndex + 1}</button>
+                  )
+                }
+                if (pageIndex === current - 2 || pageIndex === current + 2) {
+                  return <span key={pageIndex} className="px-0.5 text-slate-400">...</span>
+                }
+                return null
+              })}
+              <button type="button" onClick={() => table.nextPage()} disabled={!table.getCanNextPage()} className="border border-slate-200 rounded-md px-2.5 py-1 hover:bg-slate-50 transition-colors cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed">Next</button>
+            </div>
+          </div>
+        )}
 
       </div>
     </div>

@@ -211,7 +211,7 @@ const SupplierPayment = () => {
                     </div>
                     <p className="mt-5 mb-2 text-[11px] font-bold text-zinc-500 uppercase tracking-wide">Supplier Allocation</p>
 
-                    <div className="rounded-lg border border-zinc-200 overflow-hidden max-w-3xl">
+                    <div className="rounded-lg border border-zinc-200 overflow-visible max-w-3xl">
                         <div >
                             <table className="w-full text-sm overflow-visible">
                                 <thead>

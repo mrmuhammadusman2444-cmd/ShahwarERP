@@ -1,10 +1,13 @@
 import React, { useState, useRef, useEffect } from 'react'
 import BankDropDown from '../Bank/BankDropDown.jsx'
+import SelectSupplier from '../Purchase/SelectProduct.jsx'
+import axios from 'axios'
 import { ArrowRight, User, Wallet, Landmark, Warehouse, ChevronDown, Check, Repeat } from 'lucide-react'
 
 function DropdownField({ icon: Icon, label, placeholder, value, options, onSelect, tone = 'emerald' }) {
     const [open, setOpen] = useState(false)
     const ref = useRef(null)
+
 
     useEffect(() => {
         function onClick(e) {
@@ -13,6 +16,7 @@ function DropdownField({ icon: Icon, label, placeholder, value, options, onSelec
         document.addEventListener('mousedown', onClick)
         return () => document.removeEventListener('mousedown', onClick)
     }, [])
+
 
     const selected = options.find((o) => o.value === value)
 
@@ -68,23 +72,90 @@ function DropdownField({ icon: Icon, label, placeholder, value, options, onSelec
     )
 }
 
-// ---- Nested picker that expands only for Customer / Bank / Supplier ----
-function NestedPicker({ title, placeholder }) {
+function NestedPicker({ title, placeholder, value, onSelect, type = 'customer' }) {
     const [query, setQuery] = useState('')
+    const [items, setItems] = useState([])
+
+    useEffect(() => {
+        async function handleFetch() {
+            try {
+                const url = type === 'supplier'
+                    ? 'http://localhost:3000/find/supplier'
+                    : 'http://localhost:3000/find'
+                let res = await axios.get(url)
+                setItems(res.data)
+            } catch (err) {
+                console.log("FETCH FAILED:", err.response?.data || err.message)
+            }
+        }
+        handleFetch()
+    }, [type])
+
+    const nameKey = type === 'supplier' ? 'supplierName' : 'customerName'
+
+    const filtered = items.filter((c) =>
+        (c[nameKey] || "").toLowerCase().includes(query.toLowerCase())
+    )
+
+    const selected = items.find((c) => c[nameKey] === value)
+
     return (
         <div className="mt-3 animate-[slideDown_0.25s_ease-out] rounded-2xl border border-dashed border-emerald-300 bg-emerald-50/50 p-4">
             <p className="mb-2 text-[11px] font-bold uppercase tracking-widest text-emerald-700">{title}</p>
-            <div className="flex items-center gap-2 rounded-xl border border-emerald-200 bg-white px-3 py-2.5">
-                <svg className="h-4 w-4 shrink-0 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                </svg>
-                <input
-                    value={query}
-                    onChange={(e) => setQuery(e.target.value)}
-                    placeholder={placeholder}
-                    className="w-full bg-transparent text-sm text-slate-700 placeholder-slate-400 focus:outline-none"
-                />
-            </div>
+
+            {selected ? (
+                <div className="flex items-center justify-between gap-2 rounded-xl border border-emerald-200 bg-white px-3 py-2.5">
+                    <div className="flex items-center gap-2 min-w-0">
+                        <div className="w-7 h-7 rounded-lg bg-emerald-100 flex items-center justify-center text-[10px] font-bold text-emerald-700 shrink-0">
+                            {(selected[nameKey] || "?").charAt(0).toUpperCase()}
+                        </div>
+                        <span className="text-sm font-semibold text-slate-700 truncate">{selected[nameKey]}</span>
+                    </div>
+                    <button
+                        type="button"
+                        onClick={() => onSelect?.("")}
+                        className="text-slate-400 hover:text-rose-500 cursor-pointer shrink-0"
+                    >
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+            ) : (
+                <>
+                    <div className="flex items-center gap-2 rounded-xl border border-emerald-200 bg-white px-3 py-2.5">
+                        <svg className="h-4 w-4 shrink-0 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                        </svg>
+                        <input
+                            value={query}
+                            onChange={(e) => setQuery(e.target.value)}
+                            placeholder={placeholder}
+                            className="w-full bg-transparent text-sm text-slate-700 placeholder-slate-400 focus:outline-none"
+                        />
+                    </div>
+
+                    <div className="mt-2 max-h-48 overflow-y-auto rounded-xl border border-emerald-100 bg-white">
+                        {filtered.length === 0 ? (
+                            <p className="text-center text-slate-400 text-xs py-4">No {type} found</p>
+                        ) : (
+                            filtered.map((c) => (
+                                <button
+                                    key={c._id}
+                                    type="button"
+                                    onClick={() => onSelect?.(c[nameKey])}
+                                    className="w-full flex items-center gap-2.5 px-3 py-2 text-left cursor-pointer hover:bg-emerald-50 transition-colors border-b border-emerald-50 last:border-0"
+                                >
+                                    <div className="w-7 h-7 rounded-lg bg-emerald-100 flex items-center justify-center text-[10px] font-bold text-emerald-700 shrink-0">
+                                        {(c[nameKey] || "?").charAt(0).toUpperCase()}
+                                    </div>
+                                    <span className="text-sm font-medium text-slate-700 truncate">{c[nameKey]}</span>
+                                </button>
+                            ))
+                        )}
+                    </div>
+                </>
+            )}
         </div>
     )
 }
@@ -107,6 +178,41 @@ export default function FundTransfer() {
     const [toType, setToType] = useState('')
     const [fromBank, setFromBank] = useState('')
     const [toBank, setToBank] = useState('')
+    const [fromCustomer, setFromCustomer] = useState('')
+    const [toSupplier, setToSupplier] = useState('')
+    const [amount, setAmount] = useState('')
+    const [date, setDate] = useState('')
+    const [details, setDetails] = useState('')
+    const [status, setStatus] = useState('idle')
+
+    async function handleSaveTransaction() {
+        if (fromType === 'customer' && toType === 'bank') {
+            if (!fromCustomer || !toBank || !amount) {
+                alert("Customer, Bank aur Amount zaroori hai")
+                return
+            }
+            setStatus('saving')
+            try {
+                await axios.post('http://localhost:3000/add/fund-transfer', {
+                    date: date,
+                    fromCustomer: fromCustomer,
+                    bankName: toBank,
+                    amount: amount,
+                    details: details,
+                })
+                setStatus('saved')
+                setTimeout(() => setStatus('idle'), 2000)
+            } catch (err) {
+                console.log("SAVE FAILED:", err.response?.data || err.message)
+                setStatus('idle')
+            }
+        } else {
+            alert("Filhaal sirf Customer to Bank transfer available hai")
+        }
+    }
+
+
+
 
     return (
         <div className="min-h-screen bg-linear-to-br from-emerald-50 via-white to-emerald-50 p-4 md:p-6">
@@ -142,9 +248,17 @@ export default function FundTransfer() {
                                 options={FROM_OPTIONS}
                                 onSelect={setFromType}
                             />
+
                             {fromType === 'customer' && (
-                                <NestedPicker title="Select customer" placeholder="Search customer..." />
+                                <NestedPicker
+                                    title="Select customer"
+                                    placeholder="Search customer..."
+                                    type="customer"
+                                    value={fromCustomer}
+                                    onSelect={setFromCustomer}
+                                />
                             )}
+
                             {fromType === 'bank' && (
                                 <div className="mt-2">
                                     <BankDropDown
@@ -176,7 +290,13 @@ export default function FundTransfer() {
                                 onSelect={setToType}
                             />
                             {toType === 'supplier' && (
-                                <NestedPicker title="Select supplier" placeholder="Search supplier..." />
+                                <NestedPicker
+                                    title="Select supplier"
+                                    placeholder="Search supplier..."
+                                    type="supplier"
+                                    value={toSupplier}
+                                    onSelect={setToSupplier}
+                                />
                             )}
                             {toType === 'bank' && (
                                 <div className="mt-2">
@@ -194,6 +314,8 @@ export default function FundTransfer() {
                                 <span className="absolute left-4 top-1/2 -translate-y-1/2 text-sm font-bold text-emerald-400">Rs.</span>
                                 <input
                                     type="number"
+                                    value={amount}
+                                    onChange={(e) => setAmount(e.target.value)}
                                     placeholder="0.00"
                                     className="w-full rounded-2xl border-2 border-emerald-100 bg-emerald-50/40 py-3.5 pl-12 pr-4 text-sm font-semibold text-slate-800 placeholder-slate-300 transition-all focus:border-emerald-500 focus:bg-white focus:outline-none"
                                 />
@@ -203,16 +325,27 @@ export default function FundTransfer() {
                             <label className="mb-1.5 block text-[11px] font-bold uppercase tracking-widest text-emerald-700/70">Date</label>
                             <input
                                 type="date"
+                                value={date}
+                                onChange={(e) => setDate(e.target.value)}
                                 className="w-full rounded-2xl border-2 border-emerald-100 bg-emerald-50/40 px-4 py-3.5 text-sm font-medium text-slate-700 transition-all focus:border-emerald-500 focus:bg-white focus:outline-none"
                             />
                         </div>
+                        <textarea
+                            value={details}
+                            onChange={(e) => setDetails(e.target.value)}
+                            placeholder="Details..."
+                            rows={4}
+                            className="border border-emerald-300 placeholder:text-sm placeholder:text-gray-300 rounded-lg w-177 resize-none px-3 py-2 text-sm outline-none  focus:ring-emerald-400 focus:border-emerald-400 transition-colors"
+                        />
                     </div>
 
                     <button
                         type="button"
-                        className="mt-6 w-full cursor-pointer rounded-2xl bg-linear-to-r from-emerald-600 to-emerald-700 py-3.5 text-sm font-bold text-white shadow-md shadow-emerald-200 transition-all hover:-translate-y-0.5 hover:from-emerald-500 hover:to-emerald-600 active:translate-y-0"
+                        onClick={handleSaveTransaction}
+                        disabled={status === 'saving'}
+                        className="mt-6 w-full cursor-pointer rounded-2xl bg-linear-to-r from-emerald-600 to-emerald-700 py-3.5 text-sm font-bold text-white shadow-md shadow-emerald-200 transition-all hover:-translate-y-0.5 hover:from-emerald-500 hover:to-emerald-600 active:translate-y-0 disabled:opacity-60"
                     >
-                        Save Transaction
+                        {status === 'saving' ? 'Saving...' : status === 'saved' ? 'Saved!' : 'Save Transaction'}
                     </button>
                 </div>
             </div>
