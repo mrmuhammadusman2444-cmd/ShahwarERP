@@ -724,3 +724,13 @@ body[data-pattern="food"] .page-bg {
 *:focus {
     outline: none;
 }
+.bank-scroll::-webkit-scrollbar { width: 6px; }
+.bank-scroll::-webkit-scrollbar-track { background: transparent; }
+.bank-scroll::-webkit-scrollbar-thumb {
+  background: #a7f3d0;
+  border-radius: 9999px;
+}
+.bank-scroll::-webkit-scrollbar-thumb:hover { background: #6ee7b7; }
+
+/* Firefox */
+.bank-scroll { scrollbar-width: thin; scrollbar-color: #a7f3d0 transparent; }

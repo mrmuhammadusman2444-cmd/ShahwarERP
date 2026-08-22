@@ -3,6 +3,7 @@ import CustomerModel from '../Models/CustomerModels/CustomerModel.js'
 import { verifyToken, checkPermission } from '../Middleware/auth.js'
 import SaleModel from '../Models/Sale Models/SalesModel.js'
 import SupplierPaymentsModel from '../Models/Accounts/SupplierPaymentsModel.js'
+import BankTransactionModel from '../Models/Bank/BankTransactionModel.js'
 
 const router = express.Router()
 
@@ -121,11 +122,24 @@ router.post('/add/fund-transfer', async function (req, res) {
             totalAmount: data.amount,
             voucherNo: voucherNo,
             remark: data.details || "",
-            status: "pending",
+            status: "approved",
         }
 
         let created = await SupplierPaymentsModel.create(transferObject)
-        res.json({ success: true, data: created })
+        let bankEntry = {
+            bankName: data.bankName || "",
+            date: data.date,
+            description: `Received from ${data.fromCustomer || "Customer"}`,
+            voucherNo: voucherNo,
+            debit: Number(data.amount) || 0,
+            credit: 0,
+            source: "fund-transfer",
+            status: "approved",
+        }
+        let bankCreated = await BankTransactionModel.create(bankEntry)
+
+        res.json({ success: true, data: created, bankEntry: bankCreated })
+
     } catch (err) {
         console.log("FUND TRANSFER ERROR:", err)
         res.status(500).json({ success: false, message: err.message })
