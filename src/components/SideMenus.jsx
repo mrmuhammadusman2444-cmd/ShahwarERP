@@ -446,7 +446,7 @@ const SideMenus = ({ collapsed }) => {
                         <div className="relative shrink-0">
                             <Handshake className="text-slate-100 group-hover:translate-x-1.5 transition-transform duration-300" size={23} />
                             {collapsed && totalPendingApprovals > 0 && (
-                                <span className="absolute -top-1 right-0 flex h-3.5 min-w-3.5 items-center justify-center rounded-full bg-emerald-500 px-0.5 text-[9px] font-bold text-white animate-pulse ring-2 ring-emerald-900">
+                                <span className="absolute -top-1 right-0 flex h-3.5 min-w-3.5 items-center justify-center rounded-full bg-emerald-500 px-0.5 text-[9px] font-bold text-white  ring-2 ring-emerald-900">
                                     {totalPendingApprovals > 9 ? "9+" : totalPendingApprovals}
                                 </span>
                             )}
