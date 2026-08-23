@@ -110,7 +110,7 @@ function BankSelect({ banks, value, onSelect }) {
               <button
                 type="button"
                 key={b._id}
-                onClick={() => { onSelect(b.bankName); setOpen(false) }}
+                onClick={() => { onSelect(b); setOpen(false) }}
                 className={`flex w-full items-center gap-2.5 rounded-md px-2.5 py-2 text-left transition-colors cursor-pointer ${isActive ? 'bg-emerald-50' : 'hover:bg-emerald-50/60'}`}
               >
                 <BankAvatar name={b.bankName} size="w-7 h-7" />
@@ -178,17 +178,18 @@ const BankLedger = () => {
     loadBanks()
   }, [])
 
-  // bank select hone pe uski ledger entries
-  async function loadBankLedger(bankName) {
-    setSelectedBank(bankName)
-    if (!bankName) {
+  
+  async function loadBankLedger(bank) {
+    
+    setSelectedBank(bank ? bank.bankName : "")
+    if (!bank || !bank._id) {
       setEntries([])
       setFilteredEntries([])
       setClosingBalance(0)
       return
     }
     try {
-      let res = await axios.get(`http://localhost:3000/bank/ledger/${bankName}`)
+      let res = await axios.get(`http://localhost:3000/bank/ledger/${bank._id}`)
       setEntries(res.data.entries)
       setFilteredEntries(res.data.entries)
       setClosingBalance(res.data.closingBalance)
@@ -199,7 +200,6 @@ const BankLedger = () => {
     }
   }
 
-  // From / To date se filter
   function handleSearch() {
     if (!fromDate && !toDate) {
       setFilteredEntries(entries)
@@ -219,12 +219,12 @@ const BankLedger = () => {
   }
 
   function handleReset() {
+     console.log(">>> RESET CHALA, entries:", entries.length)
     setFromDate("")
     setToDate("")
     setFilteredEntries(entries)
   }
 
-  // footer totals
   const totalDebit = filteredEntries.reduce((s, e) => s + (Number(e.debit) || 0), 0)
   const totalCredit = filteredEntries.reduce((s, e) => s + (Number(e.credit) || 0), 0)
   const rangeClosing = filteredEntries.length ? Number(filteredEntries[filteredEntries.length - 1].balance) || 0 : 0
