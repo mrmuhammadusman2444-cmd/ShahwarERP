@@ -35,6 +35,7 @@ const SideMenus = ({ collapsed }) => {
     const [pendingInvoiceCount, setPendingInvoiceCount] = useState(0)
     const [pendingPurchaseCount, setPendingPurchaseCount] = useState(0)
     const [pendingPaymentCount, setPendingPaymentCount] = useState(0)
+    const [paymentApprovalCount, setPaymentApprovalCount] = useState(0)
 
     useEffect(() => {
         async function loadPendingCount() {
@@ -98,7 +99,23 @@ const SideMenus = ({ collapsed }) => {
     }, [])
 
 
-
+    useEffect(() => {
+        async function countPaymentApproval() {
+            try {
+                let res = await axios.get('http://localhost:3000/payment-approval/count')
+                setPaymentApprovalCount(res.data.count || 0)
+            } catch (err) {
+                console.log("PAYMENT APPROVAL COUNT FAILED:", err.response?.data || err.message)
+            }
+        }
+        countPaymentApproval()
+        const interval = setInterval(countPaymentApproval, 30000)
+        window.addEventListener("approval-changed", countPaymentApproval)
+        return () => {
+            clearInterval(interval)
+            window.removeEventListener("approval-changed", countPaymentApproval)
+        }
+    }, [])
     const isSearching = searchQuery.trim().length > 0
 
     const menuMatches = (parentLabel, subLabels) => {
@@ -131,7 +148,7 @@ const SideMenus = ({ collapsed }) => {
 
     const isParentActive = (paths) => paths.some((p) => isActivePath(p))
 
-    const totalPendingApprovals = pendingInvoiceCount + pendingPurchaseCount + pendingPaymentCount
+    const totalPendingApprovals = pendingInvoiceCount + pendingPurchaseCount + paymentApprovalCount
 
     return (
         <div>
@@ -437,7 +454,7 @@ const SideMenus = ({ collapsed }) => {
                     </div>
                 )}
 
-                {can("approval", "view") && menuMatches('Approval', ['Invoice Approval', 'Purchase Approval', 'Customer Payment Approval', 'Supplier Payment Approval']) && (
+                {can("approval", "view") && menuMatches('Approval', ['Invoice Approval', 'Purchase Approval', 'Customer Payment Approval', 'Supplier Payment Approval', 'Payment Approval']) && (
 
                     <div onMouseEnter={setTip} onClick={() => setapprovalOpen(!approvalOpen)} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer transition-all mb-px ${collapsed ? 'justify-start w-9 h-9 mx-auto' : ''} ${isParentActive(['/invoiceapprovalpage', '/purchaseapprovalpage', '/customerpaymentpage', '/supplierpaymentpage']) ? 'bg-(--nav-active)' : 'hover:bg-(--nav-active)'}`}>
                         {isParentActive(['/invoiceapprovalpage', '/purchaseapprovalpage', '/customerpaymentpage', '/supplierpaymentpage']) && !collapsed && (
@@ -504,19 +521,30 @@ const SideMenus = ({ collapsed }) => {
                                 )}
                             </div>
                         )}
-                        {canSub("approval", "customerPaymentApproval") && subMatches('Customer Payment Approval') && (
+                        {false && canSub("approval", "customerPaymentApproval") && subMatches('Customer Payment Approval') && (
                             <div onClick={() => { navigate('/customerpaymentpage') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                                 Customer Payment Approval
                             </div>
                         )}
 
-                        {canSub("approval", "supplierPaymentApproval") && subMatches('Supplier Payment Approval') && (
+                        {false && canSub("approval", "supplierPaymentApproval") && subMatches('Supplier Payment Approval') && (
                             <div onClick={() => { navigate('/Supplier/Payment/Approval') }} className="flex items-center justify-between text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                                 <span>Supplier Payment Approval</span>
                                 {pendingPaymentCount > 0 && (
                                     <span className="relative flex h-4.5 min-w-4.5 items-center animate-pulse justify-center rounded-full bg-linear-to-br from-emerald-400 to-emerald-600 px-1 text-[10px] font-bold text-white shadow-sm shadow-emerald-500/50 ring-2 ring-emerald-900/40">
                                         <span className="absolute inset-0 rounded-full bg-(--nav-strip) animate-ping opacity-40" />
                                         <span className="relative">{pendingPaymentCount}</span>
+                                    </span>
+                                )}
+                            </div>
+                        )}
+                        {subMatches('Payment Approval') && (
+                            <div onClick={() => { navigate('/payment/approval') }} className="flex items-center justify-between text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                                <span>Payment Approval</span>
+                                {paymentApprovalCount > 0 && (
+                                    <span className="relative flex h-4.5 min-w-4.5 items-center animate-pulse justify-center rounded-full bg-linear-to-br from-emerald-400 to-emerald-600 px-1 text-[10px] font-bold text-white shadow-sm shadow-emerald-500/50 ring-2 ring-emerald-900/40">
+                                        <span className="absolute inset-0 rounded-full bg-(--nav-strip) animate-ping opacity-40" />
+                                        <span className="relative">{paymentApprovalCount}</span>
                                     </span>
                                 )}
                             </div>
@@ -1059,7 +1087,7 @@ const SideMenus = ({ collapsed }) => {
                         }}
                         className="ml-7 border-l border-slate-700 pl-3 flex flex-col gap-0.5 overflow-hidden"
                     >
-                        {canSub("accounts", "supplierPayment") && subMatches('Supplier Payment', 'Accounts') && (
+                        {false && canSub("accounts", "supplierPayment") && subMatches('Supplier Payment', 'Accounts') && (
                             <div onClick={() => { navigate('/supplier/payments') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                                 Supplier Payment
                             </div>
@@ -1082,7 +1110,7 @@ const SideMenus = ({ collapsed }) => {
                                 Customer Tally Ledger
                             </div>
                         )}
-                        {canSub("accounts", "customerRecieve") && subMatches('Customer Recieve', 'Accounts') && (
+                        {false && canSub("accounts", "customerRecieve") && subMatches('Customer Recieve', 'Accounts') && (
 
                             <div className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                                 Customer Recieve
@@ -1094,13 +1122,8 @@ const SideMenus = ({ collapsed }) => {
                                 Assets Payment
                             </div>
                         )}
-                        {canSub("accounts", "cashAdjustment") && subMatches('Cash Adjustment', 'Accounts') && (
 
-                            <div className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
-                                Cash Adjustment
-                            </div>
-                        )}
-                        {canSub("accounts", "reports") && subMatches('Reports', 'Accounts') && (
+                        {false && canSub("accounts", "reports") && subMatches('Reports', 'Accounts') && (
                             <div className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                                 Reports
                             </div>
@@ -1143,6 +1166,12 @@ const SideMenus = ({ collapsed }) => {
                         {canSub("cashBank", "bankBook") && subMatches('Bank Book') && (
                             <div onClick={() => { navigate('/bank/book') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                                 Bank Book
+                            </div>
+                        )}
+                        {canSub("cashBank", "cashAdjustment") && subMatches('Cash Adjustment') && (
+
+                            <div className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                                Cash Adjustment
                             </div>
                         )}
                     </div>

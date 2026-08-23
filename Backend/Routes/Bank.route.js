@@ -53,12 +53,14 @@ router.put('/update/bank/:id', async function (req, res) {
     }
 })
 
-router.get('/bank/ledger/:bankName', async function (req, res) {
+router.get('/bank/ledger/:bankId', async function (req, res) {
     try {
+        console.log(">>> LEDGER FETCH bankId:", req.params.bankId)
         let transactions = await BankTransactionModel.find({
-            bankName: req.params.bankName,
+            bankId: req.params.bankId,
             status: "approved"
         })
+        console.log(">>> LEDGER MATCHED:", transactions.length)
 
         transactions.sort((a, b) => new Date(a.date) - new Date(b.date))
 
@@ -104,4 +106,26 @@ router.get('/debug/bank/all', async function (req, res) {
     let all = await BankTransactionModel.find({})
     res.json(all)
 })
+
+router.get('/fix/bank/backfill-id', async function (req, res) {
+    try {
+        let banks = await BankModel.find()
+        let updatedTotal = 0
+
+        for (let bank of banks) {
+            // is bank ke naam wali purani entries ko iska _id do
+            let r = await BankTransactionModel.updateMany(
+                { bankName: bank.bankName, $or: [{ bankId: "" }, { bankId: { $exists: false } }] },
+                { bankId: bank._id.toString() }
+            )
+            updatedTotal += r.modifiedCount
+        }
+
+        res.json({ message: "Done", updated: updatedTotal })
+    } catch (err) {
+        res.status(500).json({ message: err.message })
+    }
+})
+
+
 export default router

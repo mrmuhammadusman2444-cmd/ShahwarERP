@@ -30,6 +30,8 @@ const SupplierPaymentSchema = new mongoose.Schema({
         default: "pending"
     },
     rejectReason: { type: String, default: "" },
+    fromType: { type: String, default: "" },
+    toType: { type: String, default: "" },
 
 }, { timestamps: true })
 

@@ -176,8 +176,26 @@ export default function FundTransfer() {
     const [date, setDate] = useState('')
     const [details, setDetails] = useState('')
     const [status, setStatus] = useState('idle')
+    const [bankList, setBankList] = useState([])
+
+
+    useEffect(() => {
+        async function loadBanks() {
+            try {
+                let res = await axios.get('http://localhost:3000/find/bank')
+                setBankList(res.data)
+            } catch (err) {
+                console.log("BANK LIST FAILED:", err.response?.data || err.message)
+            }
+        }
+        loadBanks()
+    }, [])
 
     async function handleSaveTransaction() {
+        let selectedBankName = toType === 'bank' ? toBank : fromBank
+        let bankObj = bankList.find((b) => b.bankName === selectedBankName)
+        let bankId = bankObj ? bankObj._id : ""
+
         if (fromType === 'customer' && toType === 'bank') {
             if (!fromCustomer || !toBank || !amount) {
                 alert("Customer, Bank aur Amount zaroori hai")
@@ -187,19 +205,75 @@ export default function FundTransfer() {
             try {
                 await axios.post('http://localhost:3000/add/fund-transfer', {
                     date: date,
+                    fromType: fromType,
+                    toType: toType,
                     fromCustomer: fromCustomer,
                     bankName: toBank,
+                    bankId: bankId,
                     amount: amount,
                     details: details,
                 })
                 setStatus('saved')
+                window.dispatchEvent(new Event('approval-changed'))
                 setTimeout(() => setStatus('idle'), 2000)
             } catch (err) {
                 console.log("SAVE FAILED:", err.response?.data || err.message)
                 setStatus('idle')
             }
-        } else {
-            alert("Filhaal sirf Customer to Bank transfer available hai")
+        }
+        // ── Customer → Supplier ──
+        else if (fromType === 'customer' && toType === 'supplier') {
+            if (!fromCustomer || !toSupplier || !amount) {
+                alert("Customer, Supplier aur Amount zaroori hai")
+                return
+            }
+            setStatus('saving')
+            try {
+                await axios.post('http://localhost:3000/add/fund-transfer', {
+                    date: date,
+                    fromType: fromType,
+                    toType: toType,
+                    fromCustomer: fromCustomer,
+                    toSupplier: toSupplier,
+                    amount: amount,
+                    details: details,
+                })
+                setStatus('saved')
+                window.dispatchEvent(new Event('approval-changed'))
+                setTimeout(() => setStatus('idle'), 2000)
+            } catch (err) {
+                console.log("SAVE FAILED:", err.response?.data || err.message)
+                setStatus('idle')
+            }
+        }
+        // ── Bank → Supplier ──
+        else if (fromType === 'bank' && toType === 'supplier') {
+            if (!fromBank || !toSupplier || !amount) {
+                alert("Bank, Supplier aur Amount zaroori hai")
+                return
+            }
+            setStatus('saving')
+            try {
+                await axios.post('http://localhost:3000/add/fund-transfer', {
+                    date: date,
+                    fromType: fromType,
+                    toType: toType,
+                    bankName: fromBank,
+                    bankId: bankId,
+                    amount: amount,
+                    toSupplier: toSupplier,
+                    details: details,
+                })
+                setStatus('saved')
+                window.dispatchEvent(new Event('approval-changed'))
+                setTimeout(() => setStatus('idle'), 2000)
+            } catch (err) {
+                console.log("SAVE FAILED:", err.response?.data || err.message)
+                setStatus('idle')
+            }
+        }
+        else {
+            alert("Filhaal sirf Customer to Bank aur Customer to Supplier available hai")
         }
     }
 
@@ -237,7 +311,10 @@ export default function FundTransfer() {
 
                 <div className="rounded-3xl border border-slate-200/70 bg-white p-5 shadow-xl shadow-slate-200/50 md:p-6">
 
+
+
                     <div className="relative grid grid-cols-1 gap-3 md:grid-cols-[1fr_1fr]">
+
                         <div>
                             <DropdownField
                                 icon={Wallet}
@@ -301,7 +378,7 @@ export default function FundTransfer() {
                             <div className="flex items-center gap-2 rounded-2xl border-2 border-emerald-100 bg-emerald-50/30 px-4 py-3 transition-all focus-within:border-emerald-400 focus-within:bg-white focus-within:ring-4 focus-within:ring-emerald-50">
                                 <span className="text-2xl font-bold text-slate-700">Rs.</span>
                                 <input
-                                    
+
                                     value={amount}
                                     onChange={(e) => setAmount(e.target.value)}
                                     placeholder="0"

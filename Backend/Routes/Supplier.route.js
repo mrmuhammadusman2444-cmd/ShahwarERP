@@ -92,7 +92,7 @@ router.get('/supplier/ledger/:supplierName', async function (req, res) {
         if (paidAmount > 0) {
             combined.push({
                 date: pay.date,
-                description: `Paid to${pay.remark ? " - " + pay.remark : ""}`,
+                description: pay.remark ? pay.remark : `Paid ${pay.voucherNo || ""}`,
                 invoiceId: "",
                 depositId: pay.voucherNo || "",
                 debit: paidAmount,

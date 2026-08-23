@@ -9,6 +9,7 @@ const BankTransactionSchema = new mongoose.Schema({
     credit: { type: Number, default: 0 },
     source: { type: String },
     status: { type: String, default: "pending" },
+    bankId: { type: String, default: "" },
 }, { timestamps: true })
 
 const BankTransactionModel = mongoose.model("BankTransaction", BankTransactionSchema)

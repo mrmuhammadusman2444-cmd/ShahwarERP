@@ -38,6 +38,7 @@ import InvoiceApprovalPage from './pages/Approvals/InvoiceApprovalPage.jsx'
 import PurchaseApprovalPage from './pages/Approvals/PurchaseApprovalPage.jsx'
 import CustomerPaymentPage from './pages/Approvals/CustomerPaymentPage.jsx'
 import SupplierPaymentApprovalPage from './pages/Approvals/SupplierPaymentApprovalPage.jsx'
+import PaymentApprovalPage from './pages/Approvals/PaymentApprovalPage.jsx'
 import AnalyticsPage from './pages/Analytics/AnalyticsPage.jsx'
 import AddSupplierPage from './pages/Supplier/AddSupplierPage.jsx'
 import SupplierLedgerPage from './pages/Supplier/SupplierLedgerPage.jsx'
@@ -141,6 +142,8 @@ const App = () => {
         <Route path='/PurchaseApprovalPage' element={<PurchaseApprovalPage />} />
         <Route path='/CustomerPaymentPage' element={<CustomerPaymentPage />} />
         <Route path='/Supplier/Payment/Approval' element={<SupplierPaymentApprovalPage />} />
+        <Route path='/Payment/approval' element={<PaymentApprovalPage />} />
+
         <Route path='/addSupplierPage' element={<AddSupplierPage />} />
         <Route path='/addSupplierPage' element={<AddSupplierPage />} />
         <Route path='/SupplierLedgerPage' element={<SupplierLedgerPage />} />
