@@ -4,10 +4,10 @@ import CustomerPayment from '../../components/Approvals/CustomerPayment.jsx'
 
 const CustomerPaymentPage = () => {
     return (
-        <div className='flex'>
+        <div className='flex h-screen overflow-hidden'>
 
             <Sidebar />
-            <div className='flex-1'>
+            <div className='flex-1 overflow-y-auto'>
                 <CustomerPayment/>
             </div>
         </div>

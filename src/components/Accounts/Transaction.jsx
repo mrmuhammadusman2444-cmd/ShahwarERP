@@ -35,6 +35,15 @@ function DropdownField({ icon: Icon, label, placeholder, value, options, onSelec
                     <span className={`min-w-0 flex-1 truncate text-[15px] font-bold ${selected ? 'text-slate-800' : 'text-slate-400 font-medium'}`}>
                         {selected ? selected.label : placeholder}
                     </span>
+                    {selected && (
+                        <span
+                            role="button"
+                            onClick={(e) => { e.stopPropagation(); onSelect(''); setOpen(false) }}
+                            className="shrink-0 flex h-5 w-5 items-center justify-center rounded-full text-slate-400 hover:bg-rose-50 hover:text-rose-500 transition-colors cursor-pointer"
+                        >
+                            <X size={14} />
+                        </span>
+                    )}
                     <ChevronDown size={16} className={`shrink-0 text-slate-400 transition-transform duration-300 ${open ? 'rotate-180' : ''}`} />
                 </span>
             </button>
@@ -163,6 +172,7 @@ const TO_OPTIONS = [
     { value: 'supplier', label: 'Supplier', icon: User },
     { value: 'bank', label: 'Bank', icon: Landmark },
     { value: 'cash', label: 'Cash', icon: Wallet },
+    { value: 'other', label: 'Other', icon: Wallet },
 ]
 
 export default function FundTransfer() {
@@ -177,6 +187,7 @@ export default function FundTransfer() {
     const [details, setDetails] = useState('')
     const [status, setStatus] = useState('idle')
     const [bankList, setBankList] = useState([])
+    const [toOther, setToOther] = useState('')
 
 
     useEffect(() => {
@@ -272,6 +283,33 @@ export default function FundTransfer() {
                 setStatus('idle')
             }
         }
+
+        // ── Customer → Other (salary etc.) ──
+        else if (fromType === 'customer' && toType === 'other') {
+            if (!fromCustomer || !toOther || !amount) {
+                alert("Customer, Employee name aur Amount zaroori hai")
+                return
+            }
+            setStatus('saving')
+            try {
+                await axios.post('http://localhost:3000/add/fund-transfer', {
+                    date: date,
+                    fromType: fromType,
+                    toOther: toOther,
+                    toType: toType,
+                    fromCustomer: fromCustomer,
+                    amount: amount,
+                    details: details,
+                })
+                setStatus('saved')
+                window.dispatchEvent(new Event('approval-changed'))
+                setTimeout(() => setStatus('idle'), 2000)
+            } catch (err) {
+                console.log("SAVE FAILED:", err.response?.data || err.message)
+                setStatus('idle')
+            }
+        }
+
         else {
             alert("Filhaal sirf Customer to Bank aur Customer to Supplier available hai")
         }
@@ -285,8 +323,9 @@ export default function FundTransfer() {
 
     const toSummary = toType === 'supplier' ? (toSupplier || 'Supplier')
         : toType === 'bank' ? (toBank || 'Bank')
-            : toType === 'cash' ? 'Cash'
-                : '—'
+            : toType === 'other' ? (toOther || 'Employee')
+                : toType === 'cash' ? 'Cash'
+                    : '—'
 
     return (
         <div className="min-h-screen bg-linear-to-br from-emerald-50 via-white to-emerald-50 p-4 md:p-6 flex flex-col items-center">
@@ -361,6 +400,16 @@ export default function FundTransfer() {
                             {toType === 'bank' && (
                                 <div className="mt-2">
                                     <BankDropDown value={toBank} onChange={(bankName) => setToBank(bankName)} />
+                                </div>
+                            )}
+                            {toType === 'other' && (
+                                <div className="mt-2">
+                                    <input
+                                        value={toOther}
+                                        onChange={(e) => setToOther(e.target.value)}
+                                        placeholder="Employee name..."
+                                        className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3.5 text-sm font-medium text-slate-700 placeholder-slate-400 transition-all focus:border-emerald-400 focus:ring-4 focus:ring-emerald-50 focus:outline-none"
+                                    />
                                 </div>
                             )}
                         </div>
