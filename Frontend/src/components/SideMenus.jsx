@@ -1163,7 +1163,7 @@ const SideMenus = ({ collapsed }) => {
                                 Cash Book
                             </div>
                         )}
-                        {canSub("cashBank", "bankBook") && subMatches('Bank Book') && (
+                        {false && canSub("cashBank", "bankBook") && subMatches('Bank Book') && (
                             <div onClick={() => { navigate('/bank/book') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                                 Bank Book
                             </div>

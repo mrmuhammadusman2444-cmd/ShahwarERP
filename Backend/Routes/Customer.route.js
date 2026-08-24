@@ -105,7 +105,7 @@ router.get('/customer/ledger/:customerName', async function (req, res) {
 router.post('/add/fund-transfer', async function (req, res) {
     try {
         let data = req.body
-console.log(">>> FT PAYLOAD:", JSON.stringify(data))
+         console.log(">>> FT PAYLOAD:", JSON.stringify(data))
         let lastVoucher = await SupplierPaymentsModel
             .findOne({ voucherNo: { $regex: /^FT/ } })
             .sort({ createdAt: -1 })
@@ -120,6 +120,7 @@ console.log(">>> FT PAYLOAD:", JSON.stringify(data))
             date: data.date,
             fromType: data.fromType || "",
             toType: data.toType || "",
+            toOther: data.toOther || "",
             fromCustomer: data.fromCustomer || "",
             bankName: data.bankName || "",
             totalAmount: data.amount,
@@ -166,7 +167,7 @@ console.log(">>> FT PAYLOAD:", JSON.stringify(data))
                 status: "pending",
             }
             bankCreated = await BankTransactionModel.create(bankEntry)
-             console.log(">>> BANK ENTRY SAVED:", JSON.stringify(bankCreated))
+            console.log(">>> BANK ENTRY SAVED:", JSON.stringify(bankCreated))
         }
 
         res.json({ success: true, data: created, bankEntry: bankCreated })

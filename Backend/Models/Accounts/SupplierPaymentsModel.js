@@ -32,6 +32,7 @@ const SupplierPaymentSchema = new mongoose.Schema({
     rejectReason: { type: String, default: "" },
     fromType: { type: String, default: "" },
     toType: { type: String, default: "" },
+    toOther: { type: String, default: "" },
 
 }, { timestamps: true })
 
