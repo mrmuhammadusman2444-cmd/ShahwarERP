@@ -33,6 +33,8 @@ const SupplierPaymentSchema = new mongoose.Schema({
     fromType: { type: String, default: "" },
     toType: { type: String, default: "" },
     toOther: { type: String, default: "" },
+    fromBank: { type: String, default: "" },
+    toBank: { type: String, default: "" },
 
 }, { timestamps: true })
 

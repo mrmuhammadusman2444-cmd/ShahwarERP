@@ -1,6 +1,7 @@
 import express from 'express'
 import BankTransactionModel from '../Models/Bank/BankTransactionModel.js'
 import SupplierPaymentsModel from '../Models/Accounts/SupplierPaymentsModel.js'
+import CashTransactionModel from '../Models/Cash Book/CashTransactionModel.js'
 
 const router = express.Router()
 
@@ -42,13 +43,15 @@ router.put('/payment-approval/approve/:id', async function (req, res) {
         )
         if (!approved) return res.status(404).json({ message: "Payment not found" })
 
-        // isi voucher ki bank entry bhi approve karo (agar hai)
         if (approved.voucherNo) {
-            let r = await BankTransactionModel.updateMany(
+            await BankTransactionModel.updateMany(
                 { voucherNo: approved.voucherNo, status: "pending" },
                 { status: "approved" }
             )
-            console.log(">>> BANK ENTRIES APPROVED:", r.modifiedCount)
+            await CashTransactionModel.updateMany(
+                { voucherNo: approved.voucherNo, status: "pending" },
+                { status: "approved" }
+            )
         }
 
         res.json({ success: true, data: approved })
@@ -65,6 +68,7 @@ router.delete('/payment-approval/delete/:id', async function (req, res) {
 
         if (deleted.voucherNo) {
             await BankTransactionModel.deleteMany({ voucherNo: deleted.voucherNo })
+            await CashTransactionModel.deleteMany({ voucherNo: deleted.voucherNo })
         }
 
         res.json({ success: true, data: deleted })
@@ -85,12 +89,14 @@ router.get('/payment-approval/count', async function (req, res) {
 })
 
 
-// ── Pending BANK payments (To = bank; jaise Customer → Bank) ──
 router.get('/payment-approval/bank', async function (req, res) {
     try {
         let list = await SupplierPaymentsModel.find({
             status: "pending",
-            toType: "bank"
+            $or: [
+                { toType: "bank" },
+                { fromType: "bank", toType: "cash" }
+            ]
         }).sort({ createdAt: -1 })
         res.json(list)
     } catch (err) {

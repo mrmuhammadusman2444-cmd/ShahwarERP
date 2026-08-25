@@ -19,6 +19,7 @@ import HolidayRoute from './Routes/Holiday.route.js'
 import SalaryAdvanceRoute from './Routes/SalaryAdvance.route.js'
 import CompanySettingRoute from './Routes/CompanySetting.route.js'
 import PaymentApprovalRoute from './Routes/PaymentApproval.route.js'
+import CashRoute from './Routes/Cash.route.js'
 
 DbConnection()
 
@@ -46,6 +47,8 @@ app.use('/', HolidayRoute)
 app.use('/', SalaryAdvanceRoute)
 app.use('/', CompanySettingRoute)
 app.use('/', PaymentApprovalRoute)
+app.use('/', CashRoute)
+
 
 
 app.use('/uploads', express.static('uploads'))

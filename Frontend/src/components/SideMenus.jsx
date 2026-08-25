@@ -1170,7 +1170,7 @@ const SideMenus = ({ collapsed }) => {
                         )}
                         {canSub("cashBank", "cashAdjustment") && subMatches('Cash Adjustment') && (
 
-                            <div className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                            <div onClick={()=>{navigate('/cash/adjustment')}} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                                 Cash Adjustment
                             </div>
                         )}

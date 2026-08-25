@@ -4,6 +4,7 @@ import { verifyToken, checkPermission } from '../Middleware/auth.js'
 import SaleModel from '../Models/Sale Models/SalesModel.js'
 import SupplierPaymentsModel from '../Models/Accounts/SupplierPaymentsModel.js'
 import BankTransactionModel from '../Models/Bank/BankTransactionModel.js'
+import CashTransactionModel from '../Models/Cash Book/CashTransactionModel.js'
 
 const router = express.Router()
 
@@ -59,8 +60,7 @@ router.get('/customer/ledger/:customerName', async function (req, res) {
         status: "approved"
     })
 
-    console.log(">>> LEDGER FOR:", JSON.stringify(customerName))
-    console.log(">>> PAYMENTS MATCHED:", payments.length)
+
 
     let combined = []
 
@@ -105,7 +105,7 @@ router.get('/customer/ledger/:customerName', async function (req, res) {
 router.post('/add/fund-transfer', async function (req, res) {
     try {
         let data = req.body
-         console.log(">>> FT PAYLOAD:", JSON.stringify(data))
+        console.log(">>> FT PAYLOAD:", JSON.stringify(data))
         let lastVoucher = await SupplierPaymentsModel
             .findOne({ voucherNo: { $regex: /^FT/ } })
             .sort({ createdAt: -1 })
@@ -127,6 +127,8 @@ router.post('/add/fund-transfer', async function (req, res) {
             voucherNo: voucherNo,
             remark: data.details || "",
             status: "pending",
+            fromBank: data.fromBank || "",
+            toBank: data.toBank || "",
         }
 
         if (data.toSupplier) {
@@ -170,11 +172,96 @@ router.post('/add/fund-transfer', async function (req, res) {
             console.log(">>> BANK ENTRY SAVED:", JSON.stringify(bankCreated))
         }
 
+
+        if (data.fromType === 'bank' && data.toType === 'cash') {
+            await BankTransactionModel.create({
+                bankId: data.bankId || "",
+                bankName: data.bankName || "",
+                date: data.date,
+                description: `Payment transfer from bank to cash book${data.details ? " - " + data.details : ""}`,
+                voucherNo: voucherNo,
+                debit: 0,
+                credit: Number(data.amount) || 0,
+                source: "fund-transfer",
+                status: "pending",
+            })
+            await CashTransactionModel.create({
+                date: data.date,
+                description: `Payment transfer from bank to cash book${data.details ? " - " + data.details : ""}`,
+                voucherNo: voucherNo,
+                debit: Number(data.amount) || 0,
+                credit: 0,
+                source: "fund-transfer",
+                status: "pending",
+            })
+        }
+
+        if (data.fromType === 'cash' && data.toType === 'bank') {
+            await CashTransactionModel.create({
+                date: data.date,
+                description: `Payment transfer from cash book to bank${data.details ? " - " + data.details : ""}`,
+                voucherNo: voucherNo,
+                debit: 0,
+                credit: Number(data.amount) || 0,
+                source: "fund-transfer",
+                status: "pending",
+            })
+            await BankTransactionModel.create({
+                bankId: data.bankId || "",
+                bankName: data.bankName || "",
+                date: data.date,
+                description: `Payment transfer from cash book to bank${data.details ? " - " + data.details : ""}`,
+                voucherNo: voucherNo,
+                debit: Number(data.amount) || 0,
+                credit: 0,
+                source: "fund-transfer",
+                status: "pending",
+            })
+        }
+
+        if (data.fromType === 'bank' && data.toType === 'bank') {
+            await BankTransactionModel.create({
+                bankId: data.fromBankId || "",
+                bankName: data.fromBank || "",
+                date: data.date,
+                description: `Transfer to ${data.toBank || "bank"}${data.details ? " - " + data.details : ""}`,
+                voucherNo: voucherNo,
+                debit: 0,
+                credit: Number(data.amount) || 0,
+                source: "fund-transfer",
+                status: "pending",
+            })
+            await BankTransactionModel.create({
+                bankId: data.toBankId || "",
+                bankName: data.toBank || "",
+                date: data.date,
+                description: `Transfer from ${data.fromBank || "bank"}${data.details ? " - " + data.details : ""}`,
+                voucherNo: voucherNo,
+                debit: Number(data.amount) || 0,
+                credit: 0,
+                source: "fund-transfer",
+                status: "pending",
+            })
+        }
+
+        if (data.fromType === 'cash' && data.toSupplier) {
+            await CashTransactionModel.create({
+                date: data.date,
+                description: `Paid to ${data.toSupplier}${data.details ? " - " + data.details : ""}`,
+                voucherNo: voucherNo,
+                debit: 0,
+                credit: Number(data.amount) || 0,   // cash nikla
+                source: "fund-transfer",
+                status: "pending",
+            })
+        }
+
         res.json({ success: true, data: created, bankEntry: bankCreated })
     } catch (err) {
         console.log("FUND TRANSFER ERROR:", err)
         res.status(500).json({ success: false, message: err.message })
     }
+
 })
 
 
