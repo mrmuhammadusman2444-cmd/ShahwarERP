@@ -17,7 +17,7 @@ function partyName(row, tab) {
     return a.supplierName || "—"
   }
   if (tab === 'bank') {
-    return row.bankName || "—"
+    return row.toBank || row.bankName || "—"
   }
   return row.fromCustomer || "—"
 }
@@ -344,6 +344,12 @@ export default function PaymentApproval() {
               )}
               {viewRow.bankName && (
                 <DetailRow label="Bank" value={viewRow.bankName} />
+              )}
+              {viewRow.fromBank && (
+                <DetailRow label="From Bank" value={viewRow.fromBank} />
+              )}
+              {viewRow.toBank && (
+                <DetailRow label="To Bank" value={viewRow.toBank} />
               )}
               <DetailRow label="Amount" value={`Rs. ${Number(viewRow.totalAmount || 0).toLocaleString()}`} strong />
               <DetailRow label="Description" value={viewRow.remark || "-"} />

@@ -94,6 +94,7 @@ import InboxPage from './pages/Inbox/InboxPage.jsx'
 //Cash & Bank
 import CashPage from './pages/Cash&BankBook/CashPage.jsx'
 import BankPage from './pages/Cash&BankBook/BankPage.jsx'
+import CashAdjustmentPage from './pages/Cash&BankBook/CashAdjustmentPage.jsx'
 //hooks
 import GlobalShortcuts from './components/GlobalShortcuts.jsx'
 
@@ -201,6 +202,9 @@ const App = () => {
         //CashBook
         <Route path='/cash/book' element={<CashPage />} />
         <Route path='/Bank/book' element={<BankPage />} />
+        <Route path='/cash/adjustment' element={<CashAdjustmentPage />} />
+
+
 
 
 

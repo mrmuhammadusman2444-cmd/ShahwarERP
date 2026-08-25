@@ -206,6 +206,10 @@ export default function FundTransfer() {
         let selectedBankName = toType === 'bank' ? toBank : fromBank
         let bankObj = bankList.find((b) => b.bankName === selectedBankName)
         let bankId = bankObj ? bankObj._id : ""
+        let fromBankObj = bankList.find((b) => b.bankName === fromBank)
+        let fromBankId = fromBankObj ? fromBankObj._id : ""
+        let toBankObj = bankList.find((b) => b.bankName === toBank)
+        let toBankId = toBankObj ? toBankObj._id : ""
 
         if (fromType === 'customer' && toType === 'bank') {
             if (!fromCustomer || !toBank || !amount) {
@@ -298,6 +302,115 @@ export default function FundTransfer() {
                     toOther: toOther,
                     toType: toType,
                     fromCustomer: fromCustomer,
+                    amount: amount,
+                    details: details,
+                })
+                setStatus('saved')
+                window.dispatchEvent(new Event('approval-changed'))
+                setTimeout(() => setStatus('idle'), 2000)
+            } catch (err) {
+                console.log("SAVE FAILED:", err.response?.data || err.message)
+                setStatus('idle')
+            }
+        }
+
+        // ── Bank → Cash ──
+        else if (fromType === 'bank' && toType === 'cash') {
+            if (!fromBank || !amount) {
+                alert("Bank aur Amount zaroori hai")
+                return
+            }
+            setStatus('saving')
+            try {
+                await axios.post('http://localhost:3000/add/fund-transfer', {
+                    date: date,
+                    fromType: fromType,
+                    toType: toType,
+                    bankName: fromBank,
+                    bankId: bankId,
+                    amount: amount,
+                    details: details,
+                })
+                setStatus('saved')
+                window.dispatchEvent(new Event('approval-changed'))
+                setTimeout(() => setStatus('idle'), 2000)
+            } catch (err) {
+                console.log("SAVE FAILED:", err.response?.data || err.message)
+                setStatus('idle')
+            }
+        }
+
+
+        else if (fromType === 'cash' && toType === 'bank') {
+            if (!toBank || !amount) {
+                alert("Bank aur Amount zaroori hai")
+                return
+            }
+            setStatus('saving')
+            try {
+                await axios.post('http://localhost:3000/add/fund-transfer', {
+                    date: date,
+                    fromType: fromType,
+                    toType: toType,
+                    bankName: toBank,
+                    bankId: bankId,
+                    amount: amount,
+                    details: details,
+                })
+                setStatus('saved')
+                window.dispatchEvent(new Event('approval-changed'))
+                setTimeout(() => setStatus('idle'), 2000)
+            } catch (err) {
+                console.log("SAVE FAILED:", err.response?.data || err.message)
+                setStatus('idle')
+            }
+        }
+
+        // ── Bank → Bank ──
+        else if (fromType === 'bank' && toType === 'bank') {
+            if (!fromBank || !toBank || !amount) {
+                alert("From Bank, To Bank aur Amount zaroori hai")
+                return
+            }
+            if (fromBank === toBank) {
+                alert("From aur To bank alag hone chahiye")
+                return
+            }
+            setStatus('saving')
+            try {
+                await axios.post('http://localhost:3000/add/fund-transfer', {
+                    date: date,
+                    fromType: fromType,
+                    toType: toType,
+                    fromBank: fromBank,
+                    fromBankId: fromBankId,
+                    toBank: toBank,
+                    toBankId: toBankId,
+                    amount: amount,
+                    details: details,
+                })
+                setStatus('saved')
+                window.dispatchEvent(new Event('approval-changed'))
+                setTimeout(() => setStatus('idle'), 2000)
+            } catch (err) {
+                console.log("SAVE FAILED:", err.response?.data || err.message)
+                setStatus('idle')
+            }
+        }
+
+        // ── Cash → Supplier ──
+        else if (fromType === 'cash' && toType === 'supplier') {
+            if (!toSupplier || !amount) {
+                alert("Supplier aur Amount zaroori hai")
+                return
+            }
+            setStatus('saving')
+            try {
+                await axios.post('http://localhost:3000/add/fund-transfer', {
+                    date: date,
+                    fromType: fromType,
+                    toType: toType,
+                    toSupplier: toSupplier,
                     amount: amount,
                     details: details,
                 })

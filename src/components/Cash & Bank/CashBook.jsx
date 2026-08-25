@@ -1,3 +1,4 @@
+import axios from 'axios'
 import { BookOpen, CalendarDays, TrendingUp, Coins, ChevronDown, Wallet, TrendingDown, Search, X } from 'lucide-react'
 import { useReactTable, getCoreRowModel, getSortedRowModel, getFilteredRowModel, getPaginationRowModel, flexRender } from '@tanstack/react-table'
 import { useState, useRef, useEffect, useMemo } from 'react'
@@ -9,16 +10,30 @@ const CashBook = () => {
   const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 10 })
 
   const columns = useMemo(() => [
-    { accessorKey: 'sl', header: 'SL.', size: 60 },
-    { accessorKey: 'date', header: 'Date', size: 110 },
-    { accessorKey: 'voucherType', header: 'Voucher Type', size: 140 },
+    { header: 'SL.', size: 60, cell: info => info.row.index + 1 },
+    { accessorKey: 'date', header: 'Date', size: 110, cell: info => info.getValue() ? new Date(info.getValue()).toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" }) : "-" },
+    { accessorKey: 'voucherNo', header: 'Voucher', size: 120 },
     { accessorKey: 'description', header: 'Description' },
-    { accessorKey: 'credit', header: 'Credit', size: 120, cell: info => <span className="text-emerald-700 font-semibold">{info.getValue()}</span> },
-    { accessorKey: 'debit', header: 'Debit', size: 120, cell: info => <span className="text-rose-600 font-semibold">{info.getValue()}</span> },
-    { accessorKey: 'balance', header: 'Balance', size: 130, cell: info => <span className="font-bold">{info.getValue()}</span> },
+    { accessorKey: 'debit', header: 'Debit', size: 120, cell: info => info.getValue() ? <span className="text-emerald-700 font-semibold">{Number(info.getValue()).toLocaleString()}</span> : <span className="text-gray-300">—</span> },
+    { accessorKey: 'credit', header: 'Credit', size: 120, cell: info => info.getValue() ? <span className="text-rose-600 font-semibold">{Number(info.getValue()).toLocaleString()}</span> : <span className="text-gray-300">—</span> },
+    { accessorKey: 'balance', header: 'Balance', size: 130, cell: info => <span className="font-bold">{Number(info.getValue() || 0).toLocaleString()}</span> },
   ], [])
 
-  const data = useMemo(() => [], [])
+  const [data, setData] = useState([])
+  const [closingBalance, setClosingBalance] = useState(0)
+
+  useEffect(() => {
+    async function loadCashBook() {
+      try {
+        let res = await axios.get('http://localhost:3000/cashbook')
+        setData(res.data.entries)
+        setClosingBalance(res.data.closingBalance)
+      } catch (err) {
+        console.log("CASHBOOK LOAD FAILED:", err.response?.data || err.message)
+      }
+    }
+    loadCashBook()
+  }, [])
 
   const table = useReactTable({
     data,
