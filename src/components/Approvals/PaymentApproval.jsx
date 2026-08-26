@@ -338,7 +338,7 @@ export default function PaymentApproval() {
             <div className="p-5 space-y-3">
               <DetailRow label="Voucher No" value={viewRow.voucherNo || "-"} mono />
               <DetailRow label="Date" value={viewRow.date ? new Date(viewRow.date).toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" }) : "-"} />
-              <DetailRow label="Party" value={viewRow.toOther || partyName(viewRow, activeTab)} />
+              <DetailRow label="Party" value={viewRow.toOther || (viewRow.toType === 'cash' ? 'Cash' : viewRow.toType === 'bank' ? (viewRow.bankName || 'Bank') : partyName(viewRow, activeTab))} />
               {viewRow.fromCustomer && (
                 <DetailRow label="Paid By" value={viewRow.fromCustomer} />
               )}

@@ -35,6 +35,12 @@ const CashBook = () => {
     loadCashBook()
   }, [])
 
+  const totals = useMemo(() => {
+    let debit = data.reduce((sum, e) => sum + (Number(e.debit) || 0), 0)
+    let credit = data.reduce((sum, e) => sum + (Number(e.credit) || 0), 0)
+    return { debit, credit }
+  }, [data])
+
   const table = useReactTable({
     data,
     columns,
@@ -176,30 +182,32 @@ const CashBook = () => {
 
       <div className="bg-white border border-emerald-100 rounded-2xl shadow-sm overflow-hidden">
         <div className="flex items-center justify-between px-4 py-3 border-b border-emerald-50 flex-wrap gap-3">
-          <div className="flex items-center gap-2">
-            <span className="text-gray-500 text-xs">Show</span>
-            <select value={table.getState().pagination.pageSize} onChange={e => table.setPageSize(Number(e.target.value))} className="bg-emerald-50 border border-emerald-100 rounded-lg px-2 py-1 text-gray-700 text-xs focus:outline-none cursor-pointer">
-              <option value={10}>10</option>
-              <option value={25}>25</option>
-              <option value={50}>50</option>
-              <option value={100}>100</option>
-            </select>
-            <span className="text-gray-500 text-xs">entries</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <span className="text-gray-500 text-xs">Search:</span>
-            <div className="relative">
-              <Search className="w-3.5 h-3.5 text-gray-400 absolute left-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
-              <input value={globalFilter ?? ''} onChange={e => setGlobalFilter(e.target.value)} placeholder="Search..." className="bg-emerald-50 border border-emerald-100 focus:border-emerald-400 focus:bg-white rounded-lg pl-8 pr-3 py-1.5 text-gray-700 text-xs focus:outline-none transition-all w-40" />
+          <div className="flex items-center gap-4 flex-wrap">
+            <div className="flex items-center gap-2">
+              <span className="text-gray-500 text-xs">Show</span>
+              <select value={table.getState().pagination.pageSize} onChange={e => table.setPageSize(Number(e.target.value))} className="bg-emerald-50 border border-emerald-100 rounded-lg px-2 py-1 text-gray-700 text-xs focus:outline-none cursor-pointer">
+                <option value={10}>10</option>
+                <option value={25}>25</option>
+                <option value={50}>50</option>
+                <option value={100}>100</option>
+              </select>
+              <span className="text-gray-500 text-xs">entries</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-gray-500 text-xs">Search:</span>
+              <div className="relative">
+                <Search className="w-3.5 h-3.5 text-gray-400 absolute left-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+                <input value={globalFilter ?? ''} onChange={e => setGlobalFilter(e.target.value)} placeholder="Search..." className="bg-emerald-50 border border-emerald-100 focus:border-emerald-400 focus:bg-white rounded-full pl-8 pr-3 py-1.5 text-gray-700 text-xs focus:outline-none transition-all w-40" />
+              </div>
             </div>
           </div>
-        </div>
-        <div className="flex items-center justify-end gap-4 px-6 py-2.5 border-b border-emerald-50">
           <div className="flex items-center gap-2">
-            <Wallet className="w-4 h-4 text-gray-400" />
-            <span className="text-gray-700 text-sm font-bold">Opening Balance</span>
+            <Wallet className="w-4 h-4 text-emerald-500" />
+            <span className="text-gray-700 text-sm font-bold">Current Balance</span>
+            <span className={`text-sm font-bold tabular-nums ${closingBalance < 0 ? 'text-rose-600' : 'text-emerald-700'}`}>
+              Rs. {Number(closingBalance || 0).toLocaleString()}
+            </span>
           </div>
-          <span className="text-gray-500 text-sm font-semibold">0.00</span>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
@@ -244,14 +252,14 @@ const CashBook = () => {
             <tfoot>
               <tr className="bg-emerald-50 border-t border-emerald-100">
                 <td colSpan={4} className="px-4 py-2.5 text-gray-700 text-xs font-bold">Total</td>
-                <td className="px-4 py-2.5 text-right text-emerald-700 text-xs font-bold">
-                  <div className="flex items-center justify-end gap-1"><TrendingUp className="w-3.5 h-3.5" />0.00</div>
+                <td className="px-4 py-2.5 text-left text-emerald-700 text-xs font-bold">
+                  <div className="flex items-center gap-1"><TrendingUp className="w-3.5 h-3.5" />{Number(totals.debit).toLocaleString()}</div>
                 </td>
-                <td className="px-4 py-2.5 text-right text-rose-600 text-xs font-bold">
-                  <div className="flex items-center justify-end gap-1"><TrendingDown className="w-3.5 h-3.5" />0.00</div>
+                <td className="px-4 py-2.5 text-left text-rose-600 text-xs font-bold">
+                  <div className="flex items-center gap-1"><TrendingDown className="w-3.5 h-3.5" />{Number(totals.credit).toLocaleString()}</div>
                 </td>
-                <td className="px-4 py-2.5 text-right text-emerald-700 text-xs font-bold">
-                  <div className="flex items-center justify-end gap-1"><Wallet className="w-3.5 h-3.5" />0.00</div>
+                <td className="px-4 py-2.5 text-left text-emerald-700 text-xs font-bold">
+                  <div className="flex items-center gap-1"><Wallet className="w-3.5 h-3.5" />{Number(closingBalance || 0).toLocaleString()}</div>
                 </td>
               </tr>
             </tfoot>

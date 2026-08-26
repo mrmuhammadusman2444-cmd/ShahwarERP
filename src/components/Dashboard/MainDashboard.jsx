@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { Sun, Sunset, Moon } from "lucide-react";
 import Setting from '../Setting.jsx'
 import { can } from "../../utils/permissions.js";
+import axios from 'axios'
 import GlobarSearchBar from "./GlobarSearchBar.jsx";
 import UserSelectMenu from "../UserAccount/UserSelectMenu.jsx";
 import { BarChart, Bar, PieChart, Pie, Cell, Legend, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
@@ -65,25 +66,24 @@ const tt = {
 
 const useCountUp = (target, duration = 1200) => {
     const [count, setCount] = useState(0);
-    const hasRun = useRef(false)
+    const fromRef = useRef(0);
     useEffect(() => {
-        if (hasRun.current) {
-            setCount(target)
-            return
-        }
-        hasRun.current = true
+        const from = fromRef.current;
         const start = performance.now();
         const tick = (now) => {
             const t = Math.min((now - start) / duration, 1);
             const eased = 1 - Math.pow(1 - t, 3);
-            setCount(Math.round(eased * target));
+            setCount(Math.round(from + (target - from) * eased));
             if (t < 1) requestAnimationFrame(tick);
+            else fromRef.current = target;
         };
         const raf = requestAnimationFrame(tick);
         return () => cancelAnimationFrame(raf);
     }, [target, duration]);
     return count;
 };
+
+
 const getGreeting = () => {
     const hour = new Date().getHours();
     if (hour < 12) return { text: "Good Morning", Icon: Sun, color: "text-amber-500" };
@@ -252,6 +252,20 @@ import React from 'react'
 const MainDashboard = () => {
     const [showSetting, setShowSetting] = useState(false);
     const user = JSON.parse(localStorage.getItem('user')) || {}
+    const [cashBalance, setCashBalance] = useState(0)
+
+        useEffect(() => {
+        async function loadCashBalance() {
+            try {
+                let res = await axios.get('http://localhost:3000/cashbook')
+                console.log(">>> DASHBOARD CASH:", res.data.closingBalance)
+                setCashBalance(res.data.closingBalance)
+            } catch (err) {
+                console.log("CASH BALANCE FAILED:", err.response?.data || err.message)
+            }
+        }
+        loadCashBalance()
+    }, [])
 
     if (!can("dashboard", "view")) {
         return (
@@ -316,7 +330,7 @@ const MainDashboard = () => {
             <div className="mb-4">
                 <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-2.5">
                     {payBand.map((item, i) => (
-                        <PayBandCard key={i} item={item} />
+                        <PayBandCard key={i} item={item.label === "Total Revenue" ? { ...item, value: cashBalance } : item} />
                     ))}
                 </div>
             </div>
