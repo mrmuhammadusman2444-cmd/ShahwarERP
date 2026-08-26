@@ -423,6 +423,32 @@ export default function FundTransfer() {
             }
         }
 
+               // ── Customer → Cash ──
+        else if (fromType === 'customer' && toType === 'cash') {
+            if (!fromCustomer || !amount) {
+                alert("Customer aur Amount zaroori hai")
+                return
+            }
+            setStatus('saving')
+            try {
+                await axios.post('http://localhost:3000/add/fund-transfer', {
+                    date: date,
+                    fromType: fromType,
+                    toType: toType,
+                    fromCustomer: fromCustomer,
+                    amount: amount,
+                    details: details,
+                })
+                setStatus('saved')
+                window.dispatchEvent(new Event('approval-changed'))
+                setTimeout(() => setStatus('idle'), 2000)
+            } catch (err) {
+                console.log("SAVE FAILED:", err.response?.data || err.message)
+                setStatus('idle')
+            }
+        }
+
+
         else {
             alert("Filhaal sirf Customer to Bank aur Customer to Supplier available hai")
         }

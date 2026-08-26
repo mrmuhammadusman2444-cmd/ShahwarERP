@@ -105,7 +105,6 @@ router.get('/customer/ledger/:customerName', async function (req, res) {
 router.post('/add/fund-transfer', async function (req, res) {
     try {
         let data = req.body
-        console.log(">>> FT PAYLOAD:", JSON.stringify(data))
         let lastVoucher = await SupplierPaymentsModel
             .findOne({ voucherNo: { $regex: /^FT/ } })
             .sort({ createdAt: -1 })
@@ -169,7 +168,6 @@ router.post('/add/fund-transfer', async function (req, res) {
                 status: "pending",
             }
             bankCreated = await BankTransactionModel.create(bankEntry)
-            console.log(">>> BANK ENTRY SAVED:", JSON.stringify(bankCreated))
         }
 
 
@@ -250,7 +248,20 @@ router.post('/add/fund-transfer', async function (req, res) {
                 description: `Paid to ${data.toSupplier}${data.details ? " - " + data.details : ""}`,
                 voucherNo: voucherNo,
                 debit: 0,
-                credit: Number(data.amount) || 0,   // cash nikla
+                credit: Number(data.amount) || 0,  
+                source: "fund-transfer",
+                status: "pending",
+            })
+        }
+           
+                // ── Customer → Cash: cash aaya (Cash Debit) ──
+        if (data.fromType === 'customer' && data.toType === 'cash') {
+            await CashTransactionModel.create({
+                date: data.date,
+                description: `Received from ${data.fromCustomer || "Customer"}${data.details ? " - " + data.details : ""}`,
+                voucherNo: voucherNo,
+                debit: Number(data.amount) || 0,   // cash aaya
+                credit: 0,
                 source: "fund-transfer",
                 status: "pending",
             })
@@ -258,7 +269,6 @@ router.post('/add/fund-transfer', async function (req, res) {
 
         res.json({ success: true, data: created, bankEntry: bankCreated })
     } catch (err) {
-        console.log("FUND TRANSFER ERROR:", err)
         res.status(500).json({ success: false, message: err.message })
     }
 
