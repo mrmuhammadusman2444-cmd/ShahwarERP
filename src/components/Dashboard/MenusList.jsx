@@ -97,4 +97,9 @@ export const MenusList = [
     { name: "Add Assets", path: "/assets", category: "Assets" },
     { name: "Manage Assets", path: "/manage/assets", category: "Assets" },
     { name: "Assets Ledger", path: "/assets/ledger", category: "Assets" },
+
+    //Cash & Bank 
+    { name: "Cash Book", path: "/cash/book", category: "Cash" },
+    { name: "Cash Adjustment", path: "/cash/adjustment", category: "Cash" },
+
 ];
