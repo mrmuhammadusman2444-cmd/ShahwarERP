@@ -28,4 +28,38 @@ router.get('/cashbook', async function (req, res) {
     }
 })
 
+router.post('/add/cash-adjustment', async function (req, res) {
+    try {
+        let data = req.body
+
+        let lastVoucher = await CashTransactionModel
+            .findOne({ voucherNo: { $regex: /^CHV-/ } })
+            .sort({ createdAt: -1 })
+
+        let voucherNo = "CHV-0001"
+        if (lastVoucher && lastVoucher.voucherNo) {
+            let lastNumber = parseInt(lastVoucher.voucherNo.replace("CHV-", ""))
+            voucherNo = `CHV-${String(lastNumber + 1).padStart(4, "0")}`
+        }
+
+        let isDebit = data.adjustmentType === "debit"
+
+        let entries = (data.lines || []).map((line) => ({
+            date: data.date,
+            description: `Cash Adjustment${line.code ? " [" + line.code + "]" : ""}${data.remark ? " - " + data.remark : ""}`,
+            voucherNo: voucherNo,
+            debit: isDebit ? (Number(line.amount) || 0) : 0,
+            credit: !isDebit ? (Number(line.amount) || 0) : 0,
+            source: "cash-adjustment",
+            status: "approved",
+        }))
+
+        let created = await CashTransactionModel.insertMany(entries)
+
+        res.json({ success: true, voucherNo: voucherNo, data: created })
+    } catch (err) {
+        res.status(500).json({ message: err.message })
+    }
+})
+
 export default router
