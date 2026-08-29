@@ -102,4 +102,21 @@ router.post('/update/product/:id', upload.single('picture'), async function (req
     }
 })
 
+router.post('/bulk/update/product-prices', async function (req, res) {
+    try {
+        let updates = req.body.updates
+
+        for (let item of updates) {
+            await AddProductModel.findByIdAndUpdate(
+                item._id,
+                { distributorPrice: item.distributorPrice }
+            )
+        }
+
+        res.json({ success: true, count: updates.length })
+    } catch (err) {
+        res.status(500).json({ success: false, message: err.message })
+    }
+})
+
 export default router

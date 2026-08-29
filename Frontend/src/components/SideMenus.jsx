@@ -553,7 +553,7 @@ const SideMenus = ({ collapsed }) => {
                 )}
 
 
-                {(can("products", "view") || canAnySub("products")) && menuMatches('Products', ['New Products', 'Manage Products', 'Category', 'Unit', 'Main Category', 'Scheme Products', 'Products Price List']) && (
+                {(can("products", "view") || canAnySub("products")) && menuMatches('Products', ['New Products', 'Manage Products', 'Category', 'Unit', 'Main Category', 'Scheme Products', 'Products Price List' ,'Dynamic Price List']) && (
 
                     <div onMouseEnter={setTip} onClick={() => setproductOpen(!productOpen)} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer transition-all mb-px ${collapsed ? 'justify-start w-9 h-9 mx-auto' : ''} ${isParentActive(['/newProduct', '/manageproductpage', '/productcategorypage', '/unitpage', '/maincategorypage', '/schemeproductspage']) ? 'bg-(--nav-active)' : 'hover:bg-(--nav-active)'}`}>
                         {isParentActive(['/newProduct', '/manageproductpage', '/productcategorypage', '/unitpage', '/maincategorypage', '/schemeproductspage']) && !collapsed && (
@@ -616,7 +616,14 @@ const SideMenus = ({ collapsed }) => {
                                 Products Price List
                             </div>
                         )}
+                        {canSub("products", "dynamicPriceList") && subMatches('Dynamic Price Lis') && (
+                            <div onClick={() => { navigate('/dynamic/price/list') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                                Dynamic Price List
+                            </div>
+                        )}
                     </div>
+                    
+                    
                 )}
 
                 {(can("suppliers", "view") || canAnySub("suppliers")) && menuMatches('Suppliers', ['Add New Suppliers', 'Manage Suppliers', 'Suppliers Ledger', 'Suppliers Advance']) && (

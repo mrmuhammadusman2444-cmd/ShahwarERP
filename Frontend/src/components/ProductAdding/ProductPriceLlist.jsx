@@ -1,6 +1,6 @@
-import { ClipboardList, Printer, ChevronDown } from 'lucide-react'
 import { useEffect, useState, Fragment } from 'react'
 import axios from 'axios'
+import { ClipboardList, Printer, ChevronDown, Hash, Tag, Layers, Truck, Store, ShoppingBag, CreditCard, Package } from "lucide-react"
 
 const ProductPriceList = () => {
     const [fethProducts, setFetchProducts] = useState([])
@@ -260,55 +260,64 @@ const ProductPriceList = () => {
     }
     let serial = 0
     return (
-        <div className="min-h-screen bg-emerald-50/30 p-4 md:p-6">
+        <div className="min-h-screen bg-emerald-50/40 p-3 md:p-5 bg-[radial-gradient(circle,#05966915_1px,transparent_1px)] bg-size-[18px_18px]">
 
-            <div className="bg-white rounded-2xl border border-emerald-100 shadow-sm px-5 py-4 mb-5 flex items-center justify-between flex-wrap gap-3">
-                <div className="flex items-center gap-3">
-                    <div className="w-11 h-11 rounded-xl bg-linear-to-br from-emerald-500 to-emerald-700 flex items-center justify-center text-white shadow-md shadow-emerald-200 shrink-0">
-                        <ClipboardList size={20} />
+            <div className="bg-white rounded-xl border border-emerald-100 shadow-sm shadow-emerald-900/5 px-4 py-3 mb-4 flex items-center justify-between flex-wrap gap-3">
+                <div className="flex items-center gap-2.5">
+                    <div className="relative w-9 h-9 rounded-lg bg-linear-to-br from-emerald-500 to-emerald-800 flex items-center justify-center text-white shadow-sm shadow-emerald-300 shrink-0 ring-1 ring-white/20">
+                        <ClipboardList size={17} />
                     </div>
                     <div>
-                        <h1 className="text-lg font-bold text-zinc-800 leading-tight">Product Price List</h1>
-                        <p className="text-xs text-zinc-400">Product Price List</p>
+                        <p className="text-[9px] font-bold text-emerald-500 uppercase tracking-[0.18em] leading-none mb-0.5">Price List</p>
+                        <h1 className="text-[15px] font-bold text-zinc-800 leading-tight font-serif ">Shahwar Foods</h1>
                     </div>
                 </div>
                 <button
                     onClick={handlePrint}
                     type="button"
-                    className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold text-white bg-linear-to-br from-emerald-500 to-emerald-700 shadow-md shadow-emerald-200 hover:shadow-lg hover:shadow-emerald-300/60 active:scale-[0.98] transition-all cursor-pointer"
+                    className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg text-xs font-semibold text-white bg-linear-to-br from-emerald-500 to-emerald-700 shadow-sm shadow-emerald-200 hover:shadow-md hover:shadow-emerald-300/60 active:scale-[0.98] transition-all cursor-pointer"
                 >
-                    <Printer size={15} /> Print
+                    <Printer size={13} /> Print
                 </button>
             </div>
 
             {/* Table Card */}
-            <div className="bg-white rounded-2xl border border-emerald-100 shadow-sm overflow-hidden">
+            <div className="bg-white rounded-xl border border-emerald-100 shadow-sm shadow-emerald-900/5 overflow-hidden">
 
-                <h2 className="text-center text-xl md:text-2xl font-bold text-emerald-700 py-5 border-b border-emerald-50">
-                    Shahwar Foods Product Price List
-                </h2>
+                <div className="text-center pt-4 pb-2">
+                    <h2 className="text-base md:text-lg font-bold text-emerald-800 tracking-tight font-serif">
+                        Shahwar Foods <span className=" font-normal text-emerald-600">Product Price List</span>
+                    </h2>
+                    <p className="text-[10px] text-zinc-400 tracking-wide mt-0.5">Distribution &middot; Wholesale &middot; Retail &middot; COD Rates</p>
+                </div>
+
+                {/* Perforated ticket divider */}
+                <div className="relative flex items-center justify-center py-2">
+                    <div className="absolute inset-x-6 border-t border-dashed border-emerald-200"></div>
+                    <span className="relative bg-white px-3 text-[9px] tracking-[0.25em] text-emerald-400 font-bold uppercase">&#9670; Rate Card &#9670;</span>
+                </div>
 
                 <div className="overflow-x-auto overflow-y-auto max-h-117.5 custom-table-scroll">
                     <table className="w-full text-sm border-collapse">
-                        <thead className="sticky top-0 z-10 bg-linear-to-br from-emerald-500 to-emerald-700 shadow-[0_2px_6px_rgba(4,120,87,0.25)]">
+                        <thead className="sticky top-0 z-10 bg-linear-to-br from-emerald-600 to-emerald-800 shadow-[0_2px_6px_rgba(4,120,87,0.25)] backdrop-blur">
                             <tr>
-                                <th className="text-left text-[13px] font-bold text-white px-4 py-3.5 whitespace-nowrap">S.No</th>
-                                <th className="text-left text-[13px] font-bold text-white px-4 py-3.5 whitespace-nowrap">Product Code</th>
-                                <th className="text-left text-[13px] font-bold text-white px-4 py-3.5">Product Name</th>
-                                <th className="text-center text-[13px] font-bold text-white px-4 py-3.5 whitespace-nowrap">Pack</th>
-                                <th className="text-right text-[13px] font-bold text-white px-4 py-3.5 whitespace-nowrap">Distribution Price</th>
-                                <th className="text-right text-[13px] font-bold text-white px-4 py-3.5 whitespace-nowrap">Whole Sale Price</th>
-                                <th className="text-right text-[13px] font-bold text-white px-4 py-3.5 whitespace-nowrap">Retail Price</th>
-                                <th className="text-right text-[13px] font-bold text-white px-4 py-3.5 whitespace-nowrap">COD Price/Online Price</th>
+                                <th className="text-left text-[10.5px] font-bold text-white px-3 py-2.5 whitespace-nowrap"><span className="inline-flex items-center gap-1"><Hash size={11} /> S.No</span></th>
+                                <th className="text-left text-[10.5px] font-bold text-white px-3 py-2.5 whitespace-nowrap"><span className="inline-flex items-center gap-1"><Tag size={11} /> Code</span></th>
+                                <th className="text-left text-[10.5px] font-bold text-white px-3 py-2.5">Product Name</th>
+                                <th className="text-center text-[10.5px] font-bold text-white px-3 py-2.5 whitespace-nowrap"><span className="inline-flex items-center gap-1"><Layers size={11} /> Pack</span></th>
+                                <th className="text-right text-[10.5px] font-bold text-white px-3 py-2.5 whitespace-nowrap"><span className="inline-flex items-center justify-end gap-1"><Truck size={11} /> Distribution</span></th>
+                                <th className="text-right text-[10.5px] font-bold text-white px-3 py-2.5 whitespace-nowrap"><span className="inline-flex items-center justify-end gap-1"><Store size={11} /> Wholesale</span></th>
+                                <th className="text-right text-[10.5px] font-bold text-white px-3 py-2.5 whitespace-nowrap"><span className="inline-flex items-center justify-end gap-1"><ShoppingBag size={11} /> Retail</span></th>
+                                <th className="text-right text-[10.5px] font-bold text-white px-3 py-2.5 whitespace-nowrap"><span className="inline-flex items-center justify-end gap-1"><CreditCard size={11} /> COD / Online</span></th>
                             </tr>
                         </thead>
                         <tbody>
                             {visibleProducts.length === 0 ? (
                                 <tr>
-                                    <td colSpan={8} className="text-center py-14">
-                                        <div className="flex flex-col items-center gap-2">
-                                            <div className="w-14 h-14 rounded-2xl bg-emerald-50 ring-1 ring-emerald-100 flex items-center justify-center mb-1">
-                                                <ClipboardList size={24} className="text-emerald-400" />
+                                    <td colSpan={8} className="text-center py-12">
+                                        <div className="flex flex-col items-center gap-1.5">
+                                            <div className="w-12 h-12 rounded-xl bg-emerald-50 ring-1 ring-emerald-100 border border-dashed border-emerald-200 flex items-center justify-center mb-1">
+                                                <ClipboardList size={20} className="text-emerald-400" />
                                             </div>
                                             <p className="text-zinc-500 text-sm font-medium">No products found</p>
                                             <p className="text-zinc-400 text-xs">Add products to see them here</p>
@@ -325,9 +334,12 @@ const ProductPriceList = () => {
                                         return ia - ib
                                     })
                                     .map((cat) => (<Fragment key={cat}>
-                                        <tr className="bg-emerald-100/70">
-                                            <td colSpan={8} className="px-4 py-2 text-[12px] font-bold text-emerald-800 uppercase tracking-wide">
-                                                {cat}
+                                        <tr className="bg-emerald-50 border-y border-emerald-100">
+                                            <td colSpan={8} className="px-3 py-1.5">
+                                                <span className="inline-flex items-center gap-1.5 text-[10.5px] font-bold text-emerald-800 uppercase tracking-wide">
+                                                    <Package size={11} className="text-emerald-500" /> {cat}
+                                                    <span className="text-emerald-400 font-medium normal-case tracking-normal">&middot; {grouped[cat].length} items</span>
+                                                </span>
                                             </td>
                                         </tr>
                                         {grouped[cat].map((p) => {
@@ -336,42 +348,44 @@ const ProductPriceList = () => {
                                             return (
                                                 <tr
                                                     key={p._id || rowNum}
-                                                    className={`group border-b border-zinc-100 transition-colors hover:bg-emerald-50/60 ${rowNum % 2 === 0 ? "bg-zinc-50/50" : "bg-white"}`}
+                                                    className={`group border-b border-zinc-100 border-l-2 border-l-transparent hover:border-l-emerald-400 transition-colors hover:bg-emerald-50/60 ${rowNum % 2 === 0 ? "bg-zinc-50/50" : "bg-white"}`}
                                                 >
-                                                    <td className="px-4 py-3">
-                                                        <span className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-emerald-50 text-emerald-700 text-[11px] font-bold tabular-nums group-hover:bg-emerald-100 transition-colors">
+                                                    <td className="px-3 py-2">
+                                                        <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-emerald-50 text-emerald-700 text-[10px] font-bold font-mono tabular-nums group-hover:bg-emerald-100 transition-colors">
                                                             {rowNum}
                                                         </span>
                                                     </td>
-                                                    <td className="px-4 py-3">
-                                                        <span className="inline-block px-2 py-1 rounded-md bg-zinc-50 border border-zinc-200 text-zinc-500 text-[11px] font-mono">
+                                                    <td className="px-3 py-2">
+                                                        <span className="inline-block px-1.5 py-0.5 rounded-md bg-zinc-50 border border-zinc-200 text-zinc-500 text-[10px] font-mono">
                                                             {p.productCode || "—"}
                                                         </span>
                                                     </td>
-                                                    <td className="px-4 py-3">
-                                                        <p className="text-zinc-800 text-[13px] font-semibold leading-tight">{p.productName || "—"}</p>
+                                                    <td className="px-3 py-2">
+                                                        <p className="text-zinc-800 text-[12.5px] font-semibold leading-tight">{p.productName || "—"}</p>
                                                         {p.productCategory && (
-                                                            <span className="inline-block mt-1 px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 text-[10px] font-medium">
+                                                            <span className="inline-block mt-0.5 px-1.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700 text-[9px] font-medium">
                                                                 {p.productCategory}
                                                             </span>
                                                         )}
                                                     </td>
-                                                    <td className="px-4 py-3 text-center">
-                                                        <span className="inline-block px-2.5 py-1 rounded-full bg-zinc-100 text-zinc-600 text-xs font-semibold tabular-nums">
+                                                    <td className="px-3 py-2 text-center">
+                                                        <span className="inline-block px-2 py-0.5 rounded-full bg-zinc-100 text-zinc-600 text-[11px] font-semibold font-mono tabular-nums">
                                                             {p.cartonSize || "—"}
                                                         </span>
                                                     </td>
-                                                    <td className="px-4 py-3 text-right text-zinc-600 text-xs font-medium tabular-nums">
+                                                    <td className="px-3 py-2 text-right border-l border-zinc-50 text-zinc-600 text-[11px] font-medium font-mono tabular-nums">
                                                         {p.distributorPrice ? `Rs ${Number(p.distributorPrice).toLocaleString()}` : "—"}
                                                     </td>
-                                                    <td className="px-4 py-3 text-right text-zinc-600 text-xs font-medium tabular-nums">
+                                                    <td className="px-3 py-2 text-right border-l border-zinc-50 text-zinc-600 text-[11px] font-medium font-mono tabular-nums">
                                                         {p.wholesaleRate ? `Rs ${Number(p.wholesaleRate).toLocaleString()}` : "—"}
                                                     </td>
-                                                    <td className="px-4 py-3 text-right text-zinc-800 text-[13px] font-bold tabular-nums">
-                                                        {p.retailPrice ? `Rs ${Number(p.retailPrice).toLocaleString()}` : "—"}
+                                                    <td className="px-3 py-2 text-right border-l border-zinc-50">
+                                                        <span className="text-zinc-800 text-[12.5px] font-bold font-mono tabular-nums border-b-2 border-amber-400/70 pb-0.5">
+                                                            {p.retailPrice ? `Rs ${Number(p.retailPrice).toLocaleString()}` : "—"}
+                                                        </span>
                                                     </td>
-                                                    <td className="px-4 py-3 text-right">
-                                                        <span className="inline-block px-2.5 py-1 rounded-lg bg-emerald-50 text-emerald-700 text-xs font-bold tabular-nums">
+                                                    <td className="px-3 py-2 text-right border-l border-zinc-50">
+                                                        <span className="inline-block px-2 py-0.5 rounded-lg bg-linear-to-br from-emerald-50 to-emerald-100 text-emerald-700 text-[11px] font-bold font-mono tabular-nums">
                                                             {p.codOnlinePrice ? `Rs ${Number(p.codOnlinePrice).toLocaleString()}` : "—"}
                                                         </span>
                                                     </td>
@@ -385,19 +399,26 @@ const ProductPriceList = () => {
                     </table>
 
                     <style>{`
-        .custom-table-scroll::-webkit-scrollbar { width: 6px; height: 6px; }
-        .custom-table-scroll::-webkit-scrollbar-track { background: transparent; }
-        .custom-table-scroll::-webkit-scrollbar-thumb { background: #bbf7d0; border-radius: 99px; }
-        .custom-table-scroll::-webkit-scrollbar-thumb:hover { background: #86efac; }
-    `}</style>
+    .custom-table-scroll::-webkit-scrollbar { width: 6px; height: 6px; }
+    .custom-table-scroll::-webkit-scrollbar-track { background: transparent; }
+    .custom-table-scroll::-webkit-scrollbar-thumb { background: #bbf7d0; border-radius: 99px; }
+    .custom-table-scroll::-webkit-scrollbar-thumb:hover { background: #86efac; }
+    .custom-table-scroll tbody tr { animation: rowFadeIn 0.35s ease both; }
+    @keyframes rowFadeIn { from { opacity: 0; transform: translateY(3px); } to { opacity: 1; transform: translateY(0); } }
+    @media (prefers-reduced-motion: reduce) {
+        .custom-table-scroll tbody tr { animation: none; }
+    }
+`}</style>
                 </div>
 
-                <div className="px-5 py-3 border-t border-emerald-50 bg-emerald-50/30 flex items-center justify-between">
-                    <p className="text-xs text-zinc-400">
-                        Total Products: <span className="font-semibold text-zinc-600">{fethProducts.length}</span>
+                <div className="px-4 py-2.5 border-t border-emerald-50 bg-emerald-50/30 flex items-center justify-between">
+                    <p className="text-[11px] text-zinc-400 flex items-center gap-1.5">
+                        <Package size={12} className="text-emerald-500" />
+                        Total Products: <span className="font-semibold text-zinc-600 font-mono">{fethProducts.length}</span>
                     </p>
-                    <p className="text-xs text-zinc-400">
-                        Categories: <span className="font-semibold text-zinc-600">0</span>
+                    <p className="text-[11px] text-zinc-400 flex items-center gap-1.5">
+                        <Layers size={12} className="text-emerald-500" />
+                        Categories: <span className="font-semibold text-zinc-600 font-mono">0</span>
                     </p>
                 </div>
             </div>
