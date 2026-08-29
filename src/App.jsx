@@ -19,6 +19,7 @@ import NewSale from './pages/Sales Section/NewSale.jsx'
 import ManageSale from './pages/Sales Section/ManageSale.jsx'
 import NewProduct from './pages/Products/NewProduct.jsx'
 import ProductPriceListPage from './pages/Products/ProductPriceListPage.jsx'
+import DynamicPriceListPage from './pages/Products/DynamicPriceListPage.jsx'
 import NewCustomerAdding from './pages/CustomerPage/NewCustomerAdding.jsx'
 import Dashboard from './pages/Dashboard/Dashboard.jsx'
 import ManageCustomer from './pages/CustomerPage/ManageCustomer.jsx'
@@ -137,6 +138,8 @@ const App = () => {
         <Route path='/UnitPage' element={<UnitPage />} />
         <Route path='/MainCategoryPage' element={<MainCategoryPage />} />
         <Route path='/product/price/list' element={<ProductPriceListPage />} />
+        <Route path='/dynamic/price/list' element={<DynamicPriceListPage />} />
+
 
         <Route path='/SchemeProductsPage' element={<SchemeProductsPage />} />
         <Route path='/InvoiceApprovalPage' element={<InvoiceApprovalPage />} />

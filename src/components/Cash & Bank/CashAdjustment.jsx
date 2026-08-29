@@ -164,14 +164,7 @@ const CashAdjustment = () => {
                   <span className="h-4 w-1 rounded-full bg-emerald-500" />
                   Entries
                 </h3>
-                <button
-                  type="button"
-                  onClick={addLine}
-                  className="flex cursor-pointer items-center gap-1.5 rounded-xl border border-emerald-200 bg-emerald-50 px-3.5 py-2 text-[12px] font-semibold text-emerald-700 transition-all hover:bg-emerald-100 hover:-translate-y-0.5"
-                >
-                  <Plus className="h-3.5 w-3.5" />
-                  Add line
-                </button>
+
               </div>
 
               <div className="overflow-hidden rounded-2xl border border-slate-200">
