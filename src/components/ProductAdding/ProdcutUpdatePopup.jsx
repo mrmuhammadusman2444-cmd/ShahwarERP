@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import MianCategoryUpdateProdcut from './MainCategoryUpdateProduct.jsx'
 import axios from 'axios';
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Package, Loader2, Check, AlertCircle, Boxes, Weight, Hash, LayoutGrid, Tags, Split, Wallet, Truck, Store, Building2, Smartphone, Sparkles, Warehouse, Save, TrendingUp } from "lucide-react";
+import { X, Package,Trash2, Loader2, Check, AlertCircle, Boxes, Weight, Hash, LayoutGrid, Tags, Split, Wallet, Truck, Store, Building2, Smartphone, Sparkles, Warehouse, Save, TrendingUp } from "lucide-react";
 
 
 const CATEGORIES = [
@@ -277,11 +277,35 @@ const ProdcutUpdatePopup = ({ setShowProductPopup, updateData, handleManageProdc
                                         className="absolute inset-0 z-10 cursor-pointer opacity-0"
                                     />
                                     {product.picture ? (
-                                        <img
-                                            src={typeof product.picture === "string" ? `http://localhost:3000${product.picture}` : URL.createObjectURL(product.picture)}
-                                            alt="preview"
-                                            className="h-full w-full object-cover"
-                                        />
+                                        <div className="group/img relative h-full w-full">
+                                            <img
+                                                src={typeof product.picture === "string" ? `http://localhost:3000${product.picture}` : URL.createObjectURL(product.picture)}
+                                                alt="preview"
+                                                className="h-full w-full object-cover"
+                                            />
+                                            <div className="absolute inset-0 z-20 flex items-center justify-center gap-3 bg-linear-to-t from-black/60 via-black/30 to-transparent opacity-0 transition-opacity duration-300 group-hover/img:opacity-100">
+                                                <label
+                                                    
+                                                    className="flex h-9 w-9 cursor-pointer items-center justify-center rounded-full bg-white/95 text-emerald-600 shadow-lg backdrop-blur transition-all duration-200 hover:scale-110 hover:bg-white"
+                                                >
+                                                    <svg className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" /></svg>
+                                                    <input
+                                                        type="file"
+                                                        accept="image/*"
+                                                        onChange={(e) => { const file = e.target.files[0]; if (file) setProduct({ ...product, picture: file }) }}
+                                                        className="hidden"
+                                                    />
+                                                </label>
+                                                <button
+                                                    type="button"
+                                                    
+                                                    onClick={(e) => { e.stopPropagation(); setProduct({ ...product, picture: "" }) }}
+                                                    className="flex h-9 w-9 cursor-pointer items-center justify-center rounded-full bg-white/95 text-rose-500 shadow-lg backdrop-blur transition-all duration-200 hover:scale-110 hover:bg-rose-500 hover:text-white"
+                                                >
+                                                    <Trash2 size={16} />
+                                                </button>
+                                            </div>
+                                        </div>
                                     ) : (
                                         <>
                                             <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-emerald-100 bg-white shadow-sm">

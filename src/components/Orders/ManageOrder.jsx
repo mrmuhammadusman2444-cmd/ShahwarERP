@@ -108,7 +108,7 @@ const ManageOrder = () => {
                 <th className="text-left text-xs font-semibold px-4 py-3 whitespace-nowrap">SL.</th>
                 <th className="text-left text-xs font-semibold px-4 py-3 whitespace-nowrap">
                   <div className="flex items-center gap-1">
-                    Invoice No
+                    Order No
                     <svg className="w-3 h-3 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16V4m0 0L3 8m4-4l4 4M17 8v12m0 0l4-4m-4 4l-4-4" />
                     </svg>
@@ -117,7 +117,7 @@ const ManageOrder = () => {
                 <th className="text-left text-xs font-semibold px-4 py-3 whitespace-nowrap">Sale By</th>
                 <th className="text-left text-xs font-semibold px-4 py-3 whitespace-nowrap">Customer Name</th>
                 <th className="text-left text-xs font-semibold px-4 py-3 whitespace-nowrap">Date</th>
-                <th className="text-left text-xs font-semibold px-4 py-3 whitespace-nowrap">Total Amount</th>
+                <th className="text-left text-xs font-semibold px-4 py-3 whitespace-nowrap">Delivery Date</th>
                 <th className="text-center text-xs font-semibold px-4 py-3 whitespace-nowrap">Action</th>
               </tr>
             </thead>

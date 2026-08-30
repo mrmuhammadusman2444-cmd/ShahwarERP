@@ -10,8 +10,8 @@ const ProductPriceList = () => {
     useEffect(() => {
         async function handlFetchProducts() {
             let res = await axios.get('http://localhost:3000/find/product')
-            console.log(res.data);
-            setFetchProducts(res.data)
+            const saleOnly = res.data.filter((p) => p.saleRawCategory !== "Raw")
+            setFetchProducts(saleOnly)
 
         }
         handlFetchProducts()
