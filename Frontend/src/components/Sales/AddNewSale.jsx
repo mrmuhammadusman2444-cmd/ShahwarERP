@@ -172,11 +172,7 @@ const NewSale = ({ setManageCustomer }) => {
     }
   }
 
-
-
-
-
-  const itemsTotal = selectedItems.reduce((s, i) => s + (i.total ?? 0), 0)
+const itemsTotal = selectedItems.reduce((s, i) => s + (i.total ?? 0), 0)
   const grandTotal = itemsTotal - (Number(saleProducts.freightCharges) || 0)
   const totalCartons = selectedItems.reduce((s, i) => s + (Number(i.carton) || 0), 0)
 

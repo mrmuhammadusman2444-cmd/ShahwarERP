@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect, useMemo, Fragment } from "react"
 import axios from "axios"
 import { toast } from "react-toastify"
-import { ClipboardList, CheckCircle2, Printer, Hash, Tag, Layers, Truck, Store, ShoppingBag, CreditCard, Package, Pencil, RotateCcw, CloudUpload, Loader2, AlertTriangle } from "lucide-react"
+import { ClipboardList, CheckCircle2, Award, Printer, Hash, Tag, Layers, Truck, Store, ShoppingBag, CreditCard, Package, Pencil, RotateCcw, CloudUpload, Loader2, AlertTriangle } from "lucide-react"
 import { can } from "../../Utils/Permissions.js"
 
 const API_BASE = "http://localhost:3000"
@@ -10,10 +10,13 @@ const priceFields = [
     { key: "distributorPrice", label: "Distribution", icon: Truck, cellClass: "bg-zinc-50 text-zinc-700" },
     { key: "wholesaleRate", label: "Whole Sale", icon: Store, cellClass: "bg-zinc-50 text-zinc-700" },
     { key: "retailPrice", label: "Retail", icon: ShoppingBag, cellClass: "bg-amber-50 text-amber-800 font-bold" },
+    { key: "unitSchemePoint", label: "Scheme Pt", icon: Award, cellClass: "bg-indigo-50 text-indigo-700 font-bold", prefix: "" },
     { key: "codOnlinePrice", label: "COD / Online", icon: CreditCard, cellClass: "bg-emerald-50 text-emerald-700 font-bold" },
+
+
 ]
 
-function PriceCell({ value, dirty, cellClass, onCommit }) {
+function PriceCell({ value, dirty, cellClass, onCommit, prefix = "Rs" }) {
     const [editing, setEditing] = useState(false)
     const [draft, setDraft] = useState(value ?? "")
     const inputRef = useRef(null)
@@ -48,10 +51,9 @@ function PriceCell({ value, dirty, cellClass, onCommit }) {
     if (editing) {
         return (
             <div className="flex items-center justify-end gap-1">
-                <span className="text-[10px] text-zinc-400 font-mono">Rs</span>
+                {prefix && <span className="text-[10px] text-zinc-400 font-mono">{prefix}</span>}
                 <input
                     ref={inputRef}
-                    type="number"
                     min="0"
                     inputMode="decimal"
                     value={draft}
@@ -74,8 +76,8 @@ function PriceCell({ value, dirty, cellClass, onCommit }) {
             className={`group/cell relative inline-flex items-center gap-1 px-2 py-1 rounded-lg text-[11px] font-mono tabular-nums transition-all hover:ring-2 hover:ring-emerald-200 cursor-pointer ${cellClass}`}
         >
             {value != null && value !== ""
-                ? `Rs ${Number(value).toLocaleString()}`
-                : <span className="text-zinc-300 italic font-sans font-normal">Set price</span>}
+                ? `${prefix ? prefix + " " : ""}${Number(value).toLocaleString()}`
+                : <span className="text-zinc-300  font-sans font-normal">Set value</span>}
             <Pencil size={9} className="opacity-0 group-hover/cell:opacity-60 transition-opacity shrink-0" />
             {dirty && <span className="absolute -top-1 -right-1 w-2 h-2 rounded-full bg-amber-400 ring-2 ring-white" />}
         </button>
@@ -100,8 +102,9 @@ export default function ProductPriceEditor() {
             const res = await fetch(`${API_BASE}/find/product`)
             if (!res.ok) throw new Error(`Server returned ${res.status}`)
             const data = await res.json()
-            setProducts(data)
-            setOriginalProducts(data)
+            const saleOnly = data.filter((p) => p.saleRawCategory !== "Raw")
+            setProducts(saleOnly)
+            setOriginalProducts(saleOnly)
             setDirtyFields({})
         } catch (err) {
             setError(err.message || "Products load nahi ho sake")
@@ -121,7 +124,7 @@ export default function ProductPriceEditor() {
 
     const grouped = useMemo(() => {
         return products.reduce((acc, p) => {
-            const cat = p.productCategory || "Uncategorized"
+            const cat = p.mainCategory || "Uncategorized"
             if (!acc[cat]) acc[cat] = []
             acc[cat].push(p)
             return acc
@@ -133,7 +136,7 @@ export default function ProductPriceEditor() {
     const categoryOrder = useMemo(() => {
         const seen = []
         for (const p of products) {
-            const cat = p.productCategory || "Uncategorized"
+            const cat = p.mainCategory || "Uncategorized"
             if (!seen.includes(cat)) seen.push(cat)
         }
         return seen
@@ -141,6 +144,10 @@ export default function ProductPriceEditor() {
 
     const sortedCategories = useMemo(() => {
         return Object.keys(grouped).sort((a, b) => {
+            let aRaw = a.toLowerCase().includes("raw")
+            let bRaw = b.toLowerCase().includes("raw")
+            if (aRaw && !bRaw) return 1
+            if (!aRaw && bRaw) return -1
             let ia = categoryOrder.indexOf(a)
             let ib = categoryOrder.indexOf(b)
             if (ia === -1) return 1
@@ -175,8 +182,10 @@ export default function ProductPriceEditor() {
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ updates })
             })
+            console.log(">>> BULK UPDATES SENT:", JSON.stringify(updates))
             const data = await res.json()
             if (!res.ok || !data.success) throw new Error(data.message || "Update failed")
+                console.log(">>> BULK RESPONSE:", data)
 
             setOriginalProducts(products)
             setDirtyFields({})
@@ -202,7 +211,7 @@ export default function ProductPriceEditor() {
                     </div>
                     <div>
                         <p className="text-[9px] font-bold text-emerald-500 uppercase tracking-[0.18em] leading-none mb-0.5">Price Editor</p>
-                        <h1 className="text-[15px] font-bold text-zinc-800 leading-tight font-serif italic">Shahwar Foods</h1>
+                        <h1 className="text-[15px] font-bold text-zinc-800 leading-tight font-serif ">Shahwar Foods</h1>
                     </div>
                 </div>
 
@@ -252,7 +261,7 @@ export default function ProductPriceEditor() {
 
                 <div className="text-center pt-4 pb-2">
                     <h2 className="text-base md:text-lg font-bold text-emerald-800 tracking-tight font-serif">
-                        Shahwar Foods <span className="italic font-normal text-emerald-600">Product Price List</span>
+                        Shahwar Foods <span className=" font-normal text-emerald-600">Product Price List</span>
                     </h2>
                     <p className="text-[10px] text-zinc-400 tracking-wide mt-0.5">Click any price to edit it &middot; Enter to save &middot; Esc to cancel</p>
                 </div>
@@ -319,7 +328,7 @@ export default function ProductPriceEditor() {
                                 sortedCategories.map((cat) => (
                                     <Fragment key={cat}>
                                         <tr className="bg-emerald-50 border-y border-emerald-100">
-                                            <td colSpan={8} className="px-3 py-1.5">
+                                            <td colSpan={9} className="px-3 py-1.5">
                                                 <span className="inline-flex items-center gap-1.5 text-[10.5px] font-bold text-emerald-800 uppercase tracking-wide">
                                                     <Package size={11} className="text-emerald-500" /> {cat}
                                                     <span className="text-emerald-400 font-medium normal-case tracking-normal">&middot; {grouped[cat].length} items</span>
@@ -363,6 +372,7 @@ export default function ProductPriceEditor() {
                                                                 value={p[f.key]}
                                                                 dirty={!!dirtyFields[`${p._id}:${f.key}`]}
                                                                 cellClass={f.cellClass}
+                                                                prefix={f.prefix}
                                                                 onCommit={(val) => updatePrice(p._id, f.key, val)}
                                                             />
                                                         </td>

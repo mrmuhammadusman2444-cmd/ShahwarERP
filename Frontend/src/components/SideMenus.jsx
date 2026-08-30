@@ -930,7 +930,7 @@ const SideMenus = ({ collapsed }) => {
                                 Scheme Report
                             </div>
                         )}
-                        {canSub("schemeReport", "warehouseReport") && subMatches('Warehouse Report') && (
+                        {false && canSub("schemeReport", "warehouseReport") && subMatches('Warehouse Report') && (
                             <div onClick={() => { navigate('/warehouse/scheme/report') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                                 Warehouse Report
                             </div>

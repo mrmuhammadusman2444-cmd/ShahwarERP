@@ -69,6 +69,19 @@ const ManageProduct = () => {
 
     }
 
+    async function openEditFresh(product) {
+        try {
+            let res = await axios.get('http://localhost:3000/find/product')
+            let fresh = res.data.find((p) => p._id === product._id)
+            setUpdateProduct(fresh || product)
+            setShowProductPopup(true)
+            setManageProduct(res.data)
+        } catch (err) {
+            setUpdateProduct(product)
+            setShowProductPopup(true)
+        }
+    }
+
     const filtered = React.useMemo(() =>
         manageProduct.filter((p) =>
             `${p.productName} ${p.model} ${p.mainCategory} ${p.saleRawCategory}`
@@ -476,7 +489,7 @@ const ManageProduct = () => {
                                                     </button>
                                                     {can('products', 'update') && (
                                                         <button
-                                                            onClick={() => { setUpdateProduct(product); setShowProductPopup(true) }}
+                                                            onClick={() => openEditFresh(product)}
                                                             className="p-1.5 rounded-lg text-gray-400 hover:text-blue-600 hover:bg-blue-100 cursor-pointer transition-all">
                                                             <Pencil size={15} />
                                                         </button>

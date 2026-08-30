@@ -1,5 +1,6 @@
 import express from "express";
 import SaleModel from '../Models/Sale Models/SalesModel.js'
+import AddProductModel from '../Models/Products/AddProductModel.js'
 const router = express.Router();
 
 
@@ -94,5 +95,53 @@ router.delete("/delete/sale/:id", async (req, res) => {
     if (!deleted) return res.status(404).json({ message: "Sale not found" })
     res.json({ message: "Sale deleted successfully" })
 })
+
+router.get('/scheme-report', async function (req, res) {
+    try {
+        let { customerName, startDate, endDate, productName } = req.query
+
+        let query = { status: "approved" }
+        if (customerName) query.customerName = customerName
+        if (startDate || endDate) {
+            query.Date = {}
+            if (startDate) query.Date.$gte = new Date(startDate)
+            if (endDate) {
+                let end = new Date(endDate)
+                end.setHours(23, 59, 59, 999)
+                query.Date.$lte = end
+            }
+        }
+
+        let sales = await SaleModel.find(query)
+        let products = await AddProductModel.find()
+
+        let pointMap = {}
+        products.forEach((p) => { pointMap[p.productName] = Number(p.unitSchemePoint) || 0 })
+
+        let summary = {}
+        sales.forEach((sale) => {
+            (sale.items || []).forEach((item) => {
+                let pname = item.name
+                if (!pname) return
+                if (productName && pname !== productName) return
+
+                let cartons = Number(item.carton) || 0
+                let pts = cartons * (pointMap[pname] || 0)
+
+                if (!summary[pname]) summary[pname] = { productName: pname, qty: 0, points: 0 }
+                summary[pname].qty += cartons
+                summary[pname].points += pts
+            })
+        })
+
+        let result = Object.values(summary)
+        let totalPoints = result.reduce((sum, r) => sum + r.points, 0)
+
+        res.json({ rows: result, totalPoints })
+    } catch (err) {
+        res.status(500).json({ message: err.message })
+    }
+})
+
 
 export default router

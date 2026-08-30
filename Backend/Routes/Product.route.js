@@ -107,10 +107,13 @@ router.post('/bulk/update/product-prices', async function (req, res) {
         let updates = req.body.updates
 
         for (let item of updates) {
-            await AddProductModel.findByIdAndUpdate(
-                item._id,
-                { distributorPrice: item.distributorPrice }
-            )
+            let fields = {}
+            if (item.distributorPrice !== undefined) fields.distributorPrice = item.distributorPrice
+            if (item.wholesaleRate !== undefined) fields.wholesaleRate = item.wholesaleRate
+            if (item.retailPrice !== undefined) fields.retailPrice = item.retailPrice
+            if (item.codOnlinePrice !== undefined) fields.codOnlinePrice = item.codOnlinePrice
+            if (item.unitSchemePoint !== undefined) fields.unitSchemePoint = item.unitSchemePoint
+            await AddProductModel.findByIdAndUpdate(item._id, fields)
         }
 
         res.json({ success: true, count: updates.length })
