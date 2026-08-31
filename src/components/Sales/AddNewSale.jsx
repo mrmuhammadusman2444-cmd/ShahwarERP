@@ -1,6 +1,6 @@
 import SelectCategory from '../../components/SelectCategory/SelectCategory.jsx'
 import SelectCustomer from './SelectCustomers.jsx'
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import axios from 'axios'
 import { toast } from 'react-toastify'
@@ -12,6 +12,8 @@ const NewSale = ({ setManageCustomer }) => {
   let navigate = useNavigate()
   let { id } = useParams()
   const isEditMode = Boolean(id)
+  const location = useLocation()
+  const fromOrder = location.state?.fromOrder || null
 
   const [fetchProducts, setFetchProducts] = useState([])
   const [selectedItems, setSelectedItems] = useState([])
@@ -40,6 +42,35 @@ const NewSale = ({ setManageCustomer }) => {
   }, [])
 
   useEffect(() => {
+    if (fromOrder) {
+      setSaleProducts((prev) => ({
+        ...prev,
+        customerName: fromOrder.customerName || '',
+        Date: fromOrder.orderDate ? fromOrder.orderDate.split('T')[0] : new Date().toISOString().split('T')[0],
+      }))
+      let mappedItems = (fromOrder.items || []).map((it) => {
+        let carton = Number(it.carton) || 0
+        let cartonSize = Number(it.cartonSize) || 0
+        let qty = carton * cartonSize
+        let rate = Number(it.rate) || 0
+        return {
+          _id: it._id,
+          name: it.name,
+          rate: rate,
+          cartonSize: cartonSize,
+          storeLimit: it.storeLimit || "",
+          mainCategory: it.mainCategory || "Uncategorized",
+          carton: carton,
+          qty: qty,
+          dozen: qty / 12,
+          total: qty * rate,
+        }
+      })
+      setSelectedItems(mappedItems)
+    }
+  }, [])
+
+  useEffect(() => {
     async function loadSaleForEdit() {
       if (!id) return
       try {
@@ -62,10 +93,7 @@ const NewSale = ({ setManageCustomer }) => {
     }
     loadSaleForEdit()
   }, [id])
-  console.log("Selected Category:", selectedCategory)
-  console.log("Sample product:", fetchProducts[0])
-  console.log("Category field value:", fetchProducts[0]?.mainCategory)
-  console.log("Sachet 40 products:", fetchProducts.filter(p => p.mainCategory?.includes("Sachet 40")))
+  
   const visibleProducts = fetchProducts.filter((p) => {
     const matchesSearch = (p.productName || "").toLowerCase().includes(search.toLowerCase())
     const matchesCategory =
@@ -172,7 +200,7 @@ const NewSale = ({ setManageCustomer }) => {
     }
   }
 
-const itemsTotal = selectedItems.reduce((s, i) => s + (i.total ?? 0), 0)
+  const itemsTotal = selectedItems.reduce((s, i) => s + (i.total ?? 0), 0)
   const grandTotal = itemsTotal - (Number(saleProducts.freightCharges) || 0)
   const totalCartons = selectedItems.reduce((s, i) => s + (Number(i.carton) || 0), 0)
 

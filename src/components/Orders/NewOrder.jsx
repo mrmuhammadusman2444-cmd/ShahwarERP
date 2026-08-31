@@ -1,5 +1,5 @@
 import SelectCategory from '../../components/SelectCategory/SelectCategory.jsx'
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import SelectCustomer from '../Sales/SelectCustomers.jsx'
@@ -16,14 +16,25 @@ const NewOrder = () => {
   const [orderDate, setOrderDate] = useState("")
   const [deliveryDate, setDeliveryDate] = useState("")
   const [saving, setSaving] = useState(false)
+  const location = useLocation()
+  const editOrder = location.state?.editOrder || null
+  const [editId, setEditId] = useState(null)
+
+  useEffect(() => {
+    if (editOrder) {
+      setEditId(editOrder._id)
+      setSelectedCustomer(editOrder.customerName || "")
+      setOrderDate(editOrder.orderDate ? editOrder.orderDate.slice(0, 10) : "")
+      setDeliveryDate(editOrder.deliveryDate ? editOrder.deliveryDate.slice(0, 10) : "")
+      setSelectedItems(editOrder.items || [])
+    }
+  }, [])
 
   async function handleProceed() {
     if (!selectedCustomer) {
-      alert("Customer select karo")
       return
     }
     if (selectedItems.length === 0) {
-      alert("Kam se kam ek product add karo")
       return
     }
     let user = JSON.parse(localStorage.getItem('user')) || {}
@@ -31,20 +42,31 @@ const NewOrder = () => {
 
     setSaving(true)
     try {
-      await axios.post('http://localhost:3000/add/order', {
-        customerName: selectedCustomer,
-        orderDate: orderDate,
-        deliveryDate: deliveryDate,
-        items: selectedItems,
-        totalWeight: totalWeight,
-        grandTotal: grandTotal,
-        saleBy: saleBy,
-      })
-      setSelectedItems([])
-      setSelectedCustomer("")
-      setOrderDate("")
-      setDeliveryDate("")
-      alert("Order save ho gaya")
+      if (editId) {
+        await axios.put(`http://localhost:3000/update/order/${editId}`, {
+          customerName: selectedCustomer,
+          orderDate: orderDate,
+          deliveryDate: deliveryDate,
+          items: selectedItems,
+          totalWeight: totalWeight,
+          grandTotal: grandTotal,
+        })
+        navigate('/ManageOrdersPage')
+      } else {
+        await axios.post('http://localhost:3000/add/order', {
+          customerName: selectedCustomer,
+          orderDate: orderDate,
+          deliveryDate: deliveryDate,
+          items: selectedItems,
+          totalWeight: totalWeight,
+          grandTotal: grandTotal,
+          saleBy: saleBy,
+        })
+        setSelectedItems([])
+        setSelectedCustomer("")
+        setOrderDate("")
+        setDeliveryDate("")
+      }
     } catch (err) {
       console.log("ORDER SAVE FAILED:", err.response?.data || err.message)
       alert("Order save nahi hua")
@@ -99,12 +121,14 @@ const NewOrder = () => {
   })
 
   function handleAddItem(product) {
+
     setSelectedItems((prev) => {
       let exists = prev.find((it) => it._id === product._id)
       if (exists) return prev
       return [...prev, {
         _id: product._id,
         name: product.productName,
+        mainCategory: product.mainCategory || "",
         desc: "",
         cartonSize: Number(product.cartonSize) || 0,
         dozenSize: Number(product.Dozen) || 0,
@@ -176,7 +200,7 @@ const NewOrder = () => {
           </div>
           <div>
             <label className="text-gray-900 text-sm tracking-wide block mb-1.5">Customer Name</label>
-            < SelectCustomer type="text" placeholder="Ali"
+            < SelectCustomer value={selectedCustomer} onChange={setSelectedCustomer} type="text" placeholder="Ali"
               className="w-full bg-emerald-50 border border-emerald-100 focus:border-emerald-400 focus:bg-white rounded-xl px-3 py-2.5 text-gray-700 text-sm focus:outline-none transition-all" />
           </div>
           <div>
@@ -446,7 +470,7 @@ const NewOrder = () => {
                 onClick={handleProceed}
                 disabled={saving}
                 className="w-full sm:w-auto px-8 py-2.5 bg-linear-to-r cursor-pointer from-emerald-600 to-emerald-700 hover:from-emerald-500 hover:to-emerald-600 text-white text-sm font-semibold rounded-xl shadow-md shadow-emerald-200 transition-all hover:-translate-y-0.5 active:translate-y-0 whitespace-nowrap disabled:opacity-70 disabled:cursor-not-allowed">
-                {saving ? 'Saving...' : 'Proceed to Order →'}
+                {saving ? 'Saving...' : (editId ? 'Update Order →' : 'Proceed to Order →')}
               </button>
             </div>
 

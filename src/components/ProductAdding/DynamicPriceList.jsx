@@ -189,7 +189,6 @@ export default function ProductPriceEditor() {
 
             setOriginalProducts(products)
             setDirtyFields({})
-            setSyncMessage(`${data.count} product${data.count === 1 ? "" : "s"} updated — Manage Products aur Edit popup mein bhi reflect ho jayega.`)
         } catch (err) {
             setSyncMessage("Save nahi hua: " + err.message)
         } finally {
