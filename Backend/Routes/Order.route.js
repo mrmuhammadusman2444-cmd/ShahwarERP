@@ -34,13 +34,34 @@ router.post('/add/order', async function (req, res) {
 })
 
 router.get('/find/orders', async function (req, res) {
-    let orders = await OrderModel.find().sort({ createdAt: -1 })
+    let orders = await OrderModel.find().sort({ createdAt: 1 })
     res.json(orders)
 })
 
 router.delete('/delete/order/:id', async function (req, res) {
     let deleted = await OrderModel.findByIdAndDelete(req.params.id)
     res.json({ success: true, data: deleted })
+})
+
+router.put('/update/order/:id', async function (req, res) {
+    try {
+        let data = req.body
+        let updated = await OrderModel.findByIdAndUpdate(
+            req.params.id,
+            {
+                customerName: data.customerName || "",
+                orderDate: data.orderDate,
+                deliveryDate: data.deliveryDate,
+                items: data.items || [],
+                totalWeight: data.totalWeight || 0,
+                grandTotal: data.grandTotal || 0,
+            },
+            { new: true }
+        )
+        res.json({ success: true, data: updated })
+    } catch (err) {
+        res.status(500).json({ success: false, message: err.message })
+    }
 })
 
 export default router

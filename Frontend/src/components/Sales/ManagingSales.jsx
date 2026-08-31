@@ -622,7 +622,7 @@ const ManageSale = () => {
         </div>
 
         <div className="overflow-x-auto h-97 ">
-          <table className="w-full min-w-[860px] text-sm border-collapse">
+          <table className="w-full min-w-215 text-sm border-collapse">
             <thead>
               <tr className="bg-linear-to-b from-emerald-500 to-emerald-700 text-white">
                 <th className="text-left text-xs font-semibold px-4 py-3 whitespace-nowrap">SL</th>
