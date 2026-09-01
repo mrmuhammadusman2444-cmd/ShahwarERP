@@ -64,4 +64,46 @@ router.put('/update/order/:id', async function (req, res) {
     }
 })
 
+router.get('/order-report', async function (req, res) {
+    try {
+        let query = { status: "pending" }
+
+        if (req.query.customers) {
+            let customerList = req.query.customers.split(",").map((c) => c.trim()).filter(Boolean)
+            if (customerList.length > 0) {
+                query.customerName = { $in: customerList }
+            }
+        }
+
+        console.log(">>> REPORT QUERY:", JSON.stringify(query))
+
+
+        let orders = await OrderModel.find(query)
+        console.log(">>> ORDERS FOUND:", orders.length, orders.map(o => o.customerName))
+        let summary = {}
+        orders.forEach((order) => {
+            let items = order.items || []
+            items.forEach((item) => {
+                let name = item.name
+                if (!name) return
+                if (!summary[name]) {
+                    summary[name] = {
+                        productName: name,
+                        cartonSize: item.cartonSize || 0,
+                        mainCategory: item.mainCategory || "Uncategorized",
+                        carton: 0,
+                    }
+                }
+                summary[name].carton += Number(item.carton) || 0
+            })
+        })
+        console.log(">>> REPORT QUERY:", JSON.stringify(query))
+
+        let rows = Object.values(summary)
+        res.json(rows)
+    } catch (err) {
+        res.status(500).json({ message: err.message })
+    }
+})
+
 export default router

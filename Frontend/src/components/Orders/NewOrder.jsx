@@ -149,7 +149,7 @@ const NewOrder = () => {
       if (it._id !== id) return it
       let carton = Number(value) || 0
       let qty = carton * it.cartonSize
-      let dozen = it.dozenSize ? carton * (it.cartonSize / it.dozenSize) : 0
+      let dozen = qty / 12
       let weight = carton * it.unitWeight
       let total = qty * it.rate
       return { ...it, carton: value, qty, dozen, weight, total }
@@ -388,8 +388,10 @@ const NewOrder = () => {
               </span>
             </div>
 
-            <div className="overflow-auto custom-scroll flex-1" style={{ minHeight: "300px" }}>
-              <table className="w-full min-w-160 text-sm border-collapse" style={{ tableLayout: "fixed" }}>
+            <div className="overflow-auto custom-scroll flex-1" style={{ maxHeight: "44vh" }}>
+
+              <table className="w-full min-w-160 text-sm border-collapse">
+
                 <colgroup>
                   <col style={{ width: "24%" }} />
                   <col style={{ width: "20%" }} />
