@@ -1,5 +1,6 @@
 import express from 'express'
 import OrderModel from '../Models/Order/OrderModel.js'
+import FinishProductModel from '../Models/Finish Product/FinishProductModel.js'
 
 const router = express.Router()
 
@@ -92,18 +93,75 @@ router.get('/order-report', async function (req, res) {
                         cartonSize: item.cartonSize || 0,
                         mainCategory: item.mainCategory || "Uncategorized",
                         carton: 0,
+                        desc: item.desc || "",
                     }
                 }
                 summary[name].carton += Number(item.carton) || 0
             })
         })
-        console.log(">>> REPORT QUERY:", JSON.stringify(query))
 
-        let rows = Object.values(summary)
+        let finishProducts = await FinishProductModel.find()
+        let stockMap = {}
+        finishProducts.forEach((fp) => {
+            let items = fp.items || []
+            items.forEach((it) => {
+                if (!it.name) return
+                stockMap[it.name] = (stockMap[it.name] || 0) + (Number(it.carton) || 0)
+            })
+        })
+
+        let rows = Object.values(summary).map((r) => {
+            let stock = stockMap[r.productName] || 0
+            let remaining = r.carton - stock
+            return {
+                ...r,
+                stock: stock,
+                remaining: remaining > 0 ? remaining : 0,
+                stockStatus: remaining <= 0 ? "complete" : "pending",
+            }
+        })
+
         res.json(rows)
     } catch (err) {
         res.status(500).json({ message: err.message })
     }
 })
+
+
+router.get('/order-with-stock/:id', async function (req, res) {
+    try {
+        let order = await OrderModel.findById(req.params.id)
+        if (!order) return res.status(404).json({ message: "Order not found" })
+
+        let finishProducts = await FinishProductModel.find()
+        let stockMap = {}
+        finishProducts.forEach((fp) => {
+            (fp.items || []).forEach((it) => {
+                if (!it.name) return
+                stockMap[it.name] = (stockMap[it.name] || 0) + (Number(it.carton) || 0)
+            })
+        })
+
+        let items = (order.items || []).map((it) => {
+            let ordered = Number(it.carton) || 0
+            let stock = stockMap[it.name] || 0
+            let remaining = ordered - stock
+
+            return {
+                ...it,
+                stock: stock,
+                remaining: remaining > 0 ? remaining : 0,
+                stockStatus: remaining <= 0 ? "complete" : "pending",
+            }
+        })
+
+        let result = { ...order.toObject(), items }
+        res.json(result)
+    } catch (err) {
+        res.status(500).json({ message: err.message })
+    }
+})
+
+
 
 export default router

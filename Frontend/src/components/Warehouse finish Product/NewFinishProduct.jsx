@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import SelectCategory from '../../components/SelectCategory/SelectCategory.jsx'
 import { ShoppingBag, Trash2, Eye } from 'lucide-react'
 import { useState, useEffect } from 'react'
@@ -14,6 +14,63 @@ const NewFinishProduct = () => {
     const [employees, setEmployees] = useState([])
     const [selectedEmployee, setSelectedEmployee] = useState("")
     const [viewItem, setViewItem] = useState(null)
+    const [saving, setSaving] = useState(false)
+    const [date, setDate] = useState("")
+
+    const location = useLocation()
+    const editFinish = location.state?.editFinish || null
+    const [editId, setEditId] = useState(null)
+
+    useEffect(() => {
+        if (editFinish) {
+            setEditId(editFinish._id)
+            setSelectedEmployee(editFinish.employeeName || "")
+            setDate(editFinish.date ? editFinish.date.slice(0, 10) : "")
+            setSelectedItems(editFinish.items || [])
+        }
+    }, [])
+
+    async function handleSave() {
+        if (!selectedEmployee) {
+            return
+        }
+        if (selectedItems.length === 0) {
+            return
+        }
+        let user = JSON.parse(localStorage.getItem('user')) || {}
+        let saleBy = user.firstName || user.name || ""
+
+        setSaving(true)
+        try {
+            if (editId) {
+                await axios.put(`http://localhost:3000/update/finish-product/${editId}`, {
+                    employeeName: selectedEmployee,
+                    date: date,
+                    items: selectedItems,
+                    totalWeight: totalWeight,
+                })
+                navigate('/managefinishproductpage')
+            } else {
+                let user = JSON.parse(localStorage.getItem('user')) || {}
+                let saleBy = user.firstName || user.name || ""
+                await axios.post('http://localhost:3000/add/finish-product', {
+                    employeeName: selectedEmployee,
+                    date: date,
+                    items: selectedItems,
+                    totalWeight: totalWeight,
+                    saleBy: saleBy,
+                })
+                setSelectedItems([])
+                setSelectedEmployee("")
+                setDate("")
+            }
+        } catch (err) {
+            console.log("FINISH SAVE FAILED:", err.response?.data || err.message)
+        }
+        setSaving(false)
+    }
+
+
     useEffect(() => {
         async function fetchPeople() {
             try {
@@ -194,7 +251,8 @@ const NewFinishProduct = () => {
                                 <span className="absolute left-3 top-1/2 -translate-y-1/2 text-emerald-400">
                                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
                                 </span>
-                                <input type="date"
+                                <input value={date}
+                                    onChange={(e) => setDate(e.target.value)} type="date"
                                     className="w-full bg-emerald-50/70 border border-emerald-100 focus:border-emerald-400 focus:bg-white focus:ring-4 focus:ring-emerald-50 rounded-xl pl-9 pr-3 py-2.5 text-gray-700 text-sm focus:outline-none transition-all" />
                             </div>
                         </div>
@@ -371,8 +429,11 @@ const NewFinishProduct = () => {
                                     </span>
                                 </p>
                             </div>
-                            <button className="w-full sm:w-auto px-8 py-2.5 cursor-pointer bg-linear-to-r from-emerald-600 to-emerald-700 hover:from-emerald-500 hover:to-emerald-600 text-white text-sm font-semibold rounded-xl shadow-md shadow-emerald-200 transition-all hover:-translate-y-0.5 active:translate-y-0 whitespace-nowrap">
-                                Save Finish Product →
+                            <button
+                                onClick={handleSave}
+                                disabled={saving}
+                                className="w-full sm:w-auto px-8 py-2.5 cursor-pointer bg-linear-to-r from-emerald-600 to-emerald-700 hover:from-emerald-500 hover:to-emerald-600 text-white text-sm font-semibold rounded-xl shadow-md shadow-emerald-200 transition-all hover:-translate-y-0.5 active:translate-y-0 whitespace-nowrap disabled:opacity-70 disabled:cursor-not-allowed">
+                                {saving ? 'Saving...' : (editId ? 'Update Finish Product →' : 'Save Finish Product →')}
                             </button>
                         </div>
 
@@ -391,5 +452,6 @@ const NewFinishProduct = () => {
         </div>
     )
 }
+
 
 export default NewFinishProduct

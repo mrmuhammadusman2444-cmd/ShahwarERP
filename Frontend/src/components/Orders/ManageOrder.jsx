@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios'
 import jsPDF from "jspdf"
 import autoTable from "jspdf-autotable"
-import { Eye, Pencil, FileText, Download } from 'lucide-react'
+import { Eye, Pencil, FileText, Download, Trash2 } from 'lucide-react'
 import { useReactTable, getCoreRowModel, getSortedRowModel, getPaginationRowModel, getFilteredRowModel, flexRender } from '@tanstack/react-table'
 
 const ManageOrder = () => {
@@ -15,6 +15,24 @@ const ManageOrder = () => {
   const [detailOrder, setDetailOrder] = useState(null)
   const [categoryOrder, setCategoryOrder] = useState([])
 
+  async function openOrderDetail(order) {
+    try {
+      let res = await axios.get(`http://localhost:3000/order-with-stock/${order._id}`)
+      setDetailOrder(res.data)
+    } catch (err) {
+      console.log(">>> ORDER STOCK:", res.data.items.map(it => ({ name: it.name, carton: it.carton, stock: it.stock, remaining: it.remaining, status: it.stockStatus })))
+      setDetailOrder(order)
+    }
+  }
+
+  async function handleDeleteOrder(order) {
+    try {
+      await axios.delete(`http://localhost:3000/delete/order/${order._id}`)
+      setOrders((prev) => prev.filter((o) => o._id !== order._id))
+    } catch (err) {
+      console.log("DELETE FAILED:", err.response?.data || err.message)
+    }
+  }
 
   useEffect(() => {
     async function fetchCatOrder() {
@@ -252,8 +270,8 @@ const ManageOrder = () => {
           it.desc || "-",
           Number(it.carton || 0).toLocaleString(),
           `${Number(it.weight || 0).toLocaleString()} ${it.weightUnit || "kg"}`,
-          "-",
-          it.status === "complete" ? "\u2713" : "\u2717",
+          Number(it.remaining || 0) > 0 ? Number(it.remaining).toLocaleString() : "0",
+          it.stockStatus === "complete" ? "Done" : "Pending",
         ])
       })
     })
@@ -273,6 +291,37 @@ const ManageOrder = () => {
         5: { halign: "center" },
         6: { halign: "center" },
         7: { halign: "center" },
+      },
+      didParseCell: function (data) {
+        if (data.section === 'body' && data.column.index === 7) {
+          data.cell.text = ['']
+        }
+      },
+      didDrawCell: function (data) {
+        if (data.section === 'body' && data.column.index === 7) {
+          let remainingCell = data.row.cells[6]
+          let remVal = remainingCell ? parseInt(String(remainingCell.raw).replace(/,/g, "")) || 0 : 0
+          let isDone = remVal <= 0
+          let cx = data.cell.x + data.cell.width / 2
+          let cy = data.cell.y + data.cell.height / 2
+          let r = 2.4
+
+          if (isDone) {
+            doc.setFillColor(209, 250, 229)
+            doc.circle(cx, cy, r, "F")
+            doc.setDrawColor(5, 150, 105)
+            doc.setLineWidth(0.45)
+            doc.line(cx - 1.1, cy + 0.1, cx - 0.3, cy + 0.9)
+            doc.line(cx - 0.3, cy + 0.9, cx + 1.2, cy - 1)
+          } else {
+            doc.setFillColor(254, 226, 226)
+            doc.circle(cx, cy, r, "F")
+            doc.setDrawColor(220, 38, 38)
+            doc.setLineWidth(0.45)
+            doc.line(cx - 0.9, cy - 0.9, cx + 0.9, cy + 0.9)
+            doc.line(cx + 0.9, cy - 0.9, cx - 0.9, cy + 0.9)
+          }
+        }
       },
     })
 
@@ -377,9 +426,15 @@ const ManageOrder = () => {
                         <td className="px-4 py-3 text-gray-400 text-xs">{it.desc || "—"}</td>
                         <td className="px-4 py-3 text-center text-gray-700 text-xs font-bold">{Number(it.carton || 0).toLocaleString()}</td>
                         <td className="px-4 py-3 text-center text-gray-600 text-xs">{Number(it.weight || 0).toLocaleString()} {it.weightUnit || "kg"}</td>
-                        <td className="px-4 py-3 text-center text-gray-400 text-xs">—</td>
                         <td className="px-4 py-3 text-center">
-                          {it.status === "complete" ? (
+                          {it.remaining > 0 ? (
+                            <span className="inline-flex items-center rounded-md bg-rose-50 px-2 py-0.5 text-xs font-bold text-rose-600 ring-1 ring-rose-200">{Number(it.remaining).toLocaleString()}</span>
+                          ) : (
+                            <span className="text-emerald-600 text-xs font-bold">0</span>
+                          )}
+                        </td>
+                        <td className="px-4 py-3 text-center">
+                          {it.stockStatus === "complete" ? (
                             <span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-emerald-100 text-emerald-600 ring-1 ring-emerald-200">
                               <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" /></svg>
                             </span>
@@ -570,10 +625,11 @@ const ManageOrder = () => {
                             <td key={cell.id} className="px-4 py-3">
                               <div className="flex items-center justify-center gap-1.5">
                                 {[
-                                  { icon: Eye, label: "Order Details", cls: "bg-emerald-600 hover:bg-emerald-700 shadow-emerald-200", onClick: () => setDetailOrder(order) },
+                                  { icon: Eye, label: "Order Details", cls: "bg-emerald-600 hover:bg-emerald-700 shadow-emerald-200", onClick: () => openOrderDetail(order) },
                                   { icon: Pencil, label: "Update", cls: "bg-sky-500 hover:bg-sky-600 shadow-sky-200", onClick: () => navigate('/neworderspage', { state: { editOrder: order } }) },
                                   { icon: FileText, label: "Add to Invoice", cls: "bg-amber-500 hover:bg-amber-600 shadow-amber-200", onClick: () => navigate('/newSale', { state: { fromOrder: order } }) },
                                   { icon: Download, label: "Download", cls: "bg-slate-500 hover:bg-slate-600 shadow-slate-200", onClick: () => handleDownload(order) },
+                                  { icon: Trash2, label: "Delete", cls: "bg-rose-500 hover:bg-rose-600 shadow-rose-200", onClick: () => handleDeleteOrder(order) },
                                 ].map((btn, i) => {
                                   const Icon = btn.icon
                                   return (

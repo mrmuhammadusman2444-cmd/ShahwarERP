@@ -5,6 +5,7 @@ import SaleModel from '../Models/Sale Models/SalesModel.js'
 import SupplierPaymentsModel from '../Models/Accounts/SupplierPaymentsModel.js'
 import BankTransactionModel from '../Models/Bank/BankTransactionModel.js'
 import CashTransactionModel from '../Models/Cash Book/CashTransactionModel.js'
+import ReturnModel from '../Models/Return/ReturnModel.js'
 
 const router = express.Router()
 
@@ -60,7 +61,7 @@ router.get('/customer/ledger/:customerName', async function (req, res) {
         status: "approved"
     })
 
-
+    let returns = await ReturnModel.find({ customerName: req.params.customerName })
 
     let combined = []
 
@@ -86,6 +87,16 @@ router.get('/customer/ledger/:customerName', async function (req, res) {
         })
     })
 
+    returns.forEach((ret) => {
+    entries.push({
+        date: ret.date,
+        description: `Sale Return - ${ret.returnNo}${ret.returnType ? " (" + ret.returnType + ")" : ""}`,
+        debit: 0,
+        credit: Number(ret.grandTotal) || 0,
+        voucherNo: ret.returnNo,
+    })
+})
+
     combined.sort((a, b) => new Date(a.date) - new Date(b.date))
 
     let runningBalance = openingBalance
@@ -100,6 +111,8 @@ router.get('/customer/ledger/:customerName', async function (req, res) {
         closingBalance: runningBalance,
     })
 })
+
+
 
 
 router.post('/add/fund-transfer', async function (req, res) {
@@ -248,13 +261,13 @@ router.post('/add/fund-transfer', async function (req, res) {
                 description: `Paid to ${data.toSupplier}${data.details ? " - " + data.details : ""}`,
                 voucherNo: voucherNo,
                 debit: 0,
-                credit: Number(data.amount) || 0,  
+                credit: Number(data.amount) || 0,
                 source: "fund-transfer",
                 status: "pending",
             })
         }
-           
-                // ── Customer → Cash: cash aaya (Cash Debit) ──
+
+        // ── Customer → Cash: cash aaya (Cash Debit) ──
         if (data.fromType === 'customer' && data.toType === 'cash') {
             await CashTransactionModel.create({
                 date: data.date,

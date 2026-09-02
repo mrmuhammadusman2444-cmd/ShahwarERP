@@ -19,8 +19,10 @@ import HolidayRoute from './Routes/Holiday.route.js'
 import SalaryAdvanceRoute from './Routes/SalaryAdvance.route.js'
 import CompanySettingRoute from './Routes/CompanySetting.route.js'
 import PaymentApprovalRoute from './Routes/PaymentApproval.route.js'
+import FinishProductRoute from './Routes/FinishProduct.route.js'
 import CashRoute from './Routes/Cash.route.js'
 import OrderRoute from './Routes/Order.route.js'
+import ReturnRoute from './Routes/Return.route.js'
 
 DbConnection()
 
@@ -28,8 +30,6 @@ let app = express();
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
-
 app.use('/', authRoute)
 app.use('/', customerRoute)
 app.use('/', productRoute)
@@ -50,9 +50,8 @@ app.use('/', CompanySettingRoute)
 app.use('/', PaymentApprovalRoute)
 app.use('/', CashRoute)
 app.use('/', OrderRoute)
-
-
-
+app.use('/', FinishProductRoute)
+app.use('/', ReturnRoute)
 
 app.use('/uploads', express.static('uploads'))
 
