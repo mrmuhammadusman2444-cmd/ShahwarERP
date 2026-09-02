@@ -6,7 +6,7 @@ const OrderReport = () => {
     const [rows, setRows] = useState([])
     const [loading, setLoading] = useState(false)
 
-        async function handleFind() {
+    async function handleFind() {
         setLoading(true)
         try {
             let params = {}
@@ -55,48 +55,48 @@ const OrderReport = () => {
                 </div>
             </div>
 
-                            <div className="flex flex-col lg:flex-row lg:items-end gap-3.5">
+            <div className="flex flex-col lg:flex-row lg:items-end gap-3.5">
 
-                    <div className="flex-1 flex flex-col gap-1.5 min-w-0">
-                        <label className="text-gray-500 text-[11px] font-bold uppercase tracking-wider">Account's Order</label>
-                        <MultiCustomerSelect
-                            options={customers}
-                            selected={selectedCustomers}
-                            onChange={setSelectedCustomers}
-                            placeholder="Type customer name..."
-                        />
-                    </div>
-
-                    {[
-                        { label: "Hafiz Monitoring Orders", icon: "M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" },
-                        { label: "Shahwar Monitoring Orders", icon: "M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" },
-                    ].map((f, i) => (
-                        <div key={i} className="flex-1 flex flex-col gap-1.5 min-w-0">
-                            <label className="text-gray-500 text-[11px] font-bold uppercase tracking-wider">{f.label}</label>
-                            <div className="relative group">
-                                <span className="absolute left-3 top-1/2 -translate-y-1/2 flex h-6 w-6 items-center justify-center rounded-lg bg-emerald-100 text-emerald-600">
-                                    <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={f.icon} /></svg>
-                                </span>
-                                <select className="w-full bg-emerald-50/70 border border-emerald-100 focus:border-emerald-400 focus:bg-white focus:ring-4 focus:ring-emerald-50 rounded-xl pl-11 pr-9 py-2.5 text-gray-600 text-sm font-medium focus:outline-none transition-all appearance-none cursor-pointer">
-                                    <option value="">Select option</option>
-                                </select>
-                                <svg className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-emerald-400 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 9l-7 7-7-7" /></svg>
-                            </div>
-                        </div>
-                    ))}
-
-                    <button
-                        type="button"
-                        onClick={handleFind}
-                        className="flex items-center justify-center cursor-pointer gap-2 px-8 py-2.5 bg-linear-to-r from-emerald-600 to-emerald-700 hover:from-emerald-500 hover:to-emerald-600 text-white text-sm font-bold rounded-xl shadow-md shadow-emerald-200 transition-all hover:-translate-y-0.5 active:translate-y-0 whitespace-nowrap shrink-0"
-                    >
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                        </svg>
-                        Find
-                    </button>
-
+                <div className="flex-1 flex flex-col gap-1.5 min-w-0">
+                    <label className="text-gray-500 text-[11px] font-bold uppercase tracking-wider">Account's Order</label>
+                    <MultiCustomerSelect
+                        options={customers}
+                        selected={selectedCustomers}
+                        onChange={setSelectedCustomers}
+                        placeholder="Type customer name..."
+                    />
                 </div>
+
+                {[
+                    { label: "Hafiz Monitoring Orders", icon: "M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" },
+                    { label: "Shahwar Monitoring Orders", icon: "M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" },
+                ].map((f, i) => (
+                    <div key={i} className="flex-1 flex flex-col gap-1.5 min-w-0">
+                        <label className="text-gray-500 text-[11px] font-bold uppercase tracking-wider">{f.label}</label>
+                        <div className="relative group">
+                            <span className="absolute left-3 top-1/2 -translate-y-1/2 flex h-6 w-6 items-center justify-center rounded-lg bg-emerald-100 text-emerald-600">
+                                <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={f.icon} /></svg>
+                            </span>
+                            <select className="w-full bg-emerald-50/70 border border-emerald-100 focus:border-emerald-400 focus:bg-white focus:ring-4 focus:ring-emerald-50 rounded-xl pl-11 pr-9 py-2.5 text-gray-600 text-sm font-medium focus:outline-none transition-all appearance-none cursor-pointer">
+                                <option value="">Select option</option>
+                            </select>
+                            <svg className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-emerald-400 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 9l-7 7-7-7" /></svg>
+                        </div>
+                    </div>
+                ))}
+
+                <button
+                    type="button"
+                    onClick={handleFind}
+                    className="flex items-center justify-center cursor-pointer gap-2 px-8 py-2.5 bg-linear-to-r from-emerald-600 to-emerald-700 hover:from-emerald-500 hover:to-emerald-600 text-white text-sm font-bold rounded-xl shadow-md shadow-emerald-200 transition-all hover:-translate-y-0.5 active:translate-y-0 whitespace-nowrap shrink-0"
+                >
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                    </svg>
+                    Find
+                </button>
+
+            </div>
 
             <div className="mt-4 bg-white border border-emerald-100 rounded-2xl shadow-sm overflow-hidden">
 
@@ -171,11 +171,25 @@ const OrderReport = () => {
                                     <tr key={i} className={`border-b border-gray-50 hover:bg-emerald-50/40 transition-colors ${i % 2 === 1 ? "bg-gray-50/40" : ""}`}>
                                         <td className="px-4 py-3 text-gray-400 text-xs">{i + 1}</td>
                                         <td className="px-4 py-3 text-gray-800 text-xs font-semibold">{r.productName}</td>
-                                        <td className="px-4 py-3 text-left text-gray-400 text-xs">—</td>
+                                        <td className="px-4 py-3 text-left text-gray-500 text-xs">{r.desc || "—"}</td>
                                         <td className="px-4 py-3 text-center text-gray-700 text-xs font-bold">{Number(r.carton || 0).toLocaleString()}</td>
-                                        <td className="px-4 py-3 text-center text-gray-400 text-xs">—</td>
                                         <td className="px-4 py-3 text-center">
-                                            <span className="inline-flex items-center rounded-full bg-amber-50 px-2.5 py-0.5 text-[10px] font-bold text-amber-600 ring-1 ring-amber-200">Pending</span>
+                                            {Number(r.remaining || 0) > 0 ? (
+                                                <span className="inline-flex items-center rounded-md bg-rose-50 px-2 py-0.5 text-xs font-bold text-rose-600 ring-1 ring-rose-200">{Number(r.remaining).toLocaleString()}</span>
+                                            ) : (
+                                                <span className="text-emerald-600 text-xs font-bold">0</span>
+                                            )}
+                                        </td>
+                                        <td className="px-4 py-3 text-center">
+                                            {r.stockStatus === "complete" ? (
+                                                <span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-emerald-100 text-emerald-600 ring-1 ring-emerald-200">
+                                                    <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" /></svg>
+                                                </span>
+                                            ) : (
+                                                <span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-rose-100 text-rose-500 ring-1 ring-rose-200">
+                                                    <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M6 18L18 6M6 6l12 12" /></svg>
+                                                </span>
+                                            )}
                                         </td>
                                     </tr>
                                 ))

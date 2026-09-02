@@ -431,9 +431,11 @@ const NewOrder = () => {
                           <input type="text" defaultValue={item.name}
                             className="w-full bg-transparent border border-transparent hover:border-emerald-300 focus:border-emerald-400 focus:bg-white rounded px-2 py-1 text-gray-700 text-xs focus:outline-none transition-all" />
                         </td>
-                        <td className="px-3 py-2">
+                        <td className="px-3 py-2 min-w-22.5">
                           <input type="text" placeholder="Description"
-                            className="w-full bg-transparent border border-transparent hover:border-emerald-300 focus:border-emerald-400 focus:bg-white rounded px-2 py-1 text-gray-400 text-xs focus:outline-none transition-all placeholder-gray-300" />
+                            value={item.desc || ""}
+                            onChange={(e) => setSelectedItems((prev) => prev.map((it) => it._id === item._id ? { ...it, desc: e.target.value } : it))}
+                            className="w-full bg-transparent border border-transparent hover:border-emerald-300 focus:border-emerald-400 focus:bg-white rounded px-2 py-1 text-gray-500 text-xs focus:outline-none transition-all placeholder-gray-300" />
                         </td>
                         <td className="px-3 py-2 w-16">
                           <input placeholder="0"
