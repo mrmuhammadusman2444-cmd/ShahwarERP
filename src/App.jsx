@@ -99,6 +99,9 @@ import CashAdjustmentPage from './pages/Cash&BankBook/CashAdjustmentPage.jsx'
 //hooks
 import GlobalShortcuts from './components/GlobalShortcuts.jsx'
 
+//distributor Order
+import NewDistOrderPage from './pages/Distributor Order/NewDistOrderPage.jsx'
+
 
 const App = () => {
 
@@ -206,6 +209,12 @@ const App = () => {
         <Route path='/cash/book' element={<CashPage />} />
         <Route path='/Bank/book' element={<BankPage />} />
         <Route path='/cash/adjustment' element={<CashAdjustmentPage />} />
+
+        // Distributor Order
+        <Route path='/new/distributor/order' element={<NewDistOrderPage />} />
+        
+
+        
 
 
 

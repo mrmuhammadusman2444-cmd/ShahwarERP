@@ -553,7 +553,7 @@ const SideMenus = ({ collapsed }) => {
                 )}
 
 
-                {(can("products", "view") || canAnySub("products")) && menuMatches('Products', ['New Products', 'Manage Products', 'Category', 'Unit', 'Main Category', 'Scheme Products', 'Products Price List' ,'Dynamic Price List']) && (
+                {(can("products", "view") || canAnySub("products")) && menuMatches('Products', ['New Products', 'Manage Products', 'Category', 'Unit', 'Main Category', 'Scheme Products', 'Products Price List', 'Dynamic Price List']) && (
 
                     <div onMouseEnter={setTip} onClick={() => setproductOpen(!productOpen)} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer transition-all mb-px ${collapsed ? 'justify-start w-9 h-9 mx-auto' : ''} ${isParentActive(['/newProduct', '/manageproductpage', '/productcategorypage', '/unitpage', '/maincategorypage', '/schemeproductspage']) ? 'bg-(--nav-active)' : 'hover:bg-(--nav-active)'}`}>
                         {isParentActive(['/newProduct', '/manageproductpage', '/productcategorypage', '/unitpage', '/maincategorypage', '/schemeproductspage']) && !collapsed && (
@@ -622,8 +622,8 @@ const SideMenus = ({ collapsed }) => {
                             </div>
                         )}
                     </div>
-                    
-                    
+
+
                 )}
 
                 {(can("suppliers", "view") || canAnySub("suppliers")) && menuMatches('Suppliers', ['Add New Suppliers', 'Manage Suppliers', 'Suppliers Ledger', 'Suppliers Advance']) && (
@@ -971,7 +971,7 @@ const SideMenus = ({ collapsed }) => {
                                 Return
                             </div>
                         )}
-                        {canSub("return", " ") && subMatches('Manage Return') && (
+                        {canSub("return", " return") && subMatches('Manage Return') && (
                             <div onClick={() => { navigate('/manage/return') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                                 Manage Return
                             </div>
@@ -981,7 +981,7 @@ const SideMenus = ({ collapsed }) => {
                 )}
 
 
-                {can("distributorOrder", "view") && menuMatches('Distributor Order', ['Manage Hafiz Order']) && (
+                {can("distributorOrder", "view") && menuMatches('Distributor Order', ['Manage Order'], ['New Distributor Order']) && (
 
                     <div onMouseEnter={setTip} onClick={() => setdistributorOpen(!distributorOpen)} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer hover:border-slate-600 transition-all mb-px ${collapsed ? 'justify-start w-9 h-9 mx-auto' : ''} ${isParentActive(['/manage/distributor/order']) ? 'bg-(--nav-active)' : 'hover:bg-(--nav-active)'}`}>
                         {isParentActive(['/manage/distributor/order']) && !collapsed && (
@@ -1007,9 +1007,14 @@ const SideMenus = ({ collapsed }) => {
                         }}
                         className="ml-7 border-l border-slate-700 pl-3 flex flex-col gap-0.5 overflow-hidden"
                     >
+                        {canSub("distributorOrder", " New Distributor Order") && subMatches('Manage Hafiz Orders') && (
+                            <div onClick={() => { navigate('/new/distributor/order') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                                New Order
+                            </div>
+                        )}
                         {canSub("distributorOrder", "manageHafizOrders") && subMatches('Manage Hafiz Orders') && (
                             <div onClick={() => { navigate('/manage/distributor/order') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
-                                Manage Hafiz Order
+                                Manage Distributor Order
                             </div>
                         )}
                     </div>
@@ -1177,7 +1182,7 @@ const SideMenus = ({ collapsed }) => {
                         )}
                         {canSub("cashBank", "cashAdjustment") && subMatches('Cash Adjustment') && (
 
-                            <div onClick={()=>{navigate('/cash/adjustment')}} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                            <div onClick={() => { navigate('/cash/adjustment') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                                 Cash Adjustment
                             </div>
                         )}
