@@ -38,4 +38,32 @@ router.get('/find/returns', async function (req, res) {
     res.json(list)
 })
 
+router.put('/update/return/:id', async function (req, res) {
+    try {
+        let data = req.body
+        let updated = await ReturnModel.findByIdAndUpdate(
+            req.params.id,
+            {
+                gatePass: data.gatePass || "",
+                customerName: data.customerName || "",
+                date: data.date,
+                showRate: data.showRate || "",
+                returnType: data.returnType || "",
+                previousAmount: data.previousAmount || "",
+                items: data.items || [],
+                grandTotal: data.grandTotal || 0,
+            },
+            { new: true }
+        )
+        res.json({ success: true, data: updated })
+    } catch (err) {
+        res.status(500).json({ success: false, message: err.message })
+    }
+})
+
+router.delete('/delete/return/:id', async function (req, res) {
+    let deleted = await ReturnModel.findByIdAndDelete(req.params.id)
+    res.json({ success: true, data: deleted })
+})
+
 export default router

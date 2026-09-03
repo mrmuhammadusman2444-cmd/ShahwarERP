@@ -88,14 +88,15 @@ router.get('/customer/ledger/:customerName', async function (req, res) {
     })
 
     returns.forEach((ret) => {
-    entries.push({
-        date: ret.date,
-        description: `Sale Return - ${ret.returnNo}${ret.returnType ? " (" + ret.returnType + ")" : ""}`,
-        debit: 0,
-        credit: Number(ret.grandTotal) || 0,
-        voucherNo: ret.returnNo,
+        combined.push({
+            date: ret.date,
+            description: `Sale Return - ${ret.returnNo}${ret.returnType ? " (" + ret.returnType + ")" : ""}`,
+            invoiceId: "",
+            depositId: ret.returnNo || "",
+            debit: 0,
+            credit: Number(ret.grandTotal) || 0,
+        })
     })
-})
 
     combined.sort((a, b) => new Date(a.date) - new Date(b.date))
 
