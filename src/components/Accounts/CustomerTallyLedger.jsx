@@ -1,13 +1,51 @@
 import React from 'react'
+import { useState, useEffect } from 'react'
+import axios from 'axios'
 import { Users, Calendar, Hash, StickyNote, Save } from 'lucide-react'
-
-
-
-
-
+import SelectCustomer from '../Sales/SelectCustomers.jsx'
 
 
 const CustomerTallyLedger = () => {
+  const [voucherNo, setVoucherNo] = useState("")
+  const [customerName, setCustomerName] = useState("")
+  const [date, setDate] = useState("")
+  const [remarks, setRemarks] = useState("")
+  const [saving, setSaving] = useState(false)
+
+  useEffect(() => {
+    async function loadVoucher() {
+      try {
+        let res = await axios.get('http://localhost:3000/customer-tally/next-voucher')
+        setVoucherNo(res.data.voucherNo)
+      } catch (err) {
+        console.log("VOUCHER FAILED:", err.response?.data || err.message)
+      }
+    }
+    loadVoucher()
+  }, [])
+
+  async function handleSave() {
+    if (!customerName) { alert("Customer select karo"); return }
+    if (!date) { alert("Date select karo"); return }
+    setSaving(true)
+    try {
+      await axios.post('http://localhost:3000/add/customer-tally', {
+        customerName: customerName,
+        date: date,
+        remarks: remarks,
+      })
+      setCustomerName("")
+      setDate("")
+      setRemarks("")
+      let res = await axios.get('http://localhost:3000/customer-tally/next-voucher')
+      setVoucherNo(res.data.voucherNo)
+      alert("Customer tally save ho gaya")
+    } catch (err) {
+      console.log("TALLY SAVE FAILED:", err.response?.data || err.message)
+      alert("Save nahi hua")
+    }
+    setSaving(false)
+  }
   return (
     <div className="p-4 md:p-5">
 
@@ -35,7 +73,7 @@ const CustomerTallyLedger = () => {
               <Hash className="w-3.5 h-3.5 text-emerald-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
               <input
                 type="text"
-                placeholder="Enter voucher no"
+                value={voucherNo} readOnly placeholder="Auto"
                 className="w-full bg-emerald-50 border border-emerald-100 focus:border-emerald-400 focus:bg-white rounded-xl pl-9 pr-3 py-2.5 text-gray-700 placeholder-gray-400 text-sm focus:outline-none transition-all"
               />
             </div>
@@ -49,6 +87,7 @@ const CustomerTallyLedger = () => {
               <Calendar className="w-3.5 h-3.5 text-emerald-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
               <input
                 type="date"
+                value={date} onChange={(e) => setDate(e.target.value)}
                 className="w-full bg-emerald-50 border border-emerald-100 focus:border-emerald-400 focus:bg-white rounded-xl pl-9 pr-3 py-2.5 text-gray-700 text-sm focus:outline-none transition-all cursor-pointer"
               />
             </div>
@@ -60,11 +99,7 @@ const CustomerTallyLedger = () => {
             </label>
             <div className="col-span-2 relative">
               <Users className="w-3.5 h-3.5 text-emerald-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
-              <input
-                type="text"
-                placeholder="Enter customer name"
-                className="w-full bg-emerald-50 border border-emerald-100 focus:border-emerald-400 focus:bg-white rounded-xl pl-9 pr-3 py-2.5 text-gray-700 placeholder-gray-400 text-sm focus:outline-none transition-all"
-              />
+              <SelectCustomer value={customerName} onChange={setCustomerName} />
             </div>
           </div>
 
@@ -76,6 +111,8 @@ const CustomerTallyLedger = () => {
               <StickyNote className="w-3.5 h-3.5 text-emerald-400 absolute left-3 top-3 pointer-events-none" />
               <textarea
                 rows={3}
+                value={remarks}
+                onChange={(e) => setRemarks(e.target.value)}
                 placeholder="Enter remarks..."
                 className="w-full bg-emerald-50 border border-emerald-100 focus:border-emerald-400 focus:bg-white rounded-xl pl-9 pr-3 py-2.5 text-gray-700 placeholder-gray-400 text-sm focus:outline-none transition-all resize-none"
               />
@@ -89,6 +126,7 @@ const CustomerTallyLedger = () => {
             <div className="col-span-2">
               <button
                 type="button"
+                onClick={handleSave}
                 className="flex items-center gap-2 px-8 py-2.5 bg-linear-to-r from-emerald-600 to-emerald-700 hover:from-emerald-500 hover:to-emerald-600 text-white text-sm font-semibold rounded-xl shadow-md shadow-emerald-200 transition-all hover:-translate-y-0.5 active:translate-y-0 cursor-pointer"
               >
                 <Save className="w-4 h-4" />
