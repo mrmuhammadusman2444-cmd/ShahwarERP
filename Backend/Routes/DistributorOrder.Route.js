@@ -37,8 +37,36 @@ router.get('/distributor/my-orders/:distributorId', async function (req, res) {
 })
 
 router.get('/distributor/all-orders', async function (req, res) {
-    let list = await DistributorOrderModel.find().sort({ createdAt: -1 })
-    res.json(list)
+    try {
+        let orders = await DistributorOrderModel.find().sort({ createdAt: -1 })
+
+        let finishProducts = await FinishProductModel.find()
+        let stockMap = {}
+        finishProducts.forEach((fp) => {
+            let items = fp.items || []
+            items.forEach((it) => {
+                if (!it.name) return
+                stockMap[it.name] = (stockMap[it.name] || 0) + (Number(it.carton) || 0)
+            })
+        })
+
+        let result = orders.map((order) => {
+            let totalOrdered = 0
+            let totalAvailable = 0
+                ; (order.items || []).forEach((it) => {
+                    let ordered = Number(it.carton) || 0
+                    let stock = stockMap[it.name] || 0
+                    totalOrdered += ordered
+                    totalAvailable += Math.min(ordered, stock)
+                })
+            let percent = totalOrdered > 0 ? Math.round((totalAvailable / totalOrdered) * 100) : 0
+            return { ...order.toObject(), completion: percent }
+        })
+
+        res.json(result)
+    } catch (err) {
+        res.status(500).json({ message: err.message })
+    }
 })
 
 router.put('/distributor/order/status/:id', async function (req, res) {
@@ -87,6 +115,15 @@ router.get('/distributor/order-with-stock/:id', async function (req, res) {
         })
 
         res.json({ ...order.toObject(), items })
+    } catch (err) {
+        res.status(500).json({ message: err.message })
+    }
+})
+
+router.get('/distributor/orders/count', async function (req, res) {
+    try {
+        let count = await DistributorOrderModel.countDocuments({ status: { $ne: "completed" } })
+        res.json({ count: count })
     } catch (err) {
         res.status(500).json({ message: err.message })
     }

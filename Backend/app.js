@@ -24,6 +24,7 @@ import CashRoute from './Routes/Cash.route.js'
 import OrderRoute from './Routes/Order.route.js'
 import ReturnRoute from './Routes/Return.route.js'
 import DistributorOrder from './Routes/DistributorOrder.Route.js'
+import SupplierTallyRoute from './Routes/SupplierTally.route.js'
 
 DbConnection()
 
@@ -54,7 +55,7 @@ app.use('/', OrderRoute)
 app.use('/', FinishProductRoute)
 app.use('/', ReturnRoute)
 app.use('/', DistributorOrder)
-
+app.use('/', SupplierTallyRoute)
 
 app.use('/uploads', express.static('uploads'))
 

@@ -145,6 +145,33 @@ const SupplierLedger = () => {
       meta: { align: 'left', tdClass: 'px-4 py-3.5 text-left whitespace-nowrap relative' },
       cell: ({ row }) => {
         const entry = row.original
+        if (entry.type === "tally") {
+          return (
+            <span className="inline-flex items-center gap-2">
+              <span className="inline-flex items-center gap-1 rounded bg-emerald-100 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wide text-emerald-700 ring-1 ring-emerald-200">
+                <svg className="w-2.5 h-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" /></svg>
+                Tally
+              </span>
+              <span className="text-emerald-800 text-xs font-semibold">{entry.description}</span>
+            </span>
+          )
+        }
+        return (
+          <span className="text-gray-700 text-xs font-medium">
+            {Array.isArray(entry.description)
+              ? entry.description.map((line, i) => <p key={i}>{line}</p>)
+              : entry.description}
+          </span>
+        )
+      },
+    },
+    {
+      id: 'description',
+      accessorFn: (row) => (Array.isArray(row.description) ? row.description.join(' ') : (row.description || '')),
+      header: 'Description',
+      meta: { align: 'left', tdClass: 'px-4 py-3.5 text-left' },
+      cell: ({ row }) => {
+        const entry = row.original
         return (
           <>
             <span className="absolute left-0 top-1/2 -translate-y-1/2 h-6 w-0.5 rounded-r bg-emerald-500 opacity-0 group-hover:opacity-100 transition-opacity" />
@@ -157,22 +184,6 @@ const SupplierLedger = () => {
               </span>
             </span>
           </>
-        )
-      },
-    },
-    {
-      id: 'description',
-      accessorFn: (row) => (Array.isArray(row.description) ? row.description.join(' ') : (row.description || '')),
-      header: 'Description',
-      meta: { align: 'left', tdClass: 'px-4 py-3.5 text-left' },
-      cell: ({ row }) => {
-        const entry = row.original
-        return (
-          <span className="text-gray-700 text-xs font-medium">
-            {Array.isArray(entry.description)
-              ? entry.description.map((line, i) => <p key={i}>{line}</p>)
-              : entry.description}
-          </span>
         )
       },
     },
@@ -416,16 +427,19 @@ const SupplierLedger = () => {
                   </td>
                 </tr>
               ) : (
-                table.getRowModel().rows.map((row) => (
-                  <tr key={row.id}
-                    className="group relative border-b border-gray-50 hover:bg-emerald-50/50 transition-colors">
-                    {row.getVisibleCells().map((cell) => (
-                      <td key={cell.id} className={cell.column.columnDef.meta?.tdClass}>
-                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                      </td>
-                    ))}
-                  </tr>
-                ))
+                table.getRowModel().rows.map((row) => {
+                  const isTally = row.original.type === "tally"
+                  return (
+                    <tr key={row.id}
+                      className={`group relative transition-colors ${isTally ? 'bg-emerald-50/60' : 'border-b border-gray-50 hover:bg-emerald-50/50'}`}>
+                      {row.getVisibleCells().map((cell, ci) => (
+                        <td key={cell.id} className={`${cell.column.columnDef.meta?.tdClass} ${isTally && ci === 0 ? 'border-l-4 border-emerald-500' : ''} ${isTally ? 'border-y border-emerald-100' : ''}`}>
+                          {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                        </td>
+                      ))}
+                    </tr>
+                  )
+                })
               )}
             </tbody>
           </table>

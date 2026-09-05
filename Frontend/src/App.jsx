@@ -88,6 +88,9 @@ import Preloader from './components/Preloader.jsx'
 //Accounts
 import SupplierPaymentsPage from './pages/Accounts/SupplierPaymentsPage.jsx'
 import TransactionPage from './pages/Accounts/TransactionPage.jsx'
+import SupplierTallyLedgerPage from './pages/Accounts/SupplierTallyLedgerPage.jsx'
+import CustomerTallyLedgerPage from './pages/Accounts/CustomerTallyLedgerPage.jsx'
+import AssetPaymentPage from './pages/Accounts/AssetPaymentPage.jsx'
 
 //Inbox
 import InboxPage from './pages/Inbox/InboxPage.jsx'
@@ -101,6 +104,8 @@ import GlobalShortcuts from './components/GlobalShortcuts.jsx'
 
 //distributor Order
 import NewDistOrderPage from './pages/Distributor Order/NewDistOrderPage.jsx'
+
+
 
 
 const App = () => {
@@ -202,6 +207,9 @@ const App = () => {
         //Accounts
         <Route path='/supplier/payments' element={<SupplierPaymentsPage />} />
         <Route path='/make/transaction' element={<TransactionPage />} />
+        <Route path='/supplier/tally/ledger' element={<SupplierTallyLedgerPage />} />
+        <Route path='/customer/tally/ledger' element={<CustomerTallyLedgerPage />} />
+        <Route path='/asset/payment' element={<AssetPaymentPage />} />
 
         //Inbox
         <Route path='/inbox' element={<InboxPage />} />
@@ -212,6 +220,7 @@ const App = () => {
 
         // Distributor Order
         <Route path='/new/distributor/order' element={<NewDistOrderPage />} />
+
         
 
         

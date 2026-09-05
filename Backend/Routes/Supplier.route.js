@@ -2,6 +2,7 @@ import express from 'express'
 import PurchaseModel from '../Models/Purchase/PurchaseModel.js'
 import SupplierPaymentModel from '../Models/Accounts/SupplierPaymentsModel.js'
 import SupplierModel from '../Models/Supplier/SupplierModel.js'
+import SupplierTallyModel from '../Models/Supplier Tally Ledger/SupplierTallyModel.js'
 const router = express.Router()
 
 router.post('/new/supplier', async function (req, res) {
@@ -101,13 +102,29 @@ router.get('/supplier/ledger/:supplierName', async function (req, res) {
         }
     })
 
+    let tallies = await SupplierTallyModel.find({ supplierName: supplierName })
+
+    tallies.forEach((t) => {
+        combined.push({
+            date: t.date,
+            description: `Tally - ${t.voucherNo}${t.remarks ? " (" + t.remarks + ")" : ""}`,
+            invoiceId: "",
+            depositId: t.voucherNo || "",
+            debit: 0,
+            credit: 0,
+            type: "tally",
+        })
+    })
+
     combined.sort((a, b) => {
+        let aTally = a.type === "tally" ? 1 : 0
+        let bTally = b.type === "tally" ? 1 : 0
+        if (aTally !== bTally) return aTally - bTally
+
         let aIsPayment = a.debit > 0 ? 1 : 0
         let bIsPayment = b.debit > 0 ? 1 : 0
+        if (aIsPayment !== bIsPayment) return aIsPayment - bIsPayment
 
-        if (aIsPayment !== bIsPayment) {
-            return aIsPayment - bIsPayment
-        }
         return new Date(a.date) - new Date(b.date)
     })
 
