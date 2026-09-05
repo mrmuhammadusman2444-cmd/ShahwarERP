@@ -18,7 +18,6 @@ const PlaceOrder = () => {
             async function fetchProducts() {
             try {
                 let res = await axios.get('http://localhost:3000/find/product')
-                console.log(">>> PLACE PRODUCTS:", res.data.length)
                 let saleOnly = res.data.filter((p) => p.saleRawCategory !== "Raw")
                 setProducts(saleOnly)
             } catch (err) {
@@ -76,7 +75,6 @@ const PlaceOrder = () => {
 
   async function handlePlaceOrder() {
     if (selectedItems.length === 0) {
-      alert("Kam se kam ek product add karo")
       return
     }
     setSaving(true)
@@ -92,10 +90,9 @@ const PlaceOrder = () => {
       })
       setSelectedItems([])
       setRemark("")
-      alert("Order place ho gaya")
+      window.dispatchEvent(new Event('distributor-order-changed'))
     } catch (err) {
       console.log("PLACE ORDER FAILED:", err.response?.data || err.message)
-      alert("Order place nahi hua")
     }
     setSaving(false)
   }

@@ -63,11 +63,16 @@ const ManageDistributorOrder = () => {
             try {
                 let res = await axios.get('http://localhost:3000/distributor/all-orders')
                 setDistributorOrders(res.data)
+                setAllOrders(res.data)
             } catch (err) {
                 console.log("DIST ORDERS FAILED:", err.response?.data || err.message)
             }
         }
         fetchOrders()
+    }, [])
+
+        useEffect(() => {
+        window.dispatchEvent(new Event('distributor-orders-seen'))
     }, [])
 
     async function openOrderDetail(order) {
@@ -330,10 +335,27 @@ const ManageDistributorOrder = () => {
                                     return (
                                         <tr key={row.id} className={`hover:bg-emerald-50/40 transition-colors ${i % 2 === 1 ? "bg-gray-50/30" : ""}`}>
                                             {row.getVisibleCells().map((cell) => {
-                                                if (cell.column.id === 'status') {
+                                                                                                if (cell.column.id === 'status') {
+                                                    const pct = Number(order.completion) || 0
+                                                    const done = pct >= 100
+                                                    const barColor = done ? 'from-emerald-400 via-emerald-500 to-emerald-600' : pct >= 50 ? 'from-amber-300 via-amber-400 to-amber-500' : 'from-rose-300 via-rose-400 to-rose-500'
+                                                    const badge = done ? 'bg-emerald-100 text-emerald-700 ring-emerald-200' : pct >= 50 ? 'bg-amber-100 text-amber-700 ring-amber-200' : 'bg-rose-100 text-rose-600 ring-rose-200'
                                                     return (
-                                                        <td key={cell.id} className="px-4 py-3 text-center">
-                                                            <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-[10px] font-bold uppercase ring-1 ${order.status === 'completed' ? 'bg-emerald-50 text-emerald-600 ring-emerald-200' : order.status === 'processing' ? 'bg-sky-50 text-sky-600 ring-sky-200' : 'bg-amber-50 text-amber-600 ring-amber-200'}`}>{order.status || "placed"}</span>
+                                                        <td key={cell.id} className="px-4 py-3">
+                                                            <div className="flex items-center gap-2.5 min-w-40">
+                                                                <div className="relative flex-1 h-2.5 rounded-full bg-slate-100 overflow-hidden ring-1 ring-slate-200/60">
+                                                                    <div className={`relative h-full rounded-full bg-linear-to-r ${barColor} transition-all duration-700 ease-out`} style={{ width: `${pct}%` }}>
+                                                                        <span className="absolute inset-0 bg-linear-to-t from-transparent via-white/30 to-white/10" />
+                                                                        {pct > 8 && <span className="absolute right-0 top-0 h-full w-1.5 bg-white/40 blur-[1px]" />}
+                                                                    </div>
+                                                                </div>
+                                                                <span className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-bold tabular-nums ring-1 ${badge}`}>
+                                                                    {done && (
+                                                                        <svg className="w-2.5 h-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3.5} d="M5 13l4 4L19 7" /></svg>
+                                                                    )}
+                                                                    {pct}%
+                                                                </span>
+                                                            </div>
                                                         </td>
                                                     )
                                                 }
@@ -380,12 +402,25 @@ const ManageDistributorOrder = () => {
                     </table>
                 </div>
 
-                <div className="px-5 py-3 border-t border-blue-50 flex flex-col sm:flex-row items-center justify-between gap-3 bg-blue-50/30">
-                    <p className="text-xs text-gray-400">Showing 0 to 0 of 0 entries</p>
+                <div className="px-5 py-3 border-t border-emerald-50 flex flex-col sm:flex-row items-center justify-between gap-3 bg-emerald-50/20">
+                    <p className="text-xs text-gray-400">
+                        Showing {distributorOrders.length === 0 ? 0 : table.getState().pagination.pageIndex * table.getState().pagination.pageSize + 1} to {Math.min((table.getState().pagination.pageIndex + 1) * table.getState().pagination.pageSize, table.getFilteredRowModel().rows.length)} of {table.getFilteredRowModel().rows.length} entries
+                    </p>
                     <div className="flex items-center gap-1">
-                        <button className="px-3 py-1.5 text-xs text-gray-400 bg-white border border-blue-100 rounded-lg hover:border-emerald-300 hover:text-emerald-600 transition-all">Previous</button>
-                        <button className="px-3 py-1.5 text-xs text-white bg-linear-to-b from-emerald-500 to-emerald-700 rounded-lg">1</button>
-                        <button className="px-3 py-1.5 text-xs text-gray-400 bg-white border border-blue-100 rounded-lg hover:border-emerald-300 hover:text-emerald-600 transition-all">Next</button>
+                        <button type="button" onClick={() => table.previousPage()} disabled={!table.getCanPreviousPage()}
+                            className="px-3 py-1.5 text-xs text-gray-500 bg-white border border-emerald-100 rounded-lg hover:border-emerald-300 hover:text-emerald-600 transition-all cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed">
+                            Previous
+                        </button>
+                        {table.getPageOptions().map((pg) => (
+                            <button key={pg} type="button" onClick={() => table.setPageIndex(pg)}
+                                className={`px-3 py-1.5 text-xs font-semibold rounded-lg transition-all cursor-pointer border ${table.getState().pagination.pageIndex === pg ? 'text-white bg-linear-to-b from-emerald-500 to-emerald-700 border-emerald-600' : 'text-gray-500 bg-white border-emerald-100 hover:border-emerald-300 hover:text-emerald-600'}`}>
+                                {pg + 1}
+                            </button>
+                        ))}
+                        <button type="button" onClick={() => table.nextPage()} disabled={!table.getCanNextPage()}
+                            className="px-3 py-1.5 text-xs text-gray-500 bg-white border border-emerald-100 rounded-lg hover:border-emerald-300 hover:text-emerald-600 transition-all cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed">
+                            Next
+                        </button>
                     </div>
                 </div>
 

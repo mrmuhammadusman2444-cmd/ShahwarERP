@@ -210,7 +210,16 @@ const PayBandCard = ({ item }) => {
 };
 
 const ChartCard = ({ title, subtitle, children }) => {
-    const isDark = document.documentElement.classList.contains('dark');
+    const [isDark, setIsDark] = useState(document.documentElement.classList.contains('dark'));
+
+    useEffect(() => {
+        const observer = new MutationObserver(() => {
+            setIsDark(document.documentElement.classList.contains('dark'));
+        });
+        observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+        return () => observer.disconnect();
+    }, []);
+
     return (
         <div
             className="chart-card border rounded-2xl p-4 transition-all duration-300 hover:-translate-y-0.5"

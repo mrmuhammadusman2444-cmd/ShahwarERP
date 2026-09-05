@@ -1,6 +1,6 @@
 import React from 'react'
 import './SidebarMenus.css'
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import axios from 'axios'
 import { useNavigate, useLocation } from 'react-router-dom';
 import { can, canSub, canAnySub } from '../Utils/Permissions.js'
@@ -36,6 +36,42 @@ const SideMenus = ({ collapsed }) => {
     const [pendingPurchaseCount, setPendingPurchaseCount] = useState(0)
     const [pendingPaymentCount, setPendingPaymentCount] = useState(0)
     const [paymentApprovalCount, setPaymentApprovalCount] = useState(0)
+    const [distributorOrderCount, setDistributorOrderCount] = useState(0)
+    const seenRef = useRef(false)
+
+    async function fetchDistCount() {
+        try {
+            let res = await axios.get('http://localhost:3000/distributor/orders/count')
+            let seenCount = Number(localStorage.getItem('distSeenCount')) || 0
+            let actual = res.data.count
+            setDistributorOrderCount(actual > seenCount ? actual - seenCount : 0)
+        } catch (err) {
+            console.log("DIST COUNT FAILED:", err.response?.data || err.message)
+        }
+    }
+
+    function clearBadge() {
+        axios.get('http://localhost:3000/distributor/orders/count').then((res) => {
+            localStorage.setItem('distSeenCount', res.data.count)
+            setDistributorOrderCount(0)
+        })
+    }
+
+    useEffect(() => {
+        fetchDistCount()
+        function onNewOrder() {
+            localStorage.removeItem('distSeenCount')
+            fetchDistCount()
+        }
+        window.addEventListener('distributor-order-changed', onNewOrder)
+        window.addEventListener('distributor-orders-seen', clearBadge)
+        const interval = setInterval(fetchDistCount, 30000)
+        return () => {
+            window.removeEventListener('distributor-order-changed', onNewOrder)
+            window.removeEventListener('distributor-orders-seen', clearBadge)
+            clearInterval(interval)
+        }
+    }, [])
 
     useEffect(() => {
         async function loadPendingCount() {
@@ -149,6 +185,8 @@ const SideMenus = ({ collapsed }) => {
     const isParentActive = (paths) => paths.some((p) => isActivePath(p))
 
     const totalPendingApprovals = pendingInvoiceCount + pendingPurchaseCount + paymentApprovalCount
+
+
 
     return (
         <div>
@@ -844,7 +882,7 @@ const SideMenus = ({ collapsed }) => {
                         )}
                     </div>
                 )}
-                {can("warehouseWiseSale", "view") && menuMatches('Warehouse Wise Sale', ['New Stock', 'Manage Stock', 'New Sale', 'Manage Warehouse Sale', 'Warehouse Stock']) && (
+                {false && can("warehouseWiseSale", "view") && menuMatches('Warehouse Wise Sale', ['New Stock', 'Manage Stock', 'New Sale', 'Manage Warehouse Sale', 'Warehouse Stock']) && (
 
                     <div onMouseEnter={setTip} onClick={() => setwarehouseSaleOpen(!warehouseSaleOpen)} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer transition-all mb-px ${collapsed ? 'justify-start w-9 h-9 mx-auto' : ''} ${isParentActive(['/PATH_HERE_1', '/PATH_HERE_2']) ? 'bg-(--nav-active)' : 'hover:bg-(--nav-active)'}`}>
                         {isParentActive(['/PATH_HERE_1', '/PATH_HERE_2']) && !collapsed && (
@@ -988,7 +1026,13 @@ const SideMenus = ({ collapsed }) => {
                             <span className="absolute left-0 top-1/2 -translate-y-1/2 w-0.75 h-4.5 bg-(--nav-strip) rounded-r-full" />
                         )}
                         <ClipboardList className="text-slate-100 shrink-0   group-hover:translate-x-1.5 transition-transform duration-300" size={23} />
+                        {collapsed && distributorOrderCount > 0 && (
+                            <span className="absolute -top-0.5 -right-0.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-emerald-500 px-1 text-[9px] font-bold text-white ring-2 ring-slate-900">{distributorOrderCount}</span>
+                        )}
                         {!collapsed && <span className="text-[12.5px] text-slate-100 flex-1">Distributor Order</span>}
+                        {!collapsed && distributorOrderCount > 0 && (
+                            <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-emerald-500 px-1.5 text-[10px] font-bold text-white">{distributorOrderCount}</span>
+                        )}
                         {!collapsed && <ChevronDown className={`text-slate-100  w-3.5 h-3.5 transition-transform duration-300 ${distributorOpen ? 'rotate-180' : ''}`} />}
                         {collapsed && (
                             <span style={{ top: 'var(--tooltip-y, 50%)', transform: 'translateY(-50%)' }} className="fixed left-16 ml-1 bg-emerald-500 text-white text-[11px] px-2 py-1 rounded-md whitespace-nowrap opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-200 pointer-events-none z-999">
@@ -1013,8 +1057,11 @@ const SideMenus = ({ collapsed }) => {
                             </div>
                         )}
                         {canSub("distributorOrder", "manageHafizOrders") && subMatches('Manage Hafiz Orders') && (
-                            <div onClick={() => { navigate('/manage/distributor/order') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                            <div onClick={() => navigate('/manage/distributor/order')} className="flex items-center justify-between text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                                 Manage Distributor Order
+                                {distributorOrderCount > 0 && (
+                                    <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-emerald-500 px-1.5 text-[10px] font-bold text-white">{distributorOrderCount}</span>
+                                )}
                             </div>
                         )}
                     </div>
@@ -1112,13 +1159,13 @@ const SideMenus = ({ collapsed }) => {
                         )}
                         {canSub("accounts", "supplierTallyLedger") && subMatches('Supplier Tally Ledger', 'Accounts') && (
 
-                            <div className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                            <div onClick={() => { navigate('/supplier/tally/ledger') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                                 Supplier Tally Ledger
                             </div>
                         )}
                         {canSub("accounts", "customerTallyLedger") && subMatches('Customer Tally Ledger', 'Accounts') && (
 
-                            <div className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                            <div onClick={() => { navigate('/customer/tally/ledger') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                                 Customer Tally Ledger
                             </div>
                         )}
@@ -1130,7 +1177,7 @@ const SideMenus = ({ collapsed }) => {
                         )}
                         {canSub("accounts", "assetsPayment") && subMatches('Assets Payment', 'Accounts') && (
 
-                            <div className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                            <div onClick={() => { navigate('/asset/payment') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                                 Assets Payment
                             </div>
                         )}
