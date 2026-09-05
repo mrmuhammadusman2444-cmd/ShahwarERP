@@ -5,6 +5,7 @@ import SaleModel from '../Models/Sale Models/SalesModel.js'
 import SupplierPaymentsModel from '../Models/Accounts/SupplierPaymentsModel.js'
 import BankTransactionModel from '../Models/Bank/BankTransactionModel.js'
 import CashTransactionModel from '../Models/Cash Book/CashTransactionModel.js'
+import CustomerTallyModel from '../Models/CustomerTallyLedger/CustomerTallyModel.js'
 import ReturnModel from '../Models/Return/ReturnModel.js'
 
 const router = express.Router()
@@ -98,7 +99,26 @@ router.get('/customer/ledger/:customerName', async function (req, res) {
         })
     })
 
-    combined.sort((a, b) => new Date(a.date) - new Date(b.date))
+    let tallies = await CustomerTallyModel.find({ customerName: customerName })
+
+    tallies.forEach((t) => {
+        combined.push({
+            date: t.date,
+            description: `Tally - ${t.voucherNo}${t.remarks ? " (" + t.remarks + ")" : ""}`,
+            invoiceId: "",
+            depositId: t.voucherNo || "",
+            debit: 0,
+            credit: 0,
+            type: "tally",
+        })
+    })
+
+    combined.sort((a, b) => {
+        let aTally = a.type === "tally" ? 1 : 0
+        let bTally = b.type === "tally" ? 1 : 0
+        if (aTally !== bTally) return aTally - bTally
+        return new Date(a.date) - new Date(b.date)
+    })
 
     let runningBalance = openingBalance
     let entries = combined.map((item) => {
