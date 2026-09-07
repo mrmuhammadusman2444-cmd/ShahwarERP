@@ -19,6 +19,9 @@ function partyName(row, tab) {
   if (tab === 'bank') {
     return row.toBank || row.bankName || "—"
   }
+  if (tab === 'asset') {
+    return row.assetName || "—"
+  }
   return row.fromCustomer || "—"
 }
 
@@ -33,7 +36,6 @@ export default function PaymentApproval() {
   const [counts, setCounts] = useState({ customer: 0, supplier: 0, bank: 0, asset: 0 })
 
   async function loadPending(tab) {
-    if (tab === 'asset') { setRows([]); return }
     setLoading(true)
     try {
       let res = await axios.get(`http://localhost:3000/payment-approval/${tab}`)
@@ -55,10 +57,14 @@ export default function PaymentApproval() {
   async function handleApprove(id) {
     setBusyId(id)
     try {
-      await axios.put(`http://localhost:3000/payment-approval/approve/${id}`)
+      if (activeTab === 'asset') {
+        await axios.put(`http://localhost:3000/payment-approval/asset/approve/${id}`)
+      } else {
+        await axios.put(`http://localhost:3000/payment-approval/approve/${id}`)
+      }
       setRows((prev) => prev.filter((r) => r._id !== id))
-      window.dispatchEvent(new Event('approval-changed')) /
-        setViewRow(null)
+      window.dispatchEvent(new Event('approval-changed'))
+      setViewRow(null)
     } catch (err) {
       console.log("APPROVE FAILED:", err.response?.data || err.message)
     } finally {
@@ -66,18 +72,37 @@ export default function PaymentApproval() {
     }
   }
 
+  async function handleReject(id) {
+    setBusyId(id)
+    try {
+      if (activeTab === 'asset') {
+        await axios.delete(`http://localhost:3000/payment-approval/asset/reject/${id}`)
+      } else {
+        await axios.delete(`http://localhost:3000/payment-approval/delete/${id}`)
+      }
+      setRows((prev) => prev.filter((r) => r._id !== id))
+      window.dispatchEvent(new Event('approval-changed'))
+      setViewRow(null)
+    } catch (err) {
+      console.log("REJECT FAILED:", err.response?.data || err.message)
+    } finally {
+      setBusyId("")
+    }
+  }
+
   async function loadCounts() {
     try {
-      let [cust, supp, bank] = await Promise.all([
+      let [cust, supp, bank, asset] = await Promise.all([
         axios.get('http://localhost:3000/payment-approval/customer'),
         axios.get('http://localhost:3000/payment-approval/supplier'),
         axios.get('http://localhost:3000/payment-approval/bank'),
+        axios.get('http://localhost:3000/payment-approval/asset'),
       ])
       setCounts({
         customer: cust.data.length,
         supplier: supp.data.length,
         bank: bank.data.length,
-        asset: 0,
+        asset: asset.data.length,
       })
     } catch (err) {
       console.log("COUNTS FAILED:", err.response?.data || err.message)
@@ -215,27 +240,15 @@ export default function PaymentApproval() {
             <tbody>
               {loading ? (
                 <tr><td colSpan={7} className="text-center text-[12px] text-slate-400 py-14">Loading...</td></tr>
-              ) : activeTab === 'asset' ? (
-                <tr>
-                  <td colSpan={7} className="text-center py-14">
-                    <div className="flex flex-col items-center gap-2">
-                      <div className="w-12 h-12 rounded-2xl bg-slate-50 flex items-center justify-center">
-                        <Package className="w-6 h-6 text-slate-300" />
-                      </div>
-                      <p className="text-slate-500 text-sm font-medium">Asset payment coming soon</p>
-                      <p className="text-slate-400 text-xs">Ye tab abhi setup nahi hua</p>
-                    </div>
-                  </td>
-                </tr>
               ) : table.getRowModel().rows.length === 0 ? (
                 <tr>
                   <td colSpan={7} className="text-center py-14">
-                    <div className="flex flex-col items-center gap-2">
+                    <div className="flex flex-col ml-40 items-center gap-2">
                       <div className="w-12 h-12 rounded-2xl bg-emerald-50 flex items-center justify-center">
                         <Inbox className="w-6 h-6 text-emerald-300" />
                       </div>
                       <p className="text-slate-600 text-sm font-medium">No pending approvals</p>
-                      <p className="text-slate-400 text-xs">Sab clear hai 🎉</p>
+                      <p className="text-slate-400 text-xs">Everything is clear 🎉</p>
                     </div>
                   </td>
                 </tr>
@@ -251,36 +264,46 @@ export default function PaymentApproval() {
                       <td className="text-[12px] text-slate-400 px-3 py-2.5 font-mono whitespace-nowrap">{r.voucherNo || "-"}</td>
                       <td className="text-[12px] text-slate-800 font-semibold px-3 py-2.5">{partyName(r, activeTab)}</td>
                       <td className="px-3 py-2.5">
-                        <div className="flex items-center gap-1.5 text-[11px]">
-                          <span className="capitalize inline-flex items-center rounded-md bg-slate-100 text-slate-600 px-2 py-0.5 font-medium">{r.fromType || "—"}</span>
-                          <span className="text-slate-300">→</span>
-                          <span className="capitalize inline-flex items-center rounded-md bg-emerald-50 text-emerald-700 ring-1 ring-emerald-100 px-2 py-0.5 font-medium">{r.toType || "—"}</span>
-                        </div>
+                        {activeTab === 'asset' ? (
+                          <div className="flex items-center gap-1.5 text-[11px]">
+                            <span className="capitalize inline-flex items-center rounded-md bg-emerald-50 text-emerald-700 ring-1 ring-emerald-100 px-2 py-0.5 font-medium">{r.paymentType || "—"}</span>
+                            <span className="text-slate-300">→</span>
+                            <span className="inline-flex items-center rounded-md bg-slate-100 text-slate-600 px-2 py-0.5 font-medium truncate max-w-28">
+                              {r.paymentType === 'cash' ? 'Cash' : r.bankName || r.supplierName || r.customerName || "—"}
+                            </span>
+                          </div>
+                        ) : (
+                          <div className="flex items-center gap-1.5 text-[11px]">
+                            <span className="capitalize inline-flex items-center rounded-md bg-slate-100 text-slate-600 px-2 py-0.5 font-medium">{r.fromType || "—"}</span>
+                            <span className="text-slate-300">→</span>
+                            <span className="capitalize inline-flex items-center rounded-md bg-emerald-50 text-emerald-700 ring-1 ring-emerald-100 px-2 py-0.5 font-medium">{r.toType || "—"}</span>
+                          </div>
+                        )}
                       </td>
                       <td className="text-[12px] text-slate-600 px-3 py-2.5 max-w-48 truncate">{r.remark || "-"}</td>
                       <td className="text-[12px] text-slate-900 font-bold px-3 py-2.5 text-right whitespace-nowrap">
                         <span className="text-slate-400 text-[10px] font-normal mr-0.5">Rs.</span>
-                        {Number(r.totalAmount || 0).toLocaleString()}
+                        {Number(r.totalAmount || r.amount || 0).toLocaleString()}
                       </td>
                       <td className="px-3 py-2.5">
                         <div className="flex items-center justify-center gap-1.5">
                           <button
                             onClick={() => setViewRow(r)}
-                            title="View"
+
                             className="p-1.5 rounded-lg text-slate-400 hover:text-blue-600 hover:bg-blue-100 cursor-pointer transition-all hover:scale-110 active:scale-95">
                             <Eye size={16} />
                           </button>
                           <button
                             onClick={() => handleApprove(r._id)}
                             disabled={busyId === r._id}
-                            title="Accept"
+
                             className="p-1.5 rounded-lg text-slate-400 hover:text-emerald-600 hover:bg-emerald-100 cursor-pointer transition-all hover:scale-110 active:scale-95 disabled:opacity-40">
                             <CheckCircle2 size={16} />
                           </button>
                           <button
                             onClick={() => handleReject(r._id)}
                             disabled={busyId === r._id}
-                            title="Reject"
+
                             className="p-1.5 rounded-lg text-slate-400 hover:text-rose-600 hover:bg-rose-100 cursor-pointer transition-all hover:scale-110 active:scale-95 disabled:opacity-40">
                             <XCircle size={16} />
                           </button>
@@ -351,7 +374,8 @@ export default function PaymentApproval() {
               {viewRow.toBank && (
                 <DetailRow label="To Bank" value={viewRow.toBank} />
               )}
-              <DetailRow label="Amount" value={`Rs. ${Number(viewRow.totalAmount || 0).toLocaleString()}`} strong />
+              <DetailRow label="Amount" value={`Rs. ${Number(viewRow.totalAmount || viewRow.amount || 0).toLocaleString()}`} strong />
+              {viewRow.assetName && (<DetailRow label="Asset" value={viewRow.assetName} />)}
               <DetailRow label="Description" value={viewRow.remark || "-"} />
               <DetailRow label="Status" value={viewRow.status || "-"} />
             </div>
