@@ -6,12 +6,12 @@ import axios from 'axios'
 import { useReactTable, getCoreRowModel, getSortedRowModel, getPaginationRowModel, getFilteredRowModel, flexRender } from '@tanstack/react-table'
 
 const DispatchOrder = () => {
- 
+
   const [orders, setOrders] = useState([])
   const navigate = useNavigate()
   const [detailOrder, setDetailOrder] = useState(null)
   const [copiedId, setCopiedId] = useState(null)
-   const [sorting, setSorting] = useState([])
+  const [sorting, setSorting] = useState([])
   const [search, setSearch] = useState("")
   const [entries, setEntries] = useState(10)
 
@@ -81,10 +81,105 @@ const DispatchOrder = () => {
     fetchOrders()
   }, [])
 
+  async function openOrderDetail(order) {
+    try {
+      let res = await axios.get(`http://localhost:3000/order-with-stock/${order._id}`)
+      setDetailOrder(res.data)
+    } catch (err) {
+      console.log("STOCK FAILED:", err.response?.data || err.message)
+      setDetailOrder(order)
+    }
+  }
 
   return (
     <div className="p-4 md:p-5">
+      {detailOrder && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-emerald-950/40 backdrop-blur-sm p-4" onClick={() => setDetailOrder(null)}>
+          <div className="relative w-full max-w-5xl max-h-[90vh] overflow-hidden rounded-3xl bg-white shadow-2xl ring-1 ring-emerald-100 flex flex-col" onClick={(e) => e.stopPropagation()}>
 
+            <div className="flex items-center justify-between gap-4 bg-linear-to-r from-emerald-600 to-emerald-700 px-6 py-4 shrink-0">
+              <div className="flex items-center gap-3">
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/15 text-white">
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" /></svg>
+                </div>
+                <div>
+                  <h2 className="text-white text-base font-bold">Order Details</h2>
+                  <p className="text-emerald-100 text-xs font-mono">{detailOrder.orderNo}</p>
+                </div>
+              </div>
+              <button onClick={() => setDetailOrder(null)} className="cursor-pointer rounded-xl p-2 text-white/80 transition-all hover:rotate-90 hover:bg-white/15 hover:text-white">
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+              </button>
+            </div>
+
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 px-6 py-4 border-b border-emerald-50 shrink-0">
+              {[
+                { label: "Customer", value: detailOrder.customerName || "—" },
+                { label: "Date", value: detailOrder.orderDate ? new Date(detailOrder.orderDate).toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" }) : "—" },
+                { label: "Delivery", value: detailOrder.deliveryDate ? new Date(detailOrder.deliveryDate).toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" }) : "—" },
+              ].map((f) => (
+                <div key={f.label} className="rounded-xl border border-emerald-100 bg-emerald-50/40 px-3 py-2.5">
+                  <p className="text-gray-400 text-[10px] font-semibold uppercase tracking-wide">{f.label}</p>
+                  <p className="text-gray-800 text-sm font-semibold mt-0.5 truncate">{f.value}</p>
+                </div>
+              ))}
+            </div>
+
+            <div className="overflow-auto p-6 flex-1">
+              <div className="rounded-2xl border border-emerald-100 overflow-hidden">
+                <table className="w-full text-sm">
+                  <thead>
+                    <tr className="bg-emerald-600 text-white">
+                      <th className="text-left text-[11px] font-bold uppercase px-4 py-3">SL</th>
+                      <th className="text-center text-[11px] font-bold uppercase px-4 py-3">Pack</th>
+                      <th className="text-left text-[11px] font-bold uppercase px-4 py-3">Item</th>
+                      <th className="text-center text-[11px] font-bold uppercase px-4 py-3">Carton</th>
+                      <th className="text-center text-[11px] font-bold uppercase px-4 py-3">Weight</th>
+                      <th className="text-center text-[11px] font-bold uppercase px-4 py-3">Remaining</th>
+                      <th className="text-center text-[11px] font-bold uppercase px-4 py-3">Status</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-gray-100">
+                    {(detailOrder.items || []).map((it, i) => (
+                      <tr key={i} className={`hover:bg-emerald-50/40 ${i % 2 === 1 ? "bg-gray-50/40" : ""}`}>
+                        <td className="px-4 py-3 text-gray-400 text-xs">{i + 1}</td>
+                        <td className="px-4 py-3 text-center"><span className="inline-block rounded-md bg-gray-100 px-2 py-0.5 text-gray-600 text-[11px] font-semibold">{it.cartonSize || "—"}</span></td>
+                        <td className="px-4 py-3 text-gray-800 text-xs font-semibold">{it.name}</td>
+                        <td className="px-4 py-3 text-center text-gray-700 text-xs font-bold">{Number(it.carton || 0).toLocaleString()}</td>
+                        <td className="px-4 py-3 text-center text-gray-600 text-xs">{Number(it.weight || 0).toLocaleString()} {it.weightUnit || "kg"}</td>
+                        <td className="px-4 py-3 text-center">
+                          {Number(it.remaining || 0) > 0 ? (
+                            <span className="inline-flex items-center rounded-md bg-rose-50 px-2 py-0.5 text-xs font-bold text-rose-600 ring-1 ring-rose-200">{Number(it.remaining).toLocaleString()}</span>
+                          ) : (
+                            <span className="text-emerald-600 text-xs font-bold">0</span>
+                          )}
+                        </td>
+                        <td className="px-4 py-3 text-center">
+                          {it.stockStatus === "complete" ? (
+                            <span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-emerald-100 text-emerald-600 ring-1 ring-emerald-200">
+                              <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" /></svg>
+                            </span>
+                          ) : (
+                            <span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-rose-100 text-rose-500 ring-1 ring-rose-200">
+                              <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M6 18L18 6M6 6l12 12" /></svg>
+                            </span>
+                          )}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <div className="flex items-center justify-end gap-4 border-t border-emerald-100 bg-emerald-50/40 px-6 py-4 shrink-0">
+              <span className="text-gray-400 text-[10px] font-semibold uppercase tracking-wide">Total Weight</span>
+              <span className="text-emerald-700 text-lg font-bold">{Number(detailOrder.totalWeight || 0).toLocaleString()} kg</span>
+            </div>
+
+          </div>
+        </div>
+      )}
       <div className="flex items-center justify-between mb-4 pl-12 md:pl-0">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-xl bg-linear-to-b from-emerald-500 to-emerald-700 flex items-center justify-center shadow-md shadow-blue-200">
@@ -153,7 +248,7 @@ const DispatchOrder = () => {
                 </tr>
               ))}
             </thead>
-                        <tbody>
+            <tbody>
               {table.getRowModel().rows.length === 0 ? (
                 <tr>
                   <td colSpan={8} className="text-center py-14">
@@ -176,7 +271,11 @@ const DispatchOrder = () => {
                         if (cell.column.id === 'status') {
                           return (
                             <td key={cell.id} className="px-4 py-3">
-                              <span className="inline-flex items-center rounded-full bg-amber-50 px-2.5 py-0.5 text-[10px] font-bold text-amber-600 ring-1 ring-amber-200">Pending</span>
+                              {order.status === "complete" ? (
+                                <span className="inline-flex items-center rounded-full bg-emerald-50 px-2.5 py-0.5 text-[10px] font-bold text-emerald-600 ring-1 ring-emerald-200">Complete</span>
+                              ) : (
+                                <span className="inline-flex items-center rounded-full bg-amber-50 px-2.5 py-0.5 text-[10px] font-bold text-amber-600 ring-1 ring-amber-200">Pending</span>
+                              )}
                             </td>
                           )
                         }
