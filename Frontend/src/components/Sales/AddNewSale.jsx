@@ -93,7 +93,7 @@ const NewSale = ({ setManageCustomer }) => {
     }
     loadSaleForEdit()
   }, [id])
-  
+
   const visibleProducts = fetchProducts.filter((p) => {
     const matchesSearch = (p.productName || "").toLowerCase().includes(search.toLowerCase())
     const matchesCategory =
@@ -179,9 +179,7 @@ const NewSale = ({ setManageCustomer }) => {
         let response = await axios.put(`http://localhost:3000/update/sale/${id}`, payload)
         console.log(response.data)
         window.dispatchEvent(new Event('saleCreated'))
-
         toast.success('Sale Updated Successfully', { position: 'bottom-left', autoClose: 1200 })
-
         setTimeout(() => {
           navigate('/manageSale')
         }, 2000)
@@ -193,6 +191,23 @@ const NewSale = ({ setManageCustomer }) => {
         console.log(response.data)
         window.dispatchEvent(new Event("approval-changed"))
         window.dispatchEvent(new Event('saleCreated'))
+
+               if (fromOrder && fromOrder._id) {
+          console.log(">>> MARKING ORDER:", fromOrder._id)
+          try {
+            let r = await axios.put(`http://localhost:3000/order/mark-complete/${fromOrder._id}`)
+            console.log(">>> COMPLETE RESULT:", r.data)
+          } catch (err) {
+            console.log("ORDER COMPLETE FAILED:", err.response?.data || err.message)
+          }
+        } else {
+          console.log(">>> NO fromOrder:", fromOrder)
+        }
+
+        toast.success('Sale Created Successfully', { position: 'bottom-left', autoClose: 1200 })
+        setTimeout(() => {
+          navigate('/manageSale')
+        }, 2000)
       }
 
     } catch (err) {

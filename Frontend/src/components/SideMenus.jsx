@@ -1092,27 +1092,27 @@ const SideMenus = ({ collapsed }) => {
                         className="ml-7 border-l border-slate-700 pl-3 flex flex-col gap-0.5 overflow-hidden"
                     >
                         {canSub("report", "todayCustomerReport") && subMatches('Today customer Report') && (
-                            <div className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                            <div onClick={()=>{navigate('/today/customer/report')}} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                                 Today customer Report
                             </div>
                         )}
                         {canSub("report", "userWiseReceiptReport") && subMatches('User Wise Reciept Report') && (
-                            <div className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                            <div  onClick={()=>{navigate('/user/wise/report')}} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                                 User Wise Reciept Report
                             </div>
                         )}
                         {canSub("report", "supplierReceipt") && subMatches('Supplier Reciept') && (
-                            <div className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                            <div onClick={()=>{navigate('/supplier/reciept')}} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                                 Supplier Reciept
                             </div>
                         )}
                         {canSub("report", "saleReport") && subMatches('Sale Report') && (
-                            <div className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                            <div onClick={()=>{navigate('/sale/report')}} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                                 Sale Report
                             </div>
                         )}
                         {canSub("report", "saleReportProductWise") && subMatches('Sale Report (Product Wise)') && (
-                            <div className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                            <div onClick={()=>{navigate('/sale/report/product/wise')}} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                                 Sale Report (Product Wise)
                             </div>
                         )}

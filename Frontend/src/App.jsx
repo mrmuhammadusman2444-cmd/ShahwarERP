@@ -105,6 +105,13 @@ import GlobalShortcuts from './components/GlobalShortcuts.jsx'
 //distributor Order
 import NewDistOrderPage from './pages/Distributor Order/NewDistOrderPage.jsx'
 
+//Report
+import TodayCustomerReportPage from './pages/Report/TodayCustomerReportPage.jsx'
+import UserWiseReportPage from './pages/Report/UserWiseReportPage.jsx'
+import SupplierRecieptPage from './pages/Report/SupplierRecieptPage.jsx'
+import SaleReportPage from './pages/Report/SaleReportPage.jsx'
+import SaleReportProductWisePage from './pages/Report/SaleReportProductWisePage.jsx'
+
 
 
 
@@ -220,6 +227,18 @@ const App = () => {
 
         // Distributor Order
         <Route path='/new/distributor/order' element={<NewDistOrderPage />} />
+
+        //Report
+        <Route path='/today/customer/report' element={<TodayCustomerReportPage />} />
+        <Route path='/user/wise/report' element={<UserWiseReportPage />} />
+        <Route path='/supplier/reciept' element={<SupplierRecieptPage />} />
+        <Route path='/sale/report' element={<SaleReportPage />} />
+        <Route path='/sale/report/product/wise' element={<SaleReportProductWisePage />} />
+
+
+
+
+
 
         
 

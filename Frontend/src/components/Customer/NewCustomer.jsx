@@ -195,25 +195,32 @@ const NewCustomer = () => {
         <div className="w-full lg:w-52 shrink-0 flex flex-col gap-4 sticky top-4">
 
           <div className="bg-white border border-emerald-100 rounded-2xl shadow-sm p-4 flex flex-col items-center gap-3">
-            <div className="w-20 h-20 rounded-2xl bg-linear-to-br from-emerald-100 to-emerald-200 flex items-center justify-center">
+            <label className="group relative w-20 h-20 rounded-2xl bg-linear-to-br from-emerald-100 to-emerald-200 flex items-center justify-center overflow-hidden cursor-pointer">
               <svg className="w-10 h-10 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
               </svg>
-            </div>
+              <div className="absolute inset-0 flex flex-col items-center justify-center gap-1 bg-emerald-600/90 opacity-0 transition-opacity duration-200 group-hover:opacity-100">
+                <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 16.5V19a2 2 0 002 2h14a2 2 0 002-2v-2.5M16 8l-4-4m0 0L8 8m4-4v12" />
+                </svg>
+                <span className="text-[9px] font-bold text-white">Add Photo</span>
+              </div>
+              <input type="file" accept="image/*" className="hidden" />
+            </label>
             <div className="text-center">
               <p className="text-gray-700 text-sm font-semibold">New Customer</p>
               <p className="text-gray-400 text-xs mt-0.5">Fill in details on the left</p>
             </div>
 
-            <div className="w-full border-t border-emerald-50 pt-3 flex flex-col gap-2">
-              {[
-                { label: "Rate Type", value: "Not set" },
-                { label: "Scheme", value: "Not set" },
-                { label: "Warehouse", value: "Not set" },
+                        <div className="w-full border-t border-emerald-50 pt-3 flex flex-col gap-2">
+                            {[
+                { label: "Rate Type", value: newCustomer.CustomerProductRate || "Not set" },
+                { label: "Scheme", value: newCustomer.scheme || "Not set" },
+                { label: "Warehouse", value: newCustomer.wareHouse || "Not set" },
               ].map((item) => (
-                <div key={item.label} className="flex items-center justify-between">
-                  <span className="text-gray-400 text-xs">{item.label}</span>
-                  <span className="text-gray-500 text-xs font-medium">{item.value}</span>
+                <div key={item.label} className="flex items-center justify-between gap-3">
+                  <span className="text-gray-400 text-xs shrink-0">{item.label}</span>
+                  <span className={`text-xs font-medium text-right truncate ${item.value === "Not set" ? "text-gray-500" : "text-emerald-600 font-semibold capitalize"}`}>{item.value}</span>
                 </div>
               ))}
             </div>

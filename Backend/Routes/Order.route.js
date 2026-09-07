@@ -162,6 +162,19 @@ router.get('/order-with-stock/:id', async function (req, res) {
     }
 })
 
+router.put('/order/mark-complete/:id', async function (req, res) {
+    try {
+        let updated = await OrderModel.findByIdAndUpdate(
+            req.params.id,
+            { status: "complete" },
+            { new: true }
+        )
+        res.json({ success: true, data: updated })
+    } catch (err) {
+        res.status(500).json({ success: false, message: err.message })
+    }
+})
+
 
 
 export default router
