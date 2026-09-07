@@ -62,8 +62,8 @@ const CustomerLedger = () => {
     if (!customerName) return
     try {
       let res = await axios.get(`http://localhost:3000/customer/ledger/${customerName}`)
-      console.log("LEDGER DATA:", res.data)        // ← yahan
-      console.log("ENTRIES:", res.data.entries)     // ← yahan
+      console.log("LEDGER DATA:", res.data)
+      console.log("ENTRIES:", res.data.entries)
       console.log("FIRST ENTRY:", JSON.stringify(res.data.entries[0], null, 2))
       setEntries(res.data.entries)
       setFilteredEntries(res.data.entries)
@@ -234,7 +234,6 @@ const CustomerLedger = () => {
         </div>
       </div>
 
-      {/* ── Filter Bar ── */}
       <div className="bg-white border border-slate-200/70 rounded-2xl shadow-sm p-3 sm:p-4 mb-4">
         <div className="flex flex-col sm:flex-row items-start sm:items-end gap-3 flex-wrap">
 
@@ -380,12 +379,11 @@ const CustomerLedger = () => {
                     const entry = row.original
                     const idx = row.index
                     return (
-                      <tr key={idx} className="group relative border-b border-gray-50 hover:bg-emerald-50/50 transition-colors">
+                      <tr key={idx} className={`group relative transition-colors ${entry.type === "tally" ? 'bg-emerald-50/60 border-y border-emerald-200' : 'border-b border-gray-50 hover:bg-emerald-50/50'}`}>
 
-                        <td className="px-2 sm:px-4 py-3.5 text-left whitespace-nowrap relative">
-                          <span className="absolute left-0 top-1/2 -translate-y-1/2 h-6 w-0.5 rounded-r bg-emerald-500 opacity-0 group-hover:opacity-100 transition-opacity" />
-                          <span className="inline-flex items-center gap-1 sm:gap-2">
-                            <span className="hidden sm:flex items-center justify-center w-7 h-7 rounded-lg bg-gray-50 text-gray-400 group-hover:bg-emerald-50 group-hover:text-emerald-500 transition-colors shrink-0">
+                                                <td className={`px-2 sm:px-4 py-3.5 text-left whitespace-nowrap ${entry.type === "tally" ? 'border-l-4 border-emerald-500' : ''}`}>
+                          <span className="inline-flex items-center gap-2">
+                            <span className="flex items-center justify-center w-7 h-7 rounded-lg bg-gray-50 text-gray-400 group-hover:bg-emerald-50 group-hover:text-emerald-500 transition-colors shrink-0">
                               <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
                             </span>
                             <span className="text-gray-700 text-xs font-medium tabular-nums">
@@ -394,8 +392,16 @@ const CustomerLedger = () => {
                           </span>
                         </td>
 
-                        <td className="px-2 sm:px-4 py-3.5 text-left">
-                          {entry.invoiceId ? (
+                                                <td className={`px-2 sm:px-4 py-3.5 text-left ${entry.type === "tally" ? 'border-l-4 border-emerald-500' : ''}`}>
+                          {entry.type === "tally" ? (
+                            <span className="inline-flex items-center gap-2">
+                              <span className="inline-flex items-center gap-1 rounded bg-emerald-100 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wide text-emerald-700 ring-1 ring-emerald-200">
+                                <svg className="w-2.5 h-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" /></svg>
+                                Tally
+                              </span>
+                              <span className="text-emerald-800 text-xs font-semibold">{entry.description}</span>
+                            </span>
+                          ) : entry.invoiceId ? (
                             <button onClick={() => handleDownloadInvoice(entry.invoiceId)}
                               className="inline-flex items-center gap-1.5 text-gray-700 hover:text-emerald-600 text-xs font-medium cursor-pointer group/desc transition-colors" title="Download invoice">
                               <svg className="w-3.5 h-3.5 text-gray-300 group-hover/desc:text-emerald-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">

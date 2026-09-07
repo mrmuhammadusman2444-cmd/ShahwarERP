@@ -240,7 +240,7 @@ const InvoiceApproval = () => {
                                         {(viewInvoice.items || []).map((it, i) => (
                                             <tr key={i}>
                                                 <td className="text-[12px] text-gray-700 px-3 py-2">{it.name || "-"}</td>
-                                                <td className="text-[12px] text-gray-600 px-3 py-2 text-center tabular-nums">{it.qty || 0}</td>
+                                                <td className="text-[12px] text-gray-600 px-3 py-2 text-center tabular-nums">{it.carton || 0}</td>
                                                 <td className="text-[12px] text-gray-600 px-3 py-2 text-center tabular-nums">Rs. {Number(it.rate || 0).toLocaleString()}</td>
                                                 <td className="text-[12px] text-gray-800 font-semibold px-3 py-2 text-right tabular-nums">Rs. {Number(it.total || 0).toLocaleString()}</td>
                                             </tr>

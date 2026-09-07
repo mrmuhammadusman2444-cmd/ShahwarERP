@@ -450,7 +450,6 @@ export default function FundTransfer() {
 
 
         else {
-            alert("Filhaal sirf Customer to Bank aur Customer to Supplier available hai")
         }
     }
 
