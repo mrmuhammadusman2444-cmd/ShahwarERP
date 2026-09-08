@@ -6,6 +6,18 @@ import { X, User, Mail, Phone, MapPin, FileText, Wallet, History, Save, Loader2,
 const SupplierUpdatePopup = ({ setShowUpdatePopup, updateData, handleFindSupplier }) => {
 
     const [status, setStatus] = useState("idle")
+    const [picture, setPicture] = useState(null)
+    const [preview, setPreview] = useState("")
+    const [removePic, setRemovePic] = useState(false)
+
+    function handlePicture(e) {
+        let file = e.target.files[0]
+        if (file) {
+            setPicture(file)
+            setPreview(URL.createObjectURL(file))
+            setRemovePic(false)
+        }
+    }
 
     const [supplier, setSupplier] = useState({
         supplierName: '',
@@ -23,12 +35,25 @@ const SupplierUpdatePopup = ({ setShowUpdatePopup, updateData, handleFindSupplie
         }
     }, [updateData])
 
-    async function handleUpdateSupplier() {
+        async function handleUpdateSupplier() {
         setStatus("saving")
         const minDelay = new Promise(r => setTimeout(r, 700))
 
         try {
-            await axios.put(`http://localhost:3000/update/supplier/${updateData._id}`, supplier)
+            let formData = new FormData()
+            formData.append('supplierName', supplier.supplierName || '')
+            formData.append('email', supplier.email || '')
+            formData.append('phoneNo', supplier.phoneNo || '')
+            formData.append('address', supplier.address || '')
+            formData.append('supplierDetails', supplier.supplierDetails || '')
+            formData.append('supplierCredits', supplier.supplierCredits || '')
+            formData.append('previousCreditsBalance', supplier.previousCreditsBalance || '')
+            if (picture) formData.append('picture', picture)
+            if (removePic) formData.append('removePicture', 'true')
+
+            await axios.put(`http://localhost:3000/update/supplier/${updateData._id}`, formData, {
+                headers: { 'Content-Type': 'multipart/form-data' }
+            })
             await minDelay
             setStatus("saved")
             setTimeout(() => {
@@ -53,8 +78,26 @@ const SupplierUpdatePopup = ({ setShowUpdatePopup, updateData, handleFindSupplie
 
                 <div className="relative flex items-start justify-between gap-4 border-b border-emerald-100 px-6 py-5">
                     <div className="flex items-center gap-4">
-                        <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-linear-to-br from-emerald-500 to-emerald-700 text-sm font-bold text-white shadow-lg shadow-emerald-200">
-                            {(supplier.supplierName || "?").trim().charAt(0).toUpperCase()}
+                        <div className="relative shrink-0">
+                            <label className="group relative flex h-12 w-12 items-center justify-center overflow-hidden rounded-2xl bg-linear-to-br from-emerald-500 to-emerald-700 text-sm font-bold text-white shadow-lg shadow-emerald-200 cursor-pointer">
+                                {(preview || (supplier.picture && !removePic)) ? (
+                                    <img src={preview || `http://localhost:3000${supplier.picture}`} alt="" className="h-full w-full object-cover" />
+                                ) : (
+                                    (supplier.supplierName || "?").trim().charAt(0).toUpperCase()
+                                )}
+                                <div className="absolute inset-0 flex items-center justify-center bg-emerald-900/60 opacity-0 transition-opacity group-hover:opacity-100">
+                                    <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 16.5V19a2 2 0 002 2h14a2 2 0 002-2v-2.5M16 8l-4-4m0 0L8 8m4-4v12" /></svg>
+                                </div>
+                                <input type="file" accept="image/*" onChange={handlePicture} className="hidden" />
+                            </label>
+                            {(preview || (supplier.picture && !removePic)) && (
+                                <button
+                                    onClick={() => { setPicture(null); setPreview(""); setRemovePic(true) }}
+                                    title="Remove photo"
+                                    className="absolute -right-1.5 -top-1.5 flex h-5 w-5 items-center justify-center rounded-full bg-rose-500 text-white shadow-md ring-2 ring-white transition-all hover:bg-rose-600 cursor-pointer">
+                                    <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M6 18L18 6M6 6l12 12" /></svg>
+                                </button>
+                            )}
                         </div>
                         <div>
                             <h2 className="text-lg font-bold tracking-tight text-gray-800">

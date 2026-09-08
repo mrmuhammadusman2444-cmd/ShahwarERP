@@ -144,4 +144,38 @@ router.get('/scheme-report', async function (req, res) {
 })
 
 
+router.get('/sale-report/customer', async function (req, res) {
+    try {
+        let query = { status: "approved" }
+
+        if (req.query.customerName) {
+            query.customerName = req.query.customerName
+        }
+        if (req.query.from && req.query.to) {
+            query.Date = { $gte: new Date(req.query.from), $lte: new Date(req.query.to + "T23:59:59") }
+        }
+
+        let sales = await SaleModel.find(query).sort({ Date: 1 })
+
+                let rows = sales.map((s) => ({
+            salesDate: s.Date,
+            invoiceNo: s.invoiceNo,
+            customerName: s.customerName,
+            totalAmount: Number(s.grandTotal) || 0,
+            Date: s.Date,
+            items: s.items || [],
+            grandTotal: s.grandTotal,
+            freightCharges: s.freightCharges,
+            totalCartons: s.totalCartons,
+        }))
+
+        let total = rows.reduce((sum, r) => sum + r.totalAmount, 0)
+
+        res.json({ rows, total })
+    } catch (err) {
+        res.status(500).json({ message: err.message })
+    }
+})
+
+
 export default router

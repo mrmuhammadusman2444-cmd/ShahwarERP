@@ -16,6 +16,9 @@ const ManageCustomers = () => {
   const [showDeleteAlert, setShowDeleteAlert] = useState(false)
   const [deleteData, setDeleteData] = useState(null)
   const [entries, setEntries] = useState(10)
+  const [viewCustomer, setViewCustomer] = useState(null)
+  const [editPicture, setEditPicture] = useState(null)
+  const [editPreview, setEditPreview] = useState("")
 
 
 
@@ -32,10 +35,30 @@ const ManageCustomers = () => {
     (customer.phoneNo || "").toString().toLowerCase().includes(search.toLowerCase())
   )
   async function handleUpdate() {
-    await axios.post(`http://localhost:3000/update/customer/${editData._id}`, editData)
-    setShowEditPopup(false)
-    handleManageCustomer()
-    toast.success('Customer Updated Successfully', { position: 'bottom-right', autoClose: 800 })
+    try {
+      let formData = new FormData()
+      formData.append('customerName', editData.customerName || '')
+      formData.append('email', editData.email || '')
+      formData.append('phoneNo', editData.phoneNo || '')
+      formData.append('wareHouse', editData.wareHouse || '')
+      formData.append('amountLimit', editData.amountLimit || '')
+      formData.append('CustomerProductRate', editData.CustomerProductRate || '')
+      formData.append('scheme', editData.scheme || '')
+      formData.append('customerCredits', editData.customerCredits || '')
+      formData.append('PreviouseCreditsBalance', editData.PreviouseCreditsBalance || '')
+      if (editPicture) formData.append('picture', editPicture)
+      if (editPicture) formData.append('picture', editPicture)
+      if (editData.removePicture) formData.append('removePicture', 'true')
+
+      await axios.post(`http://localhost:3000/update/customer/${editData._id}`, formData, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+      })
+      setShowEditPopup(false)
+      handleManageCustomer()
+      toast.success('Customer Updated Successfully', { position: 'bottom-right', autoClose: 800 })
+    } catch (err) {
+      console.log("UPDATE FAILED:", err.response?.data || err.message)
+    }
   }
   async function handleDelete(id) {
     await axios.post('http://localhost:3000/delete/customer', { _id: id })
@@ -53,23 +76,62 @@ const ManageCustomers = () => {
   return (
     <div className="min-h-screen overflow-x-hidden bg-linear-to-br from-emerald-50 via-white to-emerald-50 p-4 md:p-6">
 
-      {showEditPopup == true ? (
-        <EditCustomerPopup
-          showEditPopup={showEditPopup}
-          setShowEditPopup={setShowEditPopup}
-          editData={editData}
-          setEditData={setEditData}
-          handleUpdate={handleUpdate}
-        />
-      ) : null}
+      {viewCustomer && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 backdrop-blur-sm p-4" onClick={() => setViewCustomer(null)}>
+          <div className="relative w-full max-w-md overflow-hidden rounded-3xl bg-white shadow-2xl" onClick={(e) => e.stopPropagation()}>
 
-      {showDeleteAlert && (
-        <DeleteAlertPopup
-          setShowDeleteAlert={setShowDeleteAlert}
-          deleteData={deleteData}
-          handleDelete={handleDelete}
-        />
+            <button onClick={() => setViewCustomer(null)} className="absolute right-4 top-4 z-10 flex h-8 w-8 items-center justify-center rounded-full bg-slate-100 text-slate-400 transition-all hover:rotate-90 hover:bg-rose-50 hover:text-rose-500 cursor-pointer">
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+            </button>
+
+            <div className="flex flex-col items-center px-6 pt-8 pb-5 text-center">
+              <div className="flex h-20 w-20 items-center justify-center overflow-hidden rounded-2xl bg-linear-to-br from-emerald-500 to-emerald-700 text-white text-2xl font-black shadow-lg shadow-emerald-200 mb-3">
+                {viewCustomer.picture ? (
+                  <img src={`http://localhost:3000${viewCustomer.picture}`} alt="" className="h-full w-full object-cover" />
+                ) : (
+                  (viewCustomer.customerName || '?').charAt(0).toUpperCase()
+                )}
+              </div>
+              <h3 className="text-slate-800 text-lg font-bold leading-tight">{viewCustomer.customerName || "—"}</h3>
+              <p className="text-slate-400 text-xs">{viewCustomer.email || "—"}</p>
+              <div className="mt-2 flex items-center gap-2">
+                <span className="rounded-full bg-emerald-50 px-2.5 py-0.5 text-[10px] font-bold text-emerald-700 ring-1 ring-emerald-100 capitalize">{viewCustomer.CustomerProductRate || "No rate"}</span>
+                {viewCustomer.scheme === "yes" && (
+                  <span className="rounded-full bg-amber-50 px-2.5 py-0.5 text-[10px] font-bold text-amber-600 ring-1 ring-amber-200">Scheme Active</span>
+                )}
+              </div>
+            </div>
+
+            <div className="px-6 pb-6">
+              <div className="rounded-2xl border border-slate-100 divide-y divide-slate-100 overflow-hidden">
+                {[
+                  { label: "Phone No", value: viewCustomer.phoneNo, icon: "M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" },
+                  { label: "Warehouse", value: viewCustomer.wareHouse, icon: "M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" },
+                  { label: "Amount Limit", value: viewCustomer.amountLimit ? `Rs. ${Number(viewCustomer.amountLimit).toLocaleString()}` : null, icon: "M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" },
+                  { label: "Customer Credits", value: viewCustomer.customerCredits ? `Rs. ${Number(viewCustomer.customerCredits).toLocaleString()}` : null, icon: "M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" },
+                  { label: "Previous Balance", value: viewCustomer.PreviouseCreditsBalance ? `Rs. ${Number(viewCustomer.PreviouseCreditsBalance).toLocaleString()}` : null, icon: "M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" },
+                ].map((f) => (
+                  <div key={f.label} className="flex items-center gap-3 px-4 py-3 hover:bg-slate-50/60 transition-colors">
+                    <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-emerald-50 text-emerald-500">
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={f.icon} /></svg>
+                    </span>
+                    <span className="text-slate-400 text-xs font-medium">{f.label}</span>
+                    <span className="ml-auto text-slate-800 text-sm font-bold tabular-nums truncate capitalize">{f.value || "—"}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+          </div>
+        </div>
       )}
+
+      {showEditPopup == true ? (<EditCustomerPopup showEditPopup={showEditPopup} setShowEditPopup={setShowEditPopup} editData={editData} setEditData={setEditData} handleUpdate={handleUpdate} editPicture={editPicture}
+        setEditPicture={setEditPicture}
+        editPreview={editPreview}
+        setEditPreview={setEditPreview} />) : null}
+
+      {showDeleteAlert && (<DeleteAlertPopup setShowDeleteAlert={setShowDeleteAlert} deleteData={deleteData} handleDelete={handleDelete} />)}
 
       <div className="flex items-center justify-between mb-6 gap-3 pl-12 md:pl-0">
         <div className="flex items-center gap-4 min-w-0">
@@ -223,8 +285,12 @@ const ManageCustomers = () => {
 
                     <td className="px-4 py-3">
                       <div className="flex items-center gap-3">
-                        <div className={`w-9 h-9 shrink-0 rounded-xl flex items-center justify-center text-xs font-bold ${avatarTone(customer.customerName)}`}>
-                          {initials(customer.customerName) || "?"}
+                        <div className={`w-9 h-9 shrink-0 overflow-hidden rounded-xl flex items-center justify-center text-xs font-bold ${avatarTone(customer.customerName)}`}>
+                          {customer.picture ? (
+                            <img src={`http://localhost:3000${customer.picture}`} alt="" className="h-full w-full object-cover" />
+                          ) : (
+                            initials(customer.customerName) || "?"
+                          )}
                         </div>
                         <div className="min-w-0">
                           <p className="text-gray-800 text-sm font-semibold truncate flex items-center gap-1.5">
@@ -284,13 +350,13 @@ const ManageCustomers = () => {
                     <td className="px-4 py-3">
                       <div className="flex items-center justify-end gap-1 opacity-100 lg:opacity-0 lg:group-hover:opacity-100 transition-opacity">
                         {can("customers", "view") && (
-                          <button className="p-1.5 rounded-lg text-gray-400 hover:text-emerald-600 hover:bg-emerald-100 cursor-pointer transition-all">
+                          <button onClick={() => setViewCustomer(customer)} className="p-1.5 rounded-lg text-gray-400 hover:text-emerald-600 hover:bg-emerald-100 cursor-pointer transition-all">
                             <Eye size={16} />
                           </button>
                         )}
 
                         {can("customers", "update") && (
-                          <button onClick={() => { setEditData(customer), setShowEditPopup(true) }} className="p-1.5 rounded-lg text-gray-400 hover:text-emerald-600 hover:bg-emerald-100 cursor-pointer transition-all">
+                          <button onClick={() => { setEditData(customer); setShowEditPopup(true) }} className="p-1.5 rounded-lg text-gray-400 hover:text-emerald-600 hover:bg-emerald-100 cursor-pointer transition-all">
                             <Pencil size={16} />
                           </button>
                         )}

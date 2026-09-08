@@ -30,6 +30,7 @@ const CustomerSchema = new mongoose.Schema({
     PreviouseCreditsBalance: {
         type: Number
     },
+        picture: { type: String, default: "" },
 
 })
 

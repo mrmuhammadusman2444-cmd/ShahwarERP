@@ -8,6 +8,7 @@ const SupplierSchema = new mongoose.Schema({
     supplierDetails: { type: String },
     supplierCredits: { type: Number, default: 0 },
     previousCreditsBalance: { type: Number, default: 0 },
+        picture: { type: String, default: "" },
 }, { timestamps: true })
 
 const SupplierModel = mongoose.model('Supplier', SupplierSchema)

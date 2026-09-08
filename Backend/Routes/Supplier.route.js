@@ -3,10 +3,27 @@ import PurchaseModel from '../Models/Purchase/PurchaseModel.js'
 import SupplierPaymentModel from '../Models/Accounts/SupplierPaymentsModel.js'
 import SupplierModel from '../Models/Supplier/SupplierModel.js'
 import SupplierTallyModel from '../Models/Supplier Tally Ledger/SupplierTallyModel.js'
+import multer from 'multer'
+import path from 'path'
+
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, 'uploads/')
+    },
+    filename: function (req, file, cb) {
+        let ext = path.extname(file.originalname)
+        let unique = Date.now() + '-' + Math.round(Math.random() * 1e9)
+        cb(null, 'supplier-' + unique + ext)
+    }
+})
+const upload = multer({ storage: storage })
+
+
 const router = express.Router()
 
-router.post('/new/supplier', async function (req, res) {
+router.post('/new/supplier', upload.single('picture'), async function (req, res) {
     let data = req.body
+    let picturePath = req.file ? '/uploads/' + req.file.filename : ""
     let supplierObject = {
         supplierName: data.supplierName,
         email: data.email,
@@ -14,9 +31,9 @@ router.post('/new/supplier', async function (req, res) {
         phoneNo: data.phoneNo,
         supplierDetails: data.supplierDetails,
         supplierCredits: data.supplierCredits,
-        previousCreditsBalance: data.previousCreditsBalance
+        previousCreditsBalance: data.previousCreditsBalance,
+        picture: picturePath,
     }
-
     let createSupplier = await SupplierModel.create(supplierObject)
     res.json(createSupplier)
 })
@@ -38,13 +55,24 @@ router.delete('/delete/supplier/:id', async function (req, res) {
     }
 })
 
-router.put('/update/supplier/:id', async function (req, res) {
+router.put('/update/supplier/:id', upload.any(), async function (req, res) {
     try {
-        let updated = await SupplierModel.findByIdAndUpdate(
-            req.params.id,
-            req.body,
-            { new: true }
-        )
+        let updateFields = {
+            supplierName: req.body.supplierName,
+            email: req.body.email,
+            phoneNo: req.body.phoneNo,
+            address: req.body.address,
+            supplierDetails: req.body.supplierDetails,
+            supplierCredits: req.body.supplierCredits,
+            previousCreditsBalance: req.body.previousCreditsBalance,
+        }
+        let pictureFile = (req.files || []).find((f) => f.fieldname === 'picture')
+        if (pictureFile) {
+            updateFields.picture = '/uploads/' + pictureFile.filename
+        } else if (req.body.removePicture === 'true') {
+            updateFields.picture = ""
+        }
+        let updated = await SupplierModel.findByIdAndUpdate(req.params.id, updateFields, { new: true })
         res.json(updated)
     } catch (err) {
         res.status(500).json({ success: false, message: err.message })

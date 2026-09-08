@@ -7,12 +7,27 @@ import BankTransactionModel from '../Models/Bank/BankTransactionModel.js'
 import CashTransactionModel from '../Models/Cash Book/CashTransactionModel.js'
 import CustomerTallyModel from '../Models/CustomerTallyLedger/CustomerTallyModel.js'
 import ReturnModel from '../Models/Return/ReturnModel.js'
+import multer from 'multer'
+import path from 'path'
+
+
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, 'uploads/')
+    },
+    filename: function (req, file, cb) {
+        let ext = path.extname(file.originalname)
+        let unique = Date.now() + '-' + Math.round(Math.random() * 1e9)
+        cb(null, 'customer-' + unique + ext)
+    }
+})
+const upload = multer({ storage: storage })
 
 const router = express.Router()
 
-router.post('/newCustomer', async function (req, res) {
+router.post('/newCustomer', upload.single('picture'), async function (req, res) {
     let data = req.body
-    console.log(data)
+    let picturePath = req.file ? '/uploads/' + req.file.filename : ""
     let AddCustomerObject = {
         customerName: data.customerName,
         email: data.email,
@@ -22,7 +37,8 @@ router.post('/newCustomer', async function (req, res) {
         CustomerProductRate: data.CustomerProductRate,
         scheme: data.scheme,
         customerCredits: data.customerCredits,
-        PreviouseCreditsBalance: data.PreviouseCreditsBalance
+        PreviouseCreditsBalance: data.PreviouseCreditsBalance,
+        picture: picturePath,
     }
     let CreationCustomer = await CustomerModel.create(AddCustomerObject)
     res.json(CreationCustomer)
@@ -38,14 +54,35 @@ router.post('/delete/customer', verifyToken, checkPermission('customers', 'delet
     res.json({ message: 'Customer deleted', data: deleteCustomer })
 })
 
-router.post('/update/customer/:id', async function (req, res) {
+router.post('/update/customer/:id', upload.any(), async function (req, res) {
+    let updateFields = {
+        customerName: req.body.customerName,
+        email: req.body.email,
+        phoneNo: req.body.phoneNo,
+        wareHouse: req.body.wareHouse,
+        amountLimit: req.body.amountLimit,
+        CustomerProductRate: req.body.CustomerProductRate,
+        scheme: req.body.scheme,
+        customerCredits: req.body.customerCredits,
+        PreviouseCreditsBalance: req.body.PreviouseCreditsBalance,
+    }
+
+    let pictureFile = (req.files || []).find((f) => f.fieldname === 'picture')
+    if (pictureFile) {
+        updateFields.picture = '/uploads/' + pictureFile.filename
+    } else if (req.body.removePicture === 'true') {
+        updateFields.picture = ""
+    }
+
     let updateCustomer = await CustomerModel.findByIdAndUpdate(
         req.params.id,
-        req.body,
+        updateFields,
         { new: true }
     )
     res.json(updateCustomer)
 })
+
+
 router.get('/customer/ledger/:customerName', async function (req, res) {
     let customerName = req.params.customerName
 
