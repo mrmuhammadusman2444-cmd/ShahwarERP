@@ -22,10 +22,20 @@ const field = {
     show: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 300, damping: 26 } },
 };
 
-const EditCustomerPopup = ({ setShowEditPopup, editData, setEditData, handleUpdate }) => {
+const EditCustomerPopup = ({ setShowEditPopup, editData, setEditData, handleUpdate, editPicture, setEditPicture, editPreview, setEditPreview }) => {
     const limit = Number(editData.amountLimit) || 0
     const used = Number(editData.customerCredits) || 0
     const percent = limit > 0 ? Math.min((used / limit) * 100, 100) : 0
+
+    function handleEditPicture(e) {
+        let file = e.target.files[0]
+        if (file) {
+            setEditPicture(file)
+            setEditPreview(URL.createObjectURL(file))
+        }
+    }
+
+
     return (
         <motion.div
             variants={backdrop}
@@ -43,20 +53,39 @@ const EditCustomerPopup = ({ setShowEditPopup, editData, setEditData, handleUpda
 
                 <div className="relative flex items-start justify-between gap-4 border-b border-emerald-100 px-6 py-5">
                     <div className="flex items-center gap-4">
-                        <motion.div
-                            initial={{ scale: 0.7, rotate: -8, opacity: 0 }}
-                            animate={{ scale: 1, rotate: 0, opacity: 1 }}
-                            transition={{ type: "spring", stiffness: 300, damping: 18, delay: 0.1 }}
-                            className="flex h-12 w-12 items-center justify-center rounded-2xl bg-linear-to-br from-emerald-500 to-emerald-700 text-sm font-bold text-white shadow-lg shadow-emerald-200"
-                        >
-                            {(() => {
-                                const parts = (editData.customerName || "").trim().split(/\s+/)
-                                if (parts.length === 0 || parts[0] === "") return "?"
-                                const first = parts[0].charAt(0).toUpperCase()
-                                const last = parts.length > 1 ? parts[parts.length - 1].charAt(0).toUpperCase() : ""
-                                return first + last
-                            })()}
-                        </motion.div>
+                                                <div className="relative shrink-0">
+                            <motion.label
+                                initial={{ scale: 0.7, rotate: -8, opacity: 0 }}
+                                animate={{ scale: 1, rotate: 0, opacity: 1 }}
+                                transition={{ type: "spring", stiffness: 300, damping: 18, delay: 0.1 }}
+                                className="group relative flex h-12 w-12 items-center justify-center overflow-hidden rounded-2xl bg-linear-to-br from-emerald-500 to-emerald-700 text-sm font-bold text-white shadow-lg shadow-emerald-200 cursor-pointer"
+                            >
+                                {editPreview || editData.picture ? (
+                                    <img src={editPreview || `http://localhost:3000${editData.picture}`} alt="" className="h-full w-full object-cover" />
+                                ) : (
+                                    (() => {
+                                        const parts = (editData.customerName || "").trim().split(/\s+/)
+                                        if (parts.length === 0 || parts[0] === "") return "?"
+                                        const first = parts[0].charAt(0).toUpperCase()
+                                        const last = parts.length > 1 ? parts[parts.length - 1].charAt(0).toUpperCase() : ""
+                                        return first + last
+                                    })()
+                                )}
+                                <div className="absolute inset-0 flex items-center justify-center bg-emerald-900/60 opacity-0 transition-opacity group-hover:opacity-100">
+                                    <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 16.5V19a2 2 0 002 2h14a2 2 0 002-2v-2.5M16 8l-4-4m0 0L8 8m4-4v12" /></svg>
+                                </div>
+                                <input type="file" accept="image/*" onChange={handleEditPicture} className="hidden" />
+                            </motion.label>
+
+                            {(editPreview || editData.picture) && (
+                                <button
+                                    onClick={() => { setEditPicture(null); setEditPreview(""); setEditData({ ...editData, picture: "", removePicture: true }) }}
+                                    title="Remove photo"
+                                    className="absolute -right-1.5 -top-1.5 flex h-5 w-5 items-center justify-center rounded-full bg-rose-500 text-white shadow-md ring-2 ring-white transition-all hover:bg-rose-600 cursor-pointer">
+                                    <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M6 18L18 6M6 6l12 12" /></svg>
+                                </button>
+                            )}
+                        </div>
                         <div>
                             <h2 className="text-lg font-bold tracking-tight text-gray-800">
                                 {editData.customerName || "Edit customer"}
@@ -171,7 +200,7 @@ const EditCustomerPopup = ({ setShowEditPopup, editData, setEditData, handleUpda
                                         <select
                                             value={editData.CustomerProductRate}
                                             onChange={(e) => setEditData({ ...editData, CustomerProductRate: e.target.value })}
-                                            defaultValue=""
+
                                             className="w-full cursor-pointer appearance-none rounded-xl border border-emerald-100 bg-emerald-50/70 py-2.5 pl-10 pr-3 text-sm text-gray-800 transition-all duration-200 focus:border-emerald-400 focus:bg-white focus:shadow-lg focus:shadow-emerald-100/70 focus:outline-none"
                                         >
                                             <option value="">Select rate type</option>

@@ -3,7 +3,16 @@ import { useState } from "react";
 import axios from 'axios'
 
 const NewCustomer = () => {
+  const [picture, setPicture] = useState(null)
+  const [preview, setPreview] = useState("")
 
+  function handlePicture(e) {
+    let file = e.target.files[0]
+    if (file) {
+      setPicture(file)
+      setPreview(URL.createObjectURL(file))
+    }
+  }
   let [newCustomer, setNewCustomer] = useState({
     customerName: '',
     email: '',
@@ -16,9 +25,27 @@ const NewCustomer = () => {
     PreviouseCreditsBalance: ''
   })
   async function handleAddCustomer() {
-    let res = await axios.post('http://localhost:3000/newCustomer', newCustomer)
-    console.log(res.data)
+    try {
+      let formData = new FormData()
+      formData.append('customerName', newCustomer.customerName || '')
+      formData.append('email', newCustomer.email || '')
+      formData.append('phoneNo', newCustomer.phoneNo || '')
+      formData.append('wareHouse', newCustomer.wareHouse || '')
+      formData.append('amountLimit', newCustomer.amountLimit || '')
+      formData.append('CustomerProductRate', newCustomer.CustomerProductRate || '')
+      formData.append('scheme', newCustomer.scheme || '')
+      formData.append('customerCredits', newCustomer.customerCredits || '')
+      formData.append('PreviouseCreditsBalance', newCustomer.PreviouseCreditsBalance || '')
+      if (picture) formData.append('picture', picture)
 
+      let res = await axios.post('http://localhost:3000/newCustomer', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+      })
+      console.log(res.data)
+      navigate('/manageCustomer')
+    } catch (err) {
+      console.log("CUSTOMER SAVE FAILED:", err.response?.data || err.message)
+    }
   }
 
 
@@ -196,24 +223,28 @@ const NewCustomer = () => {
 
           <div className="bg-white border border-emerald-100 rounded-2xl shadow-sm p-4 flex flex-col items-center gap-3">
             <label className="group relative w-20 h-20 rounded-2xl bg-linear-to-br from-emerald-100 to-emerald-200 flex items-center justify-center overflow-hidden cursor-pointer">
-              <svg className="w-10 h-10 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-              </svg>
+              {preview ? (
+                <img src={preview} alt="preview" className="h-full w-full object-cover" />
+              ) : (
+                <svg className="w-10 h-10 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                </svg>
+              )}
               <div className="absolute inset-0 flex flex-col items-center justify-center gap-1 bg-emerald-600/90 opacity-0 transition-opacity duration-200 group-hover:opacity-100">
                 <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 16.5V19a2 2 0 002 2h14a2 2 0 002-2v-2.5M16 8l-4-4m0 0L8 8m4-4v12" />
                 </svg>
                 <span className="text-[9px] font-bold text-white">Add Photo</span>
               </div>
-              <input type="file" accept="image/*" className="hidden" />
+              <input type="file" accept="image/*" onChange={handlePicture} className="hidden" />
             </label>
             <div className="text-center">
               <p className="text-gray-700 text-sm font-semibold">New Customer</p>
               <p className="text-gray-400 text-xs mt-0.5">Fill in details on the left</p>
             </div>
 
-                        <div className="w-full border-t border-emerald-50 pt-3 flex flex-col gap-2">
-                            {[
+            <div className="w-full border-t border-emerald-50 pt-3 flex flex-col gap-2">
+              {[
                 { label: "Rate Type", value: newCustomer.CustomerProductRate || "Not set" },
                 { label: "Scheme", value: newCustomer.scheme || "Not set" },
                 { label: "Warehouse", value: newCustomer.wareHouse || "Not set" },

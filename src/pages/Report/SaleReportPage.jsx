@@ -3,14 +3,14 @@ import Sidebar from '../../components/Sidebar.jsx'
 import SaleReport from '../../components/Report/SaleReport.jsx'
 const SaleReportPage = () => {
   return (
-     <div className='flex'>
+    <div className='flex h-screen overflow-hidden'>
 
-            <Sidebar />
-            <div className='flex-1'>
-                <SaleReport />
-            </div>
+      <Sidebar />
+      <div className='flex-1 overflow-y-auto'>
+        <SaleReport />
+      </div>
 
-        </div>
+    </div>
   )
 }
 
