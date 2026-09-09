@@ -40,39 +40,35 @@ const CustomerLedger = () => {
     initialState: { pagination: { pageSize: 5 } },
   })
 
-  function handleSearch() {
-    if (!fromDate && !toDate) {
-      setFilteredEntries(entries)
-      return
-    }
-    let filtered = entries.filter((entry) => {
-      if (!entry.date) return false
-      let eDate = new Date(entry.date)
-      let from = fromDate ? new Date(fromDate) : null
-      let to = toDate ? new Date(toDate) : null
-      if (to) to.setHours(23, 59, 59, 999)
-      if (from && eDate < from) return false
-      if (to && eDate > to) return false
-      return true
-    })
-    setFilteredEntries(filtered)
-  }
-
-  async function loadLedger(customerName) {
-    if (!customerName) return
+  async function handleSearch() {
     try {
-      let res = await axios.get(`http://localhost:3000/customer/ledger/${customerName}`)
-      console.log("LEDGER DATA:", res.data)
-      console.log("ENTRIES:", res.data.entries)
-      console.log("FIRST ENTRY:", JSON.stringify(res.data.entries[0], null, 2))
-      setEntries(res.data.entries)
-      setFilteredEntries(res.data.entries)
+      let res = await axios.get(`http://localhost:3000/customer/ledger/${selectedCustomer}`)
+      let allEntries = res.data.entries || []
+      setEntries(allEntries)
       setClosingBalance(res.data.closingBalance)
       setOpeningBalance(res.data.openingBalance)
+
+      if (!fromDate && !toDate) {
+        setFilteredEntries(allEntries)
+      } else {
+        let filtered = allEntries.filter((entry) => {
+          if (!entry.date) return false
+          let eDate = new Date(entry.date)
+          let from = fromDate ? new Date(fromDate) : null
+          let to = toDate ? new Date(toDate) : null
+          if (to) to.setHours(23, 59, 59, 999)
+          if (from && eDate < from) return false
+          if (to && eDate > to) return false
+          return true
+        })
+        setFilteredEntries(filtered)
+      }
     } catch (err) {
       console.log("LEDGER LOAD FAILED:", err.response?.data || err.message)
     }
   }
+
+  
 
   function handlePrint() {
     let rows = filteredEntries.map((e, i) => `
@@ -241,7 +237,7 @@ const CustomerLedger = () => {
             <label className="text-gray-500 text-[10.5px] font-bold uppercase tracking-wide block mb-1.5">
               Customer Name <span className="text-red-400">*</span>
             </label>
-            <SelectCustomer value={selectedCustomer} onChange={(name) => { setSelectedCustomer(name); loadLedger(name) }} />
+            <SelectCustomer value={selectedCustomer} onChange={(name) => setSelectedCustomer(name)} />
           </div>
 
           <div className="flex gap-3 w-full sm:w-auto">
@@ -478,7 +474,7 @@ const CustomerLedger = () => {
           </table>
         </div>
 
-        
+
 
         {table.getRowModel().rows.length > 0 && (
           <div className="flex items-center justify-between px-3 sm:px-5 py-3 border-t border-slate-100 text-[11.5px] text-slate-400 flex-wrap gap-2.5">
