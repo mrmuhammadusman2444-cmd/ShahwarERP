@@ -150,6 +150,7 @@ const Login = () => {
               <label className="block text-[12px] font-medium text-slate-500 mb-1.5">Email address</label>
               <input
                 onChange={(e) => setLoginForm({ ...LoginForm, email: e.target.value })}
+                onKeyDown={(e) => { if (e.key === 'Enter') handleLogin() }}
                 type="email"
                 placeholder="info@shahwarfoods.com"
                 className="w-full h-9.5 border border-slate-200 rounded-lg px-3 text-[13px] text-slate-900 bg-slate-50 outline-none focus:border-emerald-300 focus:bg-white transition-colors"
@@ -169,6 +170,7 @@ const Login = () => {
               </div>
               <input
                 onChange={(e) => setLoginForm({ ...LoginForm, password: e.target.value })}
+                onKeyDown={(e) => { if (e.key === 'Enter') handleLogin() }}
                 type="password"
                 placeholder="••••••••"
                 className="w-full h-9.5 border border-slate-200 rounded-lg px-3 text-[13px] text-slate-900 bg-slate-50 outline-none focus:border-emerald-300 focus:bg-white transition-colors"

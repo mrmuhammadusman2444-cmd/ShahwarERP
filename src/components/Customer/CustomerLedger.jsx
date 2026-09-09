@@ -381,7 +381,7 @@ const CustomerLedger = () => {
                     return (
                       <tr key={idx} className={`group relative transition-colors ${entry.type === "tally" ? 'bg-emerald-50/60 border-y border-emerald-200' : 'border-b border-gray-50 hover:bg-emerald-50/50'}`}>
 
-                                                <td className={`px-2 sm:px-4 py-3.5 text-left whitespace-nowrap ${entry.type === "tally" ? 'border-l-4 border-emerald-500' : ''}`}>
+                        <td className={`px-2 sm:px-4 py-3.5 text-left whitespace-nowrap ${entry.type === "tally" ? 'border-l-4 border-emerald-500' : ''}`}>
                           <span className="inline-flex items-center gap-2">
                             <span className="flex items-center justify-center w-7 h-7 rounded-lg bg-gray-50 text-gray-400 group-hover:bg-emerald-50 group-hover:text-emerald-500 transition-colors shrink-0">
                               <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
@@ -392,7 +392,7 @@ const CustomerLedger = () => {
                           </span>
                         </td>
 
-                                                <td className={`px-2 sm:px-4 py-3.5 text-left ${entry.type === "tally" ? 'border-l-4 border-emerald-500' : ''}`}>
+                        <td className={`px-2 sm:px-4 py-3.5 text-left ${entry.type === "tally" ? 'border-l-4 border-emerald-500' : ''}`}>
                           {entry.type === "tally" ? (
                             <span className="inline-flex items-center gap-2">
                               <span className="inline-flex items-center gap-1 rounded bg-emerald-100 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wide text-emerald-700 ring-1 ring-emerald-200">
@@ -478,15 +478,7 @@ const CustomerLedger = () => {
           </table>
         </div>
 
-        {/* Footer */}
-        <div className="px-3 sm:px-5 py-3 border-t border-slate-100 bg-slate-50/40 flex items-center justify-between flex-wrap gap-2">
-          <p className="text-xs text-gray-400">
-            Total Entries: <span className="font-semibold text-gray-600">{filteredEntries.length}</span>
-          </p>
-          <p className="text-xs text-gray-500 font-semibold">
-            Final Balance: <span className="text-emerald-700">Rs. {closingBalance.toLocaleString()}</span>
-          </p>
-        </div>
+        
 
         {table.getRowModel().rows.length > 0 && (
           <div className="flex items-center justify-between px-3 sm:px-5 py-3 border-t border-slate-100 text-[11.5px] text-slate-400 flex-wrap gap-2.5">
