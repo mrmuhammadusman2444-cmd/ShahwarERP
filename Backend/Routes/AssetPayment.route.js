@@ -97,9 +97,10 @@ router.post('/assetPayment', async function (req, res) {
 router.get('/asset/ledger/:assetName', async function (req, res) {
     try {
         let assetName = req.params.assetName
-
-        let payments = await AssetPaymentModel.find({ assetName: assetName }).sort({ date: 1 })
-        console.log(">>> ASSET PAYMENTS:", payments.map(p => ({ date: p.date, amount: p.amount })))
+        let payments = await AssetPaymentModel.find({
+            assetName: { $regex: `^${assetName.trim()}\\s*$`, $options: 'i' }
+        }).sort({ date: 1 })
+        let all = await AssetPaymentModel.find()
 
         let combined = payments.map((p) => ({
             date: p.date,

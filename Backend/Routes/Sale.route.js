@@ -177,5 +177,49 @@ router.get('/sale-report/customer', async function (req, res) {
     }
 })
 
+router.get('/product-wise-report', async function (req, res) {
+    try {
+        let query = { status: "approved" }
+        if (req.query.from && req.query.to) {
+            query.Date = { $gte: new Date(req.query.from), $lte: new Date(req.query.to + "T23:59:59") }
+        }
+
+        let sales = await SaleModel.find(query).sort({ Date: 1 })
+
+        let rows = []
+        let totalCarton = 0
+        let totalAmount = 0
+
+        sales.forEach((sale) => {
+            (sale.items || []).forEach((item) => {
+                if (req.query.productName && item.name !== req.query.productName) return
+                let carton = Number(item.carton) || 0
+                let amount = Number(item.total) || 0
+                rows.push({
+                    date: sale.Date,
+                    invoiceNo: sale.invoiceNo,
+                    productName: item.name,
+                    carton: carton,
+                    amount: amount,
+                })
+                totalCarton += carton
+                totalAmount += amount
+            })
+        })
+
+        res.json({ rows, totalCarton, totalAmount })
+    } catch (err) {
+        res.status(500).json({ message: err.message })
+    }
+})
+
+router.get('/sale/by-invoice/:invoiceNo', async function (req, res) {
+    try {
+        let sale = await SaleModel.findOne({ invoiceNo: req.params.invoiceNo })
+        res.json(sale)
+    } catch (err) {
+        res.status(500).json({ message: err.message })
+    }
+})
 
 export default router

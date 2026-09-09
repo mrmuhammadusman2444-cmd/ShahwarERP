@@ -87,9 +87,8 @@ router.get('/payment-approval/count', async function (req, res) {
             status: "pending",
             voucherNo: { $not: /^AS-/ }
         })
-        let bank = await BankTransactionModel.countDocuments({ status: "pending" })
         let asset = await AssetPaymentModel.countDocuments({ status: "pending" })
-        res.json({ count: supplierCustomer + bank + asset })
+        res.json({ count: supplierCustomer + asset })
     } catch (err) {
         res.status(500).json({ message: err.message })
     }

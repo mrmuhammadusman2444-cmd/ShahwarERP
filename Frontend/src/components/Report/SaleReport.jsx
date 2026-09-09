@@ -167,8 +167,8 @@ const SaleReport = () => {
                         <ClipboardList className="h-6 w-6 text-white" />
                     </div>
                     <div>
-                        <h1 className="text-xl font-bold leading-tight text-slate-800">Sales Report</h1>
-                        <p className="text-[11px] font-medium tracking-wide text-slate-400">Total Sales Report</p>
+                        <h1 className="text-xl font-bold leading-tight text-slate-800">Customer Wise Sales Report</h1>
+                        <p className="text-[11px] font-medium tracking-wide text-slate-400">Total Sales Report Customer wise</p>
                     </div>
                 </div>
 

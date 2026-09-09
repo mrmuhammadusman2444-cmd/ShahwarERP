@@ -6,9 +6,9 @@ import SaleReportProductWise from '../../components/Report/SaleReportProductWise
 
 const SaleReportProductWisePage = () => {
     return (
-        <div className='flex'>
+        <div className='flex h-screen overflow-hidden'>
             <Sidebar />
-            <div className='flex-1'>
+            <div className='flex-1 overflow-y-auto'>
                 <SaleReportProductWise />
             </div>
 

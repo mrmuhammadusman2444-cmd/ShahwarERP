@@ -1093,15 +1093,15 @@ const SideMenus = ({ collapsed }) => {
                     >
                         {canSub("report", "todayCustomerReport") && subMatches('Today customer Report') && (
                             <div onClick={()=>{navigate('/today/customer/report')}} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
-                                Today customer Report
+                                Reciepts Update
                             </div>
                         )}
-                        {canSub("report", "userWiseReceiptReport") && subMatches('User Wise Reciept Report') && (
+                        {false &&  canSub("report", "userWiseReceiptReport") && subMatches('User Wise Reciept Report') && (
                             <div  onClick={()=>{navigate('/user/wise/report')}} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                                 User Wise Reciept Report
                             </div>
                         )}
-                        {canSub("report", "supplierReceipt") && subMatches('Supplier Reciept') && (
+                        {false &&  canSub("report", "supplierReceipt") && subMatches('Supplier Reciept') && (
                             <div onClick={()=>{navigate('/supplier/reciept')}} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                                 Supplier Reciept
                             </div>
