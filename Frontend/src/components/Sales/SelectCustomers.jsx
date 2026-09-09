@@ -52,7 +52,18 @@ const CustomerDropdown = ({ value, onChange }) => {
                 onClick={() => setOpen((o) => !o)}
                 className="flex items-center justify-between gap-2 w-full cursor-pointer bg-emerald-50 border border-emerald-100 hover:border-emerald-300 rounded-xl px-4 py-2.5 text-gray-600 text-sm focus:outline-none focus:border-emerald-400 transition-all"
             >
-                <span className="truncate">{selected ? selected.customerName : "All customers"}</span>
+                                <span className="flex-1 truncate text-left">{selected ? selected.customerName : "All customers"}</span>
+                {value && (
+                    <span
+                        role="button"
+                        onClick={(e) => { e.stopPropagation(); onChange?.("") }}
+                        className="flex h-4 w-4 shrink-0 items-center justify-center rounded-full text-gray-400 hover:bg-rose-50 hover:text-rose-500"
+                    >
+                        <svg className="w-2.5 h-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </span>
+                )}
                 <svg
                     className={`w-3.5 h-3.5 text-emerald-400 shrink-0 transition-transform duration-200 ${open ? "rotate-180" : ""}`}
                     fill="none" stroke="currentColor" viewBox="0 0 24 24"

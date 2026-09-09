@@ -198,5 +198,111 @@ router.put('/bank-transaction/update/:id', async function (req, res) {
     }
 })
 
+router.get('/bank-transactions/all', async function (req, res) {
+    let nonBankPayments = await SupplierPaymentsModel.find({
+        $or: [
+            { fromCustomer: { $exists: true, $ne: "" } },
+            { fromWarehouse: { $exists: true, $ne: "" } },
+        ]
+    })
+    let excludeVouchers = nonBankPayments.map((p) => p.voucherNo)
+
+    let list = await BankTransactionModel.find({
+        voucherNo: { $nin: excludeVouchers }
+    }).sort({ date: -1 })
+    res.json(list)
+})
+
+router.get('/customer-transactions/all', async function (req, res) {
+    let list = await SupplierPaymentsModel.find({
+        fromCustomer: { $exists: true, $ne: "" }
+    }).sort({ date: -1 })
+    res.json(list)
+})
+
+router.put('/customer-transaction/update/:id', async function (req, res) {
+    try {
+        let amount = Number(req.body.totalAmount) || 0
+        let pay = await SupplierPaymentsModel.findById(req.params.id)
+        if (!pay) return res.status(404).json({ message: "Not found" })
+
+        let updateObj = {
+            date: req.body.date,
+            remark: req.body.remark,
+            totalAmount: amount,
+        }
+        if (pay.allocations && pay.allocations.length > 0) {
+            updateObj.allocations = pay.allocations.map((a) => ({ supplierName: a.supplierName, amount: amount }))
+        }
+        await SupplierPaymentsModel.findByIdAndUpdate(req.params.id, { $set: updateObj })
+
+        // linked bank/cash bhi update (agar wo transaction bank/cash me gaya)
+        if (pay.voucherNo) {
+            let bankEntries = await BankTransactionModel.find({ voucherNo: pay.voucherNo })
+            for (let bt of bankEntries) {
+                let bankObj = { date: req.body.date, description: req.body.remark }
+                if (Number(bt.debit) > 0) bankObj.debit = amount
+                if (Number(bt.credit) > 0) bankObj.credit = amount
+                await BankTransactionModel.findByIdAndUpdate(bt._id, { $set: bankObj })
+            }
+            let cashEntries = await CashTransactionModel.find({ voucherNo: pay.voucherNo })
+            for (let ct of cashEntries) {
+                let cashObj = { date: req.body.date, description: req.body.remark }
+                if (Number(ct.debit) > 0) cashObj.debit = amount
+                if (Number(ct.credit) > 0) cashObj.credit = amount
+                await CashTransactionModel.findByIdAndUpdate(ct._id, { $set: cashObj })
+            }
+        }
+        res.json({ success: true })
+    } catch (err) {
+        res.status(500).json({ success: false, message: err.message })
+    }
+})
+
+router.put('/warehouse-transaction/update/:id', async function (req, res) {
+    try {
+        let amount = Number(req.body.totalAmount) || 0
+        let pay = await SupplierPaymentsModel.findById(req.params.id)
+        if (!pay) return res.status(404).json({ message: "Not found" })
+
+        let updateObj = {
+            date: req.body.date,
+            remark: req.body.remark,
+            totalAmount: amount,
+        }
+        if (pay.allocations && pay.allocations.length > 0) {
+            updateObj.allocations = pay.allocations.map((a) => ({ supplierName: a.supplierName, amount: amount }))
+        }
+        await SupplierPaymentsModel.findByIdAndUpdate(req.params.id, { $set: updateObj })
+
+        if (pay.voucherNo) {
+            let bankEntries = await BankTransactionModel.find({ voucherNo: pay.voucherNo })
+            for (let bt of bankEntries) {
+                let bankObj = { date: req.body.date, description: req.body.remark }
+                if (Number(bt.debit) > 0) bankObj.debit = amount
+                if (Number(bt.credit) > 0) bankObj.credit = amount
+                await BankTransactionModel.findByIdAndUpdate(bt._id, { $set: bankObj })
+            }
+            let cashEntries = await CashTransactionModel.find({ voucherNo: pay.voucherNo })
+            for (let ct of cashEntries) {
+                let cashObj = { date: req.body.date, description: req.body.remark }
+                if (Number(ct.debit) > 0) cashObj.debit = amount
+                if (Number(ct.credit) > 0) cashObj.credit = amount
+                await CashTransactionModel.findByIdAndUpdate(ct._id, { $set: cashObj })
+            }
+        }
+        res.json({ success: true })
+    } catch (err) {
+        res.status(500).json({ success: false, message: err.message })
+    }
+})
+
+router.get('/warehouse-transactions/all', async function (req, res) {
+    let list = await SupplierPaymentsModel.find({
+        fromWarehouse: { $exists: true, $ne: "" }
+    }).sort({ date: -1 })
+    res.json(list)
+})
+
 
 export default router

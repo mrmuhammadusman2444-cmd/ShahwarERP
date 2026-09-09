@@ -29,6 +29,7 @@ const SupplierPaymentSchema = new mongoose.Schema({
         enum: ["pending", "approved", "rejected"],
         default: "pending"
     },
+    fromWarehouse: { type: String, default: "" },
     rejectReason: { type: String, default: "" },
     fromType: { type: String, default: "" },
     toType: { type: String, default: "" },

@@ -188,6 +188,7 @@ export default function FundTransfer() {
     const [status, setStatus] = useState('idle')
     const [bankList, setBankList] = useState([])
     const [toOther, setToOther] = useState('')
+    const [fromWarehouse, setFromWarehouse] = useState("")
 
 
     useEffect(() => {
@@ -423,7 +424,7 @@ export default function FundTransfer() {
             }
         }
 
-               // ── Customer → Cash ──
+        // ── Customer → Cash ──
         else if (fromType === 'customer' && toType === 'cash') {
             if (!fromCustomer || !amount) {
                 alert("Customer aur Amount zaroori hai")
@@ -447,7 +448,52 @@ export default function FundTransfer() {
                 setStatus('idle')
             }
         }
+        else if (fromType === 'warehouse' && toType === 'bank') {
+            if (!fromWarehouse || !toBank || !amount) { alert("Warehouse, Bank aur Amount zaroori hai"); return }
+            setStatus('saving')
+            try {
+                await axios.post('http://localhost:3000/add/fund-transfer', {
+                    date, fromType, toType,
+                    fromWarehouse: fromWarehouse,
+                    bankName: toBank, bankId: bankId,
+                    amount, details,
+                })
+                setStatus('saved')
+                window.dispatchEvent(new Event('approval-changed'))
+                setTimeout(() => setStatus('idle'), 2000)
+            } catch (err) { console.log("SAVE FAILED:", err.response?.data || err.message); setStatus('idle') }
+        }
 
+        else if (fromType === 'warehouse' && toType === 'cash') {
+            if (!fromWarehouse || !amount) { alert("Warehouse aur Amount zaroori hai"); return }
+            setStatus('saving')
+            try {
+                await axios.post('http://localhost:3000/add/fund-transfer', {
+                    date, fromType, toType,
+                    fromWarehouse: fromWarehouse,
+                    amount, details,
+                })
+                setStatus('saved')
+                window.dispatchEvent(new Event('approval-changed'))
+                setTimeout(() => setStatus('idle'), 2000)
+            } catch (err) { console.log("SAVE FAILED:", err.response?.data || err.message); setStatus('idle') }
+        }
+
+        else if (fromType === 'warehouse' && toType === 'supplier') {
+            if (!fromWarehouse || !toSupplier || !amount) { alert("Warehouse, Supplier aur Amount zaroori hai"); return }
+            setStatus('saving')
+            try {
+                await axios.post('http://localhost:3000/add/fund-transfer', {
+                    date, fromType, toType,
+                    fromWarehouse: fromWarehouse,
+                    toSupplier: toSupplier,
+                    amount, details,
+                })
+                setStatus('saved')
+                window.dispatchEvent(new Event('approval-changed'))
+                setTimeout(() => setStatus('idle'), 2000)
+            } catch (err) { console.log("SAVE FAILED:", err.response?.data || err.message); setStatus('idle') }
+        }
 
         else {
         }
@@ -513,6 +559,16 @@ export default function FundTransfer() {
                             {fromType === 'bank' && (
                                 <div className="mt-2">
                                     <BankDropDown value={fromBank} onChange={(bankName) => setFromBank(bankName)} />
+                                </div>
+                            )}
+                            {fromType === 'warehouse' && (
+                                <div className="mt-2">
+                                    <input
+                                        value={fromWarehouse}
+                                        onChange={(e) => setFromWarehouse(e.target.value)}
+                                        placeholder="Warehouse name..."
+                                        className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3.5 text-sm font-medium text-slate-700 placeholder-slate-400 transition-all focus:border-emerald-400 focus:ring-4 focus:ring-emerald-50 focus:outline-none"
+                                    />
                                 </div>
                             )}
                         </div>

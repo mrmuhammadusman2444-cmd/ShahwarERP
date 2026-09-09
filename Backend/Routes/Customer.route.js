@@ -192,6 +192,7 @@ router.post('/add/fund-transfer', async function (req, res) {
             toType: data.toType || "",
             toOther: data.toOther || "",
             fromCustomer: data.fromCustomer || "",
+            fromWarehouse: data.fromWarehouse || "",
             bankName: data.bankName || "",
             totalAmount: data.amount,
             voucherNo: voucherNo,
@@ -332,6 +333,17 @@ router.post('/add/fund-transfer', async function (req, res) {
                 description: `Received from ${data.fromCustomer || "Customer"}${data.details ? " - " + data.details : ""}`,
                 voucherNo: voucherNo,
                 debit: Number(data.amount) || 0,   // cash aaya
+                credit: 0,
+                source: "fund-transfer",
+                status: "pending",
+            })
+        }
+        if (data.fromType === 'warehouse' && data.toType === 'cash') {
+            await CashTransactionModel.create({
+                date: data.date,
+                description: `Received from ${data.fromWarehouse || "Warehouse"}${data.details ? " - " + data.details : ""}`,
+                voucherNo: voucherNo,
+                debit: Number(data.amount) || 0,
                 credit: 0,
                 source: "fund-transfer",
                 status: "pending",
