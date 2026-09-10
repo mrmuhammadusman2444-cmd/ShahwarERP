@@ -83,8 +83,7 @@ router.get('/supplier/ledger/:supplierName', async function (req, res) {
 
 
     let supplier = await SupplierModel.findOne({ supplierName: supplierName })
-    let openingBalance = Number(supplier?.previousCreditsBalance) || 0
-
+        let openingBalance = Number(supplier?.previousCreditsBalance) || 0
 
     let purchases = await PurchaseModel.find({
         supplierName: supplierName,
@@ -161,6 +160,7 @@ router.get('/supplier/ledger/:supplierName', async function (req, res) {
         runningBalance = runningBalance + item.credit - item.debit
         return { ...item, balance: runningBalance }
     })
+    console.log(">>> ENTRIES:", entries.map(e => ({ desc: e.description?.slice(0,20), balance: e.balance })))
 
     res.json({
         openingBalance: openingBalance,

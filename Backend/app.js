@@ -27,6 +27,7 @@ import DistributorOrder from './Routes/DistributorOrder.Route.js'
 import SupplierTallyRoute from './Routes/SupplierTally.route.js'
 import CustomerTallyRoute from './Routes/CustomerTally.route.js'
 import AssetPaymentRoute from './Routes/AssetPayment.route.js'
+import ItemMasterRoute from './Routes/ItemMaster.route.js'
 
 DbConnection()
 
@@ -60,6 +61,7 @@ app.use('/', DistributorOrder)
 app.use('/', SupplierTallyRoute)
 app.use('/', CustomerTallyRoute)
 app.use('/', AssetPaymentRoute)
+app.use('/', ItemMasterRoute)
 app.use('/uploads', express.static('uploads'))
 app.listen(3000, () => {
     console.log('Server is running on port 3000');

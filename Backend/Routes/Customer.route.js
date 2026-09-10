@@ -214,6 +214,8 @@ router.post('/add/fund-transfer', async function (req, res) {
         let created = await SupplierPaymentsModel.create(transferObject)
 
         let bankCreated = null
+
+        // ── Bank → Supplier: bank se supplier ko payment ──
         if (data.bankName && data.fromType === 'bank' && data.toSupplier) {
             let bankEntry = {
                 bankId: data.bankId || "",
@@ -227,12 +229,19 @@ router.post('/add/fund-transfer', async function (req, res) {
                 status: "pending",
             }
             bankCreated = await BankTransactionModel.create(bankEntry)
-        } else if (data.bankName && !data.toSupplier) {
+
+        // ── Customer → Bank: customer ne bank mein payment di ──
+        } else if (
+            data.bankName &&
+            !data.toSupplier &&
+            data.fromType === 'customer' &&
+            data.toType === 'bank'
+        ) {
             let bankEntry = {
                 bankId: data.bankId || "",
                 bankName: data.bankName || "",
                 date: data.date,
-                description: `Received from ${data.fromCustomer || "Customer"}`,
+                description: `Received from ${data.fromCustomer || "Customer"}${data.details ? " - " + data.details : ""}`,
                 voucherNo: voucherNo,
                 debit: Number(data.amount) || 0,
                 credit: 0,
@@ -242,7 +251,7 @@ router.post('/add/fund-transfer', async function (req, res) {
             bankCreated = await BankTransactionModel.create(bankEntry)
         }
 
-
+        // ── Bank → Cash ──
         if (data.fromType === 'bank' && data.toType === 'cash') {
             await BankTransactionModel.create({
                 bankId: data.bankId || "",
@@ -266,6 +275,7 @@ router.post('/add/fund-transfer', async function (req, res) {
             })
         }
 
+        // ── Cash → Bank ──
         if (data.fromType === 'cash' && data.toType === 'bank') {
             await CashTransactionModel.create({
                 date: data.date,
@@ -289,6 +299,7 @@ router.post('/add/fund-transfer', async function (req, res) {
             })
         }
 
+        // ── Bank → Bank ──
         if (data.fromType === 'bank' && data.toType === 'bank') {
             await BankTransactionModel.create({
                 bankId: data.fromBankId || "",
@@ -314,6 +325,7 @@ router.post('/add/fund-transfer', async function (req, res) {
             })
         }
 
+        // ── Cash → Supplier ──
         if (data.fromType === 'cash' && data.toSupplier) {
             await CashTransactionModel.create({
                 date: data.date,
@@ -326,18 +338,20 @@ router.post('/add/fund-transfer', async function (req, res) {
             })
         }
 
-        // ── Customer → Cash: cash aaya (Cash Debit) ──
+        // ── Customer → Cash ──
         if (data.fromType === 'customer' && data.toType === 'cash') {
             await CashTransactionModel.create({
                 date: data.date,
                 description: `Received from ${data.fromCustomer || "Customer"}${data.details ? " - " + data.details : ""}`,
                 voucherNo: voucherNo,
-                debit: Number(data.amount) || 0,   // cash aaya
+                debit: Number(data.amount) || 0,
                 credit: 0,
                 source: "fund-transfer",
                 status: "pending",
             })
         }
+
+        // ── Warehouse → Cash ──
         if (data.fromType === 'warehouse' && data.toType === 'cash') {
             await CashTransactionModel.create({
                 date: data.date,
@@ -354,7 +368,6 @@ router.post('/add/fund-transfer', async function (req, res) {
     } catch (err) {
         res.status(500).json({ success: false, message: err.message })
     }
-
 })
 
 

@@ -75,16 +75,14 @@ import ManageEmployeeSalaryPage from './pages/Employee/ManageEmployeeSalaryPage.
 import AddAssetPage from './pages/Assets/AddAssetPage.jsx'
 import ManageAssetsPage from './pages/Assets/ManageAssetsPage.jsx'
 import AssetsLedgerPage from './pages/Assets/AssetsLedgerPage.jsx'
-//Stock
-import StockPage from './pages/Stock/StockPage.jsx'
-import RawMaterialStockPage from './pages/Stock/RawMaterialStockPage.jsx'
-import ReelStockPage from './pages/Stock/ReelStockPage.jsx'
-import BeverageStockPage from './pages/Stock/BeverageStockPage.jsx'
-import TeaStockPage from './pages/Stock/TeaStockPage.jsx'
-import RawPackingStockPage from './pages/Stock/RawPackingStockPage.jsx'
-import OutOfStockPage from './pages/Stock/OutOfStockPage.jsx'
-import AssignUserToStockPage from './pages/Stock/AssignUserToStockPage.jsx'
-import Preloader from './components/Preloader.jsx'
+
+//Production
+import NewItemPage from './pages/Production/NewItemPage.jsx'
+import ProductionOrdersPage from './pages/Production/ProductionOrdersPage.jsx'
+import BillOfMaterialsPage from './pages/Production/BillOfMaterialsPage.jsx'
+import LotTrackingPage from './pages/Production/LotTrackingPage.jsx'
+import StockLedgerPage from './pages/Production/StockLedgerPage.jsx'
+import ProductionReportsPage from './pages/Production/ProductionReportsPage.jsx'
 //Accounts
 import SupplierPaymentsPage from './pages/Accounts/SupplierPaymentsPage.jsx'
 import TransactionPage from './pages/Accounts/TransactionPage.jsx'
@@ -202,15 +200,15 @@ const App = () => {
         <Route path='/assets' element={<AddAssetPage />} />
         <Route path='/manage/assets' element={<ManageAssetsPage />} />
         <Route path='/assets/ledger' element={<AssetsLedgerPage />} />
-        //Stock
-        <Route path='/finish/stock' element={<StockPage />} />
-        <Route path='/raw/material/stock' element={<RawMaterialStockPage />} />
-        <Route path='/reel/stock' element={<ReelStockPage />} />
-        <Route path='/Beverage/stock' element={<BeverageStockPage />} />
-        <Route path='/tea/stock' element={<TeaStockPage />} />
-        <Route path='/raw/packing/stock' element={<RawPackingStockPage />} />
-        <Route path='/out/of/stock' element={<OutOfStockPage />} />
-        <Route path='/assign/user/stock' element={<AssignUserToStockPage />} />
+        
+        //Production
+        <Route path='/new/item' element={<NewItemPage />} />
+        <Route path='/production/orders' element={<ProductionOrdersPage />} />
+        <Route path='/lot/tracking' element={<LotTrackingPage />} />
+        <Route path='/bill/of/materials' element={<BillOfMaterialsPage />} />
+        <Route path='/stock/ledger' element={<StockLedgerPage />} />
+        <Route path='/production/reports' element={<ProductionReportsPage />} />
+
         //Accounts
         <Route path='/supplier/payments' element={<SupplierPaymentsPage />} />
         <Route path='/make/transaction' element={<TransactionPage />} />

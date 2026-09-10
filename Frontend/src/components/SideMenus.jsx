@@ -766,18 +766,18 @@ const SideMenus = ({ collapsed }) => {
                     </div>
                 )}
 
-                {can("warehouseFinishProduct", "view") && menuMatches('Warehouse Finish Product', ['New Finish Product', 'Manage Finish Product', 'Finish Product Stock']) && (
+                {can("warehouseFinishStock", "view") && menuMatches('Warehouse Finish Product', ['New Finish Product', 'Manage Finish Product', 'Finish Goods Stock']) && (
 
                     <div onMouseEnter={setTip} onClick={() => setwarehouseOpen(!warehouseOpen)} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer transition-all mb-px ${collapsed ? 'justify-start w-9 h-9 mx-auto' : ''} ${isParentActive(['/NewFinishProductPage', '/ManageFinishProductPage', '/FinishProductStockPage']) ? 'bg-(--nav-active)' : 'hover:bg-(--nav-active)'}`}>
                         {isParentActive(['/NewFinishProductPage', '/ManageFinishProductPage', '/FinishProductStockPage']) && !collapsed && (
                             <span className="absolute left-0 top-1/2 -translate-y-1/2 w-0.75 h-4.5 bg-(--nav-strip) rounded-r-full" />
                         )}
                         <PackageCheck className="text-slate-100   shrink-0 group-hover:translate-x-1.5 transition-transform duration-300" size={23} />
-                        {!collapsed && <span className="text-[12.5px] text-slate-100 flex-1">Warehouse Finish Product</span>}
+                        {!collapsed && <span className="text-[12.5px] text-slate-100 flex-1">Warehouse Finish Stock</span>}
                         {!collapsed && <ChevronDown className={`text-slate-100  w-3.5 h-3.5 transition-transform duration-300 ${warehouseOpen ? 'rotate-180' : ''}`} />}
                         {collapsed && (
                             <span style={{ top: 'var(--tooltip-y, 50%)', transform: 'translateY(-50%)' }} className="fixed left-16 ml-1 bg-emerald-500 text-white text-[11px] px-2 py-1 rounded-md whitespace-nowrap opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-200 pointer-events-none z-999">
-                                Warehouse Finish Product
+                                Warehouse Finish Stock
                             </span>
                         )}
                     </div>
@@ -806,23 +806,23 @@ const SideMenus = ({ collapsed }) => {
                         )}
                         {canSub("warehouseFinishProduct", "finishProductStock") && subMatches('Finish Product Stock') && (
                             <div onClick={() => { navigate('/finishstock') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
-                                Finish Product Stock
+                                Finish Goods Stock
                             </div>
                         )}
                     </div>
                 )}
 
-                {can("stock", "view") && menuMatches('Stock', ['Finish Stock', 'Raw Material Stock', 'Reel Stock', 'Beverage Stock', 'Tea Stock', 'Out of Stock', 'Raw Packing Stock', ' Assign User to Stock']) && (
-                    <div onMouseEnter={setTip} onClick={() => setstockOpen(!stockOpen)} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer transition-all mb-px ${collapsed ? 'justify-start w-9 h-9 mx-auto' : ''} ${isParentActive(['/finish/stock', '/raw/material/stock', '/reel/stock', '/Beverage/stock', '/tea/stock', '/out/of/stock', '/raw/packing/stock', '/assign/user/stock']) ? 'bg-(--nav-active)' : 'hover:bg-(--nav-active)'}`}>
-                        {isParentActive(['/finish/stock', '/raw/material/stock', '/reel/stock', '/Beverage/stock', '/tea/stock', '/out/of/stock', '/raw/packing/stock', '/assign/user/stock']) && !collapsed && (
+                {can("Production", "view") && menuMatches('Production', ['Item Master', 'Bill of Materials', 'Production Orders', 'Lot Tracking', 'Stock Ledger', 'Production Reports']) && (
+                    <div onMouseEnter={setTip} onClick={() => setstockOpen(!stockOpen)} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer transition-all mb-px ${collapsed ? 'justify-start w-9 h-9 mx-auto' : ''} ${isParentActive(['/item/master', '/bill/of/materials', '/production/orders', '/lot/tracking', '/stock/ledger', '/production/reports']) ? 'bg-(--nav-active)' : 'hover:bg-(--nav-active)'}`}>
+                        {isParentActive(['/item/master', '/bill/of/materials', '/production/orders', '/lot/tracking', '/stock/ledger', '/production/reports']) && !collapsed && (
                             <span className="absolute left-0 top-1/2 -translate-y-1/2 w-0.75 h-4.5 bg-(--nav-strip) rounded-r-full" />
                         )}
                         <Blocks className="text-slate-100 shrink-0   group-hover:translate-x-1.5 transition-transform duration-300" size={23} />
-                        {!collapsed && <span className="text-[12.5px] text-slate-100 flex-1">Stock</span>}
+                        {!collapsed && <span className="text-[12.5px] text-slate-100 flex-1">Production</span>}
                         {!collapsed && <ChevronDown className={`text-slate-100  w-3.5 h-3.5 transition-transform duration-300 ${stockOpen ? 'rotate-180' : ''}`} />}
                         {collapsed && (
                             <span style={{ top: 'var(--tooltip-y, 50%)', transform: 'translateY(-50%)' }} className="fixed left-16 ml-1 bg-emerald-500 text-white text-[11px] px-2 py-1 rounded-md whitespace-nowrap opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-200 pointer-events-none z-999">
-                                Stock
+                                Production
                             </span>
                         )}
                     </div>
@@ -835,49 +835,36 @@ const SideMenus = ({ collapsed }) => {
                             transform: (stockOpen || isSearching) ? 'translateY(0px)' : 'translateY(-8px)',
                             transition: 'max-height 0.5s cubic-bezier(0.16,1,0.3,1), opacity 0.4s cubic-bezier(0.16,1,0.3,1), transform 0.4s cubic-bezier(0.16,1,0.3,1)'
                         }}
-
                         className="ml-7 border-l border-slate-700 pl-3 flex flex-col gap-0.5 overflow-y-auto no-scrollbar"
-
                     >
-
-                        {canSub("stock", "finishStock") && subMatches('Finish Stock') && (
-                            <div onClick={() => { navigate('/finish/stock') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
-                                Finish Stock
+                        {canSub("production", "itemMaster") && subMatches('Item Master') && (
+                            <div onClick={() => { navigate('/new/item') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                                Item Master
                             </div>
                         )}
-                        {canSub("stock", "rawMaterialStock") && subMatches('Raw Material Stock') && (
-                            <div onClick={() => { navigate('/raw/material/stock') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
-                                Raw Material Stock
+                        {canSub("production", "billOfMaterials") && subMatches('Bill of Materials') && (
+                            <div onClick={() => { navigate('/bill/of/materials') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                                Bill of Materials
                             </div>
                         )}
-                        {canSub("stock", "reelStock") && subMatches(' Reel Stock') && (
-                            <div onClick={() => { navigate('/reel/stock') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
-                                Reel Stock
+                        {canSub("production", "productionOrders") && subMatches('Production Orders') && (
+                            <div onClick={() => { navigate('/production/orders') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                                Production Orders
                             </div>
                         )}
-                        {canSub("stock", "beverageStock") && subMatches(' Beverage Stock') && (
-                            <div onClick={() => { navigate('/beverage/stock') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
-                                Beverage Stock
+                        {canSub("production", "lotTracking") && subMatches('Lot Tracking') && (
+                            <div onClick={() => { navigate('/lot/tracking') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                                Lot Tracking
                             </div>
                         )}
-                        {canSub("stock", "teaStock") && subMatches(' Tea Stock') && (
-                            <div onClick={() => { navigate('/tea/stock') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
-                                Tea Stock
+                        {canSub("production", "stockLedger") && subMatches('Stock Ledger') && (
+                            <div onClick={() => { navigate('/stock/ledger') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                                Stock Ledger
                             </div>
                         )}
-                        {canSub("stock", "rawPackingStock") && subMatches(' Raw Packing Stock') && (
-                            <div onClick={() => { navigate('/raw/packing/stock') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
-                                Raw Packing Stock
-                            </div>
-                        )}
-                        {canSub("stock", "outOfStock") && subMatches(' Out of Stock') && (
-                            <div onClick={() => { navigate('/out/of/stock') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
-                                Out of Stock
-                            </div>
-                        )}
-                        {canSub("stock", "assignUserToStock") && subMatches('  Assign User to Stock') && (
-                            <div onClick={() => { navigate('/assign/user/stock') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
-                                Assign User to Stock
+                        {canSub("production", "productionReports") && subMatches('Production Reports') && (
+                            <div onClick={() => { navigate('/production/reports') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                                Production Reports
                             </div>
                         )}
                     </div>
@@ -1092,27 +1079,27 @@ const SideMenus = ({ collapsed }) => {
                         className="ml-7 border-l border-slate-700 pl-3 flex flex-col gap-0.5 overflow-hidden"
                     >
                         {canSub("report", "todayCustomerReport") && subMatches('Today customer Report') && (
-                            <div onClick={()=>{navigate('/today/customer/report')}} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                            <div onClick={() => { navigate('/today/customer/report') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                                 Reciepts Update
                             </div>
                         )}
-                        {false &&  canSub("report", "userWiseReceiptReport") && subMatches('User Wise Reciept Report') && (
-                            <div  onClick={()=>{navigate('/user/wise/report')}} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                        {false && canSub("report", "userWiseReceiptReport") && subMatches('User Wise Reciept Report') && (
+                            <div onClick={() => { navigate('/user/wise/report') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                                 User Wise Reciept Report
                             </div>
                         )}
-                        {false &&  canSub("report", "supplierReceipt") && subMatches('Supplier Reciept') && (
-                            <div onClick={()=>{navigate('/supplier/reciept')}} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                        {false && canSub("report", "supplierReceipt") && subMatches('Supplier Reciept') && (
+                            <div onClick={() => { navigate('/supplier/reciept') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                                 Supplier Reciept
                             </div>
                         )}
                         {canSub("report", "saleReport") && subMatches('Sale Report') && (
-                            <div onClick={()=>{navigate('/sale/report')}} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                            <div onClick={() => { navigate('/sale/report') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                                 Sale Report
                             </div>
                         )}
                         {canSub("report", "saleReportProductWise") && subMatches('Sale Report (Product Wise)') && (
-                            <div onClick={()=>{navigate('/sale/report/product/wise')}} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                            <div onClick={() => { navigate('/sale/report/product/wise') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                                 Sale Report (Product Wise)
                             </div>
                         )}

@@ -1,17 +1,17 @@
 import React from 'react'
 import Sidebar from '../../components/Sidebar.jsx'
-import RawMaterialStock from '../../components/Stock/RawMaterialStock.jsx'
-const RawMaterialStockPage = () => {
+import BillOfMaterials from '../../components/Production/BillOfMaterials.jsx'
+const BillOfMaterialsPage = () => {
   return (
      <div className='flex'>
 
             <Sidebar />
             <div className='flex-1'>
-                <RawMaterialStock />
+                <BillOfMaterials />
             </div>
 
         </div>
   )
 }
 
-export default RawMaterialStockPage
+export default BillOfMaterialsPage

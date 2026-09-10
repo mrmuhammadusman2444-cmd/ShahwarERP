@@ -127,7 +127,6 @@ const SupplierLedger = () => {
     doc.save(`SupplierLedger-${selectedSupplier}.pdf`)
   }
 
-  // bar width ke liye max amount (pehle jaisa hi, bas ab table ke bahar compute)
   const maxAmount = useMemo(
     () => Math.max(
       ...filteredEntries.map(e => Math.max(Number(e.debit) || 0, Number(e.credit) || 0)),
@@ -136,13 +135,34 @@ const SupplierLedger = () => {
     [filteredEntries]
   )
 
-  // ── TanStack columns ── (cell rendering bilkul pehle jaisa; meta.tdClass se td styling preserve)
   const columns = useMemo(() => [
     {
       id: 'date',
       accessorFn: (row) => (row.date ? new Date(row.date).getTime() : 0),
       header: 'Date',
       meta: { align: 'left', tdClass: 'px-4 py-3.5 text-left whitespace-nowrap relative' },
+      cell: ({ row }) => {
+        const entry = row.original
+        return (
+          <>
+            <span className="absolute left-0 top-1/2 -translate-y-1/2 h-6 w-0.5 rounded-r bg-emerald-500 opacity-0 group-hover:opacity-100 transition-opacity" />
+            <span className="inline-flex items-center gap-2">
+              <span className="flex items-center justify-center w-7 h-7 rounded-lg bg-gray-50 text-gray-400 group-hover:bg-emerald-50 group-hover:text-emerald-500 transition-colors shrink-0">
+                <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+              </span>
+              <span className="text-gray-700 text-xs font-medium tabular-nums">
+                {entry.date ? new Date(entry.date).toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" }) : "—"}
+              </span>
+            </span>
+          </>
+        )
+      },
+    },
+    {
+      id: 'description',
+      accessorFn: (row) => (Array.isArray(row.description) ? row.description.join(' ') : (row.description || '')),
+      header: 'Description',
+      meta: { align: 'left', tdClass: 'px-4 py-3.5 text-left' },
       cell: ({ row }) => {
         const entry = row.original
         if (entry.type === "tally") {
@@ -162,28 +182,6 @@ const SupplierLedger = () => {
               ? entry.description.map((line, i) => <p key={i}>{line}</p>)
               : entry.description}
           </span>
-        )
-      },
-    },
-    {
-      id: 'description',
-      accessorFn: (row) => (Array.isArray(row.description) ? row.description.join(' ') : (row.description || '')),
-      header: 'Description',
-      meta: { align: 'left', tdClass: 'px-4 py-3.5 text-left' },
-      cell: ({ row }) => {
-        const entry = row.original
-        return (
-          <>
-            <span className="absolute left-0 top-1/2 -translate-y-1/2 h-6 w-0.5 rounded-r bg-emerald-500 opacity-0 group-hover:opacity-100 transition-opacity" />
-            <span className="inline-flex items-center gap-2">
-              <span className="flex items-center justify-center w-7 h-7 rounded-lg bg-gray-50 text-gray-400 group-hover:bg-emerald-50 group-hover:text-emerald-500 transition-colors shrink-0">
-                <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
-              </span>
-              <span className="text-gray-700 text-xs font-medium tabular-nums">
-                {entry.date ? new Date(entry.date).toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" }) : "—"}
-              </span>
-            </span>
-          </>
         )
       },
     },
@@ -365,7 +363,7 @@ const SupplierLedger = () => {
         </div>
 
         <div className="overflow-auto max-h-[60vh]">
-          <table className="w-full min-w-[720px] text-sm border-collapse">
+          <table className="w-full min-w-180 text-sm border-collapse">
             <thead>
               {table.getHeaderGroups().map((headerGroup) => (
                 <tr key={headerGroup.id} className="bg-linear-to-b from-emerald-500 to-emerald-700 text-white sticky top-0 z-10">
