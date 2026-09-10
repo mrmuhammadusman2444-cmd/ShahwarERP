@@ -1,17 +1,17 @@
 import React from 'react'
 import Sidebar from '../../components/Sidebar.jsx'
-import ReelStock from '../../components/Stock/ReelStock.jsx'
-const ReelStockPage = () => {
+import StockLedger from '../../components/Production/StockLedger.jsx'
+const StockLedgerPage = () => {
   return (
-        <div className='flex'>
+    <div className='flex'>
 
             <Sidebar />
             <div className='flex-1'>
-                <ReelStock />
+                <StockLedger />
             </div>
 
         </div>
   )
 }
 
-export default ReelStockPage
+export default StockLedgerPage

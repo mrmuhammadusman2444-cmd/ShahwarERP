@@ -242,7 +242,7 @@ const ReceiptUpdates = () => {
             <span className="h-4 w-1 rounded-full bg-emerald-500" />
             <h2 className="text-sm font-bold text-slate-800">{activeLabel} Receipt Update</h2>
             <span className="rounded-full bg-emerald-50 px-2.5 py-0.5 text-[10px] font-bold text-emerald-600 ring-1 ring-emerald-100">
-              {activeTab === 'bank' ? bankFiltered.length : 0} records
+              {activeTab === 'bank' ? bankFiltered.length : activeTab === 'customer' ? customerFiltered.length : activeTab === 'warehouse' ? warehouseFiltered.length : 0} records
             </span>
           </div>
 

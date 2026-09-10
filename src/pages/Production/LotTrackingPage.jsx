@@ -1,17 +1,18 @@
 import React from 'react'
 import Sidebar from '../../components/Sidebar.jsx'
-import FinishStock from '../../components/Stock/FinishStock.jsx'
-const FinishStockPage = () => {
+import LotTracking from '../../components/Production/LotTracking.jsx'
+
+const LotTrackingPage = () => {
   return (
-     <div className='flex'>
+   <div className='flex'>
 
             <Sidebar />
             <div className='flex-1'>
-                <FinishStock/>
+                <LotTracking />
             </div>
 
         </div>
   )
 }
 
-export default FinishStockPage
+export default LotTrackingPage

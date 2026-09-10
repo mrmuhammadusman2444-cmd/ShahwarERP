@@ -1,17 +1,17 @@
 import React from 'react'
 import Sidebar from '../../components/Sidebar.jsx'
-import BeverageStock from '../../components/Stock/BeverageStock.jsx'
-const BeverageStockPage = () => {
+import ProductionOrders from '../../components/Production/ProductionOrders.jsx'
+const ProductionOrdersPage = () => {
   return (
     <div className='flex'>
 
             <Sidebar />
             <div className='flex-1'>
-                <BeverageStock />
+                <ProductionOrders />
             </div>
 
         </div>
   )
 }
 
-export default BeverageStockPage
+export default ProductionOrdersPage

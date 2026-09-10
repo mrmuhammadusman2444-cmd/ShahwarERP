@@ -37,7 +37,7 @@ const CustomerLedger = () => {
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
-    initialState: { pagination: { pageSize: 5 } },
+    initialState: { pagination: { pageSize: 6} },
   })
 
   async function handleSearch() {
