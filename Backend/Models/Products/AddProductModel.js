@@ -28,6 +28,7 @@ const AddProductSchema = new mongoose.Schema({
         type: String,
         default: ""
     },
+    currentStock: { type: Number, default: 0 },
 
 }, {
     timestamps: true

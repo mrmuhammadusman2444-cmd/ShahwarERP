@@ -812,9 +812,9 @@ const SideMenus = ({ collapsed }) => {
                     </div>
                 )}
 
-                {can("Production", "view") && menuMatches('Production', ['Item Master', 'Bill of Materials', 'Production Orders', 'Lot Tracking', 'Stock Ledger', 'Production Reports']) && (
-                    <div onMouseEnter={setTip} onClick={() => setstockOpen(!stockOpen)} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer transition-all mb-px ${collapsed ? 'justify-start w-9 h-9 mx-auto' : ''} ${isParentActive(['/item/master', '/bill/of/materials', '/production/orders', '/lot/tracking', '/stock/ledger', '/production/reports']) ? 'bg-(--nav-active)' : 'hover:bg-(--nav-active)'}`}>
-                        {isParentActive(['/item/master', '/bill/of/materials', '/production/orders', '/lot/tracking', '/stock/ledger', '/production/reports']) && !collapsed && (
+                {can("Production", "view") && menuMatches('Production', ['Add New Item', 'Manage Production Orders', 'Manage Item', 'Bill of Materials', 'Production Orders', 'Lot Tracking', 'Stock Ledger', 'Production Reports', 'Manage BOM']) && (
+                    <div onMouseEnter={setTip} onClick={() => setstockOpen(!stockOpen)} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer transition-all mb-px ${collapsed ? 'justify-start w-9 h-9 mx-auto' : ''} ${isParentActive(['/item/master', '/bill/of/materials', '/production/orders', '/lot/tracking', '/stock/ledger', '/production/reports', '/manage/production/order', '/manage/bom']) ? 'bg-(--nav-active)' : 'hover:bg-(--nav-active)'}`}>
+                        {isParentActive(['/item/master', '/bill/of/materials', '/production/orders', '/lot/tracking', '/stock/ledger', '/production/reports', '/manage/production/order', '/manage/bom']) && !collapsed && (
                             <span className="absolute left-0 top-1/2 -translate-y-1/2 w-0.75 h-4.5 bg-(--nav-strip) rounded-r-full" />
                         )}
                         <Blocks className="text-slate-100 shrink-0   group-hover:translate-x-1.5 transition-transform duration-300" size={23} />
@@ -837,9 +837,14 @@ const SideMenus = ({ collapsed }) => {
                         }}
                         className="ml-7 border-l border-slate-700 pl-3 flex flex-col gap-0.5 overflow-y-auto no-scrollbar"
                     >
-                        {canSub("production", "itemMaster") && subMatches('Item Master') && (
+                        {canSub("production", "addnewitem") && subMatches('Add New Item') && (
                             <div onClick={() => { navigate('/new/item') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
-                                Item Master
+                                Add New Item
+                            </div>
+                        )}
+                        {canSub("production", "manageItem") && subMatches('Manage Item') && (
+                            <div onClick={() => { navigate('/manage/item') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                                Manage Item
                             </div>
                         )}
                         {canSub("production", "billOfMaterials") && subMatches('Bill of Materials') && (
@@ -847,11 +852,23 @@ const SideMenus = ({ collapsed }) => {
                                 Bill of Materials
                             </div>
                         )}
+                        {canSub("production", "manageBom") && subMatches('Manage BOM') && (
+                            <div onClick={() => { navigate('/manage/bom') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                                Manage BOM
+                            </div>
+                        )}
                         {canSub("production", "productionOrders") && subMatches('Production Orders') && (
                             <div onClick={() => { navigate('/production/orders') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                                 Production Orders
                             </div>
                         )}
+
+                        {canSub("production", "productionOrders") && subMatches('Manage Production Orders') && (
+                            <div onClick={() => { navigate('/manage/production/order') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
+                                Manage Production Orders
+                            </div>
+                        )}
+
                         {canSub("production", "lotTracking") && subMatches('Lot Tracking') && (
                             <div onClick={() => { navigate('/lot/tracking') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
                                 Lot Tracking

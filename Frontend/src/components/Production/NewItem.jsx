@@ -1,6 +1,6 @@
-import { useState } from 'react'
+import { useState,useEffect  } from 'react'
 import axios from 'axios'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import { Package, Hash, Tag, Scale, Boxes, Bell, DollarSign, Warehouse, FileText, Save, ChevronDown } from 'lucide-react'
 
 const categories = [
@@ -31,16 +31,42 @@ const NewItem = () => {
         setItem((p) => ({ ...p, [field]: value }))
     }
 
-    async function handleSave() {
+       async function handleSave() {
         setSaving(true)
         try {
-            await axios.post('http://localhost:3000/add/item', item)
-            setItem({ itemName: '', category: 'RM', unitOfMeasure: '', currentStock: '', reorderLevel: '', costPerUnit: '', warehouseLocation: '', description: '', batchTracking: false })
+            if (editId) {
+                await axios.put(`http://localhost:3000/update/item/${editId}`, item)
+                navigate('/manageitem')
+            } else {
+                await axios.post('http://localhost:3000/add/item', item)
+                setItem({ itemName: '', category: 'RM', unitOfMeasure: '', currentStock: '', reorderLevel: '', costPerUnit: '', warehouseLocation: '', description: '', batchTracking: false })
+            }
         } catch (err) {
             console.log("ITEM SAVE FAILED:", err.response?.data || err.message)
         }
         setSaving(false)
     }
+
+        const location = useLocation()
+    const editItem = location.state?.editItem || null
+    const [editId, setEditId] = useState(null)
+
+    useEffect(() => {
+        if (editItem) {
+            setEditId(editItem._id)
+            setItem({
+                itemName: editItem.itemName || '',
+                category: editItem.category || 'RM',
+                unitOfMeasure: editItem.unitOfMeasure || '',
+                currentStock: editItem.currentStock ?? '',
+                reorderLevel: editItem.reorderLevel ?? '',
+                costPerUnit: editItem.costPerUnit ?? '',
+                warehouseLocation: editItem.warehouseLocation || '',
+                description: editItem.description || '',
+                batchTracking: editItem.batchTracking || false,
+            })
+        }
+    }, [])
 
     return (
         <div className="min-h-screen bg-linear-to-br from-slate-50 via-white to-emerald-50/40 p-4 md:p-6">
@@ -135,7 +161,7 @@ const NewItem = () => {
                             </div>
 
                             <div>
-                                <label className="mb-1.5 block text-[10px] font-bold uppercase tracking-widest text-slate-500">Cost Per Unit</label>
+                                <label className="mb-1.5 block text-[10px] font-bold uppercase tracking-widest text-slate-500">Price</label>
                                 <div className="relative">
                                     <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-sm font-bold text-slate-400">Rs</span>
                                     <input value={item.costPerUnit} onChange={(e) => set('costPerUnit', e.target.value)} placeholder="0"

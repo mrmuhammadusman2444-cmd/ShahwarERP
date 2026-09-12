@@ -334,7 +334,7 @@ const AddPurchase = () => {
                                                 onChange={(selectedProduct) => {
                                                     setRows(prev => prev.map(r => {
                                                         if (r.id !== row.id) return r
-                                                        const updated = { ...r, product: selectedProduct.productName, rate: selectedProduct.distributorPrice || '' }
+                                                        const updated = { ...r, product: selectedProduct.itemName, rate: selectedProduct.costPerUnit || '' }
 
                                                         const qty = Number(updated.invQty) || 0
                                                         const rate = Number(updated.rate) || 0
@@ -371,11 +371,10 @@ const AddPurchase = () => {
 
                                         <td className="px-2 py-2.5">
                                             <div className="relative">
-                                                <span className="absolute left-2 top-1/2 -translate-y-1/2 text-[9px] font-bold text-slate-300">Rs</span>
                                                 <input type="text" inputMode="numeric" placeholder="0.00"
                                                     value={row.rate}
                                                     onChange={(e) => updateRow(row.id, 'rate', e.target.value)}
-                                                    className="w-full text-[12px] font-medium text-slate-800 placeholder-slate-300 bg-transparent border border-transparent hover:border-emerald-200 focus:border-emerald-400 focus:bg-white rounded-lg pl-6 pr-2 py-1.5 text-center focus:outline-none transition-all tabular-nums" />
+                                                    className="w-full text-[12px] font-medium text-slate-800 placeholder-slate-300 bg-transparent border border-transparent hover:border-emerald-200 focus:border-emerald-400 focus:bg-white rounded-lg  pr-2 py-1.5 text-center focus:outline-none transition-all tabular-nums" />
                                             </div>
                                         </td>
 

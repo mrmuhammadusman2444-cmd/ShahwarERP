@@ -83,6 +83,9 @@ import BillOfMaterialsPage from './pages/Production/BillOfMaterialsPage.jsx'
 import LotTrackingPage from './pages/Production/LotTrackingPage.jsx'
 import StockLedgerPage from './pages/Production/StockLedgerPage.jsx'
 import ProductionReportsPage from './pages/Production/ProductionReportsPage.jsx'
+import ManageItemPage from './pages/Production/ManageItemPage.jsx'
+import ManageBomPage from './pages/Production/ManageBomPage.jsx'
+import ManageProductionOrderPage from './pages/Production/ManageProductionOrderPage.jsx'
 //Accounts
 import SupplierPaymentsPage from './pages/Accounts/SupplierPaymentsPage.jsx'
 import TransactionPage from './pages/Accounts/TransactionPage.jsx'
@@ -208,6 +211,9 @@ const App = () => {
         <Route path='/bill/of/materials' element={<BillOfMaterialsPage />} />
         <Route path='/stock/ledger' element={<StockLedgerPage />} />
         <Route path='/production/reports' element={<ProductionReportsPage />} />
+        <Route path='/manage/item' element={<ManageItemPage />} />
+        <Route path='/manage/bom' element={<ManageBomPage />} />
+        <Route path='/manage/production/order' element={<ManageProductionOrderPage />} />
 
         //Accounts
         <Route path='/supplier/payments' element={<SupplierPaymentsPage />} />

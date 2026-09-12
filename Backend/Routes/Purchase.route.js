@@ -1,5 +1,7 @@
 import express from 'express'
 import PurchaseModel from '../Models/Purchase/PurchaseModel.js'
+import AddProductModel from '../Models/Products/AddProductModel.js'
+import ItemModel from '../Models/Production&Manufacturing/ItemModel.js'
 const router = express.Router()
 
 router.post('/new/purchase', async function (req, res) {
@@ -99,17 +101,27 @@ router.post('/approve/purchase/:id', async function (req, res) {
             { status: "approved" },
             { new: true }
         )
-
         if (!approvedPurchase) {
             return res.status(404).json({ message: "Purchase not found" })
         }
 
+        for (let item of (approvedPurchase.items || [])) {
+            let addQty = Number(item.stkQty) || 0
+            if (item.product && addQty > 0) {
+                await ItemModel.findOneAndUpdate(
+                    { itemName: item.product },
+                    { $inc: { currentStock: addQty } }
+                )
+            }
+        }
+
         res.json(approvedPurchase)
     } catch (err) {
-        console.log("APPROVE ERROR:", err.message)
         res.status(500).json({ message: err.message })
     }
 })
+
+
 router.put('/reject/purchase/:id', async function (req, res) {
     try {
         let id = req.params.id
