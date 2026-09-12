@@ -362,7 +362,7 @@ const SupplierLedger = () => {
 
         </div>
 
-        <div className="overflow-auto max-h-[60vh]">
+        <div className="overflow-auto max-h-[59vh]">
           <table className="w-full min-w-180 text-sm border-collapse">
             <thead>
               {table.getHeaderGroups().map((headerGroup) => (
