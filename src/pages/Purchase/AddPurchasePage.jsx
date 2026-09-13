@@ -3,10 +3,10 @@ import Sidebar from '../../components/Sidebar.jsx'
 import AddPurchase from '../../components/Purchase/AddPurchase.jsx'
 const AddPurchasePage = () => {
   return (
-    <div className='flex'>
+    <div className='flex h-screen overflow-hidden'>
 
             <Sidebar />
-            <div className='flex-1'>
+            <div className='flex-1 overflow-auto'>
                 <AddPurchase />
             </div>
 

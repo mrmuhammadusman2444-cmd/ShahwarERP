@@ -56,7 +56,7 @@ const ManageItem = () => {
     const table = useReactTable({
         data: items,
         columns,
-        state: { sorting, globalFilter: search, pagination: { pageIndex: 0, pageSize: entries } },
+        state: { sorting, globalFilter: search },
         onSortingChange: setSorting,
         onGlobalFilterChange: setSearch,
         getCoreRowModel: getCoreRowModel(),
@@ -72,23 +72,34 @@ const ManageItem = () => {
     return (
         <div className="min-h-screen bg-linear-to-br from-slate-50 via-white to-emerald-50/40 p-4 md:p-6">
 
-            <div className="mb-5 flex gap-1 bg-white border border-slate-200 shadow-sm p-1 rounded-xl w-fit">
-                <button onClick={() => navigate('/new/item')} className="px-6 py-2 rounded-lg cursor-pointer text-emerald-600 text-sm font-medium hover:bg-emerald-50 transition-all">
-                    New Item
-                </button>
-                <button className="px-6 py-2 rounded-lg bg-linear-to-b from-emerald-500 to-emerald-700 cursor-pointer text-white text-sm font-semibold shadow-md shadow-emerald-200">
-                    Manage Items
-                </button>
-            </div>
+                       <div className="mb-5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 rounded-2xl border border-slate-200/70 bg-white px-5 py-4 shadow-lg shadow-slate-200/50">
 
-            <div className="flex items-center gap-3 mb-4">
-                <div className="w-10 h-10 rounded-xl bg-linear-to-br from-emerald-600 to-emerald-800 flex items-center justify-center shadow-md shadow-emerald-200">
-                    <Package className="w-5 h-5 text-white" />
+                <div className="flex items-center gap-3.5">
+                    <div className="relative flex h-12 w-12 items-center justify-center rounded-2xl bg-linear-to-br from-emerald-600 to-emerald-800 shadow-lg shadow-emerald-300/40 ring-4 ring-white">
+                        <Package className="h-6 w-6 text-white" />
+                        <span className="absolute -bottom-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-white shadow ring-1 ring-slate-100">
+                            <span className="h-2.5 w-2.5 rounded-full bg-emerald-500" />
+                        </span>
+                    </div>
+                    <div>
+                        <h1 className="text-slate-800 text-lg font-bold leading-tight">Item Master</h1>
+                        <p className="text-slate-400 text-[11px] font-medium">All raw materials, packing &amp; finished goods</p>
+                    </div>
                 </div>
-                <div>
-                    <h1 className="text-slate-800 text-lg font-bold">Item Master</h1>
-                    <p className="text-slate-400 text-xs">All raw materials, packing &amp; finished goods</p>
+
+                <div className="flex gap-1 bg-slate-100/70 p-1 rounded-2xl w-fit">
+                    <button onClick={() => navigate('/new/item')}
+                        className="flex items-center gap-1.5 px-5 py-2 rounded-xl cursor-pointer text-slate-500 text-sm font-semibold hover:text-emerald-600 hover:bg-white transition-all">
+                        <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M12 4v16m8-8H4" /></svg>
+                        New Item
+                    </button>
+                    <button
+                        className="flex items-center gap-1.5 px-5 py-2 rounded-xl bg-linear-to-b from-emerald-500 to-emerald-700 cursor-pointer text-white text-sm font-bold shadow-md shadow-emerald-200">
+                        <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M4 6h16M4 12h16M4 18h16" /></svg>
+                        Manage Items
+                    </button>
                 </div>
+
             </div>
 
             <div className="bg-white border border-slate-200/70 rounded-2xl shadow-lg shadow-slate-200/50 overflow-hidden">

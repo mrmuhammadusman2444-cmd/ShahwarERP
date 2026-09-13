@@ -310,8 +310,9 @@ const AddPurchase = () => {
                         </div>
                     </div>
 
-                    <div className="overflow-auto max-h-118">
-                        <table className="w-full text-left border-collapse">
+                    <div className="overflow-x-auto">
+                        <div className="overflow-y-auto max-h-118">
+                            <table className="w-full text-left border-collapse">
                             <thead>
                                 <tr className="bg-linear-to-b from-emerald-600 to-emerald-700 text-white">
                                     <th className="text-[12px] font-bold px-3 py-2.5 whitespace-nowrap">Item <span className="text-emerald-200">*</span></th>
@@ -319,9 +320,12 @@ const AddPurchase = () => {
                                     <th className="text-[12px] font-bold px-3 py-2.5 text-center whitespace-nowrap">Inv Qty <span className="text-emerald-200">*</span></th>
                                     <th className="text-[12px] font-bold px-3 py-2.5 text-center whitespace-nowrap">Stk Qty <span className="text-emerald-200">*</span></th>
                                     <th className="text-[12px] font-bold px-3 py-2.5 text-center whitespace-nowrap">Rate <span className="text-emerald-200">*</span></th>
+                                    <th className="text-[12px] font-bold px-3 py-2.5 text-center whitespace-nowrap">Batch No</th>
+                                    <th className="text-[12px] font-bold px-3 py-2.5 text-center whitespace-nowrap">Expiry</th>
                                     <th className="text-[12px] font-bold px-3 py-2.5 text-center whitespace-nowrap">Dis %</th>
                                     <th className="text-[12px] font-bold px-3 py-2.5 text-center whitespace-nowrap">Total</th>
                                     <th className="text-[12px] font-bold px-3 py-2.5 text-center whitespace-nowrap">Act</th>
+
                                 </tr>
                             </thead>
                             <tbody>
@@ -377,6 +381,18 @@ const AddPurchase = () => {
                                                     className="w-full text-[12px] font-medium text-slate-800 placeholder-slate-300 bg-transparent border border-transparent hover:border-emerald-200 focus:border-emerald-400 focus:bg-white rounded-lg  pr-2 py-1.5 text-center focus:outline-none transition-all tabular-nums" />
                                             </div>
                                         </td>
+                                                                                <td className="px-2 py-2.5">
+                                            <input type="text" placeholder="Batch No"
+                                                value={row.batchNo || ''}
+                                                onChange={(e) => updateRow(row.id, 'batchNo', e.target.value)}
+                                                className="w-full bg-emerald-50 border border-emerald-100 focus:border-emerald-400 focus:bg-white rounded-lg px-2.5 py-1.5 text-[12px] text-slate-700 focus:outline-none focus:ring-2 focus:ring-emerald-100 transition-all" />
+                                        </td>
+                                        <td className="px-2 py-2.5">
+                                            <input type="date"
+                                                value={row.expiryDate || ''}
+                                                onChange={(e) => updateRow(row.id, 'expiryDate', e.target.value)}
+                                                className="w-full bg-emerald-50 border border-emerald-100 focus:border-emerald-400 focus:bg-white rounded-lg px-2.5 py-1.5 text-[12px] text-slate-700 focus:outline-none focus:ring-2 focus:ring-emerald-100 transition-all" />
+                                        </td>
 
                                         <td className="px-2 py-2.5">
                                             <div className="relative">
@@ -407,7 +423,7 @@ const AddPurchase = () => {
                             </tbody>
                         </table>
                     </div>
-
+</div>
                 </div>
 
             </div>

@@ -56,7 +56,6 @@ const NewBOM = () => {
     }
 
     async function handleSave() {
-        if (!fg) { alert("Finished Good select karo"); return }
         if (lines.length === 0) { alert("Kam se kam ek ingredient add karo"); return }
         setSaving(true)
         try {
@@ -69,10 +68,8 @@ const NewBOM = () => {
                 remark: remark,
             })
             setFg(null); setBatchSize(""); setBatchUnit(""); setRemark(""); setLines([])
-            alert("BOM saved")
         } catch (err) {
             console.log("BOM SAVE FAILED:", err.response?.data || err.message)
-            alert("Save failed")
         }
         setSaving(false)
     }

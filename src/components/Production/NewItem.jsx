@@ -1,4 +1,4 @@
-import { useState,useEffect  } from 'react'
+import { useState, useEffect } from 'react'
 import axios from 'axios'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { Package, Hash, Tag, Scale, Boxes, Bell, DollarSign, Warehouse, FileText, Save, ChevronDown } from 'lucide-react'
@@ -31,12 +31,12 @@ const NewItem = () => {
         setItem((p) => ({ ...p, [field]: value }))
     }
 
-       async function handleSave() {
+    async function handleSave() {
         setSaving(true)
         try {
             if (editId) {
                 await axios.put(`http://localhost:3000/update/item/${editId}`, item)
-                navigate('/manageitem')
+                navigate('/manage/item')
             } else {
                 await axios.post('http://localhost:3000/add/item', item)
                 setItem({ itemName: '', category: 'RM', unitOfMeasure: '', currentStock: '', reorderLevel: '', costPerUnit: '', warehouseLocation: '', description: '', batchTracking: false })
@@ -47,7 +47,7 @@ const NewItem = () => {
         setSaving(false)
     }
 
-        const location = useLocation()
+    const location = useLocation()
     const editItem = location.state?.editItem || null
     const [editId, setEditId] = useState(null)
 
@@ -70,7 +70,7 @@ const NewItem = () => {
 
     return (
         <div className="min-h-screen bg-linear-to-br from-slate-50 via-white to-emerald-50/40 p-4 md:p-6">
-           {/* <div className="mb-5 flex gap-1 bg-white border border-slate-200 shadow-sm p-1 rounded-xl w-fit">
+            {/* <div className="mb-5 flex gap-1 bg-white border border-slate-200 shadow-sm p-1 rounded-xl w-fit">
                 <button className="px-6 py-2 rounded-lg bg-linear-to-b from-emerald-500 to-emerald-700 cursor-pointer text-white text-sm font-semibold shadow-md shadow-emerald-200">
                     New Item
                 </button>
@@ -90,15 +90,15 @@ const NewItem = () => {
                     <Hash className="h-3.5 w-3.5 text-emerald-500" />
                     Auto Code
                 </span>
-                
+
             </div>
-           
+
 
             <div className="mx-auto w-full ">
                 <div className="overflow-hidden rounded-3xl border border-slate-200/70 bg-white shadow-xl shadow-slate-200/50">
                     <div className="h-1 w-full bg-linear-to-r from-emerald-500 via-emerald-600 to-emerald-700" />
 
-                   
+
 
                     <div className="p-6">
 
