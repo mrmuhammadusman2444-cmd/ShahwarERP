@@ -1,6 +1,7 @@
 import { useState, useEffect, useMemo } from 'react'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
+import { can } from '../../Utils/Permissions.js'
 import { useReactTable, getCoreRowModel, getSortedRowModel, getPaginationRowModel, getFilteredRowModel, flexRender } from '@tanstack/react-table'
 import { Package, Search, Pencil, Trash2, Boxes } from 'lucide-react'
 
@@ -72,7 +73,7 @@ const ManageItem = () => {
     return (
         <div className="min-h-screen bg-linear-to-br from-slate-50 via-white to-emerald-50/40 p-4 md:p-6">
 
-                       <div className="mb-5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 rounded-2xl border border-slate-200/70 bg-white px-5 py-4 shadow-lg shadow-slate-200/50">
+            <div className="mb-5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 rounded-2xl border border-slate-200/70 bg-white px-5 py-4 shadow-lg shadow-slate-200/50">
 
                 <div className="flex items-center gap-3.5">
                     <div className="relative flex h-12 w-12 items-center justify-center rounded-2xl bg-linear-to-br from-emerald-600 to-emerald-800 shadow-lg shadow-emerald-300/40 ring-4 ring-white">
@@ -182,8 +183,12 @@ const ManageItem = () => {
                                                     return (
                                                         <td key={cell.id} className="px-4 py-3">
                                                             <div className="flex items-center justify-center gap-1.5">
-                                                                <button onClick={() => navigate('/new/item', { state: { editItem: it } })} className="w-8 h-8 flex items-center justify-center rounded-lg bg-sky-50 text-sky-500 hover:bg-sky-500 hover:text-white transition-colors cursor-pointer"><Pencil size={14} /></button>
-                                                                <button onClick={() => setDeleteTarget(it)} className="w-8 h-8 flex items-center justify-center rounded-lg bg-rose-50 text-rose-500 hover:bg-rose-500 hover:text-white transition-colors cursor-pointer"><Trash2 size={14} /></button>
+                                                                {can("production", "update") && (
+                                                                    <button onClick={() => navigate('/new/item', { state: { editItem: it } })} className="w-8 h-8 flex items-center justify-center rounded-lg bg-sky-50 text-sky-500 hover:bg-sky-500 hover:text-white transition-colors cursor-pointer"><Pencil size={14} /></button>
+                                                                )}
+                                                                {can("production", "delete") && (
+                                                                    <button onClick={() => setDeleteTarget(it)} className="w-8 h-8 flex items-center justify-center rounded-lg bg-rose-50 text-rose-500 hover:bg-rose-500 hover:text-white transition-colors cursor-pointer"><Trash2 size={14} /></button>
+                                                                )}
                                                             </div>
                                                         </td>
                                                     )

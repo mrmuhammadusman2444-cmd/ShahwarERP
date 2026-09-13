@@ -4,8 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 import axios from 'axios'
 import { useNavigate, useLocation } from 'react-router-dom';
 import { can, canSub, canAnySub } from '../Utils/Permissions.js'
-import { Search, Inbox, Bell, LayoutDashboard, Wallet, BookOpen, HandCoins, BriefcaseBusiness, ClipboardList, Landmark, Gift, ChartNoAxesCombined, Repeat2, Flag, BarChart2, LayoutGrid, Package, FileText, Users, Truck, ChevronDown, BadgeDollarSign, Handshake, PackageOpen, ShoppingCart, PackageCheck, Blocks } from "lucide-react";
-
+import { Search, Inbox, Bell, LayoutDashboard, Wallet, BookOpen, HandCoins, BriefcaseBusiness, ClipboardList, Landmark, Gift, ChartNoAxesCombined, Repeat2, Flag, BarChart2, LayoutGrid, Package, FileText, Users, Truck, ChevronDown, BadgeDollarSign, Handshake, PackageOpen, ShoppingCart, PackageCheck, Blocks, PackagePlus, Layers, List, Factory, GitBranch, BarChart3 } from "lucide-react";
 const SideMenus = ({ collapsed }) => {
     const [customerOpen, setCustomerOpen] = useState(false)
     const [active, setActive] = useState('Dashboard')
@@ -812,76 +811,110 @@ const SideMenus = ({ collapsed }) => {
                     </div>
                 )}
 
-                {can("Production", "view") && menuMatches('Production', ['Add New Item', 'Manage Production Orders', 'Manage Item', 'Bill of Materials', 'Production Orders', 'Lot Tracking', 'Stock Ledger', 'Production Reports', 'Manage BOM']) && (
-                    <div onMouseEnter={setTip} onClick={() => setstockOpen(!stockOpen)} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer transition-all mb-px ${collapsed ? 'justify-start w-9 h-9 mx-auto' : ''} ${isParentActive(['/item/master', '/bill/of/materials', '/production/orders', '/lot/tracking', '/stock/ledger', '/production/reports', '/manage/production/order', '/manage/bom']) ? 'bg-(--nav-active)' : 'hover:bg-(--nav-active)'}`}>
-                        {isParentActive(['/item/master', '/bill/of/materials', '/production/orders', '/lot/tracking', '/stock/ledger', '/production/reports', '/manage/production/order', '/manage/bom']) && !collapsed && (
-                            <span className="absolute left-0 top-1/2 -translate-y-1/2 w-0.75 h-4.5 bg-(--nav-strip) rounded-r-full" />
-                        )}
-                        <Blocks className="text-slate-100 shrink-0   group-hover:translate-x-1.5 transition-transform duration-300" size={23} />
-                        {!collapsed && <span className="text-[12.5px] text-slate-100 flex-1">Production</span>}
-                        {!collapsed && <ChevronDown className={`text-slate-100  w-3.5 h-3.5 transition-transform duration-300 ${stockOpen ? 'rotate-180' : ''}`} />}
-                        {collapsed && (
-                            <span style={{ top: 'var(--tooltip-y, 50%)', transform: 'translateY(-50%)' }} className="fixed left-16 ml-1 bg-emerald-500 text-white text-[11px] px-2 py-1 rounded-md whitespace-nowrap opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-200 pointer-events-none z-999">
-                                Production
+                {(canSub("production", "addnewitem") || canSub("production", "manageItem") || canSub("production", "billOfMaterials") || canSub("production", "manageBom") || canSub("production", "productionOrders") || canSub("production", "manageProductionOrders") || canSub("production", "lotTracking") || canSub("production", "stockLedger") || canSub("production", "productionReports")) && menuMatches('Manufacturing', ['Add New Item', 'Manage Production Orders', 'Manage Item', 'Bill of Materials', 'Production Orders', 'Lot Tracking', 'Stock Ledger', 'Production Reports', 'Manage BOM']) && (<div onMouseEnter={setTip} onClick={() => setstockOpen(!stockOpen)} className={`relative group group/tooltip flex items-center gap-2.5 h-12 rounded-xl px-2 cursor-pointer transition-all mb-px ${collapsed ? 'justify-center w-9 h-9 mx-auto' : ''} ${isParentActive(['/new/item', '/manage/item', '/bill/of/materials', '/production/orders', '/lot/tracking', '/stock/ledger', '/production/reports', '/manage/production/order', '/manage/bom']) ? 'bg-(--nav-active)' : 'hover:bg-(--nav-active)'}`}>
+                    {isParentActive(['/new/item', '/manage/item', '/bill/of/materials', '/production/orders', '/lot/tracking', '/stock/ledger', '/production/reports', '/manage/production/order', '/manage/bom']) && !collapsed && (
+                        <span className="absolute left-0 top-1/2 -translate-y-1/2 w-0.75 h-5 bg-emerald-400 rounded-r-full" />
+                    )}
+                    <span className="flex items-center justify-center h-8 w-8 shrink-0 rounded-lg bg-emerald-500/15 ring-1 ring-slate-500/25 group-hover:bg-emerald-500/25 transition-colors">
+                        <Blocks className="text-slate-50 shrink-0" size={23} />
+                    </span>
+                    {!collapsed && (
+                        <span className="flex-1 min-w-0">
+                            <span className="flex items-center gap-1.5">
+                                <span className="text-[12.5px] font-semibold text-slate-100 leading-tight">Manufacturing</span>
+                                <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 shadow-sm shadow-emerald-400/50" />
                             </span>
-                        )}
-                    </div>
+                            <span className="block text-[9px] font-medium text-slate-400 leading-tight truncate">Stock · BOM · Production</span>
+                        </span>
+                    )}
+                    {!collapsed && <ChevronDown className={`text-slate-300 w-3.5 h-3.5 transition-transform duration-300 ${stockOpen ? 'rotate-180' : ''}`} />}
+                    {collapsed && (
+                        <span style={{ top: 'var(--tooltip-y, 50%)', transform: 'translateY(-50%)' }} className="fixed left-16 ml-1 bg-emerald-500 text-white text-[11px] px-2 py-1 rounded-md whitespace-nowrap opacity-0 group-hover/tooltip:opacity-100 transition-opacity duration-200 pointer-events-none z-999">
+                            Manufacturing
+                        </span>
+                    )}
+                </div>
                 )}
                 {!collapsed && (
                     <div
                         style={{
-                            maxHeight: (stockOpen || isSearching) ? '340px' : '0px',
+                            maxHeight: (stockOpen || isSearching) ? '360px' : '0px',
                             opacity: (stockOpen || isSearching) ? 1 : 0,
                             transform: (stockOpen || isSearching) ? 'translateY(0px)' : 'translateY(-8px)',
                             transition: 'max-height 0.5s cubic-bezier(0.16,1,0.3,1), opacity 0.4s cubic-bezier(0.16,1,0.3,1), transform 0.4s cubic-bezier(0.16,1,0.3,1)'
                         }}
-                        className="ml-7 border-l border-slate-700 pl-3 flex flex-col gap-0.5 overflow-y-auto no-scrollbar"
+                        className="ml-7 border-l-2 border-emerald-500/30 pl-3 flex flex-col gap-0.5 overflow-y-auto no-scrollbar"
                     >
                         {canSub("production", "addnewitem") && subMatches('Add New Item') && (
-                            <div onClick={() => { navigate('/new/item') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
-                                Add New Item
+                            <div onClick={() => { navigate('/new/item') }} className="group/sub flex items-center gap-2.5 px-2 py-1.5 rounded-md cursor-pointer text-slate-500 hover:text-emerald-100 hover:bg-slate-800 transition-all">
+                                <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-md bg-slate-800/60 group-hover/sub:bg-emerald-500/20 transition-colors">
+                                    <PackagePlus className="w-3.5 h-3.5 text-slate-400 group-hover/sub:text-emerald-400 transition-colors" />
+                                </span>
+                                <span className="text-[12px] flex-1">Add New Item</span>
                             </div>
                         )}
                         {canSub("production", "manageItem") && subMatches('Manage Item') && (
-                            <div onClick={() => { navigate('/manage/item') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
-                                Manage Item
+                            <div onClick={() => { navigate('/manage/item') }} className="group/sub flex items-center gap-2.5 px-2 py-1.5 rounded-md cursor-pointer text-slate-500 hover:text-emerald-100 hover:bg-slate-800 transition-all">
+                                <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-md bg-slate-800/60 group-hover/sub:bg-emerald-500/20 transition-colors">
+                                    <Package className="w-3.5 h-3.5 text-slate-400 group-hover/sub:text-emerald-400 transition-colors" />
+                                </span>
+                                <span className="text-[12px] flex-1">Manage Item</span>
                             </div>
                         )}
                         {canSub("production", "billOfMaterials") && subMatches('Bill of Materials') && (
-                            <div onClick={() => { navigate('/bill/of/materials') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
-                                Bill of Materials
+                            <div onClick={() => { navigate('/bill/of/materials') }} className="group/sub flex items-center gap-2.5 px-2 py-1.5 rounded-md cursor-pointer text-slate-500 hover:text-emerald-100 hover:bg-slate-800 transition-all">
+                                <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-md bg-slate-800/60 group-hover/sub:bg-emerald-500/20 transition-colors">
+                                    <Layers className="w-3.5 h-3.5 text-slate-400 group-hover/sub:text-emerald-400 transition-colors" />
+                                </span>
+                                <span className="text-[12px] flex-1">Bill of Materials</span>
                             </div>
                         )}
                         {canSub("production", "manageBom") && subMatches('Manage BOM') && (
-                            <div onClick={() => { navigate('/manage/bom') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
-                                Manage BOM
+                            <div onClick={() => { navigate('/manage/bom') }} className="group/sub flex items-center gap-2.5 px-2 py-1.5 rounded-md cursor-pointer text-slate-500 hover:text-emerald-100 hover:bg-slate-800 transition-all">
+                                <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-md bg-slate-800/60 group-hover/sub:bg-emerald-500/20 transition-colors">
+                                    <List className="w-3.5 h-3.5 text-slate-400 group-hover/sub:text-emerald-400 transition-colors" />
+                                </span>
+                                <span className="text-[12px] flex-1">Manage BOM</span>
                             </div>
                         )}
                         {canSub("production", "productionOrders") && subMatches('Production Orders') && (
-                            <div onClick={() => { navigate('/production/orders') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
-                                Production Orders
+                            <div onClick={() => { navigate('/production/orders') }} className="group/sub flex items-center gap-2.5 px-2 py-1.5 rounded-md cursor-pointer text-slate-500 hover:text-emerald-100 hover:bg-slate-800 transition-all">
+                                <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-md bg-slate-800/60 group-hover/sub:bg-emerald-500/20 transition-colors">
+                                    <Factory className="w-3.5 h-3.5 text-slate-400 group-hover/sub:text-emerald-400 transition-colors" />
+                                </span>
+                                <span className="text-[12px] flex-1">Production Orders</span>
                             </div>
                         )}
-
                         {canSub("production", "productionOrders") && subMatches('Manage Production Orders') && (
-                            <div onClick={() => { navigate('/manage/production/order') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
-                                Manage Production Orders
+                            <div onClick={() => { navigate('/manage/production/order') }} className="group/sub flex items-center gap-2.5 px-2 py-1.5 rounded-md cursor-pointer text-slate-500 hover:text-emerald-100 hover:bg-slate-800 transition-all">
+                                <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-md bg-slate-800/60 group-hover/sub:bg-emerald-500/20 transition-colors">
+                                    <ClipboardList className="w-3.5 h-3.5 text-slate-400 group-hover/sub:text-emerald-400 transition-colors" />
+                                </span>
+                                <span className="text-[12px] flex-1">Manage Production Orders</span>
                             </div>
                         )}
-
                         {canSub("production", "lotTracking") && subMatches('Lot Tracking') && (
-                            <div onClick={() => { navigate('/lot/tracking') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
-                                Lot Tracking
+                            <div onClick={() => { navigate('/lot/tracking') }} className="group/sub flex items-center gap-2.5 px-2 py-1.5 rounded-md cursor-pointer text-slate-500 hover:text-emerald-100 hover:bg-slate-800 transition-all">
+                                <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-md bg-slate-800/60 group-hover/sub:bg-emerald-500/20 transition-colors">
+                                    <GitBranch className="w-3.5 h-3.5 text-slate-400 group-hover/sub:text-emerald-400 transition-colors" />
+                                </span>
+                                <span className="text-[12px] flex-1">Lot Tracking</span>
                             </div>
                         )}
                         {canSub("production", "stockLedger") && subMatches('Stock Ledger') && (
-                            <div onClick={() => { navigate('/stock/ledger') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
-                                Stock Ledger
+                            <div onClick={() => { navigate('/stock/ledger') }} className="group/sub flex items-center gap-2.5 px-2 py-1.5 rounded-md cursor-pointer text-slate-500 hover:text-emerald-100 hover:bg-slate-800 transition-all">
+                                <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-md bg-slate-800/60 group-hover/sub:bg-emerald-500/20 transition-colors">
+                                    <BookOpen className="w-3.5 h-3.5 text-slate-400 group-hover/sub:text-emerald-400 transition-colors" />
+                                </span>
+                                <span className="text-[12px] flex-1">Stock Ledger</span>
                             </div>
                         )}
                         {canSub("production", "productionReports") && subMatches('Production Reports') && (
-                            <div onClick={() => { navigate('/production/reports') }} className="text-[12px] text-slate-500 hover:text-blue-100 hover:bg-slate-800 px-2 py-1.5 rounded-md cursor-pointer transition-colors">
-                                Production Reports
+                            <div onClick={() => { navigate('/production/reports') }} className="group/sub flex items-center gap-2.5 px-2 py-1.5 rounded-md cursor-pointer text-slate-500 hover:text-emerald-100 hover:bg-slate-800 transition-all">
+                                <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-md bg-slate-800/60 group-hover/sub:bg-emerald-500/20 transition-colors">
+                                    <BarChart3 className="w-3.5 h-3.5 text-slate-400 group-hover/sub:text-emerald-400 transition-colors" />
+                                </span>
+                                <span className="text-[12px] flex-1">Production Reports</span>
                             </div>
                         )}
                     </div>

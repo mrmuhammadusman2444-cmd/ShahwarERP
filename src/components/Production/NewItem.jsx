@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 import { useNavigate, useLocation } from 'react-router-dom'
+import { can } from '../../Utils/Permissions.js'
 import { Package, Hash, Tag, Scale, Boxes, Bell, DollarSign, Warehouse, FileText, Save, ChevronDown } from 'lucide-react'
 
 const categories = [
@@ -200,10 +201,10 @@ const NewItem = () => {
                         </div>
 
                         <div className="mt-6 flex items-center justify-end gap-3 border-t border-slate-100 pt-5">
-                            <button type="button" onClick={handleSave} disabled={saving}
-                                className="flex cursor-pointer items-center gap-2 rounded-2xl bg-linear-to-r from-emerald-600 to-emerald-800 px-6 py-3 text-sm font-bold text-white shadow-lg shadow-emerald-900/20 transition-all hover:-translate-y-0.5 disabled:opacity-70 disabled:cursor-not-allowed">
+                            <button type="button" onClick={handleSave} disabled={saving || (editId ? !can("production", "update") : !can("production", "create"))}
+                                className="flex cursor-pointer items-center gap-2 rounded-2xl bg-linear-to-r from-emerald-600 to-emerald-800 px-6 py-3 text-sm font-bold text-white shadow-lg shadow-emerald-900/20 transition-all hover:-translate-y-0.5 disabled:opacity-70 disabled:cursor-not-allowed disabled:hover:translate-y-0">
                                 <Save className="h-4 w-4" />
-                                {saving ? 'Saving...' : 'Save Item'}
+                                {saving ? 'Saving...' : (editId ? 'Update Item' : 'Save Item')}
                             </button>
                         </div>
 

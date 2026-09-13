@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
+import { can } from '../../Utils/Permissions.js'
 import { Layers, Package, Boxes, Plus, Trash2, Save, ChevronDown, Search, X } from 'lucide-react'
 
 const NewBOM = () => {
@@ -142,7 +143,7 @@ const NewBOM = () => {
                                     <label className="mb-1.5 block text-[10px] font-bold uppercase tracking-widest text-slate-500">Batch Size</label>
                                     <div className="relative">
                                         <span className="absolute left-3 top-1/2 -translate-y-1/2 text-emerald-500"><Boxes className="h-4 w-4" /></span>
-                                        <input  value={batchSize} onChange={(e) => setBatchSize(e.target.value)} placeholder="e.g. 100"
+                                        <input value={batchSize} onChange={(e) => setBatchSize(e.target.value)} placeholder="e.g. 100"
                                             className="w-full rounded-2xl border border-slate-200 bg-slate-50/60 pl-9 pr-3 py-3 text-sm font-medium text-slate-700 placeholder-slate-400 transition-all focus:border-emerald-400 focus:bg-white focus:ring-4 focus:ring-emerald-50 focus:outline-none" />
                                     </div>
                                 </div>
@@ -159,8 +160,8 @@ const NewBOM = () => {
                                     className="w-full resize-none rounded-2xl border border-slate-200 bg-slate-50/60 px-3 py-3 text-sm text-slate-700 placeholder-slate-400 transition-all focus:border-emerald-400 focus:bg-white focus:ring-4 focus:ring-emerald-50 focus:outline-none" />
                             </div>
 
-                            <button type="button" onClick={handleSave} disabled={saving}
-                                className="flex items-center justify-center gap-2 rounded-2xl bg-linear-to-r from-emerald-600 to-emerald-800 px-6 py-3 text-sm font-bold text-white shadow-lg shadow-emerald-900/20 transition-all hover:-translate-y-0.5 cursor-pointer disabled:opacity-70 disabled:cursor-not-allowed">
+                            <button type="button" onClick={handleSave} disabled={saving || !can("production", "create")}
+                                className="flex items-center justify-center gap-2 rounded-2xl bg-linear-to-r from-emerald-600 to-emerald-800 px-6 py-3 text-sm font-bold text-white shadow-lg shadow-emerald-900/20 transition-all hover:-translate-y-0.5 cursor-pointer disabled:opacity-70 disabled:cursor-not-allowed disabled:hover:translate-y-0">
                                 <Save className="h-4 w-4" />
                                 {saving ? 'Saving...' : 'Save BOM'}
                             </button>
@@ -233,7 +234,7 @@ const NewBOM = () => {
                                                     <span className={`inline-flex rounded-full px-2 py-0.5 text-[9px] font-bold ring-1 ${l.category === 'RM' ? 'bg-emerald-50 text-emerald-700 ring-emerald-200' : 'bg-sky-50 text-sky-700 ring-sky-200'}`}>{l.category}</span>
                                                 </td>
                                                 <td className="px-3 py-2">
-                                                    <input  value={l.qty} onChange={(e) => setQty(l.itemCode, e.target.value)} placeholder="0"
+                                                    <input value={l.qty} onChange={(e) => setQty(l.itemCode, e.target.value)} placeholder="0"
                                                         className="w-24 mx-auto block rounded-lg border border-slate-200 bg-slate-50/60 px-2 py-1.5 text-xs text-center text-slate-700 focus:border-emerald-400 focus:bg-white focus:outline-none transition-all" />
                                                 </td>
                                                 <td className="px-3 py-2 text-center text-xs text-slate-500">{l.unit}</td>

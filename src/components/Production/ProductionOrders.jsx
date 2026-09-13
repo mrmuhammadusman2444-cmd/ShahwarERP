@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
+import { can } from '../../Utils/Permissions.js'
+
 import { Factory, Package, Boxes, Calendar, Search, ChevronDown, X, CheckCircle2, AlertTriangle, Play } from 'lucide-react'
 
 const NewProductionOrders = () => {
@@ -138,7 +140,7 @@ const NewProductionOrders = () => {
                                 <label className="mb-1.5 block text-[10px] font-bold uppercase tracking-widest text-slate-500">Quantity to Produce <span className="text-rose-400">*</span></label>
                                 <div className="relative">
                                     <span className="absolute left-3 top-1/2 -translate-y-1/2 text-emerald-500"><Boxes className="h-4 w-4" /></span>
-                                    <input  value={quantity} onChange={(e) => { setQuantity(e.target.value); setCalc(null) }} placeholder="e.g. 500"
+                                    <input value={quantity} onChange={(e) => { setQuantity(e.target.value); setCalc(null) }} placeholder="e.g. 500"
                                         className="w-full rounded-2xl border border-slate-200 bg-slate-50/60 pl-9 pr-16 py-3 text-sm font-medium text-slate-700 placeholder-slate-400 transition-all focus:border-emerald-400 focus:bg-white focus:ring-4 focus:ring-emerald-50 focus:outline-none" />
                                     {fg && <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-semibold text-slate-400">{fg.unitOfMeasure}</span>}
                                 </div>
@@ -159,8 +161,8 @@ const NewProductionOrders = () => {
                                     className="w-full resize-none rounded-2xl border border-slate-200 bg-slate-50/60 px-3 py-3 text-sm text-slate-700 placeholder-slate-400 transition-all focus:border-emerald-400 focus:bg-white focus:ring-4 focus:ring-emerald-50 focus:outline-none" />
                             </div>
 
-                            <button type="button" onClick={handleCalculate} disabled={calcLoading}
-                                className="flex items-center justify-center gap-2 rounded-2xl border-2 border-emerald-500 bg-emerald-50 px-6 py-3 text-sm font-bold text-emerald-700 transition-all hover:bg-emerald-100 cursor-pointer disabled:opacity-70">
+                            <button type="button" onClick={handleCalculate} disabled={calcLoading || !can("production", "create")}
+                                className="flex items-center justify-center gap-2 rounded-2xl border-2 border-emerald-500 bg-emerald-50 px-6 py-3 text-sm font-bold text-emerald-700 transition-all hover:bg-emerald-100 cursor-pointer disabled:opacity-70 disabled:cursor-not-allowed">
                                 <Search className="h-4 w-4" />
                                 {calcLoading ? 'Calculating...' : 'Calculate Material'}
                             </button>

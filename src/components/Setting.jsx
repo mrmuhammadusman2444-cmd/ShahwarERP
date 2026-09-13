@@ -346,15 +346,16 @@ const MODULES = [
     ]
   },
   {
-    key: "stock", label: "Stock", subs: [
-      { key: "finishStock", label: "Finish Stock" },
-      { key: "rawMaterialStock", label: "Raw Material Stock" },
-      { key: "reelStock", label: "Reel Stock" },
-      { key: "beverageStock", label: "Beverage Stock" },
-      { key: "teaStock", label: "Tea Stock" },
-      { key: "rawPackingStock", label: "Raw Packing Stock" },
-      { key: "outOfStock", label: "Out of Stock" },
-      { key: "assignUserToStock", label: "Assign User to Stock" },
+    key: "production", label: "Manufacturing", actions: ["view", "create", "update", "delete"], subs: [
+      { key: "addnewitem", label: "Add New Item" },
+      { key: "manageItem", label: "Manage Item" },
+      { key: "billOfMaterials", label: "Bill of Materials" },
+      { key: "manageBom", label: "Manage BOM" },
+      { key: "productionOrders", label: "Production Orders" },
+      { key: "manageProductionOrders", label: "Manage Production Orders" },
+      { key: "lotTracking", label: "Lot Tracking" },
+      { key: "stockLedger", label: "Stock Ledger" },
+      { key: "productionReports", label: "Production Reports" },
     ]
   },
   {

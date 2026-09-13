@@ -1,6 +1,7 @@
 import { useState, useEffect, useMemo } from 'react'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
+import { can } from '../../Utils/Permissions.js'
 import { useReactTable, getCoreRowModel, getSortedRowModel, getPaginationRowModel, getFilteredRowModel, flexRender } from '@tanstack/react-table'
 import { Factory, Search, Eye, Trash2, CheckCircle2, X, Play } from 'lucide-react'
 
@@ -176,11 +177,16 @@ const ManageProductionOrder = () => {
                                                     return (
                                                         <td key={cell.id} className="px-4 py-3">
                                                             <div className="flex items-center justify-center gap-1.5">
-                                                                <button onClick={() => setViewOrder(o)} className="w-8 h-8 flex items-center justify-center rounded-lg bg-emerald-50 text-emerald-600 hover:bg-emerald-600 hover:text-white transition-colors cursor-pointer"><Eye size={14} /></button>
-                                                                {o.status === 'draft' && (
-                                                                    <button onClick={() => setCompleteTarget(o)} className="w-8 h-8 flex items-center justify-center rounded-lg bg-teal-50 text-teal-600 hover:bg-teal-600 hover:text-white transition-colors cursor-pointer" title="Complete"><CheckCircle2 size={14} /></button>
+                                                                {can("production", "view") && (
+                                                                    <button onClick={() => setViewOrder(o)} className="w-8 h-8 flex items-center justify-center rounded-lg bg-emerald-50 text-emerald-600 hover:bg-emerald-600 hover:text-white transition-colors cursor-pointer"><Eye size={14} /></button>
                                                                 )}
-                                                                <button onClick={() => setDeleteTarget(o)} className="w-8 h-8 flex items-center justify-center rounded-lg bg-rose-50 text-rose-500 hover:bg-rose-500 hover:text-white transition-colors cursor-pointer"><Trash2 size={14} /></button>
+                                                                {o.status === 'draft' && (
+                                                                    <button onClick={() => setCompleteTarget(o)} className="w-8 h-8 flex items-center justify-center rounded-lg bg-teal-50 text-teal-600 hover:bg-teal-600 hover:text-white transition-colors cursor-pointer" title="Complete"><CheckCircle2 size={14} />
+                                                                    </button>
+                                                                )}
+                                                                {can("production", "delete") && (
+                                                                    <button onClick={() => setDeleteTarget(o)} className="w-8 h-8 flex items-center justify-center rounded-lg bg-rose-50 text-rose-500 hover:bg-rose-500 hover:text-white transition-colors cursor-pointer"><Trash2 size={14} /></button>
+                                                                )}
                                                             </div>
                                                         </td>
                                                     )
