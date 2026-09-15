@@ -86,6 +86,7 @@ import ProductionReportsPage from './pages/Production/ProductionReportsPage.jsx'
 import ManageItemPage from './pages/Production/ManageItemPage.jsx'
 import ManageBomPage from './pages/Production/ManageBomPage.jsx'
 import ManageProductionOrderPage from './pages/Production/ManageProductionOrderPage.jsx'
+import YieldOverViewPage from './pages/Production/YieldOverViewPage.jsx'
 //Accounts
 import SupplierPaymentsPage from './pages/Accounts/SupplierPaymentsPage.jsx'
 import TransactionPage from './pages/Accounts/TransactionPage.jsx'
@@ -214,6 +215,7 @@ const App = () => {
         <Route path='/manage/item' element={<ManageItemPage />} />
         <Route path='/manage/bom' element={<ManageBomPage />} />
         <Route path='/manage/production/order' element={<ManageProductionOrderPage />} />
+        <Route path='/yield/overview' element={<YieldOverViewPage />} />
 
         //Accounts
         <Route path='/supplier/payments' element={<SupplierPaymentsPage />} />

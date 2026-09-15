@@ -19,7 +19,9 @@ const NewBOM = () => {
 
     const [addOpen, setAddOpen] = useState(false)
     const [addSearch, setAddSearch] = useState("")
-
+    const [batchKg, setBatchKg] = useState("")
+    const [batchG, setBatchG] = useState("")
+    const batchTotalG = (Number(batchKg) || 0) * 1000 + (Number(batchG) || 0)
     useEffect(() => {
         async function fetchItems() {
             try {
@@ -34,7 +36,7 @@ const NewBOM = () => {
 
     const fgItems = items.filter((i) => i.category === "FG")
     const rmPmItems = items.filter((i) => i.category === "RM" || i.category === "PM")
-
+    const totalRmGrams = lines.reduce((sum, l) => sum + (Number(l.qty) || 0), 0)
     function addLine(item) {
         if (lines.find((l) => l.itemCode === item.itemCode)) return
         setLines((prev) => [...prev, {
@@ -47,9 +49,20 @@ const NewBOM = () => {
         setAddOpen(false)
         setAddSearch("")
     }
-
-    function setQty(code, value) {
-        setLines((prev) => prev.map((l) => l.itemCode === code ? { ...l, qty: value } : l))
+    function setQtyInput(code, value) {
+        setLines((prev) => prev.map((l) => {
+            if (l.itemCode !== code) return l
+            let unit = l.qtyUnit || 'g'
+            let grams = unit === 'kg' ? (Number(value) || 0) * 1000 : (Number(value) || 0)
+            return { ...l, qtyInput: value, qty: grams }
+        }))
+    }
+    function setQtyUnit(code, unit) {
+        setLines((prev) => prev.map((l) => {
+            if (l.itemCode !== code) return l
+            let grams = unit === 'kg' ? (Number(l.qtyInput) || 0) * 1000 : (Number(l.qtyInput) || 0)
+            return { ...l, qtyUnit: unit, qty: grams }
+        }))
     }
 
     function removeLine(code) {
@@ -63,12 +76,12 @@ const NewBOM = () => {
             await axios.post('http://localhost:3000/add/bom', {
                 fgItemName: fg.itemName,
                 fgItemCode: fg.itemCode,
-                batchSize: batchSize,
-                batchUnit: batchUnit || fg.unitOfMeasure,
+                batchSize: batchTotalG,
+                batchUnit: 'g',
                 items: lines,
                 remark: remark,
             })
-            setFg(null); setBatchSize(""); setBatchUnit(""); setRemark(""); setLines([])
+            setFg(null); setBatchKg(""); setBatchG(""); setRemark(""); setLines([])
         } catch (err) {
             console.log("BOM SAVE FAILED:", err.response?.data || err.message)
         }
@@ -138,20 +151,22 @@ const NewBOM = () => {
                                 </div>
                             </div>
 
-                            <div className="grid grid-cols-2 gap-3">
-                                <div>
-                                    <label className="mb-1.5 block text-[10px] font-bold uppercase tracking-widest text-slate-500">Batch Size</label>
-                                    <div className="relative">
-                                        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-emerald-500"><Boxes className="h-4 w-4" /></span>
-                                        <input value={batchSize} onChange={(e) => setBatchSize(e.target.value)} placeholder="e.g. 100"
-                                            className="w-full rounded-2xl border border-slate-200 bg-slate-50/60 pl-9 pr-3 py-3 text-sm font-medium text-slate-700 placeholder-slate-400 transition-all focus:border-emerald-400 focus:bg-white focus:ring-4 focus:ring-emerald-50 focus:outline-none" />
+                            <div>
+                                <label className="mb-1.5 block text-[10px] font-bold uppercase tracking-widest text-slate-500">Batch Size (Lot)</label>
+                                <div className="flex items-center gap-2">
+                                    <div className="relative flex-1">
+                                        <input value={batchKg} onChange={(e) => setBatchKg(e.target.value)} placeholder="0"
+                                            className="w-full rounded-2xl border border-slate-200 bg-slate-50/60 pl-3 pr-8 py-3 text-sm font-medium text-slate-700 placeholder-slate-400 transition-all focus:border-emerald-400 focus:bg-white focus:ring-4 focus:ring-emerald-50 focus:outline-none" />
+                                        <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-bold text-slate-400">kg</span>
+                                    </div>
+                                    <span className="text-slate-300">+</span>
+                                    <div className="relative flex-1">
+                                        <input value={batchG} onChange={(e) => setBatchG(e.target.value)} placeholder="0"
+                                            className="w-full rounded-2xl border border-slate-200 bg-slate-50/60 pl-3 pr-7 py-3 text-sm font-medium text-slate-700 placeholder-slate-400 transition-all focus:border-emerald-400 focus:bg-white focus:ring-4 focus:ring-emerald-50 focus:outline-none" />
+                                        <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-bold text-slate-400">g</span>
                                     </div>
                                 </div>
-                                <div>
-                                    <label className="mb-1.5 block text-[10px] font-bold uppercase tracking-widest text-slate-500">Unit</label>
-                                    <input value={batchUnit} onChange={(e) => setBatchUnit(e.target.value)} placeholder="pouch"
-                                        className="w-full rounded-2xl border border-slate-200 bg-slate-50/60 px-3 py-3 text-sm font-medium text-slate-700 placeholder-slate-400 transition-all focus:border-emerald-400 focus:bg-white focus:ring-4 focus:ring-emerald-50 focus:outline-none" />
-                                </div>
+                                {batchTotalG > 0 && <p className="mt-1.5 text-[10px] font-semibold text-emerald-600">= {batchTotalG.toLocaleString()} g total</p>}
                             </div>
 
                             <div>
@@ -234,10 +249,19 @@ const NewBOM = () => {
                                                     <span className={`inline-flex rounded-full px-2 py-0.5 text-[9px] font-bold ring-1 ${l.category === 'RM' ? 'bg-emerald-50 text-emerald-700 ring-emerald-200' : 'bg-sky-50 text-sky-700 ring-sky-200'}`}>{l.category}</span>
                                                 </td>
                                                 <td className="px-3 py-2">
-                                                    <input value={l.qty} onChange={(e) => setQty(l.itemCode, e.target.value)} placeholder="0"
-                                                        className="w-24 mx-auto block rounded-lg border border-slate-200 bg-slate-50/60 px-2 py-1.5 text-xs text-center text-slate-700 focus:border-emerald-400 focus:bg-white focus:outline-none transition-all" />
+                                                    <div className="flex items-center gap-1.5 justify-center">
+                                                        <input value={l.qtyInput ?? ''} onChange={(e) => setQtyInput(l.itemCode, e.target.value)} placeholder="0"
+                                                            className="w-20 rounded-lg border border-slate-200 bg-slate-50/60 px-2 py-1.5 text-xs text-center text-slate-700 focus:border-emerald-400 focus:bg-white focus:outline-none transition-all" />
+                                                        <div className="flex gap-0.5 bg-slate-100 rounded-lg p-0.5">
+                                                            {['g', 'kg'].map((u) => (
+                                                                <button key={u} type="button" onClick={() => setQtyUnit(l.itemCode, u)}
+                                                                    className={`px-2 py-1 rounded-md text-[10px] font-bold transition-all cursor-pointer ${(l.qtyUnit || 'g') === u ? 'bg-emerald-500 text-white shadow-sm' : 'text-slate-500 hover:text-emerald-600'}`}>
+                                                                    {u}
+                                                                </button>
+                                                            ))}
+                                                        </div>
+                                                    </div>
                                                 </td>
-                                                <td className="px-3 py-2 text-center text-xs text-slate-500">{l.unit}</td>
                                                 <td className="px-3 py-2 text-center">
                                                     <button onClick={() => removeLine(l.itemCode)} className="w-7 h-7 inline-flex items-center justify-center rounded-lg bg-rose-50 text-rose-500 hover:bg-rose-500 hover:text-white transition-colors cursor-pointer"><Trash2 size={13} /></button>
                                                 </td>
@@ -246,6 +270,19 @@ const NewBOM = () => {
                                     </tbody>
                                 </table>
                             )}
+
+                        </div>
+                        <div className="flex items-center justify-between border-t border-slate-100 bg-slate-50/40 px-5 py-3">
+                            <span className="text-[11px] font-bold uppercase tracking-wide text-slate-500">Total RM Weight</span>
+                            <div className="flex items-center gap-3">
+                                <span className="text-sm font-black text-slate-800 tabular-nums">{(totalRmGrams / 1000).toLocaleString(undefined, { maximumFractionDigits: 3 })} kg</span>
+                                <span className="text-[11px] text-slate-400">({totalRmGrams.toLocaleString()} g)</span>
+                                {batchTotalG > 0 && (
+                                    totalRmGrams === batchTotalG
+                                        ? <span className="rounded-full bg-emerald-50 px-2.5 py-0.5 text-[10px] font-bold text-emerald-700 ring-1 ring-emerald-200">✓ Matches Batch</span>
+                                        : <span className="rounded-full bg-amber-50 px-2.5 py-0.5 text-[10px] font-bold text-amber-600 ring-1 ring-amber-200">Diff: {((totalRmGrams - batchTotalG) / 1000).toFixed(3)} kg</span>
+                                )}
+                            </div>
                         </div>
                     </div>
                 </div>

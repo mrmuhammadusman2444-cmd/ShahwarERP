@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 import axios from 'axios'
 import { useNavigate, useLocation } from 'react-router-dom';
 import { can, canSub, canAnySub } from '../Utils/Permissions.js'
-import { Search, Inbox, Bell, LayoutDashboard, Wallet, BookOpen, HandCoins, BriefcaseBusiness, ClipboardList, Landmark, Gift, ChartNoAxesCombined, Repeat2, Flag, BarChart2, LayoutGrid, Package, FileText, Users, Truck, ChevronDown, BadgeDollarSign, Handshake, PackageOpen, ShoppingCart, PackageCheck, Blocks, PackagePlus, Layers, List, Factory, GitBranch, BarChart3 } from "lucide-react";
+import { Search, Inbox, Bell, LayoutDashboard, Wallet, BookOpen,TrendingUp , HandCoins, BriefcaseBusiness, ClipboardList, Landmark, Gift, ChartNoAxesCombined, Repeat2, Flag, BarChart2, LayoutGrid, Package, FileText, Users, Truck, ChevronDown, BadgeDollarSign, Handshake, PackageOpen, ShoppingCart, PackageCheck, Blocks, PackagePlus, Layers, List, Factory, GitBranch, BarChart3 } from "lucide-react";
 const SideMenus = ({ collapsed }) => {
     const [customerOpen, setCustomerOpen] = useState(false)
     const [active, setActive] = useState('Dashboard')
@@ -811,8 +811,8 @@ const SideMenus = ({ collapsed }) => {
                     </div>
                 )}
 
-                {(canSub("production", "addnewitem") || canSub("production", "manageItem") || canSub("production", "billOfMaterials") || canSub("production", "manageBom") || canSub("production", "productionOrders") || canSub("production", "manageProductionOrders") || canSub("production", "lotTracking") || canSub("production", "stockLedger") || canSub("production", "productionReports")) && menuMatches('Manufacturing', ['Add New Item', 'Manage Production Orders', 'Manage Item', 'Bill of Materials', 'Production Orders', 'Lot Tracking', 'Stock Ledger', 'Production Reports', 'Manage BOM']) && (<div onMouseEnter={setTip} onClick={() => setstockOpen(!stockOpen)} className={`relative group group/tooltip flex items-center gap-2.5 h-12 rounded-xl px-2 cursor-pointer transition-all mb-px ${collapsed ? 'justify-center w-9 h-9 mx-auto' : ''} ${isParentActive(['/new/item', '/manage/item', '/bill/of/materials', '/production/orders', '/lot/tracking', '/stock/ledger', '/production/reports', '/manage/production/order', '/manage/bom']) ? 'bg-(--nav-active)' : 'hover:bg-(--nav-active)'}`}>
-                    {isParentActive(['/new/item', '/manage/item', '/bill/of/materials', '/production/orders', '/lot/tracking', '/stock/ledger', '/production/reports', '/manage/production/order', '/manage/bom']) && !collapsed && (
+                {(canSub("production", "addnewitem") || canSub("production", "manageItem") || canSub("production", "billOfMaterials") || canSub("production", "manageBom") || canSub("production", "productionOrders") || canSub("production", "manageProductionOrders") || canSub("production", "lotTracking") || canSub("production", "stockLedger") || canSub("production", "productionReports") || canSub("production", "yieldOverview")) && menuMatches('Manufacturing', ['Add New Item', 'Manage Production Orders', 'Manage Item', 'Bill of Materials', 'Production Orders', 'Lot Tracking', 'Stock Ledger', 'Production Reports', 'Manage BOM', 'Yield Overview']) && (<div onMouseEnter={setTip} onClick={() => setstockOpen(!stockOpen)} className={`relative group group/tooltip flex items-center gap-2.5 h-12  rounded-xl px-2 cursor-pointer transition-all mb-px ${collapsed ? 'justify-center w-12 h-9 mx-auto' : ''} ${isParentActive(['/new/item', '/manage/item', '/bill/of/materials', '/production/orders', '/lot/tracking', '/stock/ledger', '/production/reports', '/manage/production/order', '/manage/bom', '/yield/overview']) ? 'bg-(--nav-active)' : 'hover:bg-(--nav-active)'}`}>
+                    {isParentActive(['/new/item', '/manage/item', '/bill/of/materials', '/production/orders', '/lot/tracking', '/stock/ledger', '/production/reports', '/manage/production/order', '/manage/bom', '/yield/overview']) && !collapsed && (
                         <span className="absolute left-0 top-1/2 -translate-y-1/2 w-0.75 h-5 bg-emerald-400 rounded-r-full" />
                     )}
                     <span className="flex items-center justify-center h-8 w-8 shrink-0 rounded-lg bg-emerald-500/15 ring-1 ring-slate-500/25 group-hover:bg-emerald-500/25 transition-colors">
@@ -901,6 +901,14 @@ const SideMenus = ({ collapsed }) => {
                                 <span className="text-[12px] flex-1">Lot Tracking</span>
                             </div>
                         )}
+                        {canSub("production", "yieldOverview") && subMatches('Yield Overview') && (
+                            <div onClick={() => { navigate('/yield/overview') }} className="group/sub flex items-center gap-2.5 px-2 py-1.5 rounded-md cursor-pointer text-slate-500 hover:text-emerald-100 hover:bg-slate-800 transition-all">
+                                <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-md bg-slate-800/60 group-hover/sub:bg-emerald-500/20 transition-colors">
+                                    <TrendingUp className="w-3.5 h-3.5 text-slate-400 group-hover/sub:text-emerald-400 transition-colors" />
+                                </span>
+                                <span className="text-[12px] flex-1">Yield Overview</span>
+                            </div>
+                        )}
                         {canSub("production", "stockLedger") && subMatches('Stock Ledger') && (
                             <div onClick={() => { navigate('/stock/ledger') }} className="group/sub flex items-center gap-2.5 px-2 py-1.5 rounded-md cursor-pointer text-slate-500 hover:text-emerald-100 hover:bg-slate-800 transition-all">
                                 <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-md bg-slate-800/60 group-hover/sub:bg-emerald-500/20 transition-colors">
@@ -919,6 +927,7 @@ const SideMenus = ({ collapsed }) => {
                         )}
                     </div>
                 )}
+
                 {false && can("warehouseWiseSale", "view") && menuMatches('Warehouse Wise Sale', ['New Stock', 'Manage Stock', 'New Sale', 'Manage Warehouse Sale', 'Warehouse Stock']) && (
 
                     <div onMouseEnter={setTip} onClick={() => setwarehouseSaleOpen(!warehouseSaleOpen)} className={`relative group group/tooltip flex items-center gap-2.5 h-8.75 rounded-lg px-2 cursor-pointer transition-all mb-px ${collapsed ? 'justify-start w-9 h-9 mx-auto' : ''} ${isParentActive(['/PATH_HERE_1', '/PATH_HERE_2']) ? 'bg-(--nav-active)' : 'hover:bg-(--nav-active)'}`}>
